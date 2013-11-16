@@ -9,3 +9,4 @@ Upload a file: go to admin.php page, connect and then drop files in the dashed a
 
 The share link is the file link in the admin's view.
 
+http://www.warriordudimanche.net/article202/bozon-glissez-deposez-partagez
