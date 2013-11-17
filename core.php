@@ -5,6 +5,7 @@
 	$behaviour['FILES_TO_RETURN']=array('jpg','jpeg','gif','png','pdf','swf');
  
 	if (!is_dir(UPLOAD_PATH)){mkdir(UPLOAD_PATH);}
+	if (!is_dir('thumbs/')){mkdir('thumbs/');}
 	if (!file_exists(ID_FILE)){$ids=array();store(ID_FILE,$ids);}
 	$ids=unstore(ID_FILE);
 
