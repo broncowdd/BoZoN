@@ -111,7 +111,8 @@ footer{
 		}
 		.list li:hover a.close{display:block;}
 		.list li a{display:block;text-decoration:none;}
-		.list li a em {font-style:normal;margin-top:5px;display: block;}
+		.list li em {font-style:normal;display: block;}
+		.list li a em {overflow:hidden;max-height:30px;font-style:normal;margin-top:5px;display: block;}
 		.list li a img{
 			width:64px;height:64px;
 			display:block;
