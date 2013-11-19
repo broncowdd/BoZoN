@@ -128,6 +128,8 @@ footer{
 		img.css{background-image:url(img/css.png)!important;}
 		img.js{background-image:url(img/js.png)!important;}
 		img.swf{background-image:url(img/swf.png)!important;}
+		img.mp3,img.ogg{background-image:url(img/mp3.png)!important;}
+		img.mp4,img.flv{background-image:url(img/mp4.png)!important;}
 		img.php{background-image:url(img/php.png)!important;}
 		img.html,img.htm,img.shtml,img.shtm{background-image:url(img/html.png)!important;}
 		img.exe,img.bat{background-image:url(img/exe.png)!important;}
