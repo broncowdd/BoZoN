@@ -2,7 +2,7 @@
 	define('ID_FILE','id.txt');
 	define('UPLOAD_PATH','uploads/');
 	$behaviour['FILES_TO_ECHO']=array('txt','js','html','php','htm','shtml','shtm');
-	$behaviour['FILES_TO_RETURN']=array('jpg','jpeg','gif','png','pdf','swf');
+	$behaviour['FILES_TO_RETURN']=array('jpg','jpeg','gif','png','pdf','swf','mp3','ogg','flv','mp4');
  
 	if (!is_dir(UPLOAD_PATH)){mkdir(UPLOAD_PATH);}
 	if (!is_file(UPLOAD_PATH.'index.html')){file_put_contents(UPLOAD_PATH.'index.html',' ');}
