@@ -56,14 +56,14 @@ function auto_thumb($img,$width=null,$height=null,$add_to_thumb_filename='_THUMB
 		foreach ($liste as $fichier){
 			$nom=basename($fichier);
 			if ($nom!='index.html'&&!empty($files[$nom])){
-				$taille=filesize($fichier);
+				$taille=round(filesize($fichier)/1024);
 				$id=$files[$nom];
 				$extension=strtolower(pathinfo($fichier,PATHINFO_EXTENSION));
 				if ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
-					echo '<li class="'.$extension.'"><a class="close" href="#" onclick="d(\''.$id.'\');">x</a><a href="index.php?f='.$id.'" ><img src="" style="background:url('.auto_thumb($fichier,64,64).');"/><em>'.$nom.'</em></a> <em>'.$taille.' ko</em></li>';
+					echo '<li class="'.$extension.'"><a class="close" href="#" onclick="d(\''.$id.'\');">x</a><a title="'.$nom.'" href="index.php?f='.$id.'" ><img src="" style="background:url('.auto_thumb($fichier,64,64).');"/><em>'.$nom.'</em></a> <em>'.$taille.' ko</em></li>';
 
 				}else{
-					echo '<li class="'.$extension.'"><a class="close" href="#" onclick="d(\''.$id.'\');">x</a><a href="index.php?f='.$id.'"><img class="'.$extension.'" src=""/><em>'.$nom.'</em></a> <em>'.$taille.' ko</em></li>';
+					echo '<li class="'.$extension.'"><a class="close" href="#" onclick="d(\''.$id.'\');">x</a><a title="'.$nom.'" href="index.php?f='.$id.'"><img class="'.$extension.'" src=""/><em>'.$nom.'</em></a> <em>'.$taille.' ko</em></li>';
 
 				}
 				
