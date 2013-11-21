@@ -1,8 +1,8 @@
-﻿<?php
+<?php
 	/**
 	 * @author bronco@warriordudimanche.com / www.warriordudimanche.net
 	 * @copyright open source and free to adapt (keep me aware !)
-	 * @version 2.0
+	 * @version 2.0 
 	 *   
 	 * Verrouille l'accès à une page
 	 * Il suffit d'inclure ce fichier pour bloquer l'accès
