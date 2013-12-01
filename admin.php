@@ -2,6 +2,7 @@
 	include ('auto_restrict.php');
 	$INCLUDE_JS=false;
 	include('core.php');
+	include('updateIds.php');
 	if (isset($_GET['del'])&&$_GET['del']!=''){
 		$f=UPLOAD_PATH.id2file($_GET['del']);
 		if(is_file($f)){unlink($f); header('location: admin.php');}
