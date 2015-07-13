@@ -1,5 +1,5 @@
-BoZoN
-Minimalist Drag & drop file sharing app
+# BoZoN
+## Minimalist Drag & drop file sharing app
 
 Install: just unzip on your server; no database/ php 5.2. Then go to admin.php page and create your login/pass. Config: just change globals in the core.php file. 
 Upload a file: go to admin.php page, connect and then drop files in the dashed area... that's it !
