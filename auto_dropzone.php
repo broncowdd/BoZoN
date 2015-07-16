@@ -386,21 +386,23 @@ if ($_FILES){
             initHandlers();
         
             // FALLBACK
-            function trigger(ev,obj){
+            function fire_click(obj){
                 if (typeof obj=='string'){obj=document.getElementById(obj);}
-                if (window.CustomEvent) {
-                  var event = new CustomEvent(ev, {detail: {some: 'data'}})
-                } else {
-                  var event = document.createEvent('CustomEvent')
-                  event.initCustomEvent('ev', true, true, {some: 'data'})
+                if (window.MouseEvent) {                  
+                    var event = new MouseEvent('click', {
+                        'view': window,
+                        'bubbles': true,
+                        'cancelable': true
+                    });
+                }else{
+                    var event = new CustomEvent('my-event', {detail: {some: 'data'}});
                 }
-
                 obj.dispatchEvent(event)
             }
 
             // click on dropzone: fallback file
             document.getElementById('<?php echo $auto_dropzone['dropzone_id'];?>').addEventListener('click', function(){
-                trigger('click','fileToUpload');
+                fire_click('fileToUpload');
                
             });
             document.getElementById('fileToUpload').addEventListener('change', function(){
