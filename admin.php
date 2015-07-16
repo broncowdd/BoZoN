@@ -80,8 +80,11 @@
 	<header><div class="overlay">
 		<div class="lang">
 			<?php  
+				
 				foreach ($lang as $l=>$content){
-					echo '<a href="admin.php?lang='.$l.'">'.$l.'</a>';
+					echo '<a href="admin.php?lang='.$l.'&token=';
+					newToken(true);
+					echo '">'.$l.'</a>';
 				}
 			?>
 		</div>
