@@ -111,7 +111,7 @@ if (count($liste)>0){
 							<a class="rename" href="#" onclick="r(\''.$id.'\',\''.pathinfo($nom,PATHINFO_FILENAME).'\');">R</a>
 						</div>
 						<a href="index.php?f='.$id.'" >
-							<img src="" style="background:url('.auto_thumb($fichier,64,64).');"/>
+							<img src="'.auto_thumb($fichier,64,64).'" style="background:transparent;"/>
 							<em>'.$taille.' ko</em><em>'.$nom.'</em>
 						</a>
 					</li>';
@@ -123,7 +123,7 @@ if (count($liste)>0){
 							<a class="rename" href="#" onclick="r(\''.$id.'\',\''.pathinfo($nom,PATHINFO_FILENAME).'\');">R</a>
 						</div>
 						<a href="index.php?f='.$id.'">
-							<img class="'.$extension.'" src=""/>
+							<img class="'.$extension.'" src="img/ghost.png"/>
 							<em>'.$taille.' ko</em><em>'.$nom.'</em>
 						</a>
 					</li>';
