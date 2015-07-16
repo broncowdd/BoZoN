@@ -52,7 +52,12 @@ header{
 		padding:10px;
 		background:linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)) 
 	}
-		header .lang{float:left;}
+		header .lang{
+			float:left;
+			border-radius: 3px;
+			background: rgba(0,0,0,0.05);
+			box-shadow: 0 0 2px rgba(0,0,0,0.3);
+		}
 			header .lang a{
 				display:inline-block;
 				text-decoration: none;
@@ -60,16 +65,22 @@ header{
 				color:rgba(255,255,255,0.4);
 			}
 			header .lang a:hover{color:rgba(255,255,255,0.8);}
+			header .lang:hover{background-color:rgba(0,0,0,0.5);}
+		header .headerforms{
+			 text-align: left;
+  			display: inline-block;
+		}
 		header form{
 			display:inline-block; 
+			width:300px;
 			text-align:right;
 			margin-top:10px;
 			clear:both;
 		}
 			header form label{
-				text-align:left;
-				display:block;
-				color:rgba(255,255,255,0.5);
+				/*text-align:left;*/
+				display:inline-block;
+				color:rgba(255,255,255,0.3);
 				margin-bottom:5px;
 				text-shadow:0 1px 1px rgba(0,0,0,0.2);
 			}
@@ -79,18 +90,19 @@ header{
 				background:rgba(255,255,255,0.2);
 			}
 			header form:hover input[type=submit]{
-				border:2px solid rgba(255,255,255,0.2);
-				border-top-color:rgba(200,200,200,0.2);	
-				background:rgba(255,255,255,0.3);
+				border:2px solid rgba(255,255,255,0.1);
+				border-top-color:rgba(200,200,200,0.1);	
+				background:rgba(255,255,255,0.2);
 			}
 			header form input[type=text]{
 				display:inline-block;
+				width:250px;
 				border:2px solid rgba(255,255,255,0.1);
 				background:rgba(255,255,255,0.1);
 				padding:5px;
 				border-radius:2px;
 				margin-right:0;
-				color:rgba(255,255,255,0.5);
+				color:rgba(255,255,255,0.3);
 			}
 			header form input[type=submit]{
 				display:inline-block;
@@ -101,7 +113,7 @@ header{
 				background:rgba(255,255,255,0.2);
 				padding:5px;
 				border-radius:4px;
-				color:rgba(255,255,255,0.5);
+				color:rgba(255,255,255,0.3);
 			}
 			header form input[type=submit]:hover{		
 								
@@ -132,21 +144,42 @@ header{
 				color:rgba(255,255,255,0.8);
 			}
 				header p.logo strong{font-weight: bolder}
-
+.error{
+	padding:10px;
+	background-color:rgba(255,0,0,0.7);
+	box-shadow: inset 0 0 2px red;
+	color:rgba(255,255,255,0.7);
+	font-size:18px;
+	text-shadow:0 1px 1px rgba(0,0,0,0.5);
+	text-align:center;
+}
 table{
 	width:100%;
 	background: url(img/noise.png) #ddd;
 	box-shadow: inset 0 0 3px rgba(0,0,0,0.35);
 	padding:40px 10px;
 }
-tr{max-width: 1200px;}
-td{
-	width:70%;
-	vertical-align: top;
-	min-height:80%;
-	padding:15px;
-	padding-top:0;
-}
+	tr{max-width: 1200px;}
+	td{
+		width:70%;
+		vertical-align: top;
+		min-height:80%;
+		padding:15px;
+		padding-top:0;
+	}
+
+	.w33{width:32%;}
+	.dashed{
+		font-family:courier;cursor:pointer;	
+		text-align:left;
+	    box-shadow:inset 0 2px 3px rgba(0,0,0,0.3);
+		margin:15px;padding:10px;
+		width:100%;
+		border-radius:3px;border:3px dashed rgba(0,0,0,0.5);
+		background:rgba(0,0,0,0.3);
+
+	}
+
 
 footer{
 	cursor:default;
@@ -248,17 +281,28 @@ footer{
 	box-shadow: 0 0 2px rgba(0,126,255,0.5);
 }
 
-.list li a.close:hover{background-color:rgba(255,0,0,0.8);}
-.list li a.close{
+.list li .buttons{
 	float:right;
+	width:20px;
+}
+.list li .buttons a{
 	width:18px;height:18px;			
 	border-radius: 3px;
 	font-size: 14px;
 	display:none;
+	margin:1px;
+}
+.list li a.close{
 	background:url(img/Trash.png) no-repeat center center rgba(0,0,0,0.2);
+}
+.list li a.rename{
+	background:rgba(0,0,0,0.2);
 	
 }
-.list li:hover a.close{display:block;}
+.list li a.close:hover{background-color:rgba(255,0,0,0.8);}
+.list li a.rename:hover{background-color:rgba(0,255,0,0.8);}
+
+.list li:hover a.close, .list li:hover a.rename{display:block;}
 .list li a{
 	display:block;
 	text-decoration:none;
@@ -300,8 +344,8 @@ img.exe,img.bat,img.iso,img.bin{background-image:url(img/exe.png)!important;}
 
 
 /* transitions */
-img,a,input,li,.DD_dropzone,.DD_dropzone *,label{transition:all 300ms;}
-img:hover,a:hover,input:hover,li:hover,form:hover {transition:all 300ms;}
+img,a,input,li,.DD_dropzone,.DD_dropzone *,label,header .lang{transition:all 300ms;}
+img:hover,a:hover,input:hover,li:hover,form:hover , header .lang:hover{transition:all 300ms;}
 
  
 /* Dropzone */
@@ -364,7 +408,7 @@ img:hover,a:hover,input:hover,li:hover,form:hover {transition:all 300ms;}
 	box-shadow:0 0 3px rgba(0,255,0,0.8);;
 	height:20px;width:0%
 }
-
+.DD_hidden{display:none;}
 
 /* Media queries */
 @media screen and (max-width:600px){

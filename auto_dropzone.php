@@ -60,7 +60,7 @@ $default_config=array(
     'use_style'=>false,                         // false if you're using a external css file
     'auto_refresh_after_upload'=>true,          // auto refresh page after uploading files (except on errors)
     'max_length'=>512,                          // Mo
-    'dropzone_text'=>e('Drop your files here',false),
+    'dropzone_text'=>e('Drop your files here or click to select a local file',false),
     'dropzone_id'=>'dropArea',
     'dropzone_class'=>'dropArea',
     'destination_filepath'=>'destination/',     // this can be an array like 'jpg'=>'upload/jpeg/' or a string 'destination/'
@@ -197,6 +197,7 @@ if ($_FILES){
                 box-shadow:0 0 3px #0F0;
                 height:20px;width:0%
             }
+            .DD_hidden{display:none;
         </style>
         ';
     }
@@ -210,7 +211,11 @@ if ($_FILES){
                 <div id="DD_progressbar"></div>
             </div>
         </td>
-
+        <form action="#" method="post" enctype="multipart/form-data" id="DD_fallback_form" >
+            <input type="file" name="myfile" id="fileToUpload" class="DD_hidden"/>
+            <input type="hidden" value="fallback" name="fallback"/>
+            <input type="submit" id="DD_submit" class="DD_hidden"/>
+        </form>
 
     <script>
         
@@ -222,27 +227,27 @@ if ($_FILES){
         var totalSize       = 0;
         var totalProgress   = 0;
 
-function reload_list(){
-   //reload list
-    var request = new XMLHttpRequest();
-    request.open('GET', 'listfiles.php', true);
-    target=document.getElementById('liste');
-    request.onload = function() {
-      if (request.status >= 200 && request.status < 400) {
-        // Success!                        
-        target.innerHTML= request.responseText;
-      } else {
-        target.innerHTML= 'erreur de rechargement de la liste'
+        function reload_list(){
+           //reload list
+            var request = new XMLHttpRequest();
+            request.open('GET', 'listfiles.php', true);
+            target=document.getElementById('liste');
+            request.onload = function() {
+              if (request.status >= 200 && request.status < 400) {
+                // Success!                        
+                target.innerHTML= request.responseText;
+              } else {
+                target.innerHTML= 'erreur de rechargement de la liste'
 
-      }
-    };
+              }
+            };
 
-    request.onerror = function() {
-      // There was a connection error of some sort
-    };
+            request.onerror = function() {
+              // There was a connection error of some sort
+            };
 
-    request.send();
-}
+            request.send();
+        }
 
         function filetype(filemime){
             var parts = filemime.split("/");
@@ -258,7 +263,7 @@ function reload_list(){
 
 
         // main initialization
-        (function(){
+        
 
             // init handlers
             function initHandlers() {
@@ -348,8 +353,10 @@ function reload_list(){
                 }
 
                 // prepare FormData
-                var formData = new FormData();  
+                var formData = new FormData(); console.log(file); 
                 formData.append('myfile', file); 
+                formData.append('token', "<?php newToken(true);?>"); 
+
                 xhr.send(formData);
             }
 
@@ -377,8 +384,28 @@ function reload_list(){
             }
 
             initHandlers();
-        })();
+        
+            // FALLBACK
+            function trigger(ev,obj){
+                if (typeof obj=='string'){obj=document.getElementById(obj);}
+                if (window.CustomEvent) {
+                  var event = new CustomEvent(ev, {detail: {some: 'data'}})
+                } else {
+                  var event = document.createEvent('CustomEvent')
+                  event.initCustomEvent('ev', true, true, {some: 'data'})
+                }
 
+                obj.dispatchEvent(event)
+            }
+
+            // click on dropzone: fallback file
+            document.getElementById('<?php echo $auto_dropzone['dropzone_id'];?>').addEventListener('click', function(){
+                trigger('click','fileToUpload');
+               
+            });
+            document.getElementById('fileToUpload').addEventListener('change', function(){
+                uploadFile(this.files[0],'');          
+            });
     </script>
 <?php }
 
