@@ -1,13 +1,13 @@
 <?php
 	/**
-	* BoZoN languahe file:
+	* BoZoN language file:
 	* sets all the messages in various languages
 	* to add one, simply copy paste the french one and change all the values: the array's keys must stay the same !
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
 	function e($txt,$echo=true){
 		global $lang;
-		if (isset($lang[LANGUAGE][$txt])){$t= $lang[LANGUAGE][$txt];}else{$t= $txt;}
+		if (isset($lang[$_SESSION['language']][$txt])){$t= $lang[$_SESSION['language']][$txt];}else{$t= $txt;}
 		if ($echo){echo $t;}else{return $t;}
 	}
 	$lang=array();
@@ -36,7 +36,10 @@
 		'Delete this file ?'=>'Supprimer ce fichier ?',
 		'Rename this file ?'=>'Renommer ce fichier ?',
 		'Problem accessing remote file.'=>'Problème d\'acces au fichier distant',
-		'Paste a file\'s URL to get it on this server'=>'Coller l\'URL d\'un fichier distant',
+		'Paste a file\'s URL to get it on this server'=>'Coller l\'URL d\'un fichier pour le récupérer sur ce serveur',
+		'Paste a file\'s URL'=>'Coller l\'URL d\'un fichier',
+		'New_folder'=>'Nouveau_dossier',
+		'Create a subfolder'=>'Créer un nouveau dossier',
 	);
 
 
@@ -61,6 +64,9 @@
 		'Delete this file ?'=>'¿ Borrar este fichero ?',
 		'Rename this file ?'=>'¿ Cambiar el nombre del fichero ?',
 		'Problem accessing remote file.'=>'Imposible acceder al fichero remoto',
-		'Paste a file\'s URL to get it on this server'=>'Pegar la URL de un fichero remoto',
+		'Paste a file\'s URL to get it on this server'=>'Pegar la URL de un fichero',
+		'Paste a file\'s URL'=>'Pegar la URL de un fichero',
+		'New_folder'=>'Nueva_carpeta',
+		'Create a subfolder'=>'Crear una carpeta nueva'
 	);
 ?>

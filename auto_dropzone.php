@@ -41,7 +41,7 @@ if (session_id()==''){session_start();}
     'use_style'=>true, // false if you're using an css file
   );
   
-    'destination_filepath' key:'destination_filepath'=>"upload_path/" (with ending slash)
+    'destination_filepath' key:'destination_filepath'=>"$_SESSION['upload_path']/" (with ending slash)
     if not specified, the destination folder will be destination/ (created on the first start)
     you also can set specific paths for each mime type like that
         'destination_filepath'=>array('gif'=>'path/to/gif/','png'=>'path/to/png/' ... )
@@ -63,24 +63,24 @@ $default_config=array(
     'dropzone_text'=>e('Drop your files here or click to select a local file',false),
     'dropzone_id'=>'dropArea',
     'dropzone_class'=>'dropArea',
-    'destination_filepath'=>'destination/',     // this can be an array like 'jpg'=>'upload/jpeg/' or a string 'destination/'
+    'destination_filepath'=>$_SESSION['current_path'].'/',     // this can be an array like 'jpg'=>'upload/jpeg/' or a string 'destination/'
     'my_filepath'=>$_SERVER['SCRIPT_NAME'],
 );
 
 foreach($default_config as $key=>$val){
     // create or complete config var
-    if(!isset($auto_dropzone[$key])){ $auto_dropzone[$key]=$val;}
+    if(!isset($auto_dropzone[$key])){ $auto_dropzone[$key]=$auto_dropzone[$key]=$val;}
+
     // has config changed ?
     if (!isset($_SESSION[$key]) || $auto_dropzone[$key]!=$_SESSION[$key]){ $_SESSION[$key]=$auto_dropzone[$key];}
-
 }
+
 if (!is_array($auto_dropzone['destination_filepath'])&&!is_dir($auto_dropzone['destination_filepath'])){
     mkdir($auto_dropzone['destination_filepath'],01777);file_put_contents($auto_dropzone['destination_filepath'].'index.html','');
 }   
 $max=intval($phpini['upload_max_filesize']["global_value"]);
 if ($auto_dropzone['max_length']<$max){$max=$auto_dropzone['max_length'];}
 $auto_dropzone_error=false;
-
 
 // uploading files
 if ($_FILES){ 
@@ -301,6 +301,7 @@ if ($_FILES){
                 event.preventDefault();*/
                 if(event.preventDefault) { event.preventDefault(); }
                 if(event.stopPropagation) { event.stopPropagation(); }
+                console.log(event.dataTransfer.files);
                 processFiles(event.dataTransfer.files);
                 return false;
             }
@@ -353,7 +354,7 @@ if ($_FILES){
                 }
 
                 // prepare FormData
-                var formData = new FormData(); console.log(file); 
+                var formData = new FormData();  
                 formData.append('myfile', file); 
                 formData.append('token', "<?php newToken(true);?>"); 
 
@@ -389,11 +390,7 @@ if ($_FILES){
             function fire_click(obj){
                 if (typeof obj=='string'){obj=document.getElementById(obj);}
                 if (window.MouseEvent) {                  
-                    var event = new MouseEvent('click', {
-                        'view': window,
-                        'bubbles': true,
-                        'cancelable': true
-                    });
+                    var event = new MouseEvent('click', {'view': window,'bubbles': true,'cancelable': true});
                 }else{
                     var event = new CustomEvent('my-event', {detail: {some: 'data'}});
                 }

@@ -386,6 +386,13 @@
 		if (!$token_only){echo '<input type="hidden" value="'.$token.'" name="token"/>';}
 		else {echo $token;}
 	}
+	// create a token, and return it
+	function returnToken(){
+		global $auto_restrict;
+		$token=hash('sha512',uniqid('',true));
+		$_SESSION[$token]=@date('U')+$auto_restrict['tokens_expiration_delay'];
+		return $token;
+	}
 
 
 	// ------------------------------------------------------------------

@@ -6,10 +6,25 @@
 - Config: just change globals in the core.php file. 
 - Upload a file: go to admin.php page, connect and then drop files in the dashed area... that's it !
 
-The share link is the file link in the admin's view.
+The share link is the file link in the admin's view or you can access it by the button link on the file.
 
+## Required 
+Php 5 min
 
-# new in version 1.3 (actually still in beta testing):
+## New in version 1.4
+- add: allow extension rename
+- add: create subfolders
+- add: share a folder
+- add: user index.php page can list a shared folder content with share links
+- add: allow subfolder navigation & upload
+- add: direct subfolder item number on folder icon
+- add: delete folders, sub folders and their content
+- add: a share link button (click to prompt and ctrl+c the link)
+- bugfix: glob fallback for php < 5.2 
+- design: better icon placement on items
+- add: a fork help text
+
+## new in version 1.3 (actually still in beta testing but working):
 - add: rename file is now possible
 - add: upload a file using a fallback fileselect form
 - add: get a local version of a distant file only with it's URL
@@ -17,8 +32,7 @@ The share link is the file link in the admin's view.
 - bugfix: link to file contains the filename
 - bugfix: ajax refreshing list problem (seems solved in almost all cases)
 
-
-# new in version 1.2:
+## new in version 1.2:
 - add: filter/search on admin page
 - add: language support (see lang.php to translate it to another language)
 - change: design and logo
@@ -26,17 +40,22 @@ The share link is the file link in the admin's view.
 - update: auto_restrict to a better secured version
 - update: auto_thumbnail to the last version
 
-# TODO
-- add a config page
+## TODO
+- move a file to another folder
+- add a share button
+- add a config page (file status by default public/private, etc)
+- change uniqid system to a day-moth-year-hour-minutes-seconds system
 - some security enhancements
-- maybe a «protected link» mode available only for one person (I'm just thinking ^^)
-- Folders
+- maybe a «protected link» mode available only for one person (I'm just thinking ^^)ers
+- serious tests on mobile devices (not done yet)
+- manage a public file access on the index.php page (public/private button)
 
-# used libraries 
+## used libraries 
 I only used a few libs I made
 - auto_restrict : to easily lock access to a page and handle basic security features
 - auto_thumbs : a function to generate all the thumbnails
 - auto_dropzone : a lib that handle the drag and drop function only by including it in a script
 
-# FAQ
+## FAQ
 - can't see icons / problems uploading / list refresh problem : take a look to access rights (folders / files)
+- I want to change my password / I forgot my password ! : just use your FTP client and delete the *auto_restrict_files* folder, then try to login again and create a new login/pass.
