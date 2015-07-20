@@ -10,13 +10,13 @@
 	$message='';
 
 	# subfolder path
-	if (!empty($_GET['path']) && !empty(trim($_GET['path']))){
+	if (!empty($_GET['path']) && trim($_GET['path'])!==false){
 		$_SESSION['current_path']=str_replace('//','/',$_GET['path']);
 		header('location:admin.php');
 	}
 
 	# purge ids via get var
-	if (!empty($_GET['purge']) && !empty(trim($_GET['purge']))){
+	if (!empty($_GET['purge']) && trim($_GET['purge']!==false)){
 		purgeIDs();
 	}
 	# search/filter
