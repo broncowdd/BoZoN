@@ -189,29 +189,41 @@ php_flag engine off
     }
 	function draw_tree($tree){
 		echo '<section><ul class="tree">';
-			$root=explode('/',$tree[0]);
+			$root=explode('/',$tree[0]);$fork='&#9500;';
 			$root=array_search(basename($tree[0]), $root)+1;
-			$previous_level=$level=0;
-			foreach ($tree as $branch){
+			$level=0;$tab=str_repeat('&nbsp;',2);
+			for ($i=0;$i<count($tree);$i++){
+				$branch=$tree[$i];
+				if (isset($tree[$i+1])){$next=$tree[$i+1];}else{$next=false;}
+
 				if ($link=file2id($branch)){ 
 					$ext='';
-					$level=count(explode('/',$branch))-$root;				
+					$level=count(explode('/',$branch))-$root;
+					if ($next){$next_level=count(explode('/',$next))-$root;}else{$next_level=0;}						
 					if ($level<0){$level=0;}
+					if ($next_level<0){$next_level=0;}
+
 					$ext=strtolower(pathinfo($branch,PATHINFO_EXTENSION));
 					$folder='';$basename=basename($branch);
+
 					if(is_dir($branch)){
 						$folder=' folder';
-						echo '<li>'.str_repeat('<span class="vl">  &#9474;  </span>', $level).'</li>';
 					}
-					if ($level!=$previous_level){
-						echo '<li>'.str_repeat('<span class="vl">  &#9474;  </span>', $level).'</li>';
-						$previous_level=$level;
+					if ($level>$next_level || !$next){
+						$fork='&#9492;';
+					}else{$fork='&#9500;';}
+					if ($level<$next_level){
+						echo '<li>'.str_repeat('<span class="vl">'.$tab.'&#9474;'.$tab.'</span>', $level+1).'</li>';
 					}
 		
-					echo '<li><span class="vl">'.str_repeat('  &#9474;  ', $level).'  &#9500;  </span><span class="'.$ext.$folder.'"><a href="index.php?f='.$link.'">'.$basename.'</a></span></li>';
+					echo '<li><span class="vl">'.str_repeat($tab.'&#9474;'.$tab, $level).$tab.$fork.$tab.'</span><span class="'.$ext.$folder.'"><a href="index.php?f='.$link.'">'.$basename.'</a></span></li>';
+					if ($level>$next_level){echo '<li>'.str_repeat('<span class="vl">'.$tab.'&#9474;'.$tab.'</span>', $level).'</li>';}
+						
 				}
+					
 				
 			}
+
 		echo '</ul></section>';
 	}
 	
