@@ -160,6 +160,15 @@ header{
 	text-shadow:0 1px 1px rgba(0,0,0,0.5);
 	text-align:center;
 }
+.error{
+	padding:10px;
+	background-color:rgba(255,150,0,0.7);
+	box-shadow: inset 0 0 2px orange;
+	color:rgba(255,255,255,0.7);
+	font-size:18px;
+	text-shadow:0 1px 1px rgba(0,0,0,0.5);
+	text-align:center;
+}
 
 .fil_ariane{
 	margin-left:15px;
@@ -555,6 +564,7 @@ ul.tree{
 	border-top:1px solid rgba(0,0,0,0.2);
 }
 ul.tree a{text-decoration: none;color:inherit;}
+ul.tree a:hover{background-color:rgba(255,255,255,0.8);}
 ul.tree .odg,ul.tree .doc,ul.tree .docx,ul.tree .odt{color:rgba(0,0,150,0.5)!important;}
 ul.tree .zip,ul.tree .rar,ul.tree .7z,ul.tree .gz{color:rgba(255,255,0,0.5);}
 ul.tree .png,ul.tree .jpg,ul.tree .jpeg,ul.tree .gif{color:rgba(0,80,120,0.6);}
@@ -573,6 +583,7 @@ ul.tree li:not(.folder){
 }
 ul.tree .folder:after{content:"/";}
 ul.tree .vl{
-	color:rgba(0,0,0,0.5);
+	color:#555;
+	font-size:13px;
 	text-shadow:1px 0 1px rgba(255,255,255,0.2);
 }

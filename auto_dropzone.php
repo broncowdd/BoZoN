@@ -153,7 +153,13 @@ if ($_FILES){
             echo '<li class="DD_file DD_error"><span class="DD_filename">'.$sFileName.': '.$sFileError.' </span></li>            ';
             
         } elseif(is_dir($auto_dropzone['destination_filepath'])){
+            $file=$sFileName;
             $sFileName = $auto_dropzone['destination_filepath'].$sFileName;
+            if (is_file($sFileName)){
+                $newfilename=rename_item($file);
+                echo '<li class="DD_file DD_error"><span class="DD_filename">'.$file.' => '.$newfilename.' </span></li>';
+                $sFileName=$auto_dropzone['destination_filepath'].$newfilename;
+            }
             echo $ok;
             rename($_FILES['myfile']['tmp_name'], $sFileName );
             chmod($sFileName,0644);

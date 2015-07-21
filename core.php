@@ -100,6 +100,13 @@ php_flag engine off
 	function addslash_if_needed($chaine){
 		if (substr($chaine,strlen($chaine)-1,1)!='/'){return $chaine.'/';}else{return $chaine;}
 	}
+	function rename_item($file){
+		$add='_'.uniqid();
+		$extension=pathinfo($file,PATHINFO_EXTENSION);
+		if (!empty($extension)){
+			return str_replace($extension,$add.'.'.$extension,$file);
+		}else{ return $file.$add;}
+	}
 	function kill_thumb_if_exists($f){
 		global $auto_thumb;
 		$filename=pathinfo($f,PATHINFO_FILENAME);
@@ -196,15 +203,14 @@ php_flag engine off
 					$folder='';$basename=basename($branch);
 					if(is_dir($branch)){
 						$folder=' folder';
-						echo '<li>'.str_repeat('<span class="vl">  |  </span>', $level).'</li>';
+						echo '<li>'.str_repeat('<span class="vl">  &#9474;  </span>', $level).'</li>';
 					}
 					if ($level!=$previous_level){
-						echo '<li>'.str_repeat('<span class="vl">  |  </span>', $level).'</li>';
+						echo '<li>'.str_repeat('<span class="vl">  &#9474;  </span>', $level).'</li>';
 						$previous_level=$level;
 					}
-				
-					# if id exists
-					echo '<li>'.str_repeat('<span class="vl">  |  </span>', $level).'<span class="'.$ext.$folder.'"><a href="index.php?f='.$link.'">'.$basename.'</a></span></li>';
+		
+					echo '<li><span class="vl">'.str_repeat('  &#9474;  ', $level).'  &#9500;  </span><span class="'.$ext.$folder.'"><a href="index.php?f='.$link.'">'.$basename.'</a></span></li>';
 				}
 				
 			}

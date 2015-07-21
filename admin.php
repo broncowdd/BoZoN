@@ -45,9 +45,11 @@
 	# get file from url
 	if (!empty($_GET['url'])&&$_GET['url']!=''){
 		if ($content=file_curl_contents($_GET['url'])){
-			$filename=addslash_if_needed($_SESSION['current_path']).basename($_GET['url']);			
+			$basename=basename($_GET['url']);
+			$filename=addslash_if_needed($_SESSION['current_path']).$basename;			
 			if(is_file($filename)){
-				$filename=uniqid().'_'.$filename;
+				$newfilename=uniqid().'_'.$basename;
+				$filename=addslash_if_needed($_SESSION['current_path']).$newfilename;
 			}		
 			file_put_contents($filename,$content);
 			
