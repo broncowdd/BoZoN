@@ -1,13 +1,5 @@
 # BoZoN
 
-BUGS:
-Fatal error: Call to undefined function mime_content_type() in /CHEMIN/BoZoN-master/index.php on line 14
-Warning : Invalid argument supplied for foreach() in /CHEMIN/BoZoN-master/listfiles.php on line 24
-Warning: unlink(./auto_restrict_files/) [function.unlink]: Is a directory in /CHEMIN/BoZoN-master/auto_restrict.php on line 301
-Warning: Cannot modify header information - headers already sent by (output started at /CHEMIN/BoZoN-master/auto_restrict.php:301) in /CHEMIN/BoZoN-master/auto_restrict.php on line 270
-You need a valid token to do that, boy !
-si on up un fichier portant le même nom qu'un fichier déjà présent sur le serveur, le nouveau fichier écrase l'ancien.
-
 ## Minimalist Drag & drop file sharing app
 
 - Install: just unzip on your server; no database/ php 5.2. Then go to admin.php page and create your login/pass. 
