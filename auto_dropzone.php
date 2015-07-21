@@ -157,7 +157,7 @@ if ($_FILES){
             $sFileName = $auto_dropzone['destination_filepath'].$sFileName;
             if (is_file($sFileName)){
                 $newfilename=rename_item($file);
-                echo '<li class="DD_file DD_error"><span class="DD_filename">'.$file.' => '.$newfilename.' </span></li>';
+                echo '<li class="DD_file DD_warning"><span class="DD_filename">'.$file.' => '.$newfilename.' </span></li>';
                 $sFileName=$auto_dropzone['destination_filepath'].$newfilename;
             }
             echo $ok;

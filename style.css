@@ -160,15 +160,7 @@ header{
 	text-shadow:0 1px 1px rgba(0,0,0,0.5);
 	text-align:center;
 }
-.error{
-	padding:10px;
-	background-color:rgba(255,150,0,0.7);
-	box-shadow: inset 0 0 2px orange;
-	color:rgba(255,255,255,0.7);
-	font-size:18px;
-	text-shadow:0 1px 1px rgba(0,0,0,0.5);
-	text-align:center;
-}
+
 
 .fil_ariane{
 	margin-left:15px;
@@ -466,6 +458,13 @@ img:hover,a:hover,input:hover,li:hover,form:hover , header .lang:hover{transitio
 	color:white;
 	box-shadow:0 1px 2px rgba(255,0,0,0.8);
 	text-shadow: 0 1px 1px rgba(155,0,0,0.8)
+}
+.DD_warning{
+	font-weight:bold;
+	background-color:rgba(255,150,0,0.8);
+	color:white;
+	box-shadow:0 1px 2px rgba(255,0,0,0.8);
+	text-shadow: 0 1px 1px rgba(155,80,0,0.8)
 }
 .DD_info{
 	font-size:12px;

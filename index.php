@@ -52,7 +52,7 @@
 <?php
 	if ($tree){draw_tree($tree);}else{
 ?>
-<div class="logo">BoZoN: <?php e('Drag, drop, share.');?> - www.warriordudimanche.net</div>
+
 <?php } ?>
 
 	<footer>
