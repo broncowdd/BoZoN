@@ -162,17 +162,15 @@ php_flag engine off
 		    $pattern=str_replace('*','',$pattern);
 		    if ($handle = opendir($path)) {
 		        while (false !== ($file = readdir($handle))) {
-		        	if(stripos($file, $pattern)!==false || $pattern=='') {
+		        	if(stripos($file, $pattern)!==false || $pattern=='' && $file!='.' && $file!='..') {
 		                $liste[] = $path.$file;
 		            }
 		        }
 		        closedir($handle);
 		    }
-		    if (!empty($liste)) {
-		        return $liste;
-		    } else {
-		        return array();
-		    }
+
+		    return $liste;
+		   
 		}
 	}
 

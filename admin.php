@@ -84,9 +84,10 @@
 
 		if ($newfile!=basename($oldfile)){		
 			# if newname exists, change newname
-			if(is_file($_SESSION['current_path'].$newfile)){
-				$newfile=$path.pathinfo($newfile,PATHINFO_FILENAME).'_'.uniqid().'.'.pathinfo($newfile,PATHINFO_EXTENSION);
+			if(is_file($newfile) || is_dir($newfile)){
+				$newfile=$path.rename_item(basename($newfile));
 			}
+			
 			if (is_dir($oldfile)){
 				# for folders, must change the path in all sub items
 				foreach($ids as $id=>$path){

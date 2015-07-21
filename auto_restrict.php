@@ -298,7 +298,7 @@
 		// delete cookie and token cookie file
 		global $auto_restrict;
 		setcookie($auto_restrict['cookie_name'],'',time()+1);		
-		unlink($auto_restrict['path_to_files'].'/'.$token_cookie);
+		@unlink($auto_restrict['path_to_files'].'/'.$token_cookie);
 	}
 	function checkCookie(){
 		// test cookie token file security access

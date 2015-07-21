@@ -1,5 +1,13 @@
 # BoZoN
 
+BUGS:
+Fatal error: Call to undefined function mime_content_type() in /CHEMIN/BoZoN-master/index.php on line 14
+Warning : Invalid argument supplied for foreach() in /CHEMIN/BoZoN-master/listfiles.php on line 24
+Warning: unlink(./auto_restrict_files/) [function.unlink]: Is a directory in /CHEMIN/BoZoN-master/auto_restrict.php on line 301
+Warning: Cannot modify header information - headers already sent by (output started at /CHEMIN/BoZoN-master/auto_restrict.php:301) in /CHEMIN/BoZoN-master/auto_restrict.php on line 270
+You need a valid token to do that, boy !
+si on up un fichier portant le même nom qu'un fichier déjà présent sur le serveur, le nouveau fichier écrase l'ancien.
+
 ## Minimalist Drag & drop file sharing app
 
 - Install: just unzip on your server; no database/ php 5.2. Then go to admin.php page and create your login/pass. 
@@ -42,13 +50,12 @@ Php 5 min
 
 ## TODO
 - move a file to another folder
-- add a share button
 - add a config page (file status by default public/private, etc)
-- change uniqid system to a day-moth-year-hour-minutes-seconds system
+- change the uniqid rename system to a day-month-year-hour-minutes-seconds system
 - some security enhancements
-- maybe a «protected link» mode available only for one person (I'm just thinking ^^)ers
+- maybe a «protected link» mode available only for one person (I'm just thinking ^^)
 - serious tests on mobile devices (not done yet)
-- manage a public file access on the index.php page (public/private button)
+- manage a public file access on the index.php page (public/private button) maybe
 
 ## used libraries 
 I only used a few libs I made
