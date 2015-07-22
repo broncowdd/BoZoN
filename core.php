@@ -85,6 +85,22 @@ php_flag engine off
 		}
 		store($_SESSION['id_file'],$ids);
 	}
+	# complete all missing ids 
+	function completeID($array_of_files){
+		$ids=unstore($_SESSION['id_file']);
+		$sdi=array_flip($ids);// paths are keys
+		$save=false;
+		foreach($array_of_files as $file){
+			if (!isset($sdi[$file])){
+				$save=true;
+				$ids[uniqid(true)]=$file;
+			}
+		}
+		if ($save){
+			store($_SESSION['id_file'],$ids);
+			echo '<script>location.reload();</script>';
+		}
+	}	
 	function is_in($ext,$type){global $behaviour;if (!empty($behaviour[$type])){return array_search($ext,$behaviour[$type]);}}
 	function store($file,$datas){file_put_contents($file,serialize($datas));}
 	function unstore($file){return unserialize(file_get_contents($file));}
@@ -153,6 +169,80 @@ php_flag engine off
 	     rmdir($dir); 
 	   } 
 	}
+
+	# to solve some problems on mime detection, fallback
+	if (function_exists('mime_content_type')){
+		function _mime_content_type($filename) {return mime_content_type($filename);}
+	}elseif (function_exists('finfo_file')){
+		function _mime_content_type($filename) {return finfo_file( finfo_open( FILEINFO_MIME_TYPE ), $filename );}
+	}else{
+		function _mime_content_type($filename){
+			#inspired by http://stackoverflow.com/questions/8225644/php-mime-type-checking-alternative-way-of-doing-it
+		    $mime_types = array(
+		        'txt' => 'text/plain',
+		        'htm' => 'text/html',
+		        'html' => 'text/html',
+		        'php' => 'text/html',
+		        'css' => 'text/css',
+		        'js' => 'application/javascript',
+		        'json' => 'application/json',
+		        'xml' => 'application/xml',
+		        'swf' => 'application/x-shockwave-flash',
+		        'flv' => 'video/x-flv',
+
+		        // images
+		        'png' => 'image/png',
+		        'jpe' => 'image/jpeg',
+		        'jpeg' => 'image/jpeg',
+		        'jpg' => 'image/jpeg',
+		        'gif' => 'image/gif',
+		        'bmp' => 'image/bmp',
+		        'ico' => 'image/vnd.microsoft.icon',
+		        'tiff' => 'image/tiff',
+		        'tif' => 'image/tiff',
+		        'svg' => 'image/svg+xml',
+		        'svgz' => 'image/svg+xml',
+
+		        // archives
+		        'zip' => 'application/zip',
+		        'rar' => 'application/x-rar-compressed',
+		        'exe' => 'application/x-msdownload',
+		        'msi' => 'application/x-msdownload',
+		        'cab' => 'application/vnd.ms-cab-compressed',
+
+		        // audio/video
+		        'mp3' => 'audio/mpeg',
+		        'qt' => 'video/quicktime',
+		        'mov' => 'video/quicktime',
+
+		        // adobe
+		        'pdf' => 'application/pdf',
+		        'psd' => 'image/vnd.adobe.photoshop',
+		        'ai' => 'application/postscript',
+		        'eps' => 'application/postscript',
+		        'ps' => 'application/postscript',
+
+		        // ms office
+		        'doc' => 'application/msword',
+		        'rtf' => 'application/rtf',
+		        'xls' => 'application/vnd.ms-excel',
+		        'ppt' => 'application/vnd.ms-powerpoint',
+		        'docx' => 'application/msword',
+		        'xlsx' => 'application/vnd.ms-excel',
+		        'pptx' => 'application/vnd.ms-powerpoint',
+
+
+		        // open office
+		        'odt' => 'application/vnd.oasis.opendocument.text',
+		        'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+		    );
+
+		    $ext=strtolower(pathinfo($filename,PATHINFO_EXTENSION));
+			if (array_key_exists($ext, $mime_types)) {return $mime_types[$ext];} 
+			else {return 'application/octet-stream';}
+		}
+	}
+
 	if (function_exists('glob')){
 		function _glob($path,$pattern='*'){return glob($path.$pattern);}
 	}else{
