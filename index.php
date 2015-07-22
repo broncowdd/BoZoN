@@ -11,7 +11,7 @@
 		$f=id2file(strip_tags($_GET['f']));
 		if ($f && is_file($f)){
 			# file request => return file according to $behaviour var (see core.php)
-			$type=mime_content_type($f);
+			$type=_mime_content_type($f);
 			$ext=strtolower(pathinfo($f,PATHINFO_EXTENSION));
 			if (is_in($ext,'FILES_TO_ECHO')!==false){				
 				echo '<pre>'.htmlspecialchars(file_get_contents($f)).'</pre>';
@@ -50,7 +50,11 @@
 	</div>
 </header>
 <?php
-	if ($tree){draw_tree($tree);}else{
+	if ($tree){
+		completeID($tree);
+		draw_tree($tree);
+
+	}else{
 ?>
 
 <?php } ?>
