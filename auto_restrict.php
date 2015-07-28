@@ -136,7 +136,7 @@
 	// on problem, out !
 	// ------------------------------------------------------------------
 	if (!is_ok()){
-		session_destroy();
+		@session_destroy();
 		if (!$auto_restrict['just_die_if_not_logged']){
 			include('login_form.php');
 		} else {

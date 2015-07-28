@@ -54,12 +54,11 @@ if (session_id()==''){session_start();}
 
 // Configuration
 $phpini=ini_get_all();
-
 $default_config=array(
     'forbidden_filetypes'=>'php',
     'use_style'=>false,                         // false if you're using a external css file
     'auto_refresh_after_upload'=>true,          // auto refresh page after uploading files (except on errors)
-    'max_length'=>512,                          // Mo
+    'max_length'=>2048,                          // Mo (see php.ini if changes doesn't work [post_max_size / upload_max_filesize])
     'dropzone_text'=>e('Drop your files here or click to select a local file',false),
     'dropzone_id'=>'dropArea',
     'dropzone_class'=>'dropArea',
@@ -78,8 +77,11 @@ foreach($default_config as $key=>$val){
 if (!is_array($auto_dropzone['destination_filepath'])&&!is_dir($auto_dropzone['destination_filepath'])){
     mkdir($auto_dropzone['destination_filepath'],01777);file_put_contents($auto_dropzone['destination_filepath'].'index.html','');
 }   
-$max=intval($phpini['upload_max_filesize']["global_value"]);
-if ($auto_dropzone['max_length']<$max){$max=$auto_dropzone['max_length'];}
+
+$max=min($auto_dropzone['max_length'],intval($phpini['upload_max_filesize']['global_value']),intval($phpini['post_max_size']['global_value']));
+
+
+
 $auto_dropzone_error=false;
 
 // uploading files
@@ -114,9 +116,10 @@ if ($_FILES){
     if (isset($_FILES['myfile']) && strtolower($_FILES['myfile']['name'])!="index.html") { 
         $sFileName = secure($_FILES['myfile']['name']);
         $sFileType = $_FILES['myfile']['type'];
-        $sFileSize = bytesToSize1024($_FILES['myfile']['size'], 1);
+        $sFileSize = intval(bytesToSize1024($_FILES['myfile']['size'], 1));
         $sFileError = error2msg($_FILES['myfile']['error']);
         $sFileExt  = pathinfo($sFileName,PATHINFO_EXTENSION);
+        
 
         $ok='<li class="DD_file DD_success '.$sFileExt.'">   
             <span class="DD_filename">'.$sFileName.'</span>
@@ -146,7 +149,7 @@ if ($_FILES){
             &&!is_dir($auto_dropzone['destination_filepath'])
         ){
             //local upload dir error
-            echo '<li class="DD_file DD_error"><span class="DD_filename">Upload path problem  with '.$sFileName.' </span></li>            ';
+            echo '<li class="DD_file DD_error"><span class="DD_filename">Upload path problem with '.$sFileName.' </span></li>            ';
             
         }elseif($sFileError){
             // file upload error
@@ -163,6 +166,7 @@ if ($_FILES){
             echo $ok;
             rename($_FILES['myfile']['tmp_name'], $sFileName );
             chmod($sFileName,0644);
+            addID($sFileName);
         }    
     } else {
         echo $notok;
@@ -224,7 +228,15 @@ if ($_FILES){
         </form>
 
     <script>
-        
+        document.body.addEventListener("dragover",function(e){
+         
+          e.preventDefault();
+        },false);
+        document.body.addEventListener("drop",function(e){
+
+          e.preventDefault();
+        },false);
+
         // variables
         var dropArea        = document.getElementById('<?php echo $auto_dropzone['dropzone_id'];?>');
         var bar             = document.getElementById('DD_progressbar');
@@ -232,6 +244,7 @@ if ($_FILES){
         var list            = [];
         var totalSize       = 0;
         var totalProgress   = 0;
+        var uploading       = false;
 
         function reload_list(){
            //reload list
@@ -270,7 +283,7 @@ if ($_FILES){
 
         // main initialization
         
-
+            
             // init handlers
             function initHandlers() {
                 dropArea.addEventListener('drop', handleDrop, false);
@@ -303,12 +316,11 @@ if ($_FILES){
 
             // drag drop
             function handleDrop(event) {
-                /*event.stopPropagation();
-                event.preventDefault();*/
                 if(event.preventDefault) { event.preventDefault(); }
                 if(event.stopPropagation) { event.stopPropagation(); }
-                console.log(event.dataTransfer.files);
+                if (uploading==true){return false;}
                 processFiles(event.dataTransfer.files);
+                
                 return false;
             }
 
@@ -317,17 +329,17 @@ if ($_FILES){
                 if (!filelist || !filelist.length || list.length) return;
                 totalSize = 0;
                 totalProgress = 0;
-                result.textContent = '';
-
-                for (var i = 0; i < filelist.length; i++) {
+                result.textContent = '';                
+                for (var i = 0; i < filelist.length; i++) {                    
                     list.push(filelist[i]);
-                    totalSize += filelist[i].size;
+                    totalSize += filelist[i].size;                    
                 }
                 uploadNext();
             }
 
             // on complete - start next file
             function handleComplete(size) {
+                uploading=false;
                 totalProgress += size;
                 drawProgress(totalProgress / totalSize);
                 uploadNext();
@@ -340,31 +352,31 @@ if ($_FILES){
             }
 
             // upload file
-            function uploadFile(file, status) {
+            function uploadFile(file, status) {               
+                    // prepare XMLHttpRequest
+                    uploading=true;
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', "<?php echo $auto_dropzone['my_filepath'];?>");
+                    xhr.onload = function() {
+                        result.innerHTML += this.responseText;
+                        handleComplete(file.size);
+                    };
+                    xhr.onerror = function() {
+                        result.textContent = this.responseText;
+                        handleComplete(file.size);
+                    };
+                    xhr.upload.onprogress = function(event) {
+                        handleProgress(event);
+                    }
+                    xhr.upload.onloadstart = function(event) {
+                    }
 
-                // prepare XMLHttpRequest
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', "<?php echo $auto_dropzone['my_filepath'];?>");
-                xhr.onload = function() {
-                    result.innerHTML += this.responseText;
-                    handleComplete(file.size);
-                };
-                xhr.onerror = function() {
-                    result.textContent = this.responseText;
-                    handleComplete(file.size);
-                };
-                xhr.upload.onprogress = function(event) {
-                    handleProgress(event);
-                }
-                xhr.upload.onloadstart = function(event) {
-                }
+                    // prepare FormData
+                    var formData = new FormData();  
+                    formData.append('myfile', file); 
+                    formData.append('token', "<?php newToken(true);?>"); 
 
-                // prepare FormData
-                var formData = new FormData();  
-                formData.append('myfile', file); 
-                formData.append('token', "<?php newToken(true);?>"); 
-
-                xhr.send(formData);
+                    xhr.send(formData);               
             }
 
             // upload next file
@@ -373,12 +385,13 @@ if ($_FILES){
                 if (list.length) {
                     dropArea.className = 'DD_dropzone DD_uploading';
                     var nextFile = list.shift();
-                    if (nextFile.size >= <?php echo $auto_dropzone['max_length']*1048576; ?>) { 
-                        result.innerHTML += '<li class="DD_error">'+nextFile.name+': Error, max filelength: <?php echo $auto_dropzone['max_length'];?> Mo </li>';
-                        handleComplete(nextFile.size);
+
+                    if (nextFile.size >= <?php echo $max*1048576; ?>) { 
+                        result.innerHTML += '<li class="DD_error">'+nextFile.name+': Error, max filelength: <?php echo $max;?> Mo </li>';
+                        handleComplete(nextFile.size);                        
                     } else if(is_allowed(nextFile.type)==false){                        
                         result.innerHTML += '<li class="DD_error">'+nextFile.name+': Error, forbidden file format !</li>';
-                        handleComplete(nextFile.type);
+                        handleComplete(nextFile.size);
                     } else {
                         uploadFile(nextFile, status);
                     }
@@ -386,7 +399,7 @@ if ($_FILES){
                     dropArea.className = 'DD_dropzone'
                     bar.style.width='0';
                     reload_list();
-
+                    uploading=false;
                 }
             }
 
@@ -409,7 +422,13 @@ if ($_FILES){
                
             });
             document.getElementById('fileToUpload').addEventListener('change', function(){
-                uploadFile(this.files[0],'');          
+                if (this.files[0].size >= <?php echo $max*1048576; ?>) { 
+                    result.innerHTML += '<li class="DD_error">'+this.files[0].name+': Error, max filelength: <?php echo $max;?> Mo </li>';                                         
+                }else if(is_allowed(this.files[0].type)==false){                        
+                    result.innerHTML += '<li class="DD_error">'+this.files[0].name+': Error, forbidden file format !</li>';                    
+                } else {
+                    uploadFile(this.files[0],'');     
+                }           
             });
     </script>
 <?php }

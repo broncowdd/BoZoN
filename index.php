@@ -17,10 +17,12 @@
 				echo '<pre>'.htmlspecialchars(file_get_contents($f)).'</pre>';
 			}
 			else if (is_in($ext,'FILES_TO_RETURN')!==false){
+				ob_end_flush();
 				header('Content-type: '.$type);
 				readfile($f);
 			}
 			else{
+				ob_end_flush();
 				header('Content-type: '.$type);
 				// lance le téléchargement des fichiers non affichables
 				header('Content-Disposition: attachment; filename="'.$f.'"');
@@ -60,6 +62,6 @@
 <?php } ?>
 
 	<footer>
-		Bozon v1.4 - <a href="http://warriordudimanche.net">WDD</a>
+		Bozon v<?php echo VERSION;?> - <a href="http://warriordudimanche.net">WDD</a><br/><a href="https://github.com/broncowdd/BoZoN" class="github" title="<?php e('fork me on github');?>">&nbsp;</a>
 	</footer>
 </body>

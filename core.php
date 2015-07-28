@@ -7,7 +7,7 @@
 
 	require_once('lang.php');
 	# INIT SESSIONS VARS AND ENVIRONMENT
-
+	define('VERSION','1.4.1');
 	# Changing language
 	$default_language='fr'; // change this if you want another language by default (see in lang.php)
 	if (!empty($_GET['lang'])){$_SESSION['language']=strip_tags($_GET['lang']);header('location:admin.php');}
@@ -169,6 +169,13 @@ php_flag engine off
 	     rmdir($dir); 
 	   } 
 	}
+	
+	function visualizeIcon($extension){
+		global $behaviour;
+		$array=array_merge(array_flip($behaviour['FILES_TO_RETURN']),array_flip($behaviour['FILES_TO_ECHO']));
+		return isset($array[$extension]);
+	}
+
 
 	# to solve some problems on mime detection, fallback
 	if (function_exists('mime_content_type')){
@@ -269,7 +276,7 @@ php_flag engine off
         if (!isset($dossiers[0]) || $dossiers[0]!=$dir){$dossiers[0]=$dir;}
         if (!is_dir($dir)&&$files){ return array($dir); }
         elseif (!is_dir($dir)&&!$files){return array();}
-        $list=_glob($dir.'/'); 
+        $list=_glob(addslash_if_needed($dir)); 
         
         foreach ($list as $dossier) {
             //$dossiers[]=tree($dossier); 

@@ -11,6 +11,18 @@ The share link is the file link in the admin's view or you can access it by the 
 ## Required 
 Php 5 min
 
+## New in this version 1.4.1
+- add: a move file/folder mode (access with left menu)
+- add: new left-side menu (group all options inside)
+- add: a github link (wink Cyrille ;-)
+- bug fix: download problem with links of files geater than 1go
+- bug fix: better detection of too big files upload atempts
+- bug fix: better error detection with file selection fallback
+- add:visualiser et rendre le lien téléchargeable (download="")
+- add: active state on active language link
+- bugfix: disable dropzone during upload
+
+
 ## New in version 1.4
 - add: allow extension rename
 - add: create subfolders
@@ -39,15 +51,6 @@ Php 5 min
 - change: upload form to personal d&d lib (auto_dropzone)
 - update: auto_restrict to a better secured version
 - update: auto_thumbnail to the last version
-
-## TODO
-- move a file to another folder
-- add a config page (file status by default public/private, etc)
-- change the uniqid rename system to a day-month-year-hour-minutes-seconds system
-- some security enhancements
-- maybe a «protected link» mode available only for one person (I'm just thinking ^^)
-- serious tests on mobile devices (not done yet)
-- manage a public file access on the index.php page (public/private button) maybe
 
 ## used libraries 
 I only used a few libs I made

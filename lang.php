@@ -24,7 +24,7 @@
 		'Copy the file\'s link (right click on it)'=>'copier le lien du fichier (clic bouton droit, copier le lien)',
 		'Share the link with your buddies...'=>'partager le lien avec les autres...',
 		'tiny file sharing app, coded with love and php by '=>'mini app de partage de fichier, codée avec amour et php par ',
-		'Logout'=>'Deconnexion',
+		'Logout'=>'Déconnexion',
 		'Type to filter the list'=>'Filtrer la liste',
 		'Drop your files here or click to select a local file'=>'Glisser les fichiers ici ou cliquer pour sélectionner un fichier local',
 		'Please, login'=>'Connectez-vous',
@@ -40,6 +40,15 @@
 		'Paste a file\'s URL'=>'Coller l\'URL d\'un fichier',
 		'New_folder'=>'Nouveau_dossier',
 		'Create a subfolder'=>'Créer un nouveau dossier',
+		'Manage links'=>'Gérer les liens',
+		'Move files'=>'Déplacer des fichiers',
+		'Manage files'=>'Gérer les fichiers',
+		'Move file or folder'=>'Dépl. fichier/dossier',
+		'Move'=>'Déplacer',
+		'To'=>'Vers',
+		'Move a file by clicking on it and choosing the destination folder in the list'=>'Déplacer un fichier en cliquant dessus puis en sélectionnant la destination dans la liste',
+		'Move a folder by clicking on the move icon and choosing the destination folder in the list'=>'Déplacer un dossier en cliquant sur "Déplacer" puis en sélectionnant la destination dans la liste',
+
 	);
 
 
@@ -67,6 +76,15 @@
 		'Paste a file\'s URL to get it on this server'=>'Pegar la URL de un fichero',
 		'Paste a file\'s URL'=>'Pegar la URL de un fichero',
 		'New_folder'=>'Nueva_carpeta',
-		'Create a subfolder'=>'Crear una carpeta nueva'
+		'Create a subfolder'=>'Crear una carpeta nueva',
+		'Manage links'=>'Gestionar los enlaces',
+		'Move files'=>'Mover ficheros',
+		'Manage files'=>'Gestionar los ficheros',
+		'Move file or folder'=>'Mover fichero/carpeta',
+		'Move'=>'Mover',
+		'To'=>'A',
+		'Move a file by clicking on it and choosing the destination folder in the list'=>'Mueve un fichero haciendo clic en él y escogiendo el destino en la lista',
+		'Move a folder by clicking on the move icon and choosing the destination folder in the list'=>'Mueve una carpeta pinchando en "Mover" y escogiendo el destino en la lista',
+
 	);
 ?>
