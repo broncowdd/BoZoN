@@ -160,14 +160,14 @@
 		<title>BoZoN: <?php e('Drag, drop, share.');?></title>
 	</head>
 
-	<body class="admin <?php echo $_SESSION['mode'];?>" >
+	<body id="body" class="admin <?php echo $_SESSION['mode'];?>" >
 
 	<header><div class="overlay">
 		
 		<p class="logo"><strong>BoZoN</strong>: <?php e('Drag, drop, share.');?></p>
 
 	<nav id="menu">
-		<div class="menu_icon" onclick="toggle_class();">&nbsp;</div>
+		<div id="menu_icon" >&nbsp;</div>
 		<div style="clear:both"></div>
 		<div class="lang">
 			<?php  
@@ -267,22 +267,76 @@
 	</footer>
 
 <script>
-	el=document.getElementById('menu');
+	menu=document.getElementById('menu');
+	menu_icon=document.getElementById('menu_icon');
+	body=document.getElementById('body');
 	cl='open';
+
+	// block closing menu by clicking on it
+	menu.addEventListener('click', function(event){
+        if(event.preventDefault) { event.preventDefault(); }
+        if(event.stopPropagation) { event.stopPropagation(); }
+		return false;
+	});
+
+	// menu appears and vanish
+	menu_icon.addEventListener('click', function(event){
+		if (menu.classList) {
+		    menu.classList.toggle(cl)
+		} else {
+		    var classes = menu.className.split(' ')
+		    var existingIndex = classes.indexOf(cl)
+		    if (existingIndex >= 0)
+		      classes.splice(existingIndex, 1)
+		    else
+		      classes.push(cl);
+		    menu.className = classes.join(' ')
+		}
+        if(event.preventDefault) { event.preventDefault(); }
+        if(event.stopPropagation) { event.stopPropagation(); }
+		return false;
+	});
+	// close menu on clicking outside
+	body.addEventListener('click', function(event){
+		if (menu.classList) {
+		   menu.classList.remove(cl);
+		} else {
+		   var classes = el.className.split(' ')
+		    var existingIndex = classes.indexOf(cl)
+		    if (existingIndex >= 0){ classes.splice(existingIndex, 1);}		    
+		    el.className = classes.join(' ')
+		}
+        
+		return false;
+	});
+
+	/*function remove_class(){
+		if (menu.classList) {
+		    if (menu.classList.contains(cl){menu.classList.remove(cl);}
+		}/* else {
+		    var classes = el.className.split(' ')
+		    var existingIndex = classes.indexOf(cl)
+		    if (existingIndex >= 0){ classes.splice(existingIndex, 1);}		    
+		    el.className = classes.join(' ')
+		}
+		return false;
+	}
 	function toggle_class(){		
-			if (el.classList) {
-			    el.classList.toggle(cl)
+			if (menu.classList) {
+			    menu.classList.toggle(cl)
 			} else {
-			    var classes = el.className.split(' ')
+			    var classes = menu.className.split(' ')
 			    var existingIndex = classes.indexOf(cl)
 			    if (existingIndex >= 0)
 			      classes.splice(existingIndex, 1)
 			    else
 			      classes.push(cl);
-			    el.className = classes.join(' ')
+			    menu.className = classes.join(' ')
 			}
+            if(event.preventDefault) { event.preventDefault(); }
+            if(event.stopPropagation) { event.stopPropagation(); }
 			return false;
-		}
+		}*/
 </script>
 	</body>
 </html>

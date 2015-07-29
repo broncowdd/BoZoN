@@ -40,6 +40,7 @@ body{
 	padding-bottom:15px;
 	-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
 }
+body.move{background-color:;}
 header{
 	min-height:64px;
 	border-bottom:1px solid rgba(0,0,0,0.5);
@@ -589,8 +590,8 @@ ul.tree .vl{
 }
 #menu a:hover{color:white;}
 #menu{transition:left 300ms;}
-.menu_icon:hover{background-color: rgba(0,0,0,0.8);}
-.menu_icon{
+#menu_icon:hover{background-color: rgba(0,0,0,0.8);}
+#menu_icon{
 	cursor:pointer;
 	line-height: 30px;
 	float:right;
@@ -603,7 +604,7 @@ ul.tree .vl{
 	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 	background:url(img/menu_closed.png) no-repeat center center rgba(0,0,0,0.5) ;
 }
-.open .menu_icon{
+.open #menu_icon{
 	background:url(img/menu_opened.png) no-repeat center center transparent;
 	box-shadow: none;
 }
@@ -860,7 +861,7 @@ li,
 label,
 .lang, 
 #menu,
-.menu_icon,
+#menu_icon,
 select
 {transition:all 300ms;}
 img:hover,
@@ -869,6 +870,6 @@ input:hover,
 li:hover,
 form:hover , 
 .lang:hover,
-.menu_icon:hover,
+#menu_icon:hover,
 select:hover
 {transition:all 300ms;}
