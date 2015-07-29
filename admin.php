@@ -274,9 +274,7 @@
 
 	// block closing menu by clicking on it
 	menu.addEventListener('click', function(event){
-        if(event.preventDefault) { event.preventDefault(); }
-        if(event.stopPropagation) { event.stopPropagation(); }
-		return false;
+        	if(event.stopPropagation) { event.stopPropagation(); }
 	});
 
 	// menu appears and vanish
@@ -310,33 +308,6 @@
 		return false;
 	});
 
-	/*function remove_class(){
-		if (menu.classList) {
-		    if (menu.classList.contains(cl){menu.classList.remove(cl);}
-		}/* else {
-		    var classes = el.className.split(' ')
-		    var existingIndex = classes.indexOf(cl)
-		    if (existingIndex >= 0){ classes.splice(existingIndex, 1);}		    
-		    el.className = classes.join(' ')
-		}
-		return false;
-	}
-	function toggle_class(){		
-			if (menu.classList) {
-			    menu.classList.toggle(cl)
-			} else {
-			    var classes = menu.className.split(' ')
-			    var existingIndex = classes.indexOf(cl)
-			    if (existingIndex >= 0)
-			      classes.splice(existingIndex, 1)
-			    else
-			      classes.push(cl);
-			    menu.className = classes.join(' ')
-			}
-            if(event.preventDefault) { event.preventDefault(); }
-            if(event.stopPropagation) { event.stopPropagation(); }
-			return false;
-		}*/
 </script>
 	</body>
 </html>
