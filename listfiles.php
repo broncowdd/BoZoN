@@ -121,7 +121,7 @@ if (count($liste)>0){
 				}
 
 			# Move files mode
-			}elseif ($mode='move'){
+			}elseif ($mode=='move'){
 				if (is_dir($fichier)){
 					# Item is a folder					
 					$folderlist.= '
@@ -151,7 +151,7 @@ if (count($liste)>0){
 						</li>';
 				}
 			# Manage links mode 
-			}elseif($mode='links'){
+			}elseif($mode=='links'){
 
 			}
 
