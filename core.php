@@ -283,6 +283,7 @@ php_flag engine off
 	        closedir($handle);
 	    }
 
+	    natcasesort($liste);
 	    return $liste;
 	   
 	}
