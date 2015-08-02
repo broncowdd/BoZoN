@@ -7,7 +7,7 @@
 
 	require_once('lang.php');
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','1.4.2');
+	define('VERSION','1.5');
 	include('config.php');
 
 	# Current session changing language
