@@ -5,11 +5,23 @@
 - Install: just unzip on your server; no database/ php 5.2. Then go to admin.php page and create your login/pass. 
 - Config: just change globals in the core.php file. 
 - Upload a file: go to admin.php page, connect and then drop files in the dashed area... that's it !
+- Organize files & folders, share them, manage the shared access etc.
 
-The share link is the file link in the admin's view or you can access it by the button link on the file.
+The share link is the file link in the admin's view (you can also access it by the button link on the file.)
 
 ## Required 
 Php 5 min
+
+## New in version 1.5
+- add: a links mode 
+- add: a password protected share acces
+- add: a burn after access share mode: user can only acces the ressource one time
+- add: button in links mode, regen id for a file
+- add: rss feed for a folder share (bottom's index.php page)
+- add: json output link for shared folder content list (interoperability)
+- add: basic config file
+- bugfix: problem in some [exotic] server configs causing issues with mime type (personnal wink & thanks to Cyrille Borne for the help)
+- bugfix: free.fr hosting users can now install and use BoZoN ;-)
 
 ## New in this version 1.4.1
 - add: a move file/folder mode (access with left menu)
@@ -21,7 +33,6 @@ Php 5 min
 - add:visualiser et rendre le lien téléchargeable (download="")
 - add: active state on active language link
 - bugfix: disable dropzone during upload
-
 
 ## New in version 1.4
 - add: allow extension rename
@@ -57,7 +68,19 @@ I only used a few libs I made
 - auto_restrict : to easily lock access to a page and handle basic security features
 - auto_thumbs : a function to generate all the thumbnails
 - auto_dropzone : a lib that handle the drag and drop function only by including it in a script
+- Array2feed.php : a function used to convert an array into a RSS feed without commiting suicide XD
+
+## Licence
+All Bozon code and all the libs used in it are distributed under AGPL: feel free to fork, adapt, distribute, comment etc but please, keep your fork free too ;-)
 
 ## FAQ
-- can't see icons / problems uploading / list refresh problem : take a look to access rights (folders / files)
-- I want to change my password / I forgot my password ! : just use your FTP client and delete the *auto_restrict_files* folder, then try to login again and create a new login/pass.
+- _can't see icons / problems uploading / list refresh problem_ : take a look to access rights (folders / files)
+- _I want to change my password / I forgot my password !_ : just use your FTP client and delete the *auto_restrict_files* folder, then try to login again and create a new login/pass.
+- _I want to change the default language !_ : see in config.php file you can set fr/en/es but you can also make your own traduction (see in lang.php)
+- _I don't want a stolen link works anymore (but I don't want to delete the file/folder) !_ : in links mode, click on the regen button (recycle icon) and the share link for this item will automatically change.
+- _How to lock a share link with a password ?_ : click on the left menu, use the manage links button; then click on the lock icon on the file/folder and give an password. The file/folder will turn blue with a small lock meaning nobody can now use the share link without the password.
+- _Yes, ok, but how to remove the password ?_ : just click on regen button, the id will be regenerated and the password will be destroyed (the share link will change)
+- _What if I upload, create a folder or move an item with a name conflict ?_ : Don't worry, BoZoN will just rename the file to avoid overwriting.
+
+## Special thanks
+To Cyrille Borne [ https://github.com/cborne & http://www.cyrille-borne.com ]: without your comments, issues reporting and enhancement ideas this app would never have been so complete ;-)

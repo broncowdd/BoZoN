@@ -35,12 +35,13 @@ a{color:#333;}
 
 
 body{
-	background: url(img/noise.png) #ccc;
+	background: url(img/noise.png) #bbb;
 	font-family: Consolas, monaco, monospace;
 	padding-bottom:15px;
 	-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
 }
-body.move{background-color:;}
+body.move{}
+body.links{}
 header{
 	min-height:64px;
 	border-bottom:1px solid rgba(0,0,0,0.5);
@@ -85,7 +86,7 @@ header{
 			header p.logo strong{font-weight: bolder}
 
 .error{
-	padding:10px;
+	padding:20px;
 	background-color:rgba(255,0,0,0.7);
 	box-shadow: inset 0 0 2px red;
 	color:rgba(255,255,255,0.7);
@@ -94,6 +95,23 @@ header{
 	text-align:center;
 }
 
+/* share password form */
+.lock{
+	padding:10px;
+	background-color:rgba(0,0,0,0.1);
+	box-shadow: inset 0 0 2px rgba(0,0,0,0.2);;
+	
+	width:350px;
+	margin:auto;
+	margin-top:30px;
+	color:rgba(255,255,255,0.7);
+	font-size:18px;
+	text-shadow:0 1px 1px rgba(0,0,0,0.5);
+	text-align:center;
+}
+.lock img{margin-bottom:20px;width:96px;height:auto;}
+.lock label{display: inline-block;margin-bottom: 20px;}
+.lock input{box-shadow: 0 1px 2px rgba(0,0,0,0.2);}
 
 .fil_ariane{
 	margin-left:15px;
@@ -107,6 +125,7 @@ header{
 	width:32px;height:32px;	
 	vertical-align: middle;
 }
+.fil_ariane .home em{display:none;}
 .links .fil_ariane{background-color:#171;}
 .links .fil_ariane a{background-color:#171;}
 .move .fil_ariane{background-color:#411;}
@@ -150,8 +169,8 @@ table{
 	box-shadow: inset 0 0 3px rgba(0,0,0,0.35);
 	padding:40px 10px;
 }
-body.move table{background-color:rgba(255,0,0,0.1);}
-body.links table{background-color:rgba(50,255,50,0.1);}
+body.move table{}
+body.links table{}
 	tr{max-width: 1200px;}
 	td{
 		width:70%;
@@ -182,22 +201,28 @@ footer{
 	min-height:20px;
 	color:rgba(0,0,0,0.4);
 	padding:5px;	
-	border-top:1px solid rgba(255,255,255,0.6);
+	margin-top:50px;
 }
-	body.move footer{background-color:rgba(255,0,0,0.1);}
+.index footer{margin-top:50px;}
+
+footer *{vertical-align: middle;padding:3px;}
+	body.move footer{}
 	footer a{
 		color:rgba(0,0,0,0.6);
 		text-decoration:none;
 		font-weight: bold;
 	}
-	footer a.github{
+	footer a.github, footer a.wdd{
 		background:url(img/github.png) center center no-repeat;
 		display:inline-block;
 		width:32px;
 		height:32px;
 		opacity:0.5;
 	}
-	footer a.github:hover{
+	footer a.wdd{
+		background:url(img/wdd.png) center center no-repeat;
+	}
+	footer a.github:hover, footer a.wdd:hover{
 		opacity:0.7;
 	}
 
@@ -211,6 +236,7 @@ footer{
 		width:100%;
 		margin:auto;
 		text-align:center;
+		color:#444;
 	}
 	footer .w33, footer .w50{
 		margin-top:20px;
@@ -252,7 +278,23 @@ footer{
 		padding-right:5px;
 		border-right:1px solid rgba(0,0,0,0.1);
 	}
-	
+
+	footer .feeds{border-bottom:1px solid rgba(0,0,0,0.1);padding-bottom:10px;margin-bottom:10px;}
+	footer a.json:hover{background-color: rgba(0,100,255,0.5);color:rgba(0,0,0,0.5);}
+	footer a.rss:hover{
+		background-color: rgba(255,150,0,0.8);
+		color:rgba(0,0,0,0.8);
+		box-shadow: 0 1px 2px rgba(200,50,0,0.5)
+	}
+	footer a.json,footer a.rss{
+		display:inline-block;
+		padding:3px;
+		border-radius: 3px;
+		box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+		background-color: rgba(0,0,0,0.5);
+		color:rgba(255,255,255,0.5);
+		margin-left:5px;
+	}
 
 ::-webkit-input-placeholder {
    color: rgba(255,255,255,0.5)
@@ -297,6 +339,23 @@ footer{
 	background-color:rgba(255,255,255,0.1);
 	
 }
+.list li.burn {
+	border:1px solid red;
+	box-shadow: 0 0 2px rgba(255,0,0,0.5);
+	background:url(img/burn.png) no-repeat 5px 5px rgba(255,0,0,0.7) ;
+}
+.list li.burn:hover {	
+	background-color:rgba(255,0,0,0.9)!important;
+}
+.list li.locked {
+	border:1px solid rgba(0,100,255,0.9);
+	box-shadow: 0 0 2px rgba(0,100,255,0.5);
+	background:url(img/locked.png) no-repeat 5px 5px rgba(0,100,255,0.7) ;
+}
+.list li.locked:hover {	
+	background-color:rgba(0,100,255,0.9)!important;
+}
+
 .list li:hover{
 	background-color:rgba(0,126,255,0.2);
 	box-shadow: 0 0 2px rgba(0,126,255,0.5);
@@ -328,6 +387,9 @@ footer{
 	margin:1px;
 
 }
+.list li a.movefolder{
+	background:url(img/move.png) no-repeat center center;
+}
 .list li a.close{
 	background:url(img/Trash.png) no-repeat center center;
 }
@@ -337,16 +399,30 @@ footer{
 .list li a.link{
 	background:url(img/link.png) no-repeat center center;
 }
+.list li a.locked{
+	background:url(img/locked.png) no-repeat center center;
+}
+.list li a.burn{
+	background:url(img/burn.png) no-repeat center center;
+}
+.list li a.renew{
+	background:url(img/renew.png) no-repeat center center;
+}
 .list li a.rename{
 	background:url(img/rename.png) no-repeat center center;	
 }
+.list li a.movefolder:hover{background-color:rgba(255,0,0,0.8);}
 .list li a.close:hover{background-color:rgba(255,0,0,0.8);}
 .list li a.rename:hover{background-color:rgba(0,150,0,0.8);}
 .list li a.link:hover{background-color:rgba(0,0,255,0.8);}
 .list li a.visu:hover{background-color:rgba(0,150,155,0.8);}
+.list li a.burn:hover{background-color:rgba(255,50,0,0.9);}
+.list li a.renew:hover{background-color:rgba(0,150,250,0.8);}
+.list li a.locked:hover{background-color:rgba(100,100,100,0.8);}
 
 
-.list li:hover a.close, .list li:hover a.rename, .list li:hover a.link, .list li:hover a.visu,li:hover form
+.list li:hover a.close, .list li:hover a.movefolder, .list li:hover a.rename, .list li:hover a.link, .list li:hover a.visu,li:hover form,
+.list li:hover a.renew,.list li:hover a.burn,.list li:hover a.locked
 {display:inline-block;}
 .list li:hover .buttons{background-color:rgba(0,0,0,0.7);box-shadow:0 1px 2px rgba(0,0,0,0.5);}
 
@@ -385,7 +461,7 @@ img.css{background-image:url(img/css.png)!important;}
 img.js{background-image:url(img/js.png)!important;}
 img.swf{background-image:url(img/swf.png)!important;}
 img.mp3,img.ogg{background-image:url(img/mp3.png)!important;}
-img.mp4,img.flv{background-image:url(img/mp4.png)!important;}
+img.mp4,img.flv, img.avi, img.mkv{background-image:url(img/mp4.png)!important;}
 img.php, img.secured_php{background-image:url(img/php.png)!important;}
 img.html,img.htm,img.shtml,img.shtm{background-image:url(img/html.png)!important;}
 img.exe,img.bat,img.iso,img.bin{background-image:url(img/exe.png)!important;}
@@ -521,7 +597,7 @@ img.exe,img.bat,img.iso,img.bin{background-image:url(img/exe.png)!important;}
 		font-family: Consolas, monaco, monospace;
 	}
 	body.index section{text-align:center;}
-	body.index footer{font-size:11px;border:none;}
+	body.index footer{font-size:16px;border:none;}
 
 /* tree*/
 ul.tree{
@@ -673,7 +749,24 @@ ul.tree .vl{
 				background:rgba(255,0,0,0.8);
 				box-shadow: 0 0 6px rgba(255,0,0,0.8);
 			}
-
+			.sanguine.button{				
+				border:2px solid rgba(200,180,155,0.1);
+				border-top-color:rgba(180,120,100,0.1);
+				background:rgba(200,185,155,0.2);				
+			}
+			.sanguine.button:hover{
+				background:rgba(255,50,50,0.8);
+				box-shadow: 0 0 6px rgba(255,50,50,0.8);
+			}
+			.green.button{				
+				border:2px solid rgba(155,255,155,0.1);
+				border-top-color:rgba(100,200,100,0.1);
+				background:rgba(155,255,155,0.2);				
+			}
+			.green.button:hover{
+				background:rgba(0,255,0,0.8);
+				box-shadow: 0 0 6px rgba(0,255,0,0.8);
+			}
 			.button img{float:right;display:block;}
 
 			#menu form input[type=text]:focus{
@@ -713,8 +806,6 @@ ul.tree .vl{
 
 
 
-
-
 /* full css modal dialog boxes */
 div.lightbox {
   display: none;
@@ -723,6 +814,8 @@ div.lightbox {
   top: 0;
   width: 100%;
   height: 100%;
+  z-index: 1;
+
 }
 
 div.lightbox:target {
@@ -741,9 +834,9 @@ div.lightbox figure {
 div.lightbox figure figcaption {
   display: block;
   margin: auto;
-  padding: 8px;
-  background: linear-gradient(#eee,#888);
-  height: 250px;
+  padding: 0;
+  
+  height: 300px;
   position: relative;
   overflow: auto;
   border: 1px #888 solid;
@@ -766,7 +859,7 @@ div.lightbox figure .closemsg {
 }
 
 div.lightbox figure .closemsg, div.lightbox figure figcaption {
-  width: 320px;
+  width: 400px;
 }
 
 .closemsg::after {
@@ -774,8 +867,8 @@ div.lightbox figure .closemsg, div.lightbox figure figcaption {
   font-size:20px;
   display: inline-block;
   position: relative;
-  right: 16px;
-  top: 14px;
+  right: 8px;
+  top: 11px;
   z-index: 3;
   color: rgba(0,0,0,0.8);
   width: 20px;
@@ -803,18 +896,31 @@ div.lightbox select{
 	display:block;
 	width:100%;
 	height:32px;
-	color:black;
+	color:rgba(0,0,0,0.7);
+	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 div.lightbox h1{
-	background:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.2));
-	border-top: 1px rgba(0,0,0,0.5) solid;
-	border-bottom: 1px rgba(255,255,255,0.8) solid;
-	font-size:20px;
-	color:rgba(0,0,0,0.9);
-	text-shadow:0 1px 1px rgba(255,255,255,0.5);
-	margin-bottom:20px;
-	border-radius: 3px;
-	box-shadow: inset 0 1px 2px rgba(0,0,0,0.2)
+	background: linear-gradient(#eee,#ccc);
+	padding:10px;
+	font-weight: bold;
+	border-bottom: 1px rgba(0,0,0,0.2) solid;
+	font-size:18px;
+	color:rgba(0,0,0,0.7);
+	text-shadow:0 1px 1px rgba(255,255,255,0.9);
+	margin-bottom:0;
+	
+	
+}
+
+div.lightbox form{
+	background: linear-gradient(#ddd,#eee);
+	height:259px;
+	padding:15px;
+}
+div.lightbox label{
+	color:rgba(0,0,0,0.7);  
+	padding-bottom: 7px;
+  	display: inline-block;
 }
 div.lightbox input[type=text]{
 	display:block;
@@ -836,8 +942,12 @@ div.lightbox input[type=submit]{
 	display:block;
 	margin:auto;
 	color:rgba(0,0,0,0.5);
+	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 	width:100px;
-	margin-top:20px;
+	padding:10px;
+	  position: relative;
+	  bottom:-60px;
+
 }
 
 
@@ -847,9 +957,57 @@ div.lightbox input[type=submit]{
 	.w1000{display:none;}
 	ul.tree{width:95%;}
 
-}
+	table{padding:0;}
+	td{
+		display:block;
+		width:95%!important;
+		padding:0;
+	}
+
+	.fil_ariane .home em{display:inline-block;}
+	.fil_ariane .home {
+		display:inline-block;
+		background:url(img/home.png) no-repeat 5px center #777;
+		width:auto;	
+		padding-left:32px;
+	}
 
 
+	.list{padding:0;}
+	.list li{
+		width:100%;
+		max-height:120px;
+		overflow-y:hidden;
+		display:block;
+		text-align:left;
+		padding-left:24px;
+	}
+	.list li a img{
+		display:inline-block;
+		margin-right:5px;
+		margin-bottom:5px;
+	}
+	.list li a em{display:block;}
+	.list li a em.over{  
+		display:none;
+	}
+	.list li .buttons a{
+		display:inline-block;
+		width:32px;
+		height:32px;
+	}
+	.list li .buttons{
+		width: auto;
+		height: 34px;
+		position: inherit;
+		display: inline-block;
+		float:right;
+		border-radius: 3px;
+		background-color:rgba(0,0,0,0.7);
+		box-shadow:0 1px 2px rgba(0,0,0,0.5);
+	}
+
+	.folder a 
 
 /* transitions */
 img,

@@ -1,4 +1,4 @@
-<?php 
+<?php
 	/**
 	* BoZoN admin only protection:
 	* part of auto_restrict lib 

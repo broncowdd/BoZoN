@@ -48,8 +48,23 @@
 		'To'=>'Vers',
 		'Move a file by clicking on it and choosing the destination folder in the list'=>'Déplacer un fichier en cliquant dessus puis en sélectionnant la destination dans la liste',
 		'Move a folder by clicking on the move icon and choosing the destination folder in the list'=>'Déplacer un dossier en cliquant sur "Déplacer" puis en sélectionnant la destination dans la liste',
+		'Lock the access to the file/folder with a password'=>"Verrouiller l'acces au fichier/dossier à l'aide d'un mot de passe",
+		'When burn is on, the user can access the file/folder only once'=>"Quand l'item est en mode burn, l'utilisateur ne pourra accéder à la ressource qu'une seule fois",
+		'Renew the share link of the file/folder (in case of a stolen link for example)'=>"Renouveler le lien de partage d'un fichier/dossier quand celui-ci a fuité par exemple",
+		'The user can access this only one time'=>"L'utilisateur ne pourra y accéder qu'une fois",
+		'The user can access this only with the password'=>"L'utilisateur ne pourra y accéder qu'avec un mot de passe.",
+		'This page in'=>"Cette page au format ",
+		'This link is no longer available, sorry.'=>"Ce lien n'est plus valable, désolé.",
+		'Choose a folder'=>'Choisissez un dossier',
+		'Please give a password to lock access to this file'=>"Taper un mot de passe pour verrouiller cette ressource.",
+		'Lock access'=>"Verrouiller l'accès",
+		'This share is protected, please type the correct password:'=>'Ce lien est protégé: veuillez taper le mot de passe.',
+		'Root'=>'Racine',
 
+		'Problem accessing ID file: not readable'=>"Erreur d'accès en lecture au fichier ID.",
+		'Problem accessing ID file: not writable'=>"Erreur d'accès en écriture au fichier ID.",
 	);
+
 
 
 	# ESPANOL
@@ -85,6 +100,21 @@
 		'To'=>'A',
 		'Move a file by clicking on it and choosing the destination folder in the list'=>'Mueve un fichero haciendo clic en él y escogiendo el destino en la lista',
 		'Move a folder by clicking on the move icon and choosing the destination folder in the list'=>'Mueve una carpeta pinchando en "Mover" y escogiendo el destino en la lista',
+		'Lock the access to the file/folder with a password'=>"Poner una contraseña al fichero",
+		'When burn is on, the user can access the file/folder only once'=>"En modo burn, el usuario solo puede acceder al fichero una vez",
+		'Renew the share link of the file/folder (in case of a stolen link for example'=>"Regenerar el enlace público del fichero",
+		'The user can access this only one time'=>"El usuario solo puede acceder al fichero una vez",
+		'The user can access this only with the password'=>"El usuario solo puede acceder al fichero con una contraseña",
+		'This page in'=>"Esta página en formato ",
+		'This link is no longer available, sorry.'=>'Este enlace está caducado.',
+		'Choose a folder'=>'Escoja una carpeta',
+		'Please give a password to lock access to this file'=>"Poner una contraseña en el fichero",
+		'Lock access'=>"Impedir el acceso",
+		'This share is protected, please type the correct password:'=>'Este enlace está protegido por una contraseña:',
+		'Root'=>'Raíz',
 
+		'Problem accessing ID file: not readable'=>"Error de acceso leyendo el fichero ID.",
+		'Problem accessing ID file: not writable'=>"Error de acceso escribiendo al fichero ID.",
+	
 	);
 ?>

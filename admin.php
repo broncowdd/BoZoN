@@ -1,19 +1,43 @@
-<?php 
+<?php
 	/**
 	* BoZoN admin page:
 	* allows upload / delete / filter files
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
-
+	$message='';
 	include ('auto_restrict.php'); # Admin only!
 	include('core.php');
-	$message='';
+	
 
 
 
 	######################################################################
 	# $_GET DATA
 	######################################################################
+
+	# renew file id
+	if (!empty($_GET['renew']) && trim($_GET['renew'])!==false){
+		$old_id=$_GET['renew'];
+		$path=id2file($old_id);
+		unset($ids[$old_id]);
+		addID($path);
+		header('location:admin.php');
+	}	
+
+	# create burn after acces state
+	if (!empty($_GET['burn']) && trim($_GET['burn'])!==false){
+		$id_to_burn=$_GET['burn'];
+		$path=id2file($id_to_burn);
+		unset($ids[$id_to_burn]);
+		if (substr($id_to_burn,0,1)!='*'){
+			$ids['*'.$id_to_burn]=$path;
+		}else{
+			$ids[str_replace('*','',$id_to_burn)]=$path;
+		}
+		store();
+		header('location:admin.php');
+	}	
+
 
 	# subfolder path
 	if (!empty($_GET['path']) && trim($_GET['path'])!==false){
@@ -77,7 +101,7 @@
 			# delete file
 			unlink($f); 
 			unset($ids[$_GET['del']]);
-			store($_SESSION['id_file'],$ids);
+			store();
 			kill_thumb_if_exists($f);
 		}else if (is_dir($f)){
 			# delete dir
@@ -111,7 +135,7 @@
 
 			rename($oldfile,$newfile); 
 			$ids[$_GET['ren']]=$newfile;
-			store($_SESSION['id_file'],$ids);
+			store();
 			kill_thumb_if_exists($oldfile);
 			kill_thumb_if_exists($newfile);
 		}
@@ -135,12 +159,26 @@
 			rename($file,$destination);
 			# change path in id
 			$id=file2id($file);
-			$ids=unstore($_SESSION['id_file']);
+			$ids=unstore();
 			$ids[$id]=$destination;
-			store($_SESSION['id_file'],$ids);
+			store();
 			header('location:admin.php');
 		}
 	}
+
+	# Lock folder with password
+	if (!empty($_POST['password'])&&!empty($_POST['id'])){
+		$id=$_POST['id'];
+		$file=id2file($id);
+		$password=blur_password($_POST['password']);
+		# turn normal share id into password hashed id
+		$ids=unstore();
+		unset($ids[$id]);
+		$ids[$password]=$file;
+		store();
+		header('location:admin.php');
+	}
+
 
 
 	if ($_FILES){include('auto_dropzone.php');exit();}
@@ -152,6 +190,7 @@
 	    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 	    <meta name="google" content="noimageindex">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="utf-8" />
 		<link rel="shortcut icon" type="/image/png" href="img/bozonlogo2.png">
 		<link rel="stylesheet" type="text/css" href="style.css">
@@ -198,8 +237,8 @@
 			</form>
 			<div class="buttongroup">
 				<a class="button" href="?mode=view&token=<?php newToken(true);?>"> <?php e('Manage files'); ?> <img src="img/file.png"/></a>
-				<!--<a class="button" href="?mode=links&token=<?php newToken(true);?>"> <?php e('Manage links'); ?> <img src="img/link.png"/></a>-->
-				<a class="button" href="?mode=move&token=<?php newToken(true);?>">  <?php e('Move files'); ?>  <img src="img/movefiles.png"/></a>
+				<a class="button green" href="?mode=links&token=<?php newToken(true);?>"> <?php e('Manage links'); ?> <img src="img/link.png"/></a>
+				<a class="button sanguine" href="?mode=move&token=<?php newToken(true);?>">  <?php e('Move files'); ?>  <img src="img/movefiles.png"/></a>
 				<hr/>
 				<br/>
 				<a class="button red" href="admin.php?deconnexion"><?php e('Logout'); ?> <img src="img/logout.png"/></a>
@@ -223,7 +262,7 @@
 
 			<td>
 				<div class="fil_ariane">
-					<a class="home" href="admin.php?path=<?php echo $_SESSION['upload_path'].'&token='.returnToken(true);?>">&nbsp;</a>
+					<a class="home" href="admin.php?path=<?php echo $_SESSION['upload_path'].'&token='.returnToken(true);?>"><em><?php e('Root');?>:</em>&nbsp;</a>
 					<?php 
 						$ariane=explode('/',$_SESSION['current_path']);
 
@@ -257,6 +296,9 @@
 			<div class="w50"><p><img src="img/folder.png"/><?php e('Move a folder by clicking on the move icon and choosing the destination folder in the list');?></p></div>
 
 		<?php }else if ($_SESSION['mode']=='links'){ ?>
+			<div class="w33"><img src="img/locked_big.png"/><p> <?php e('Lock the access to the file/folder with a password');?></p></div>
+			<div class="w33"><img src="img/burn_big.png"/><p> <?php e('When burn is on, the user can access the file/folder only once');?></p></div>
+			<div class="w33"><img src="img/renew_big.png"/><p> <?php e('Renew the share link of the file/folder (in case of a stolen link for example)');?></p></div>	
 
 
 		<?php } ?>
@@ -274,7 +316,7 @@
 
 	// block closing menu by clicking on it
 	menu.addEventListener('click', function(event){
-        	if(event.stopPropagation) { event.stopPropagation(); }
+        if(event.stopPropagation) { event.stopPropagation(); }		
 	});
 
 	// menu appears and vanish
@@ -305,7 +347,7 @@
 		    el.className = classes.join(' ')
 		}
         
-		return false;
+		
 	});
 
 </script>

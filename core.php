@@ -1,4 +1,4 @@
-<?php 
+<?php
 	/**
 	* BoZoN core part:
 	* Sets Constants, language, directories, htaccess and bozon's behaviour (files to download and files to echo)
@@ -7,25 +7,26 @@
 
 	require_once('lang.php');
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','1.4.1');
-	# Changing language
-	$default_language='fr'; // change this if you want another language by default (see in lang.php)
+	define('VERSION','1.4.2');
+	include('config.php');
+
+	# Current session changing language
 	if (!empty($_GET['lang'])){$_SESSION['language']=strip_tags($_GET['lang']);header('location:admin.php');}
 	if (empty($_SESSION['language'])){$_SESSION['language']=$default_language;}
 	
 	# UPLOAD PATH & ID_FILE
-	$default_path='uploads/';
-	$default_id_file='id.txt';
 	if (empty($_SESSION['home'])){$_SESSION['home'] =addslash_if_needed(dirname(getUrl()));}
 	if (empty($_SESSION['upload_path'])){$_SESSION['upload_path']=$default_path;}
 	if (empty($_SESSION['id_file'])){$_SESSION['id_file']=$default_id_file;}
 	if (!isset($_SESSION['current_path'])){$_SESSION['current_path']=$_SESSION['upload_path'];}
 	if (!is_dir($_SESSION['upload_path'])){ mkdir($_SESSION['upload_path']); }
 	if (!is_file($_SESSION['upload_path'].'index.html')){ file_put_contents($_SESSION['upload_path'].'index.html',' '); }
+	if (!is_file('salt.php')){ file_put_contents('salt.php','<?php define("BOZON_SALT",'.var_export(generate_bozon_salt(),true).'); ?>'); }
+	else{include('salt.php');}
 	if (!is_dir('thumbs/')){mkdir('thumbs/');}
 	if (!is_file('thumbs/index.html')){file_put_contents('thumbs/index.html',' ');}
 
-	if (!file_exists($_SESSION['id_file'])){$ids=array();store($_SESSION['id_file'],$ids);}
+	if (!file_exists($_SESSION['id_file'])){$ids=array();store();}
 	if (!is_file($_SESSION['upload_path'].'.htaccess')){
 		file_put_contents($_SESSION['upload_path'].'.htaccess', 
 			'<Files .htaccess>
@@ -51,10 +52,13 @@ php_flag engine off
 		');
 	}
 
-	
+	if (!is_readable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not readable',false).'</div>';}
+	if (!is_writable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not writable',false).'</div>';}
+	if (!is_readable($_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not readable',false).'</div>';}
+	if (!is_writable($_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not writable',false).'</div>';}
 
-	$behaviour['FILES_TO_ECHO']=array('txt','js','html','php','htm','shtml','shtm','css');
-	$behaviour['FILES_TO_RETURN']=array('jpg','jpeg','gif','png','pdf','swf','mp3','mp4','avi','svg');
+	$behaviour['FILES_TO_ECHO']=array('txt','js','html','php','SECURED_PHP','htm','shtml','shtm','css');
+	$behaviour['FILES_TO_RETURN']=/*array();*/array('jpg','jpeg','gif','png','pdf','swf','mp3','mp4','svg');
 
  	$auto_dropzone['destination_filepath']=$_SESSION['current_path'].'/';
 	$auto_thumb['default_width']='64';
@@ -63,32 +67,32 @@ php_flag engine off
 
 
 
-	$ids=unstore($_SESSION['id_file']);
+	$ids=unstore();
 	# add an item to ID file
 	function addID($string){
-		$ids=unstore($_SESSION['id_file']);
+		$ids=unstore();
 		$id=uniqid(true);
 		$ids[$id]=$string;
-		store($_SESSION['id_file'],$ids);
+		store();
 	}
 	# remove an id from id file
 	function removeID($id){
-		$ids=unstore($_SESSION['id_file']);
+		$ids=unstore();
 		if (!empty($ids[$id])){unset ($ids[$id]);}
-		store($_SESSION['id_file'],$ids);
+		store($ids);
 	}
 	# remove all ids that are not actually linked to a file/folder
 	function purgeIDs(){
-		$ids=unstore($_SESSION['id_file']);
+		$ids=unstore();
 		foreach($ids as $key=>$val){
 			if (!is_file($val) && !is_dir($val)){unset($ids[$key]);}
 		}
-		store($_SESSION['id_file'],$ids);
+		store();
 	}
 	# complete all missing ids 
 	function completeID($array_of_files){
-		$ids=unstore($_SESSION['id_file']);
-		$sdi=array_flip($ids);// paths are keys
+		$ids=unstore();
+		$sdi=array_flip($ids);// paths are keys		
 		$save=false;
 		foreach($array_of_files as $file){
 			if (!isset($sdi[$file])){
@@ -97,13 +101,20 @@ php_flag engine off
 			}
 		}
 		if ($save){
-			store($_SESSION['id_file'],$ids);
+			store($ids);
 			echo '<script>location.reload();</script>';
 		}
 	}	
-	function is_in($ext,$type){global $behaviour;if (!empty($behaviour[$type])){return array_search($ext,$behaviour[$type]);}}
-	function store($file,$datas){file_put_contents($file,serialize($datas));}
-	function unstore($file){return unserialize(file_get_contents($file));}
+	function is_in($ext,$type){
+		global $behaviour;
+		if (!empty($behaviour[$type])){return array_search($ext,$behaviour[$type]);}else{return false;}
+
+	}
+	function store($ids=null){
+		if (!$ids){global $ids;}
+		file_put_contents($_SESSION['id_file'],serialize($ids));
+	}
+	function unstore(){return unserialize(file_get_contents($_SESSION['id_file']));}
 	function id2file($id){
 		global $ids;
 		if (isset($ids[$id])){return $ids[$id];}else{return false;}
@@ -175,8 +186,17 @@ php_flag engine off
 		$array=array_merge(array_flip($behaviour['FILES_TO_RETURN']),array_flip($behaviour['FILES_TO_ECHO']));
 		return isset($array[$extension]);
 	}
-
-
+	function generate_bozon_salt($length=512){
+		$salt='';
+		for($i=1;$i<=$length;$i++){
+			$salt.=chr(mt_rand(35,126));
+		}
+		return $salt;
+	}
+	function blur_password($pw){
+		if (!empty($pw)){return hash('sha512', BOZON_SALT.$pw);}
+		return false;
+	}
 	# to solve some problems on mime detection, fallback
 	if (function_exists('mime_content_type')){
 		function _mime_content_type($filename) {return mime_content_type($filename);}
@@ -250,27 +270,23 @@ php_flag engine off
 		}
 	}
 
-	if (function_exists('glob')){
-		function _glob($path,$pattern='*'){return glob($path.$pattern);}
-	}else{
-		function _glob($path,$pattern='') {
-			# glob function fallback by Cyril MAGUIRE (thx bro' ;-)
-		    $liste =  array();
-		    $pattern=str_replace('*','',$pattern);
-		    if ($handle = opendir($path)) {
-		        while (false !== ($file = readdir($handle))) {
-		        	if(stripos($file, $pattern)!==false || $pattern=='' && $file!='.' && $file!='..') {
-		                $liste[] = $path.$file;
-		            }
-		        }
-		        closedir($handle);
-		    }
+	function _glob($path,$pattern='') {
+		# glob function fallback by Cyril MAGUIRE (thx bro' ;-)
+	    $liste =  array();
+	    $pattern=str_replace('*','',$pattern);
+	    if ($handle = opendir($path)) {
+	        while (false !== ($file = readdir($handle))) {
+	        	if(stripos($file, $pattern)!==false || $pattern=='' && $file!='.' && $file!='..') {
+	                $liste[] = $path.$file;
+	            }
+	        }
+	        closedir($handle);
+	    }
 
-		    return $liste;
-		   
-		}
+	    return $liste;
+	   
 	}
-
+	
 	function tree($dir='.',$files=true){
         # scann a folder and subfolders and return the tree
         if (!isset($dossiers[0]) || $dossiers[0]!=$dir){$dossiers[0]=$dir;}
