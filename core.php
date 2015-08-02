@@ -276,7 +276,7 @@ php_flag engine off
 	    $pattern=str_replace('*','',$pattern);
 	    if ($handle = opendir($path)) {
 	        while (false !== ($file = readdir($handle))) {
-	        	if(stripos($file, $pattern)!==false || $pattern=='' && $file!='.' && $file!='..') {
+	        	if(stripos($file, $pattern)!==false || $pattern=='' && $file!='.' && $file!='..' && $file!='.htaccess') {
 	                $liste[] = $path.$file;
 	            }
 	        }
