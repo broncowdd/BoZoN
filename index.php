@@ -4,7 +4,7 @@
 	* simply handles the get link.
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
-
+	set_time_limit(0); # Avoid problems on big files #20 on github
 	$message='';$tree=false;$feeds_div='';
 	include('core.php');
 	function burned($id){if (substr($id,0,1)=='*'){removeID($id);}}
@@ -108,8 +108,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="shortcut icon" type="/image/png" href="img/bozonlogo2.png">
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="shortcut icon" type="/image/png" href="design/<?php echo $_SESSION['theme'];?>/img/bozonlogo2.png">
+	<link rel="stylesheet" type="text/css" href="design/<?php echo $_SESSION['theme'];?>/style.css">
 		
 </head>
 <body class="index">

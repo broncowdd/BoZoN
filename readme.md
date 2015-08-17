@@ -1,5 +1,7 @@
 # BoZoN
 
+
+
 ## Minimalist Drag & drop file sharing app
 
 - Install: just unzip on your server; no database/ php 5.2. Then go to admin.php page and create your login/pass. 
@@ -11,6 +13,14 @@ The share link is the file link in the admin's view (you can also access it by t
 
 ## Required 
 Php 5 min
+
+## New in version 1.6
+* skin system to easily create your own theme 
+* bugfix: timezone error
+* add: tooltips on buttons
+* add: explaination on how to remove password
+* add: use navigator language by default
+* add: turn uploaded zip into a folder
 
 ## New in version 1.5
 - add: a links mode 
@@ -81,6 +91,7 @@ All Bozon code and all the libs used in it are distributed under AGPL: feel free
 - _How to lock a share link with a password ?_ : click on the left menu, use the manage links button; then click on the lock icon on the file/folder and give an password. The file/folder will turn blue with a small lock meaning nobody can now use the share link without the password.
 - _Yes, ok, but how to remove the password ?_ : just click on regen button, the id will be regenerated and the password will be destroyed (the share link will change)
 - _What if I upload, create a folder or move an item with a name conflict ?_ : Don't worry, BoZoN will just rename the file to avoid overwriting.
+- _How to create my own skin ?_ : just copy the default folder in design/ and make the changes you want, then change the config.php ($default_theme='default';)
 
 ## Special thanks
 To Cyrille Borne [ https://github.com/cborne & http://www.cyrille-borne.com ]: without your comments, issues reporting and enhancement ideas this app would never have been so complete ;-)

@@ -11,6 +11,9 @@ if (!function_exists('store')){
 	include('auto_restrict.php');
 }
 include("auto_thumb.php");
+echo $templates['link_lightbox'];
+echo $templates['rename_lightbox'];
+echo $templates['delete_lightbox'];
 
 // Configuration
 if (empty($_SESSION['mode'])){$mode='view';}else{$mode=$_SESSION['mode'];}
@@ -24,53 +27,19 @@ if ($mode=='move'){
 		$select_folder.='<option value="'.$folder.'">'.$folder.'</option>';
 	}
 	$select_folder.='</select>';
-	# Add dialogbox to the page
-	echo '
-		<div class="lightbox" id="selecttarget">
-			<figure>
-				<a href="#" class="closemsg"></a>
-				<figcaption>
-					<h1>'.e('Move file or folder',false).'</h1>
-				    <form action="admin.php" method="post">
-						<label>'.e('Move',false).':</label><input type="text" value="" name="file" id="filename" disabled="true"/>
-						<input type="hidden" value="" name="file" id="filename_hidden"/>
-						<label>'.e('To',false).':</label>'.$select_folder;
-
-						newToken();
-	echo '
-						<br/>
-
-						<input type="submit" value="ok" class="button"/>
-				    </form>
-				</figcaption>
-			</figure>
-		</div>
-	';
+	# Add move dialogbox to the page
+	$array=array(
+			'#LIST_FILES_SELECT'	=> $select_folder,
+			'#TOKEN'				=> returnToken(),
+		);
+	echo template('move_lightbox',$array);
 }
 if ($mode=='links'){
-	# Add dialogbox to the page
-	echo '
-		<div class="lightbox" id="locked">
-			<figure>
-				<a href="#" class="closemsg"></a>
-				<figcaption>
-					<h1>'.e('Lock access',false).'</h1>
-				    <form action="admin.php" method="post"><br/>
-						<label>'.e('Please give a password to lock access to this file',false).'</label>
-						<input type="text"  value="" name="password"/>
-						<input type="hidden" value="" name="id" id="ID_hidden"/>
-						';
-
-						newToken();
-	echo '
-						<br/>
-
-						<input type="submit" value="ok" class="button"/>
-				    </form>
-				</figcaption>
-			</figure>
-		</div>
-	';
+	# Add lock dialogbox to the page
+	$array=array(
+			'#TOKEN'	=> returnToken()
+		);
+	echo template('password_lightbox',$array);
 }
 $save=false;
 if (count($liste)>0){
@@ -102,144 +71,76 @@ if (count($liste)>0){
 				$title=e('The user can access this only with the password', false);
 			}
 			$extension=strtolower(pathinfo($fichier,PATHINFO_EXTENSION));
-
-
-			# Manage files mode (normal mode)
-			if ($mode=='view'){
-				if (visualizeIcon($extension)){
+			if (visualizeIcon($extension)){
 					$icone_visu='<a class="visu" href="index.php?f='.$id.'" target="_BLANK">&nbsp;</a>';
 				}else{$icone_visu='';}
-				if (is_dir($fichier)){
+			if (is_dir($fichier)){
 					# Item is a folder
 					$taille=count(_glob($fichier.'/'));
-					$folderlist.= '
-						<li class="folder '.$class.'" title="'.$title.'">
-							<div class="buttons">
-								<a class="close"  onclick="d(\''.$id.'\');">&nbsp;</a>
-								<a class="rename" onclick="r(\''.$id.'\',\''.addslashes($nom).'\');">&nbsp;</a>
-								<a class="link"  onclick="l(\''.$id.'\');">&nbsp;</a>
-							</div>
-							<a href="admin.php?path='.$fichier.'&token='.returnToken(true).'" >
-								<img src="img/folder.png" style="background:transparent;"/>
-								<em class="over">'.$taille.'</em><em>'.$nom.'</em>
-							</a>
-						</li>';
+					$array=array(
+						'#CLASS'			=> $class,
+						'#ID'				=> $id,
+						'#FICHIER'			=> $fichier,
+						'#TOKEN'			=> returnToken(),
+						'#SIZE'				=> $taille,
+						'#NAME'				=> $nom,
+						'#TITLE'			=> $title,
+						'#SLASHEDNAME'		=> addslashes($nom),
+						'#SLASHEDFICHIER'	=> addslashes($fichier),
+					);
+					$folderlist.= template($mode.'_folder_item',$array);
 				}elseif ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
 					# Item is a picture
-					$filelist.= '
-						<li class="'.$extension.' '.$class.'" title="'.$title.'">
-							<div class="buttons">
-								<a class="close"  onclick="d(\''.$id.'\');">&nbsp;</a>
-								<a class="rename"  onclick="r(\''.$id.'\',\''.addslashes($nom).'\');">&nbsp;</a>
-								<a class="link"  onclick="l(\''.$id.'\');">&nbsp;</a>
-								'.$icone_visu.'
-							</div>
-							<a href="index.php?f='.$id.'" download="'.$nom.'">
-								<img src="'.auto_thumb($fichier,64,64).'" style="background:transparent;"/>
-								<em>'.$taille.' ko</em><em>'.$nom.'</em>
-							</a>
-						</li>';
+					$array=array(
+						'#CLASS'		=> $class,
+						'#ID'			=> $id,
+						'#FICHIER'		=> $fichier,
+						'#TOKEN'		=> returnToken(),
+						'#SIZE'			=> $taille,
+						'#NAME'			=> $nom,
+						'#TITLE'		=> $title,
+						'#EXTENSION'	=> $extension,
+						'#ICONE_VISU'	=> $icone_visu,
+						'#THUMBNAIL'	=> auto_thumb($fichier,64,64),
+						'#SLASHEDNAME'	=> addslashes($nom),
+						'#SLASHEDFICHIER'	=> addslashes($fichier),
+					);
+					$filelist.= template($mode.'_image_item',$array);
+				}elseif ($extension=='zip'){
+					# Item is a zip file=> add change to folder
+					$icone_visu='<a class="tofolder" href="admin.php?unzip='.$id.'&token='.returnToken().'" title="'.e('Convert this zip file to folder',false).'">&nbsp;</a>';
+					$array=array(
+						'#CLASS'		=> $class,
+						'#ID'			=> $id,
+						'#FICHIER'		=> $fichier,
+						'#TOKEN'		=> returnToken(),
+						'#SIZE'			=> $taille,
+						'#NAME'			=> $nom,
+						'#TITLE'		=> $title,
+						'#EXTENSION'	=> $extension,
+						'#ICONE_VISU'	=> $icone_visu,
+						'#SLASHEDNAME'	=> addslashes($nom),
+						'#SLASHEDFICHIER'	=> addslashes($fichier),
+					);
+					$filelist.= template($mode.'_file_item',$array);
 				}else {
 					# all other types
-					$filelist.= '
-						<li class="'.$extension.' '.$class.'" title="'.$title.'">						
-							<div class="buttons">
-								<a class="close"  onclick="d(\''.$id.'\');">&nbsp;</a>
-								<a class="rename"  onclick="r(\''.$id.'\',\''.addslashes($nom).'\');">&nbsp;</a>
-								<a class="link"  onclick="l(\''.$id.'\');">&nbsp;</a>
-								'.$icone_visu.'
-							</div>
-							<a href="index.php?f='.$id.'" download="'.$nom.'">
-								<img class="'.$extension.'" src="img/ghost.png"/>
-								<em>'.$taille.' ko</em><em>'.$nom.'</em>
-							</a>
-						</li>';
+					$array=array(
+						'#CLASS'		=> $class,
+						'#ID'			=> $id,
+						'#FICHIER'		=> $fichier,
+						'#TOKEN'		=> returnToken(),
+						'#SIZE'			=> $taille,
+						'#NAME'			=> $nom,
+						'#TITLE'		=> $title,
+						'#EXTENSION'	=> $extension,
+						'#ICONE_VISU'	=> $icone_visu,
+						'#SLASHEDNAME'	=> addslashes($nom),
+						'#SLASHEDFICHIER'	=> addslashes($fichier),
+					);
+					$filelist.= template($mode.'_file_item',$array);
 				}
-
-			# Move files mode
-			}elseif ($mode=='move'){
-				if (is_dir($fichier)){
-					# Item is a folder					
-					$folderlist.= '
-						<li class="folder '.$class.'" title="'.$title.'">
-							<div class="buttons">
-								<a class="movefolder" href="#selecttarget" onclick="put_file(\''.addslashes($fichier).'\')">&nbsp;</a>
-							</div>
-							<a href="admin.php?path='.$fichier.'&token='.returnToken(true).'" >
-								<img src="img/folder.png" style="background:transparent;"/>
-								<em>'.$nom.'</em>
-							</a>
-						</li>';
-				}elseif ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
-					# Item is a picture
-					$filelist.= '
-						<li class="'.$extension.' '.$class.'" title="'.$title.'">							
-							<a href="#selecttarget" onclick="put_file(\''.addslashes($fichier).'\')">
-								<img src="'.auto_thumb($fichier,64,64).'" style="background:transparent;"/>
-								<em>'.$taille.' ko</em><em>'.$nom.'</em>
-							</a>
-						</li>';
-				}else {
-					# all other types
-					$filelist.= '
-						<li class="'.$extension.' '.$class.'" title="'.$title.'">	
-							<a href="#selecttarget" onclick="put_file(\''.addslashes($fichier).'\')">
-								<img class="'.$extension.'" src="img/ghost.png"/>
-								<em>'.$taille.' ko</em><em>'.$nom.'</em>
-							</a>
-						</li>';
-				}
-			# Manage links mode 
-			}elseif($mode=='links'){
-				if (is_dir($fichier)){
-					# Item is a folder
-					$taille=count(_glob($fichier.'/'));
-					$folderlist.= '
-						<li class="folder '.$class.'" title="'.$title.'">
-							<div class="buttons">
-								<a class="locked"  href="#locked" onclick="put_id(\''.$id.'\')">&nbsp;</a>
-								<a class="burn" href="admin.php?burn='.$id.'&token='.returnToken().'">&nbsp;</a>
-								<a class="renew" href="admin.php?renew='.$id.'&token='.returnToken().'">&nbsp;</a>
-							</div>
-							<a href="admin.php?path='.$fichier.'&token='.returnToken(true).'" >
-								<img src="img/folder.png" style="background:transparent;"/>
-								<em class="over">'.$taille.'</em><em>'.$nom.'</em>
-							</a>
-						</li>';
-				}elseif ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
-					# Item is a picture
-					$filelist.= '
-						<li class="'.$extension.' '.$class.'" title="'.$title.'">
-							<div class="buttons">
-								<a class="locked"  href="#locked" onclick="put_id(\''.$id.'\')">&nbsp;</a>
-								<a class="burn" href="admin.php?burn='.$id.'&token='.returnToken().'">&nbsp;</a>
-								<a class="renew" href="admin.php?renew='.$id.'&token='.returnToken().'">&nbsp;</a>
-							</div>
-							<a href="index.php?f='.$id.'" download="'.$nom.'">
-								<img src="'.auto_thumb($fichier,64,64).'" style="background:transparent;"/>
-								<em>'.$taille.' ko</em><em>'.$nom.'</em>
-							</a>
-						</li>';
-				}else {
-					# all other types
-					$filelist.= '
-						<li class="'.$extension.' '.$class.'">						
-							<div class="buttons" title="'.$title.'">
-								<a class="locked"  href="#locked" onclick="put_id(\''.$id.'\')">&nbsp;</a>
-								<a class="burn" href="admin.php?burn='.$id.'&token='.returnToken().'">&nbsp;</a>
-								<a class="renew" href="admin.php?renew='.$id.'&token='.returnToken().'">&nbsp;</a>
-							</div>
-							<a href="index.php?f='.$id.'" download="'.$nom.'">
-								<img class="'.$extension.'" src="img/ghost.png"/>
-								<em>'.$taille.' ko</em><em>'.$nom.'</em>
-							</a>
-						</li>';
-				}
-			}
-
-
-
-			
+		
 		}
 	}
 	echo $folderlist.$filelist;
@@ -250,27 +151,17 @@ if (count($liste)>0){
 ?>
 
 <script>
-	function d(id){
-		if (confirm("<?php e('Delete this file ?');?>")){
-			document.location.href="admin.php?del="+id+'&token=<?php newToken(true);?>';
-		}
-
-	}
-	function l(id){
-		prompt("<?php e('Copy this share link');?>","<?php echo $_SESSION['home']; ?>index.php?f="+id);
-	}
-	function r(id,filename){
-		if (newname=prompt("<?php e('Rename this file ?');?>",filename)){
-			if (newname!=filename){
-				document.location.href="admin.php?ren="+id+"&newname="+newname+"&token=<?php newToken(true);?>";
-			}
-		}
-	}
+	
 	function put_file(fichier){
 		document.getElementById('filename').value=fichier;
 		document.getElementById('filename_hidden').value=fichier;
 	}
-	function put_id(id){
-		document.getElementById('ID_hidden').value=id;
+	function put_id(id){document.getElementById('ID_hidden').value=id;}
+	function put_link(id){document.getElementById('link').value="<?php echo $_SESSION['home'];?>?f="+id;}
+	function put_file_and_id(id,file){
+		document.getElementById('FILE_Rename').value=file;
+		document.getElementById('ID_Rename').value=id;
 	}
+	function suppr(id){	document.getElementById('ID_Delete').value=id;}
+
 </script>

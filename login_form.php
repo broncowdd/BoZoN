@@ -10,7 +10,7 @@
 <head>
 	<title>BoZon - Admin</title>
 	 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="design/<?php echo $_SESSION['theme'];?>/style.css">
 	<link rel="shortcut icon" type="/image/png" href="img/bozonlogo2.png">
 	<meta charset="utf-8" />
 </head>

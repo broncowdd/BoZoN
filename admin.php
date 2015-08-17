@@ -15,6 +15,14 @@
 	# $_GET DATA
 	######################################################################
 
+	# unzip: convert zip file to folder
+	if (!empty($_GET['unzip']) && trim($_GET['unzip'])!==false){
+		$id=$_GET['unzip'];
+		$path=id2file($id);
+		unzip($path,dirname($path));
+		header('location:admin.php');
+	}	
+
 	# renew file id
 	if (!empty($_GET['renew']) && trim($_GET['renew'])!==false){
 		$old_id=$_GET['renew'];
@@ -114,8 +122,8 @@
 	}
 
 	# rename file/folder
-	if (!empty($_GET['ren'])&&!empty($_GET['newname'])){
-		$oldfile=id2file($_GET['ren']);
+	if (!empty($_GET['id'])&&!empty($_GET['newname'])){
+		$oldfile=id2file($_GET['id']);
 		$path=addslash_if_needed($_SESSION['current_path']);
 		$newfile=$path.only_alphanum_and_dot($_GET['newname']);		
 
@@ -192,8 +200,8 @@
 	    <meta name="google" content="noimageindex">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="utf-8" />
-		<link rel="shortcut icon" type="/image/png" href="img/bozonlogo2.png">
-		<link rel="stylesheet" type="text/css" href="style.css">
+		<link rel="shortcut icon" type="/image/png" href="design/<?php echo $_SESSION['theme'];?>/img/bozonlogo2.png">
+		<link rel="stylesheet" type="text/css" href="design/<?php echo $_SESSION['theme'];?>/style.css">
 		<!--[if IE]><script> document.createElement("article");document.createElement("aside");document.createElement("section");document.createElement("footer");</script> <![endif]-->
 
 		<title>BoZoN: <?php e('Drag, drop, share.');?></title>
@@ -231,17 +239,17 @@
 			</form>
 			<form action="#" method="get" class="searchform">
 				<label><?php e('Create a subfolder');?></label>
-				<input type="text" name="newfolder" value="" title="<?php e('CReate a subfolder in this folder'); ?>" placeholder="<?php e('New_folder'); ?>"/>
+				<input type="text" name="newfolder" value="" title="<?php e('Create a subfolder in this folder'); ?>" placeholder="<?php e('New_folder'); ?>"/>
 				<input type="submit" value="ok"/>
 				<?php newToken();?>
 			</form>
 			<div class="buttongroup">
-				<a class="button" href="?mode=view&token=<?php newToken(true);?>"> <?php e('Manage files'); ?> <img src="img/file.png"/></a>
-				<a class="button green" href="?mode=links&token=<?php newToken(true);?>"> <?php e('Manage links'); ?> <img src="img/link.png"/></a>
-				<a class="button sanguine" href="?mode=move&token=<?php newToken(true);?>">  <?php e('Move files'); ?>  <img src="img/movefiles.png"/></a>
+				<a class="button" href="?mode=view&token=<?php newToken(true);?>"> <?php e('Manage files'); ?> <img src="design/<?php echo $_SESSION['theme'];?>/img/file.png"/></a>
+				<a class="button green" href="?mode=links&token=<?php newToken(true);?>"> <?php e('Manage links'); ?> <img src="design/<?php echo $_SESSION['theme'];?>/img/link.png"/></a>
+				<a class="button sanguine" href="?mode=move&token=<?php newToken(true);?>">  <?php e('Move files'); ?>  <img src="design/<?php echo $_SESSION['theme'];?>/img/movefiles.png"/></a>
 				<hr/>
 				<br/>
-				<a class="button red" href="admin.php?deconnexion"><?php e('Logout'); ?> <img src="img/logout.png"/></a>
+				<a class="button red" href="admin.php?deconnexion"><?php e('Logout'); ?> <img src="design/<?php echo $_SESSION['theme'];?>/img/logout.png"/></a>
 			</div>
 		</div>
 
@@ -288,17 +296,17 @@
 	<footer>
 		<div class="w1000">
 		<?php if (!isset($_SESSION['mode']) || $_SESSION['mode']=='view'){ ?>
-			<div class="w33"><img src="img/bozondd.png"/><p>1 <?php e('Drag the file you want to share to upload it on the server');?></p></div>
-			<div class="w33"><img src="img/bozoncc.png"/><p>2 <?php e('Copy the file\'s link (right click on it)');?></p></div>
-			<div class="w33"><img src="img/bozonsh.png"/><p>3 <?php e('Share the link with your buddies...');?></p></div>
+			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/bozondd.png"/><p>1 <?php e('Drag the file you want to share to upload it on the server');?></p></div>
+			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/bozoncc.png"/><p>2 <?php e('Copy the file\'s link (right click on it)');?></p></div>
+			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/bozonsh.png"/><p>3 <?php e('Share the link with your buddies...');?></p></div>
 		<?php }else if ($_SESSION['mode']=='move'){ ?>
-			<div class="w50"><p><img src="img/unknown.png"/><?php e('Move a file by clicking on it and choosing the destination folder in the list');?></p></div>
-			<div class="w50"><p><img src="img/folder.png"/><?php e('Move a folder by clicking on the move icon and choosing the destination folder in the list');?></p></div>
+			<div class="w50"><p><img src="design/<?php echo $_SESSION['theme'];?>/img/unknown.png"/><?php e('Move a file by clicking on it and choosing the destination folder in the list');?></p></div>
+			<div class="w50"><p><img src="design/<?php echo $_SESSION['theme'];?>/img/folder.png"/><?php e('Move a folder by clicking on the move icon and choosing the destination folder in the list');?></p></div>
 
 		<?php }else if ($_SESSION['mode']=='links'){ ?>
-			<div class="w33"><img src="img/locked_big.png"/><p> <?php e('Lock the access to the file/folder with a password');?></p></div>
-			<div class="w33"><img src="img/burn_big.png"/><p> <?php e('When burn is on, the user can access the file/folder only once');?></p></div>
-			<div class="w33"><img src="img/renew_big.png"/><p> <?php e('Renew the share link of the file/folder (in case of a stolen link for example)');?></p></div>	
+			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/locked_big.png"/><p> <?php e('Lock the access to the file/folder with a password');?><br/><small><?php e('If you want to remove the password, just click on Renew button');?></small></p></div>
+			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/burn_big.png"/><p> <?php e('When burn is on, the user can access the file/folder only once');?></p></div>
+			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/renew_big.png"/><p> <?php e('Renew the share link of the file/folder (in case of a stolen link for example)');?></p></div>	
 
 
 		<?php } ?>

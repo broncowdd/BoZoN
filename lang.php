@@ -40,12 +40,16 @@
 		'Paste a file\'s URL'=>'Coller l\'URL d\'un fichier',
 		'New_folder'=>'Nouveau_dossier',
 		'Create a subfolder'=>'Créer un nouveau dossier',
+		'Create a subfolder in this folder'=>"Créer un sous-dossier dans ce dossier",
 		'Manage links'=>'Gérer les liens',
 		'Move files'=>'Déplacer des fichiers',
 		'Manage files'=>'Gérer les fichiers',
 		'Move file or folder'=>'Dépl. fichier/dossier',
 		'Move'=>'Déplacer',
 		'To'=>'Vers',
+		'Yes'=>'Oui',
+		'Rename'=>'Renommer',
+		'Delete'=>'Supprimer',
 		'Move a file by clicking on it and choosing the destination folder in the list'=>'Déplacer un fichier en cliquant dessus puis en sélectionnant la destination dans la liste',
 		'Move a folder by clicking on the move icon and choosing the destination folder in the list'=>'Déplacer un dossier en cliquant sur "Déplacer" puis en sélectionnant la destination dans la liste',
 		'Lock the access to the file/folder with a password'=>"Verrouiller l'acces au fichier/dossier à l'aide d'un mot de passe",
@@ -60,12 +64,19 @@
 		'Lock access'=>"Verrouiller l'accès",
 		'This share is protected, please type the correct password:'=>'Ce lien est protégé: veuillez taper le mot de passe.',
 		'Root'=>'Racine',
-
+		'Share link'=>'Lien de partage',
+		'Delete this file'=>'Supprimer ce fichier',
+		'Get the share link'=>'Obtenir le lien de partage',
+		'Rename this file (share link will not change)'=>'Renommer ce fichier (le lien de partage ne changera pas)',
+		'Put a password on this share'=>"Protéger l'accès par mot de passe",
+		'Turn this share into a burn after access share'=>"Passer ce partage en mode accès unique",
+		'Regen the share link'=>'Régénérer le lien de partage',
+		'Move this file to another directory'=>'Déplacer ce fichier vers un autre dossier',
+		'If you want to remove the password, just click on Renew button'=>'Si vous voulez retirer le mot de passe, cliquez sur le bouton Régénérer le lien',
 		'Problem accessing ID file: not readable'=>"Erreur d'accès en lecture au fichier ID.",
 		'Problem accessing ID file: not writable'=>"Erreur d'accès en écriture au fichier ID.",
+		'Convert this zip file to folder'=>"Convertir ce fichier Zip en dossier",
 	);
-
-
 
 	# ESPANOL
 	$lang['es']=array(
@@ -92,12 +103,16 @@
 		'Paste a file\'s URL'=>'Pegar la URL de un fichero',
 		'New_folder'=>'Nueva_carpeta',
 		'Create a subfolder'=>'Crear una carpeta nueva',
+		'Create a subfolder in this folder'=>"Crear una subcarpeta nueva en esta carpeta",
 		'Manage links'=>'Gestionar los enlaces',
 		'Move files'=>'Mover ficheros',
 		'Manage files'=>'Gestionar los ficheros',
 		'Move file or folder'=>'Mover fichero/carpeta',
 		'Move'=>'Mover',
 		'To'=>'A',
+		'Yes'=>'Sí',
+		'Rename'=>'Cambiar el nombre',
+		'Delete'=>'Borrar',
 		'Move a file by clicking on it and choosing the destination folder in the list'=>'Mueve un fichero haciendo clic en él y escogiendo el destino en la lista',
 		'Move a folder by clicking on the move icon and choosing the destination folder in the list'=>'Mueve una carpeta pinchando en "Mover" y escogiendo el destino en la lista',
 		'Lock the access to the file/folder with a password'=>"Poner una contraseña al fichero",
@@ -112,9 +127,16 @@
 		'Lock access'=>"Impedir el acceso",
 		'This share is protected, please type the correct password:'=>'Este enlace está protegido por una contraseña:',
 		'Root'=>'Raíz',
-
+		'Share link'=>'Enlace público',
+		'Get the share link'=>'Conseguir el enlace público',
+		'Rename this file (share link will not change)'=>'Cambiar el nombre (el enlace no cambiará)',
+		'Put a password on this share'=>"Proteger con una contraseña",
+		'Turn this share into a burn after access share'=>"Pasar al modo acceso único",
+		'Regen the share link'=>'Renovar el enlace público',
+		'Move this file to another directory'=>'Desplazar este fichero a otra carpeta',
+		'If you want to remove the password, just click on Renew button'=>'Si quiere quitarle la contraseña, solo tiene que pinchar en el botón Renovar el enlace',
 		'Problem accessing ID file: not readable'=>"Error de acceso leyendo el fichero ID.",
 		'Problem accessing ID file: not writable'=>"Error de acceso escribiendo al fichero ID.",
-	
+		'Convert this zip file to folder'=>"Convertir este fichero Zip en carpeta",
 	);
 ?>

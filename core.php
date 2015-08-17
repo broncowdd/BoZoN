@@ -5,19 +5,23 @@
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
 
-	require_once('lang.php');
+	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','1.5');
+	define('VERSION','1.6');
+	require_once('lang.php');
 	include('config.php');
 
 	# Current session changing language
 	if (!empty($_GET['lang'])){$_SESSION['language']=strip_tags($_GET['lang']);header('location:admin.php');}
 	if (empty($_SESSION['language'])){$_SESSION['language']=$default_language;}
 	
-	# UPLOAD PATH & ID_FILE
+	# SESSION VARS
+
+	if (empty($_SESSION['zip'])){$_SESSION['zip']=class_exists('ZipArchive');}
 	if (empty($_SESSION['home'])){$_SESSION['home'] =addslash_if_needed(dirname(getUrl()));}
 	if (empty($_SESSION['upload_path'])){$_SESSION['upload_path']=$default_path;}
 	if (empty($_SESSION['id_file'])){$_SESSION['id_file']=$default_id_file;}
+	if (empty($_SESSION['theme'])){$_SESSION['theme']=$default_theme;}
 	if (!isset($_SESSION['current_path'])){$_SESSION['current_path']=$_SESSION['upload_path'];}
 	if (!is_dir($_SESSION['upload_path'])){ mkdir($_SESSION['upload_path']); }
 	if (!is_file($_SESSION['upload_path'].'index.html')){ file_put_contents($_SESSION['upload_path'].'index.html',' '); }
@@ -25,7 +29,6 @@
 	else{include('salt.php');}
 	if (!is_dir('thumbs/')){mkdir('thumbs/');}
 	if (!is_file('thumbs/index.html')){file_put_contents('thumbs/index.html',' ');}
-
 	if (!file_exists($_SESSION['id_file'])){$ids=array();store();}
 	if (!is_file($_SESSION['upload_path'].'.htaccess')){
 		file_put_contents($_SESSION['upload_path'].'.htaccess', 
@@ -56,7 +59,7 @@ php_flag engine off
 	if (!is_writable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not writable',false).'</div>';}
 	if (!is_readable($_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not readable',false).'</div>';}
 	if (!is_writable($_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not writable',false).'</div>';}
-
+	include('design/'.$_SESSION['theme'].'/templates.php');
 	$behaviour['FILES_TO_ECHO']=array('txt','js','html','php','SECURED_PHP','htm','shtml','shtm','css');
 	$behaviour['FILES_TO_RETURN']=/*array();*/array('jpg','jpeg','gif','png','pdf','swf','mp3','mp4','svg');
 
@@ -65,7 +68,7 @@ php_flag engine off
 	$auto_thumb['default_height']='64';
 	$auto_thumb['dont_try_to_resize_thumbs_files']=true;
 
-
+	include('design/'.$_SESSION['theme'].'/templates.php');
 
 	$ids=unstore();
 	# add an item to ID file
@@ -282,8 +285,7 @@ php_flag engine off
 	        }
 	        closedir($handle);
 	    }
-
-	    natcasesort($liste);
+		natcasesort($liste);
 	    return $liste;
 	   
 	}
@@ -341,4 +343,25 @@ php_flag engine off
 		echo '</ul></section>';
 	}
 	
+	function template($key,$array){
+		global $templates;
+		if (isset($templates[$key])){
+			return str_replace(array_keys($array),array_values($array),$templates[$key]);
+		}else{return false;}
+	}
+
+	function navigatorLanguage(){
+		$language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+		return $language{0}.$language{1};
+	}
+
+
+	function unzip($file, $destination){ 
+	    if (!class_exists('ZipArchive')){return false;}
+	    $zip = new ZipArchive() ;
+	    if ($zip->open($file) !== TRUE) { return false;} 
+	   	$zip->extractTo($destination); 
+	    $zip->close(); 
+	    return true; 
+	}
 ?>
