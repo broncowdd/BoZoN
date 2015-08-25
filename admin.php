@@ -142,7 +142,7 @@
 			}
 
 			rename($oldfile,$newfile); 
-			$ids[$_GET['ren']]=$newfile;
+			$ids[$_GET['id']]=$newfile;
 			store();
 			kill_thumb_if_exists($oldfile);
 			kill_thumb_if_exists($newfile);
