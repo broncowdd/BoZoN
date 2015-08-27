@@ -113,7 +113,7 @@ $templates=array(
 				<a class="link" title="'.$tooltip_link.'" onclick="put_link(\'#ID\');" href="#link_box">&nbsp;</a>
 				#ICONE_VISU
 			</div>
-			<a href="admin.php?path=#FICHIER&token=#TOKEN" >
+			<a href="index.php?f=#ID" download="#FICHIER" >
 				<img src="#THUMBNAIL" style="background:transparent;"/>
 				<em>#SIZE</em><em>#NAME</em>
 			</a>
@@ -127,7 +127,7 @@ $templates=array(
 				<a class="link" title="'.$tooltip_link.'" onclick="put_link(\'#ID\');" href="#link_box">&nbsp;</a>
 				#ICONE_VISU
 			</div>
-			<a href="admin.php?path=#FICHIER&token=#TOKEN" >
+			<a href="index.php?f=#ID" download="#FICHIER" >
 				<img src="design/'.$_SESSION['theme'].'/img/ghost.png" class="#EXTENSION"/>
 				<em>#SIZE</em><em>#NAME</em>
 			</a>
