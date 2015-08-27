@@ -72,7 +72,7 @@ if (count($liste)>0){
 			}
 			$extension=strtolower(pathinfo($fichier,PATHINFO_EXTENSION));
 			if (visualizeIcon($extension)){
-					$icone_visu='<a class="visu" href="index.php?f='.$id.'" target="_BLANK">&nbsp;</a>';
+					$icone_visu='<a class="visu" href="index.php?f='.$id.'" target="_BLANK" title="'.e('View this file',false).'">&nbsp;</a>';
 				}else{$icone_visu='';}
 			if (is_dir($fichier)){
 					# Item is a folder
