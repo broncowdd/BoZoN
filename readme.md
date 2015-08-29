@@ -12,7 +12,7 @@
 The share link is the file link in the admin's view (you can also access it by the button link on the file.)
 
 ## Required 
-Php 5 min
+Php 5 min and php5-gd
 
 ## New in version 1.6.1
 * elementaryOS theme/skin
