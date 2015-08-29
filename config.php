@@ -10,5 +10,5 @@
 	// $default_language='en'; 		# change this if you want to force another language by default (see in lang.php)
 	$default_path='uploads/'; 		# upload folder, change it BEFORE first start: once links are generated, if you change the path there are no longer available
 	$default_id_file='id.txt';		# IDs file name, change it BEFORE first start
-	$default_theme='default';		# you can make your own bozon design and set this variable with the folder skin's name inside the design folder
+	$default_theme='elementaryos';		# you can make your own bozon design and set this variable with the folder skin's name inside the design folder
 ?>

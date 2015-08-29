@@ -213,14 +213,14 @@ if ($_FILES){
     }
 ?>
 
-        <td class="<?php echo $auto_dropzone['dropzone_class']; ?> DD_dropzone" id="<?php echo $auto_dropzone['dropzone_id'];?>">
-            <p class="DD_text"><?php echo $auto_dropzone['dropzone_text'];?><br/><em>(max:<?php echo $max;?> Mo)</em></p>
+        <div class="column window <?php echo $auto_dropzone['dropzone_class']; ?> DD_dropzone" id="<?php echo $auto_dropzone['dropzone_id'];?>">
+            <header class="DD_text"><?php echo $auto_dropzone['dropzone_text'];?><br/><em>(max:<?php echo $max;?> Mo)</em></header>
 
             <div class="DD_info">
                 <div id="result"></div>
                 <div id="DD_progressbar"></div>
             </div>
-        </td>
+        </div>
         <form action="#" method="post" enctype="multipart/form-data" id="DD_fallback_form" >
             <input type="file" name="myfile" id="fileToUpload" class="DD_hidden"/>
             <input type="hidden" value="fallback" name="fallback"/>

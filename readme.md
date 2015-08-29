@@ -14,6 +14,10 @@ The share link is the file link in the admin's view (you can also access it by t
 ## Required 
 Php 5 min
 
+## New in version 1.6.1
+* elementaryOS theme/skin
+* bugfix: #22 & #23
+
 ## New in version 1.6
 * skin system to easily create your own theme 
 * bugfix: timezone error
