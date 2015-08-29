@@ -728,10 +728,9 @@ ul.tree .vl{
 	width:350px;
 	height:100%;
 	background: transparent;
-	left:-320px;
+	left:-350px;
 	top:0;
 	padding:0;
-	z-index: 1;
 }
 #menu .lang, #menu .menucontent{
 	opacity:0;
@@ -769,10 +768,13 @@ ul.tree .vl{
 	border-radius: 0 3px 3px 0;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 	background:url(img/menu_closed.png) no-repeat center center #ccc ;
+	position: absolute;
+	right: -32px;
 }
 .open #menu_icon{
 	background:url(img/menu_opened.png) no-repeat center center transparent;
 	box-shadow: none;
+	right: 0;
 }
 .buttongroup{ margin-top:20px;}
 #menu .menucontent{
