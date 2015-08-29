@@ -226,7 +226,7 @@ div.window header{
 	color:rgba(0,0,0,0.7);
 	text-shadow:0 1px 1px rgba(255,255,255,0.9);
 	text-align: left;
-	min-height: 110px;
+	min-height: 60px;
 
 }
 div.window header::first-letter{color:red;}
@@ -545,7 +545,7 @@ img.iso,img.bin{background-image:url(img/iso.png)!important;}
 	text-align:center;
     margin-right:15px;
 	padding:10px;
-	width:30%;min-height:100px;min-width:150px;
+	min-height:250px;min-width:150px;
 	background:url(img/bozondd.png) no-repeat center center rgba(0,0,0,0.1)!important;
 
 }
