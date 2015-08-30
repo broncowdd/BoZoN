@@ -392,7 +392,7 @@ if ($_FILES){
             function uploadNext() {
                 reload_list();
                 if (list.length) {
-                    dropArea.className = 'DD_dropzone DD_uploading';
+                    add_class(dropArea,'DD_uploading');
                     var nextFile = list.shift();
 
                     if (nextFile.size >= <?php echo $max*1048576; ?>) { 
@@ -405,7 +405,7 @@ if ($_FILES){
                         uploadFile(nextFile, status);
                     }
                 } else {
-                    dropArea.className = 'DD_dropzone'
+                    remove_class(dropArea,'DD_uploading')
                     bar.style.width='0';
                     reload_list();
                     uploading=false;
