@@ -42,7 +42,7 @@ body{
 }
 body.move{}
 body.links{}
-header{
+body>header{
 	min-height:64px;
 	text-align: right;
 	vertical-align: middle;
@@ -229,7 +229,6 @@ div.window header{
 	min-height: 60px;
 
 }
-div.window header::first-letter{color:red;}
 div.window header::before{
 	content:' ';
 	display:inline-block;
@@ -551,8 +550,8 @@ img.iso,img.bin{background-image:url(img/iso.png)!important;}
 }
 .DD_uploading{ background-color:orange;}
 .DD_hover{
-	background-color:rgba(255,255,0,0.5);
-	box-shadow:inset 0 4px 8px;
+	background-color:rgba(0,0,255,0.5);
+	
 }
 .DD_text{
 	color: rgba(0,0,0,0.5);
@@ -593,6 +592,7 @@ img.iso,img.bin{background-image:url(img/iso.png)!important;}
 .DD_info{
 	font-size:12px;
 	text-align:left;
+	margin: 0 10px;
 }
 .DD_info li.DD_file{list-style:none;}
 #DD_progressbar{
