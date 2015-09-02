@@ -7,7 +7,7 @@
 	 * auto_restrict
 	 * @author bronco@warriordudimanche.com / www.warriordudimanche.net
 	 * @copyright open source and free to adapt (keep me aware !)
-	 * @version 3.3 - one user only version / version mono utilisateur
+	 * @version 3.4 - one user only version / version mono utilisateur
 	 *   
 	 * This script locks a page's access  
 	 * Just include it in the page you want to lock  
