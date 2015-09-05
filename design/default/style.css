@@ -42,7 +42,7 @@ body{
 }
 body.move{}
 body.links{}
-header{
+body>header{
 	min-height:64px;
 	border-bottom:1px solid rgba(0,0,0,0.5);
 	text-align: right;
@@ -94,6 +94,30 @@ header{
 	text-shadow:0 1px 1px rgba(0,0,0,0.5);
 	text-align:center;
 }
+
+#content{
+	width:100%;
+	min-height:500px;
+	padding:40px 10px;
+	display: flex;
+	align-items: stretch;
+}
+
+
+	.column{		
+		vertical-align: top;
+		min-height:80%;
+		padding:15px;
+		padding-top:0;
+	}
+	.column:first-child{
+		flex: 0 0 30%;
+	}
+	.column:last-child{
+		flex: 1 1 auto;
+	}
+
+	.column>header>h2{display:none;}
 
 /* share password form */
 .lock{
