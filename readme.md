@@ -14,6 +14,13 @@ The share link is the file link in the admin's view (you can also access it by t
 ## Required 
 Php 5 min and php5-gd
 
+
+## New in 1.6.3
+* added stats page
+
+## New in 1.6.2
+* security bugfix
+
 ## New in version 1.6.1
 * elementaryOS theme/skin
 * bugfix: #22 & #23
@@ -78,16 +85,19 @@ Php 5 min and php5-gd
 - update: auto_thumbnail to the last version
 
 ## used libraries 
-I only used a few libs I made
+I used a few libs I made
 - auto_restrict : to easily lock access to a page and handle basic security features
 - auto_thumbs : a function to generate all the thumbnails
 - auto_dropzone : a lib that handle the drag and drop function only by including it in a script
 - Array2feed.php : a function used to convert an array into a RSS feed without commiting suicide XD
 
+and sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
+
 ## Licence
 All Bozon code and all the libs used in it are distributed under AGPL: feel free to fork, adapt, distribute, comment etc but please, keep your fork free too ;-)
 
 ## FAQ
+- _I've changed some config variables and nothing appends !_ : that's not an issue; all variables are in the Session, so you need to restart chromium/firefox/opera etc to see the changes 
 - _can't see icons / problems uploading / list refresh problem_ : take a look to access rights (folders / files)
 - _I want to change my password / I forgot my password !_ : just use your FTP client and delete the *auto_restrict_files* folder, then try to login again and create a new login/pass.
 - _I want to change the default language !_ : see in config.php file you can set fr/en/es but you can also make your own traduction (see in lang.php)

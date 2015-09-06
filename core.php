@@ -7,7 +7,7 @@
 
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','1.6.2');
+	define('VERSION','1.6.3');
 	require_once('lang.php');
 	include('config.php');
 
@@ -17,10 +17,13 @@
 	
 	# SESSION VARS
 
+	if (empty($_SESSION['stats_max_entries'])){$_SESSION['stats_max_entries']=$default_limit_stat_file_entries;}
+	if (empty($_SESSION['stats_max_lines'])){$_SESSION['stats_max_lines']=$default_max_lines_per_page_on_stats_page;}
 	if (empty($_SESSION['zip'])){$_SESSION['zip']=class_exists('ZipArchive');}
 	if (empty($_SESSION['home'])){$_SESSION['home'] =addslash_if_needed(dirname(getUrl()));}
 	if (empty($_SESSION['upload_path'])){$_SESSION['upload_path']=$default_path;}
 	if (empty($_SESSION['id_file'])){$_SESSION['id_file']=$default_id_file;}
+	if (empty($_SESSION['stats_filestats_file'])){$_SESSION['stats_file']=$default_stat_file;}
 	if (empty($_SESSION['theme'])){$_SESSION['theme']=$default_theme;}
 	if (!isset($_SESSION['current_path'])){$_SESSION['current_path']=$_SESSION['upload_path'];}
 	if (!is_dir($_SESSION['upload_path'])){ mkdir($_SESSION['upload_path']); }
@@ -54,9 +57,11 @@ php_flag engine off
 				</Files>
 		');
 	}
-
+	if (!is_file($_SESSION['stats_file'])){file_put_contents($_SESSION['stats_file'], array());}
 	if (!is_readable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not readable',false).'</div>';}
+	if (!is_readable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not readable',false).'</div>';}
 	if (!is_writable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not writable',false).'</div>';}
+	if (!is_writable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not writable',false).'</div>';}
 	if (!is_readable($_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not readable',false).'</div>';}
 	if (!is_writable($_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not writable',false).'</div>';}
 	include('design/'.$_SESSION['theme'].'/templates.php');
@@ -71,6 +76,31 @@ php_flag engine off
 	include('design/'.$_SESSION['theme'].'/templates.php');
 
 	$ids=unstore();
+
+	# store all client access to a file
+	function store_access_stat($file=null,$id=null){
+		if (!$file||!$id){return false;}
+		$host=$ref='&#8709;';
+		if (isset($_SERVER['REMOTE_HOST'])){$host=$_SERVER['REMOTE_HOST'];}
+		if (isset($_SERVER['HTTP_REFERER'])){$ref=$_SERVER['HTTP_REFERER'];}
+		$data=array(
+			'ip'=>$_SERVER['REMOTE_ADDR'],
+			'host'=>$host,
+			'referrer'=>$ref,
+			'date'=>date('D d M, H:i:s'),
+			'file'=>$file,
+			'id'=>$id,
+		);
+		@$stats=unserialize(file_get_contents($_SESSION['stats_file']));
+		if (!is_array($stats)){$stats=array();}
+		if (count($stats)>$_SESSION['stats_max_entries']){
+			$stats=array_values($stats);
+			unset($stats[0]);
+		}
+		$stats[]=$data;
+		file_put_contents($_SESSION['stats_file'],serialize($stats));
+	}
+	
 	# add an item to ID file
 	function addID($string){
 		$ids=unstore();
@@ -113,6 +143,7 @@ php_flag engine off
 		if (!empty($behaviour[$type])){return array_search($ext,$behaviour[$type]);}else{return false;}
 
 	}
+
 	function store($ids=null){
 		if (!$ids){global $ids;}
 		file_put_contents($_SESSION['id_file'],serialize($ids));

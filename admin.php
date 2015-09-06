@@ -213,49 +213,9 @@
 		
 		<p class="logo"><strong>BoZoN</strong>: <?php e('Drag, drop, share.');?></p>
 
-	<nav id="menu">
-		<div id="menu_icon" >&nbsp;</div>
-		<div style="clear:both"></div>
-		<div class="lang">
-			<?php  
-				foreach ($lang as $l=>$content){
-					if ($_SESSION['language']==$l){$class=' class="active" ';}else{$class='';}
-					echo '<a '.$class.' href="admin.php?lang='.$l.'&token='.returnToken().'">'.$l.'</a>';
-				}
-			?>
-		</div>
-		<div class="menucontent">
-			<form action="#" method="get" class="searchform">
-				<label><?php e('Type to filter the list');?></label>
-				<input type="text" name="filter" value="<?php echo $_SESSION['filter']; ?>" title="<?php e('Search in the uploaded files'); ?>" placeholder="<?php e('Filter'); ?>"/>
-				<input type="submit" value="ok"/>
-				<?php newToken();?>
-			</form>
-			<form action="#" method="get">
-				<label><?php e('Paste a file\'s URL');?></label>
-				<input type="text" name="url" title="<?php e('Paste a file\'s URL to get it on this server');?>" placeholder="http://www.url.com/file.jpg" width="50"/>
-				<?php newToken();?>
-				<input type="submit" value="ok"/>
-			</form>
-			<form action="#" method="get" class="searchform">
-				<label><?php e('Create a subfolder');?></label>
-				<input type="text" name="newfolder" value="" title="<?php e('Create a subfolder in this folder'); ?>" placeholder="<?php e('New_folder'); ?>"/>
-				<input type="submit" value="ok"/>
-				<?php newToken();?>
-			</form>
-			<div class="buttongroup">
-				<a class="button" href="?mode=view&token=<?php newToken(true);?>"> <?php e('Manage files'); ?> <img src="design/<?php echo $_SESSION['theme'];?>/img/file.png"/></a>
-				<a class="button green" href="?mode=links&token=<?php newToken(true);?>"> <?php e('Manage links'); ?> <img src="design/<?php echo $_SESSION['theme'];?>/img/link.png"/></a>
-				<a class="button sanguine" href="?mode=move&token=<?php newToken(true);?>">  <?php e('Move files'); ?>  <img src="design/<?php echo $_SESSION['theme'];?>/img/movefiles.png"/></a>
-				<hr/>
-				<br/>
-				<a class="button red" href="admin.php?deconnexion"><?php e('Logout'); ?> <img src="design/<?php echo $_SESSION['theme'];?>/img/logout.png"/></a>
-			</div>
-		</div>
 
-		
-		
-	</nav>
+<?php include('menu.php');?>
+
 
 		<div style="clear:both"></div>
 		</div>
@@ -263,42 +223,44 @@
 	</header>
 	<?php echo $message;?>
 
-	<table>
-		<tr>
+	<div id="content">
+		
 			
 			<?php include('auto_dropzone.php');?>
 
-			<td>
-				<div class="fil_ariane">
-					<a class="home" href="admin.php?path=<?php echo $_SESSION['upload_path'].'&token='.returnToken(true);?>"><em><?php e('Root');?>:</em>&nbsp;</a>
-					<?php 
-						$ariane=explode('/',$_SESSION['current_path']);
-
-						$chemin='';
-						unset($ariane[0]);
-						foreach($ariane as $nb=>$folder){
-							if (!empty($folder)){
-								$chemin.=$folder;
-								echo '<a class="ariane_item" href="admin.php?path='.$_SESSION['upload_path'].$chemin.'&token='.returnToken(true).'">'.$folder.'</a>';
-								$chemin.='/';
+			<div class="column window">
+				<header>
+					<h2><?php e('Files list');?></h2>
+					<div class="fil_ariane">
+						<a class="home" href="admin.php?path=<?php echo $_SESSION['upload_path'].'&token='.returnToken(true);?>"><em><?php e('Root');?>:</em>&nbsp;</a>
+						<?php 
+							$ariane=explode('/',$_SESSION['current_path']);
+							$chemin='';
+							unset($ariane[0]);
+							foreach($ariane as $nb=>$folder){
+								if (!empty($folder)){
+									$chemin.=$folder;
+									echo '<a class="ariane_item" href="admin.php?path='.$_SESSION['upload_path'].$chemin.'&token='.returnToken(true).'">'.$folder.'</a>';
+									$chemin.='/';
+								}
 							}
-						}
-					?>
-				</div>
+						?>
+					</div>
+				</header>
 				<ul class="list" id="liste">
 
 					<h1><?php echo $_SESSION['filter'];?></h1>
 					<?php include('listfiles.php');?>
 				</ul>
-			</td>
-		</tr>
-	</table>
+			</div>
+		
+	</div>
 	<footer>
 		<div class="w1000">
 		<?php if (!isset($_SESSION['mode']) || $_SESSION['mode']=='view'){ ?>
 			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/bozondd.png"/><p>1 <?php e('Drag the file you want to share to upload it on the server');?></p></div>
-			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/bozoncc.png"/><p>2 <?php e('Copy the file\'s link (right click on it)');?></p></div>
-			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/bozonsh.png"/><p>3 <?php e('Share the link with your buddies...');?></p></div>
+			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/bozonsh.png"/><p>2 <?php e('Copy the file\'s link (right click on it)');?></p></div>
+			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/bozoncc.png"/><p>3 <?php e('Share the link with your buddies...');?></p></div>
 		<?php }else if ($_SESSION['mode']=='move'){ ?>
 			<div class="w50"><p><img src="design/<?php echo $_SESSION['theme'];?>/img/unknown.png"/><?php e('Move a file by clicking on it and choosing the destination folder in the list');?></p></div>
 			<div class="w50"><p><img src="design/<?php echo $_SESSION['theme'];?>/img/folder.png"/><?php e('Move a folder by clicking on the move icon and choosing the destination folder in the list');?></p></div>

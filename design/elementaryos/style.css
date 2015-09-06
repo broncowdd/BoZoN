@@ -614,8 +614,21 @@ img.iso,img.bin{background-image:url(img/iso.png)!important;}
     left: -1000px;
 }
 
-
-
+/*stats page*/
+.stats div.window {margin:0 auto}
+.stats div.window header{margin-bottom:0;}
+.stats #content{min-height:10px;}
+.stats table {border-collapse: collapse;font-size:14px;}
+.stats thead th{cursor:pointer;}
+.stats tbody tr:hover{background: rgba(0,0,0,0.1);}
+.stats th{border:1px solid rgba(0,0,0,0.1);padding:6px 10px;cursor:default;background: rgba(0,0,0,0.5)}
+.stats td{width: auto;border:1px solid rgba(0,0,0,0.1);padding:6px 10px;cursor:default;background: rgba(255,255,255,0.5)}
+.stats td:first-of-type{border:1px solid rgba(0,0,0,0.1);padding:5px;}
+.stats tfoot td{border:none;font-size:22px;}
+.stats tfoot tr{border:none;font-size:22px;}
+.stats tfoot td:first-of-type{text-align:left;border:none;}
+.stats tfoot td:last-of-type{text-align:right;border:none;}
+.stats .total_entries{font-size:12px;color:rgba(0,0,0,0.5);}
 
 /* Login page */
 	body.login{background: url(img/noise.png) #ddd;padding:10px;}
