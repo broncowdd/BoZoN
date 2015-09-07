@@ -17,6 +17,7 @@
 
 	if (!empty($_GET['start'])){$from=$_GET['start'];}
 	@$stats=unserialize(file_get_contents($_SESSION['stats_file']));
+	if (!is_array($stats)){$stats=array();}
 	$stats=array_reverse($stats);
 	if (empty($stats)){$message='No stats';}
 	else{
