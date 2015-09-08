@@ -279,7 +279,16 @@ if ($_FILES){
             if(r.indexOf(m)==-1){return true;}
             else{return false;}
         }
-
+        function add_class(el,cl){
+            if (el.classList){ el.classList.add(cl);}
+            else {el.className += ' ' + cl; }
+        }
+        function remove_class(el,cl){
+            if (el.classList)
+              el.classList.remove(cl)
+            else
+              el.className = el.className.replace(new RegExp('(^| )' + cl.split(' ').join('|') + '( |$)', 'gi'), ' ')
+        }
 
         // main initialization
         
@@ -304,14 +313,14 @@ if ($_FILES){
             function handleDragOver(event) {
                 event.stopPropagation();
                 event.preventDefault();
-                dropArea.className = 'DD_dropzone DD_hover';
+                add_class(dropArea,'DD_hover');
             }
 
             // drag leave
             function handleDragLeave(event) {
                 event.stopPropagation();
                 event.preventDefault();
-                dropArea.className = 'DD_dropzone';
+                remove_class(dropArea,'DD_hover');
             }
 
             // drag drop
@@ -383,7 +392,7 @@ if ($_FILES){
             function uploadNext() {
                 reload_list();
                 if (list.length) {
-                    dropArea.className = 'DD_dropzone DD_uploading';
+                    add_class(dropArea,'DD_uploading');
                     var nextFile = list.shift();
 
                     if (nextFile.size >= <?php echo $max*1048576; ?>) { 
@@ -396,7 +405,7 @@ if ($_FILES){
                         uploadFile(nextFile, status);
                     }
                 } else {
-                    dropArea.className = 'DD_dropzone'
+                    remove_class(dropArea,'DD_uploading')
                     bar.style.width='0';
                     reload_list();
                     uploading=false;

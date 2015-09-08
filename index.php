@@ -12,7 +12,7 @@
 	if (!empty($_GET['f'])){
 		$id=strip_tags($_GET['f']);
 		$f=id2file($id);
-
+		store_access_stat($f,$id);
 		# password mode
 		if (strlen($id)>23 && !isset($_POST['password'])){
 			$message= '<div class="lock"><img src="img/locked_big.png"/>

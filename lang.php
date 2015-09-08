@@ -79,6 +79,10 @@
 		'Problem accessing ID file: not readable'=>"Erreur d'accès en lecture au fichier ID.",
 		'Problem accessing ID file: not writable'=>"Erreur d'accès en écriture au fichier ID.",
 		'Convert this zip file to folder'=>"Convertir ce fichier Zip en dossier",
+		'File'=>'Fichier',
+		'Date'=>'Date',
+		'Origin'=>"Page d'origine",
+		'Host'=>'Hôte',
 	);
 
 	# ESPANOL
@@ -144,5 +148,9 @@
 		'Problem accessing ID file: not readable'=>"Error de acceso leyendo el fichero ID.",
 		'Problem accessing ID file: not writable'=>"Error de acceso escribiendo al fichero ID.",
 		'Convert this zip file to folder'=>"Convertir este fichero Zip en carpeta",
+		'File'=>'Fichero',
+		'Date'=>'Fecha',
+		'Origin'=>"Página de origen",
+		'Host'=>'Huésped',
 	);
 ?>
