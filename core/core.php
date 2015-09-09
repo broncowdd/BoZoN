@@ -21,49 +21,32 @@
 	if (empty($_SESSION['stats_max_lines'])){$_SESSION['stats_max_lines']=$default_max_lines_per_page_on_stats_page;}
 	if (empty($_SESSION['zip'])){$_SESSION['zip']=class_exists('ZipArchive');}
 	if (empty($_SESSION['home'])){$_SESSION['home'] =addslash_if_needed(dirname(getUrl()));}
-	if (empty($_SESSION['upload_path'])){$_SESSION['upload_path']=$default_path;}
+	if (empty($_SESSION['upload_path'])){$_SESSION['upload_path']=addslash_if_needed($default_path);}
 	if (empty($_SESSION['id_file'])){$_SESSION['id_file']=$default_id_file;}
 	if (empty($_SESSION['stats_filestats_file'])){$_SESSION['stats_file']=$default_stat_file;}
 	if (empty($_SESSION['theme'])){$_SESSION['theme']=$default_theme;}
-	if (!isset($_SESSION['current_path'])){$_SESSION['current_path']=$_SESSION['upload_path'];}
+	if (!isset($_SESSION['current_path'])){$_SESSION['current_path']="";}
 	if (!is_dir($_SESSION['upload_path'])){ mkdir($_SESSION['upload_path']); }
 	if (!is_file($_SESSION['upload_path'].'index.html')){ file_put_contents($_SESSION['upload_path'].'index.html',' '); }
-	if (!is_file('salt.php')){ file_put_contents('salt.php','<?php define("BOZON_SALT",'.var_export(generate_bozon_salt(),true).'); ?>'); }
-	else{include('salt.php');}
+	if (!is_dir('private')){mkdir('private',0744);}
+	if (!is_writable('private')){echo '<p class="error">auto_restrict error: token folder is not writeable</p>';}
+	if (!is_file('private/.htaccess')){file_put_contents('private/.htaccess', 'deny from all');}
+	if (!is_file('private/salt.php')){ file_put_contents('private/salt.php','<?php define("BOZON_SALT",'.var_export(generate_bozon_salt(),true).'); ?>'); }
+	else{include('private/salt.php');}
 	if (!is_dir('thumbs/')){mkdir('thumbs/');}
+	if (!is_file('thumbs/.htaccess')){file_put_contents('thumbs/.htaccess', 'deny from all');}
 	if (!is_file('thumbs/index.html')){file_put_contents('thumbs/index.html',' ');}
 	if (!file_exists($_SESSION['id_file'])){$ids=array();store();}
 	if (!is_file($_SESSION['upload_path'].'.htaccess')){
-		file_put_contents($_SESSION['upload_path'].'.htaccess', 
-			'<Files .htaccess>
-	order allow,deny
-	deny from all
-</Files>
-Options All -Indexes
-RemoveHandler .php .phtml .php3 .php4 .php5
-RemoveType .php .phtml .php3 .php4 .php5
-php_flag engine off
-		');
-	}
-	if (!is_file('.htaccess')){
-		file_put_contents('.htaccess', 
-			'<Files .htaccess>
-				order allow,deny
-				deny from all
-				</Files>
-
-				<Files '.$_SESSION['id_file'].'>
-					require valid-user
-				</Files>
-		');
+		file_put_contents($_SESSION['upload_path'].'.htaccess', 'deny from all');
 	}
 	if (!is_file($_SESSION['stats_file'])){file_put_contents($_SESSION['stats_file'], array());}
 	if (!is_readable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not readable',false).'</div>';}
 	if (!is_readable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not readable',false).'</div>';}
 	if (!is_writable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not writable',false).'</div>';}
 	if (!is_writable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not writable',false).'</div>';}
-	if (!is_readable($_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not readable',false).'</div>';}
-	if (!is_writable($_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not writable',false).'</div>';}
+	if (!is_readable($_SESSION['upload_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not readable',false).'</div>';}
+	if (!is_writable($_SESSION['upload_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not writable',false).'</div>';}
 	include('design/'.$_SESSION['theme'].'/templates.php');
 	$behaviour['FILES_TO_ECHO']=array('txt','js','html','php','SECURED_PHP','htm','shtml','shtm','css');
 	$behaviour['FILES_TO_RETURN']=/*array();*/array('jpg','jpeg','gif','png','pdf','swf','mp3','mp4','svg');
@@ -91,14 +74,15 @@ php_flag engine off
 			'file'=>$file,
 			'id'=>$id,
 		);
-		@$stats=unserialize(file_get_contents($_SESSION['stats_file']));
+		//FIXME not very good when multi-call
+		$stats=(file_exists($_SESSION['stats_file']) ? unserialize(gzinflate(base64_decode(substr(file_get_contents($_SESSION['stats_file']),9,-strlen(6))))) : array() );
 		if (!is_array($stats)){$stats=array();}
 		if (count($stats)>$_SESSION['stats_max_entries']){
 			$stats=array_values($stats);
 			unset($stats[0]);
 		}
 		$stats[]=$data;
-		file_put_contents($_SESSION['stats_file'],serialize($stats));
+		file_put_contents($_SESSION['stats_file'], '<?php /* '.base64_encode(gzdeflate(serialize($stats))).' */ ?>');
 	}
 	
 	# add an item to ID file
@@ -127,7 +111,9 @@ php_flag engine off
 		$ids=unstore();
 		$sdi=array_flip($ids);// paths are keys		
 		$save=false;
+		$upload_path_size=strlen($_SESSION['upload_path']);
 		foreach($array_of_files as $file){
+			$file=substr($file,$upload_path_size);
 			if (!isset($sdi[$file])){
 				$save=true;
 				$ids[uniqid(true)]=$file;
@@ -146,12 +132,18 @@ php_flag engine off
 
 	function store($ids=null){
 		if (!$ids){global $ids;}
-		file_put_contents($_SESSION['id_file'],serialize($ids));
+		file_put_contents($_SESSION['id_file'], '<?php /* '.base64_encode(gzdeflate(serialize($ids))).' */ ?>');
 	}
-	function unstore(){return unserialize(file_get_contents($_SESSION['id_file']));}
+	function unstore(){
+		return (file_exists($_SESSION['id_file']) ? unserialize(gzinflate(base64_decode(substr(file_get_contents($_SESSION['id_file']),9,-strlen(6))))) : array() );
+	}
 	function id2file($id){
 		global $ids;
-		if (isset($ids[$id])){return $ids[$id];}else{return false;}
+		if (isset($ids[$id])){
+			return $ids[$id];
+		}else{
+			return false;
+		}
 	}
 	function file2id($file){
 		global $ids;
@@ -186,7 +178,7 @@ php_flag engine off
 		curl_setopt($ch, CURLOPT_URL, $url);
 		if (!ini_get("safe_mode") && !ini_get('open_basedir') ) {curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);}
 		curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-		if ($pretend){curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0');}    
+		if ($pretend){curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Linux x86_64; rv:40.0) Gecko/20100101 Firefox/40.0');}    
 		curl_setopt($ch, CURLOPT_REFERER, 'http://noreferer.com');// notez le referer "custom"
 		$data = curl_exec($ch);
 		$response_headers = curl_getinfo($ch);
@@ -201,7 +193,7 @@ php_flag engine off
 	 $url .= $_SERVER["REQUEST_URI"];
 	 return $url;
 	}
-	function rrmdir($dir) { 
+	function rrmdir($rrmdir) { 
 		# delete a folder and its content
 	   if (is_dir($dir)) { 
 	     $objects = scandir($dir); 
@@ -306,6 +298,9 @@ php_flag engine off
 
 	function _glob($path,$pattern='') {
 		# glob function fallback by Cyril MAGUIRE (thx bro' ;-)
+		if($path=='/'){
+			$path='';
+		}
 	    $liste =  array();
 	    $pattern=str_replace('*','',$pattern);
 	    if ($handle = opendir($path)) {
@@ -322,7 +317,7 @@ php_flag engine off
 	}
 	
 	function tree($dir='.',$files=true){
-        # scann a folder and subfolders and return the tree
+         # scann a folder and subfolders and return the tree
         if (!isset($dossiers[0]) || $dossiers[0]!=$dir){$dossiers[0]=$dir;}
         if (!is_dir($dir)&&$files){ return array($dir); }
         elseif (!is_dir($dir)&&!$files){return array();}
@@ -335,42 +330,38 @@ php_flag engine off
         return $dossiers;
     }
 	function draw_tree($tree){
+		$upload_path_size=strlen($_SESSION['upload_path']);
 		echo '<section><ul class="tree">';
-			$root=explode('/',$tree[0]);$fork='&#9500;';
-			$root=array_search(basename($tree[0]), $root)+1;
-			$level=0;$tab=str_repeat('&nbsp;',2);
-			for ($i=0;$i<count($tree);$i++){
-				$branch=$tree[$i];
-				if (isset($tree[$i+1])){$next=$tree[$i+1];}else{$next=false;}
+		$root=explode('/',$tree[0]);$fork='&#9500;';
+		$root=array_search(basename($tree[0]), $root)+1;
+		$level=0;$tab=str_repeat('&nbsp;',2);
+		for ($i=0;$i<count($tree);$i++){
+			$branch=$tree[$i];
+			if (isset($tree[$i+1])){$next=$tree[$i+1];}else{$next=false;}
+			if ($link=file2id(substr($branch,$upload_path_size))){ 
+				$ext='';
+				$level=count(explode('/',$branch))-$root;
+				if ($next){$next_level=count(explode('/',$next))-$root;}else{$next_level=0;}						
+				if ($level<0){$level=0;}
+				if ($next_level<0){$next_level=0;}
 
-				if ($link=file2id($branch)){ 
-					$ext='';
-					$level=count(explode('/',$branch))-$root;
-					if ($next){$next_level=count(explode('/',$next))-$root;}else{$next_level=0;}						
-					if ($level<0){$level=0;}
-					if ($next_level<0){$next_level=0;}
+				$ext=strtolower(pathinfo($branch,PATHINFO_EXTENSION));
+				$folder='';$basename=basename($branch);
 
-					$ext=strtolower(pathinfo($branch,PATHINFO_EXTENSION));
-					$folder='';$basename=basename($branch);
-
-					if(is_dir($branch)){
-						$folder=' folder';
-					}
-					if ($level>$next_level || !$next){
-						$fork='&#9492;';
-					}else{$fork='&#9500;';}
-					if ($level<$next_level){
-						echo '<li>'.str_repeat('<span class="vl">'.$tab.'&#9474;'.$tab.'</span>', $level+1).'</li>';
-					}
-		
-					echo '<li><span class="vl">'.str_repeat($tab.'&#9474;'.$tab, $level).$tab.$fork.$tab.'</span><span class="'.$ext.$folder.'"><a href="index.php?f='.$link.'">'.$basename.'</a></span></li>';
-					if ($level>$next_level){echo '<li>'.str_repeat('<span class="vl">'.$tab.'&#9474;'.$tab.'</span>', $level).'</li>';}
-						
+				if(is_dir($branch)){
+					$folder=' folder';
 				}
-					
-				
+				if ($level>$next_level || !$next){
+					$fork='&#9492;';
+				}else{$fork='&#9500;';}
+				if ($level<$next_level){
+					echo '<li>'.str_repeat('<span class="vl">'.$tab.'&#9474;'.$tab.'</span>', $level+1).'</li>';
+				}
+	
+				echo '<li><span class="vl">'.str_repeat($tab.'&#9474;'.$tab, $level).$tab.$fork.$tab.'</span><span class="'.$ext.$folder.'"><a href="index.php?f='.$link.'">'.$basename.'</a></span></li>';
+				if ($level>$next_level){echo '<li>'.str_repeat('<span class="vl">'.$tab.'&#9474;'.$tab.'</span>', $level).'</li>';}
 			}
-
+		}
 		echo '</ul></section>';
 	}
 	
@@ -394,5 +385,17 @@ php_flag engine off
 	   	$zip->extractTo($destination); 
 	    $zip->close(); 
 	    return true; 
+	}
+
+	function check_path($path){
+		return (strpos($path, '//')===false && strpos($path, '..')===false && ( empty($path[0]) || (!empty($path[0]) && $path[0]!='/') ) );
+	}
+
+	function get_thumbs_name($file){
+		global $auto_thumb;
+		if($file[0]=='/'){
+			$file=substr($file,1);
+		}
+		return 'thumbs/'.preg_replace('#\.(jpe?g|png|gif)#i','_THUMB__'.$auto_thumb['default_width'].'x'.$auto_thumb['default_height'].'.$1',$file);
 	}
 ?>

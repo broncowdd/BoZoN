@@ -5,8 +5,8 @@
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
 	$message='';
-	include ('auto_restrict.php'); # Admin only!
-	include('core.php');
+	include ('core/auto_restrict.php'); # Admin only!
+	include('core/core.php');
 	
 
 
@@ -19,8 +19,9 @@
 	if (!empty($_GET['unzip']) && trim($_GET['unzip'])!==false){
 		$id=$_GET['unzip'];
 		$path=id2file($id);
-		unzip($path,dirname($path));
+		unzip($_SESSION['upload_path'].$path,$_SESSION['upload_path'].dirname($path));
 		header('location:admin.php');
+		exit;
 	}	
 
 	# renew file id
@@ -30,6 +31,7 @@
 		unset($ids[$old_id]);
 		addID($path);
 		header('location:admin.php');
+		exit;
 	}	
 
 	# create burn after acces state
@@ -44,13 +46,21 @@
 		}
 		store();
 		header('location:admin.php');
+		exit;
 	}	
 
 
 	# subfolder path
 	if (!empty($_GET['path']) && trim($_GET['path'])!==false){
-		$_SESSION['current_path']=str_replace('//','/',$_GET['path']);
+		$path=$_GET['path'];
+		if($path=='/'){
+			$path='';
+		}
+		if(check_path($path)){
+			$_SESSION['current_path']=$path;
+		}
 		header('location:admin.php');
+		exit;
 	}
 
 	# purge ids via get var
@@ -74,17 +84,20 @@
 	# create a new subfolder
 	if (!empty($_GET['newfolder'])){
 		$folder=$_GET['newfolder'];
-		$complete=addslash_if_needed($_SESSION['current_path']).$folder;
-		if (is_dir($complete)){
-			# Folder already exists, rename
-			$folder=rename_item($folder);
-			$complete=$_SESSION['current_path'].'/'.$folder;
+		if(check_path($folder)){
+			foreach (array($_SESSION['upload_path'], 'thumbs/') as $root_folder) {
+				$complete=$root_folder.addslash_if_needed($_SESSION['current_path']).$folder;
+				if (is_dir($complete)){
+					# Folder already exists, rename
+					$folder=rename_item($folder);
+					$complete=$root_folder.$_SESSION['current_path'].'/'.$folder;
+				}
+				mkdir($complete, 0755, true);
+			}
+			addID($_SESSION['current_path'].'/'.$folder);
 		}
-		mkdir($complete);
-		chmod($complete, 0755);
-		addID($_SESSION['current_path'].'/'.$folder);
-
 		header('location:admin.php');
+		exit;
 	}
 	
 	# get file from url
@@ -92,33 +105,37 @@
 		if ($content=file_curl_contents($_GET['url'])){
 			$basename=basename($_GET['url']);
 			$filename=addslash_if_needed($_SESSION['current_path']).$basename;			
-			if(is_file($filename)){
+			if(is_file($_SESSION['upload_path'].$filename)){
 				$newfilename=uniqid().'_'.$basename;
 				$filename=addslash_if_needed($_SESSION['current_path']).$newfilename;
 			}		
-			file_put_contents($filename,$content);
+			file_put_contents($_SESSION['upload_path'].$filename,$content);
 			addID($filename);
 			header('location:admin.php');
+			exit;
 		}else{$message.='<div class="error">'.e('Problem accessing remote file.',false).'</div>';}
 	}
 
 	# delete file/folder
 	if (!empty($_GET['del'])&&$_GET['del']!=''){
 		$f=id2file($_GET['del']);
-		if(is_file($f)){
+		if(is_file($_SESSION['upload_path'].$f)){
 			# delete file
-			unlink($f); 
+			unlink($_SESSION['upload_path'].$f);
+			unlink(get_thumbs_name($f));
 			unset($ids[$_GET['del']]);
 			store();
 			kill_thumb_if_exists($f);
-		}else if (is_dir($f)){
+		}else if (is_dir($_SESSION['upload_path'].$f)){
 			# delete dir
-			rrmdir($f);
+			rrmdir($_SESSION['upload_path'].$f);
+			rrmdir('thumbs/'.$f);
 			# remove all vanished sub files & folders from id file
 			purgeIDs();
 		}
 		
 		header('location:admin.php');
+		exit;
 	}
 
 	# rename file/folder
@@ -127,13 +144,13 @@
 		$path=addslash_if_needed($_SESSION['current_path']);
 		$newfile=$path.only_alphanum_and_dot($_GET['newname']);		
 
-		if ($newfile!=basename($oldfile)){		
+		if ($newfile!=basename($oldfile) && check_path($newfile)){		
 			# if newname exists, change newname
-			if(is_file($newfile) || is_dir($newfile)){
+			if(is_file($_SESSION['upload_path'].$newfile) || is_dir($_SESSION['upload_path'].$newfile)){
 				$newfile=$path.rename_item(basename($newfile));
 			}
 			
-			if (is_dir($oldfile)){
+			if (is_dir($_SESSION['upload_path'].$oldfile)){
 				# for folders, must change the path in all sub items
 				foreach($ids as $id=>$path){
 					$ids[$id]=str_replace($oldfile, $newfile, $path);
@@ -141,14 +158,14 @@
 				
 			}
 
-			rename($oldfile,$newfile); 
+			rename($_SESSION['upload_path'].$oldfile,$_SESSION['upload_path'].$newfile); 
+			rename(get_thumbs_name($oldfile),get_thumbs_name($newfile));
 			$ids[$_GET['id']]=$newfile;
 			store();
-			kill_thumb_if_exists($oldfile);
-			kill_thumb_if_exists($newfile);
 		}
 
 		header('location:admin.php');
+		exit;
 	}
 
 	######################################################################
@@ -156,22 +173,33 @@
 	######################################################################
 	# Move file folder
 	if (!empty($_POST['file'])&&!empty($_POST['destination'])){
-		if (is_file($_POST['file']) || is_dir($_POST['file'])){
-			$file=stripslashes($_POST['file']);
-			$destination = addslash_if_needed($_POST['destination']).basename($file);
-			# if file/folder exists in destination folder, change name
-			if(is_file($destination) || is_dir($destination)){
-				$destination=addslash_if_needed($_POST['destination']).rename_item(basename($file));
-			} 
-			# move file
-			rename($file,$destination);
-			# change path in id
-			$id=file2id($file);
-			$ids=unstore();
-			$ids[$id]=$destination;
-			store();
-			header('location:admin.php');
+		$file=$_POST['file'];
+		if($file=='/'){	$file=''; }
+		$destination=$_POST['destination'];
+		if($destination=='/'){	$destination=''; }
+		if (check_path($file) && check_path($destination)){
+			if (is_file($_SESSION['upload_path'].$file) || is_dir($_SESSION['upload_path'].$file)){
+				$file=stripslashes($file);
+				$destination = addslash_if_needed($destination).basename($file);
+				# if file/folder exists in destination folder, change name
+				if(is_file($_SESSION['upload_path'].$destination) || is_dir($_SESSION['upload_path'].$destination)){
+					$destination=addslash_if_needed($destination).rename_item(basename($file));
+				} 
+				# move file
+				rename($_SESSION['upload_path'].$file,$_SESSION['upload_path'].$destination);
+				if (!is_dir(dirname('thumbs/'.$destination))){
+					mkdir(dirname('thumbs/'.$destination),0744, true);
+				}
+				rename(get_thumbs_name($file),get_thumbs_name($destination));
+				# change path in id
+				$id=file2id($file);
+				$ids=unstore();
+				$ids[$id]=$destination;
+				store();
+			}
 		}
+		header('location:admin.php');
+		exit;
 	}
 
 	# Lock folder with password
@@ -185,11 +213,12 @@
 		$ids[$password]=$file;
 		store();
 		header('location:admin.php');
+		exit;
 	}
 
 
 
-	if ($_FILES){include('auto_dropzone.php');exit();}
+	if ($_FILES){include('core/auto_dropzone.php');exit();}
 
 ?>
 <!DOCTYPE html>
@@ -214,7 +243,7 @@
 		<p class="logo"><strong>BoZoN</strong>: <?php e('Drag, drop, share.');?></p>
 
 
-<?php include('menu.php');?>
+<?php include('core/menu.php');?>
 
 
 		<div style="clear:both"></div>
@@ -226,21 +255,20 @@
 	<div id="content">
 		
 			
-			<?php include('auto_dropzone.php');?>
+			<?php include('core/auto_dropzone.php');?>
 
 			<div class="column window">
 				<header>
 					<h2><?php e('Files list');?></h2>
 					<div class="fil_ariane">
-						<a class="home" href="admin.php?path=<?php echo $_SESSION['upload_path'].'&token='.returnToken(true);?>"><em><?php e('Root');?>:</em>&nbsp;</a>
+						<a class="home" href="admin.php?path=/&token=<?php echo returnToken(true);?>"><em><?php e('Root');?>:</em>&nbsp;</a>
 						<?php 
 							$ariane=explode('/',$_SESSION['current_path']);
 							$chemin='';
-							unset($ariane[0]);
 							foreach($ariane as $nb=>$folder){
 								if (!empty($folder)){
 									$chemin.=$folder;
-									echo '<a class="ariane_item" href="admin.php?path='.$_SESSION['upload_path'].$chemin.'&token='.returnToken(true).'">'.$folder.'</a>';
+									echo '<a class="ariane_item" href="admin.php?path='.$chemin.'&token='.returnToken(true).'">'.$folder.'</a>';
 									$chemin.='/';
 								}
 							}

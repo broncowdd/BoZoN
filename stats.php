@@ -5,8 +5,8 @@
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
 	$button_previous=$button_next=$paginate=$message=$log_list='';$from=0;
-	include ('auto_restrict.php'); # Admin only!
-	include('core.php');
+	include ('core/auto_restrict.php'); # Admin only!
+	include('core/core.php');
 
 	# search/filter
 	if (!empty($_GET['filter'])){
@@ -16,8 +16,7 @@
 	}
 
 	if (!empty($_GET['start'])){$from=$_GET['start'];}
-	@$stats=unserialize(file_get_contents($_SESSION['stats_file']));
-	if (!is_array($stats)){$stats=array();}
+	$stats=(file_exists($_SESSION['stats_file']) ? unserialize(gzinflate(base64_decode(substr(file_get_contents($_SESSION['stats_file']),9,-strlen(6))))) : array() );
 	$stats=array_reverse($stats);
 	if (empty($stats)){$message='No stats';}
 	else{
@@ -76,7 +75,7 @@
 	<header><div class="overlay">
 		
 		<p class="logo"><strong>BoZoN</strong>: <?php e('Drag, drop, share.');?></p>
-		<?php include('menu.php');?>
+		<?php include('core/menu.php');?>
 
 		<div style="clear:both"></div>
 		</div>

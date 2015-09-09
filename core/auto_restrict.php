@@ -68,15 +68,16 @@
 	if (!isset($auto_restrict['path_from_root'])){					$auto_restrict['path_from_root']='';}
 	if (!empty($_SERVER['HTTP_REFERER'])){							$auto_restrict['referer']=returndomain($_SERVER['HTTP_REFERER']);}else{$auto_restrict['referer']='';}
 	$auto_restrict['path_to_my_folder']=$auto_restrict['root'].$auto_restrict['path_from_root'].'/';
-	$auto_restrict['path_to_files']=$auto_restrict['path_to_my_folder'].'auto_restrict_files';
+	$auto_restrict['path_to_files']=$auto_restrict['path_to_my_folder'].'private';
 	// ------------------------------------------------------------------
 	// secure $_POST & $_GET data 
 	if ($auto_restrict['POST_striptags']){$_POST=array_map('strip_tags',$_POST);}
 	if ($auto_restrict['GET_striptags']){$_GET=array_map('strip_tags',$_GET);}
 	// ------------------------------------------------------------------
 	// create cookie token folder
-	if (!is_dir($auto_restrict['path_to_files'])){mkdir($auto_restrict['path_to_files'],0777);chmod($auto_restrict['path_to_files'],0777);}
+	if (!is_dir($auto_restrict['path_to_files'])){mkdir($auto_restrict['path_to_files'],0700);chmod($auto_restrict['path_to_files'],0700);}
 	if (!is_writable($auto_restrict['path_to_files'])){echo '<p class="error">auto_restrict error: token folder is not writeable</p>';}
+	if (!is_file($auto_restrict['path_to_files'].'/.htaccess')){file_put_contents($auto_restrict['path_to_files'].'/.htaccess', 'deny from all');}
 	// ------------------------------------------------------------------
 	// we create login pass and secure it, thanks to JérômeJ for the advises (http://www.olissea.com/)
 	// ------------------------------------------------------------------
