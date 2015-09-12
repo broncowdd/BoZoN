@@ -7,15 +7,17 @@ function auto_thumb($img,$width=null,$height=null,$add_to_thumb_filename='_THUMB
 	global $auto_thumb;
 	if (!$width){$width=$auto_thumb['default_width'];}
 	if (!$height){$height=$auto_thumb['default_height'];}
-
 	$recadrageX=0;$recadrageY=0;
 	$motif='#\.(jpe?g|png|gif)#i'; // Merci à JéromeJ pour la correction  ! 
 	$rempl=$add_to_thumb_filename.'_'.$width.'x'.$height.'.$1';
-	$thumb_name='thumbs/'.basename(preg_replace($motif,$rempl,$img));
+	$thumb_name='thumbs/'.preg_replace($motif,$rempl,$img);
+	$img=$_SESSION['upload_path'].$img;
 	// sortie prématurée:
 	if (!file_exists($img)){return 'auto_thumb ERROR: '.$img.' doesn\'t exists';}
 	if (file_exists($thumb_name)){return $thumb_name;} // miniature déjà créée
 	if ($add_to_thumb_filename!='' && preg_match($add_to_thumb_filename,$img) && $DONT_RESIZE_THUMBS){return false;} // on cherche à traiter un fichier miniature (rangez un peu !)
+
+	if(!is_dir(dirname($thumb_name))){ mkdir(dirname($thumb_name), 0755, true); }
 
 	// redimensionnement en fonction du ratio
 	$taille = getimagesize($img);

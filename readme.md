@@ -15,6 +15,10 @@ The share link is the file link in the admin's view (you can also access it by t
 Php 5 min and php5-gd
 
 
+## New in 1.7
+* serious security enhancement by Oros ( https://www.ecirtam.net / https://github.com/Oros42 ) (Thanks a lot for this huge job !)
+* add: a link to clear stats
+
 ## New in 1.6.3
 * added stats page
 
@@ -99,7 +103,7 @@ All Bozon code and all the libs used in it are distributed under AGPL: feel free
 ## FAQ
 - _I've changed some config variables and nothing appends !_ : that's not an issue; all variables are in the Session, so you need to restart chromium/firefox/opera etc to see the changes 
 - _can't see icons / problems uploading / list refresh problem_ : take a look to access rights (folders / files)
-- _I want to change my password / I forgot my password !_ : just use your FTP client and delete the *auto_restrict_files* folder, then try to login again and create a new login/pass.
+- _I want to change my password / I forgot my password !_ : just use your FTP client and delete «private/auto_restrict*.php» files, then try to login again and create a new login/pass.
 - _I want to change the default language !_ : see in config.php file you can set fr/en/es but you can also make your own traduction (see in lang.php)
 - _I don't want a stolen link works anymore (but I don't want to delete the file/folder) !_ : in links mode, click on the regen button (recycle icon) and the share link for this item will automatically change.
 - _How to lock a share link with a password ?_ : click on the left menu, use the manage links button; then click on the lock icon on the file/folder and give an password. The file/folder will turn blue with a small lock meaning nobody can now use the share link without the password.

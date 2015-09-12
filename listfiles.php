@@ -7,23 +7,30 @@
 
 if (!function_exists('store')){
 	if (!session_id()){session_start();}
-	include('core.php');
-	include('auto_restrict.php');
+	include('core/core.php');
+	include('core/auto_restrict.php');
 }
-include("auto_thumb.php");
+include("core/auto_thumb.php");
 echo $templates['link_lightbox'];
 echo $templates['rename_lightbox'];
 echo $templates['delete_lightbox'];
 
 // Configuration
+$upload_path_size=strlen($_SESSION['upload_path']);
 if (empty($_SESSION['mode'])){$mode='view';}else{$mode=$_SESSION['mode'];}
 if (empty($_SESSION['filter'])){$mask='*';}else{$mask='*'.$_SESSION['filter'].'*';}
-$liste=_glob(addslash_if_needed($_SESSION['current_path']),$mask);
+if (empty($_SESSION['current_path'])){
+	$liste=_glob($_SESSION['upload_path'],$mask);
+}else{
+	$liste=_glob($_SESSION['upload_path'].addslash_if_needed($_SESSION['current_path']),$mask);
+}
 if ($mode=='move'){
 	# Prépare folder tree 
 	$select_folder='<select name="destination" class="folder_list button"><option value="">'.e('Choose a folder',false).'</option>';
 	$folders_list=tree($_SESSION['upload_path'],false);
+	$folders_list[0].='/';
 	foreach($folders_list as $folder){
+		$folder=substr($folder,$upload_path_size);
 		$select_folder.='<option value="'.$folder.'">'.$folder.'</option>';
 	}
 	$select_folder.='</select>';
@@ -51,7 +58,7 @@ if (count($liste)>0){
 		if ($nom!='index.html'&&empty($files[$fichier])){
 			// generates the file ID if not present
 			$id=uniqid(true);
-			$ids[$id]=$fichier;
+			$ids[$id]=substr($fichier,$upload_path_size);
 			$files[$fichier]=$id;
 			$save=true;
 		}
@@ -74,72 +81,74 @@ if (count($liste)>0){
 			if (visualizeIcon($extension)){
 					$icone_visu='<a class="visu" href="index.php?f='.$id.'" target="_BLANK" title="'.e('View this file',false).'">&nbsp;</a>';
 				}else{$icone_visu='';}
+			$fichier_short=substr($fichier,$upload_path_size);
 			if (is_dir($fichier)){
-					# Item is a folder
-					$taille=count(_glob($fichier.'/'));
-					$array=array(
-						'#CLASS'			=> $class,
-						'#ID'				=> $id,
-						'#FICHIER'			=> $fichier,
-						'#TOKEN'			=> returnToken(),
-						'#SIZE'				=> $taille,
-						'#NAME'				=> $nom,
-						'#TITLE'			=> $title,
-						'#SLASHEDNAME'		=> addslashes($nom),
-						'#SLASHEDFICHIER'	=> addslashes($fichier),
-					);
-					$folderlist.= template($mode.'_folder_item',$array);
-				}elseif ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
-					# Item is a picture
-					$array=array(
-						'#CLASS'		=> $class,
-						'#ID'			=> $id,
-						'#FICHIER'		=> $fichier,
-						'#TOKEN'		=> returnToken(),
-						'#SIZE'			=> $taille,
-						'#NAME'			=> $nom,
-						'#TITLE'		=> $title,
-						'#EXTENSION'	=> $extension,
-						'#ICONE_VISU'	=> $icone_visu,
-						'#THUMBNAIL'	=> auto_thumb($fichier,64,64),
-						'#SLASHEDNAME'	=> addslashes($nom),
-						'#SLASHEDFICHIER'	=> addslashes($fichier),
-					);
-					$filelist.= template($mode.'_image_item',$array);
-				}elseif ($extension=='zip'){
-					# Item is a zip file=> add change to folder
-					$icone_visu='<a class="tofolder" href="admin.php?unzip='.$id.'&token='.returnToken().'" title="'.e('Convert this zip file to folder',false).'">&nbsp;</a>';
-					$array=array(
-						'#CLASS'		=> $class,
-						'#ID'			=> $id,
-						'#FICHIER'		=> $fichier,
-						'#TOKEN'		=> returnToken(),
-						'#SIZE'			=> $taille,
-						'#NAME'			=> $nom,
-						'#TITLE'		=> $title,
-						'#EXTENSION'	=> $extension,
-						'#ICONE_VISU'	=> $icone_visu,
-						'#SLASHEDNAME'	=> addslashes($nom),
-						'#SLASHEDFICHIER'	=> addslashes($fichier),
-					);
-					$filelist.= template($mode.'_file_item',$array);
-				}else {
-					# all other types
-					$array=array(
-						'#CLASS'		=> $class,
-						'#ID'			=> $id,
-						'#FICHIER'		=> $fichier,
-						'#TOKEN'		=> returnToken(),
-						'#SIZE'			=> $taille,
-						'#NAME'			=> $nom,
-						'#TITLE'		=> $title,
-						'#EXTENSION'	=> $extension,
-						'#ICONE_VISU'	=> $icone_visu,
-						'#SLASHEDNAME'	=> addslashes($nom),
-						'#SLASHEDFICHIER'	=> addslashes($fichier),
-					);
-					$filelist.= template($mode.'_file_item',$array);
-				}
+				# Item is a folder
+				$taille=count(_glob($fichier.'/'));
+				$array=array(
+					'#CLASS'			=> $class,
+					'#ID'				=> $id,
+					'#FICHIER'			=> $fichier_short,
+					'#TOKEN'			=> returnToken(),
+					'#SIZE'				=> $taille,
+					'#NAME'				=> $nom,
+					'#TITLE'			=> $title,
+					'#SLASHEDNAME'		=> addslashes($nom),
+					'#SLASHEDFICHIER'	=> addslashes($fichier),
+				);
+				$folderlist.= template($mode.'_folder_item',$array);
+			}elseif ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
+				# Item is a picture
+				$thumb=auto_thumb($fichier_short,64,64);
+				$array=array(
+					'#CLASS'		=> $class,
+					'#ID'			=> $id,
+					'#FICHIER'		=> $fichier_short,
+					'#TOKEN'		=> returnToken(),
+					'#SIZE'			=> $taille,
+					'#NAME'			=> $nom,
+					'#TITLE'		=> $title,
+					'#EXTENSION'	=> $extension,
+					'#ICONE_VISU'	=> $icone_visu,
+					'#THUMBNAIL'	=> $thumb,
+					'#SLASHEDNAME'	=> addslashes($nom),
+					'#SLASHEDFICHIER'	=> addslashes($fichier_short),
+				);
+				$filelist.= template($mode.'_image_item',$array);
+			}elseif ($extension=='zip'){
+				# Item is a zip file=> add change to folder
+				$icone_visu='<a class="tofolder" href="admin.php?unzip='.$id.'&token='.returnToken().'" title="'.e('Convert this zip file to folder',false).'">&nbsp;</a>';
+				$array=array(
+					'#CLASS'		=> $class,
+					'#ID'			=> $id,
+					'#FICHIER'		=> $fichier_short,
+					'#TOKEN'		=> returnToken(),
+					'#SIZE'			=> $taille,
+					'#NAME'			=> $nom,
+					'#TITLE'		=> $title,
+					'#EXTENSION'	=> $extension,
+					'#ICONE_VISU'	=> $icone_visu,
+					'#SLASHEDNAME'	=> addslashes($nom),
+					'#SLASHEDFICHIER'	=> addslashes($fichier_short),
+				);
+				$filelist.= template($mode.'_file_item',$array);
+			}else {
+				# all other types
+				$array=array(
+					'#CLASS'		=> $class,
+					'#ID'			=> $id,
+					'#FICHIER'		=> $fichier_short,
+					'#TOKEN'		=> returnToken(),
+					'#SIZE'			=> $taille,
+					'#NAME'			=> $nom,
+					'#TITLE'		=> $title,
+					'#EXTENSION'	=> $extension,
+					'#ICONE_VISU'	=> $icone_visu,
+					'#SLASHEDNAME'	=> addslashes($nom),
+					'#SLASHEDFICHIER'	=> addslashes($fichier_short),
+				);
+				$filelist.= template($mode.'_file_item',$array);
+			}
 		
 		}
 	}

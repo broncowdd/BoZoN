@@ -1,4 +1,5 @@
 /* RESET */
+/* RESET */
 *{-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -629,6 +630,16 @@ img.iso,img.bin{background-image:url(img/iso.png)!important;}
 .stats tfoot td:first-of-type{text-align:left;border:none;}
 .stats tfoot td:last-of-type{text-align:right;border:none;}
 .stats .total_entries{font-size:12px;color:rgba(0,0,0,0.5);}
+.stats .trash{
+	background:url(img/Trash.png) no-repeat left center;
+	display:inline-block;
+	padding:5px;border-radius: 3px;
+	padding-left:20px;
+	height:25px;			
+	font-size: 16px;	
+}
+.stats .trash:hover{background-color:red}
+
 
 /* Login page */
 	body.login{background: url(img/noise.png) #ddd;padding:10px;}

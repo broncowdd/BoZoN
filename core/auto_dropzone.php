@@ -74,8 +74,8 @@ foreach($default_config as $key=>$val){
     if (!isset($_SESSION[$key]) || $auto_dropzone[$key]!=$_SESSION[$key]){ $_SESSION[$key]=$auto_dropzone[$key];}
 }
 
-if (!is_array($auto_dropzone['destination_filepath'])&&!is_dir($auto_dropzone['destination_filepath'])){
-    mkdir($auto_dropzone['destination_filepath'],01777);file_put_contents($auto_dropzone['destination_filepath'].'index.html','');
+if (!is_array($auto_dropzone['destination_filepath'])&&!is_dir($_SESSION['upload_path'].$auto_dropzone['destination_filepath'])){
+    mkdir($_SESSION['upload_path'].$auto_dropzone['destination_filepath'],0744);file_put_contents($_SESSION['upload_path'].$auto_dropzone['destination_filepath'].'index.html','');
 }   
 
 $max=min($auto_dropzone['max_length'],intval($phpini['upload_max_filesize']['global_value']),intval($phpini['post_max_size']['global_value']));
@@ -118,7 +118,7 @@ if ($_FILES){
         $sFileType = $_FILES['myfile']['type'];
         $sFileSize = intval(bytesToSize1024($_FILES['myfile']['size'], 1));
         $sFileError = error2msg($_FILES['myfile']['error']);
-        $sFileExt  = pathinfo($sFileName,PATHINFO_EXTENSION);
+        $sFileExt  = pathinfo($_SESSION['upload_path'].$sFileName,PATHINFO_EXTENSION);
         
 
         $ok='<li class="DD_file DD_success '.$sFileExt.'">   
@@ -134,19 +134,19 @@ if ($_FILES){
         if (
             is_array($auto_dropzone['destination_filepath'])
             &&!empty($auto_dropzone['destination_filepath'][$sFileExt])
-            &&is_dir($auto_dropzone['destination_filepath'][$sFileExt])            
+            &&is_dir($_SESSION['upload_path'].$auto_dropzone['destination_filepath'][$sFileExt])            
         ){
             $sFileName = $auto_dropzone['destination_filepath'][$sFileExt].$sFileName;
             echo $ok;
-            rename($_FILES['myfile']['tmp_name'], $sFileName );
-            chmod($sFileName,0644);
+            rename($_FILES['myfile']['tmp_name'], $_SESSION['upload_path'].$sFileName );
+            chmod($_SESSION['upload_path'].$sFileName,0644);
         }elseif(
             is_array($auto_dropzone['destination_filepath'])
             &&!empty($auto_dropzone['destination_filepath'][$sFileExt])
-            &&!is_dir($auto_dropzone['destination_filepath'][$sFileExt])
+            &&!is_dir($_SESSION['upload_path'].$auto_dropzone['destination_filepath'][$sFileExt])
             ||
             is_string($auto_dropzone['destination_filepath'])
-            &&!is_dir($auto_dropzone['destination_filepath'])
+            &&!is_dir($_SESSION['upload_path'].$auto_dropzone['destination_filepath'])
         ){
             //local upload dir error
             echo '<li class="DD_file DD_error"><span class="DD_filename">Upload path problem with '.$sFileName.' </span></li>            ';
@@ -155,17 +155,17 @@ if ($_FILES){
             // file upload error
             echo '<li class="DD_file DD_error"><span class="DD_filename">'.$sFileName.': '.$sFileError.' </span></li>            ';
             
-        } elseif(is_dir($auto_dropzone['destination_filepath'])){
+        } elseif(is_dir($_SESSION['upload_path'].$auto_dropzone['destination_filepath'])){
             $file=$sFileName;
             $sFileName = $auto_dropzone['destination_filepath'].$sFileName;
-            if (is_file($sFileName)){
+            if (is_file($_SESSION['upload_path'].$sFileName)){
                 $newfilename=rename_item($file);
                 echo '<li class="DD_file DD_warning"><span class="DD_filename">'.$file.' => '.$newfilename.' </span></li>';
                 $sFileName=$auto_dropzone['destination_filepath'].$newfilename;
             }
             echo $ok;
-            rename($_FILES['myfile']['tmp_name'], $sFileName );
-            chmod($sFileName,0644);
+            rename($_FILES['myfile']['tmp_name'], $_SESSION['upload_path'].$sFileName );
+            chmod($_SESSION['upload_path'].$sFileName,0644);
             addID($sFileName);
         }    
     } else {

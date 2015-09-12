@@ -83,6 +83,7 @@
 		'Date'=>'Date',
 		'Origin'=>"Page d'origine",
 		'Host'=>'Hôte',
+		'Delete all stat data'=>'Supprimer les données statistiques',
 	);
 
 	# ESPANOL
@@ -152,5 +153,6 @@
 		'Date'=>'Fecha',
 		'Origin'=>"Página de origen",
 		'Host'=>'Huésped',
+		'Delete all stat data'=>'Borrar las estadìsticas',
 	);
 ?>
