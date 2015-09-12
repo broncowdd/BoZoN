@@ -114,8 +114,8 @@ $templates=array(
 				#ICONE_VISU
 			</div>
 			<a href="index.php?f=#ID" download="#FICHIER" >
-				<img src="#THUMBNAIL" style="background:transparent;"/>
-				<em>#SIZE</em><em>#NAME</em>
+				<img src="index.php?f=#ID&thumbs" style="background:transparent;"/>
+				<em>#SIZE ko</em><em>#NAME</em>
 			</a>
 		</li>
 	',
@@ -129,7 +129,7 @@ $templates=array(
 			</div>
 			<a href="index.php?f=#ID" download="#FICHIER" >
 				<img src="design/'.$_SESSION['theme'].'/img/ghost.png" class="#EXTENSION"/>
-				<em>#SIZE</em><em>#NAME</em>
+				<em>#SIZE ko</em><em>#NAME</em>
 			</a>
 		</li>
 	',
@@ -151,7 +151,7 @@ $templates=array(
 	'move_image_item'=>'
 		<li class="#EXTENSION #CLASS" title="#TITLE">							
 			<a href="#selecttarget" onclick="put_file(\'#SLASHEDFICHIER\')">
-				<img src="#THUMBNAIL" style="background:transparent;"/>
+				<img src="index.php?f=#ID&thumbs" style="background:transparent;"/>
 				<em>#SIZE ko</em><em>#NAME</em>
 			</a>
 		</li>
@@ -184,7 +184,7 @@ $templates=array(
 				<a class="renew" title="'.$tooltip_renew.'" href="admin.php?renew=#ID&token=#TOKEN">&nbsp;</a>
 			</div>
 			<a href="index.php?f=#ID" download="#NAME">
-				<img src="#THUMBNAIL" style="background:transparent;"/>
+				<img src="index.php?f=#ID&thumbs" style="background:transparent;"/>
 				<em>#SIZE ko</em><em>#NAME</em>
 			</a>
 		</li>
