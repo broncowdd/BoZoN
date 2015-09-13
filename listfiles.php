@@ -99,7 +99,7 @@ if (count($liste)>0){
 				$folderlist.= template($mode.'_folder_item',$array);
 			}elseif ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
 				# Item is a picture
-				$thumb=auto_thumb($fichier_short,64,64);
+				auto_thumb($fichier_short,64,64);
 				$array=array(
 					'#CLASS'		=> $class,
 					'#ID'			=> $id,
@@ -110,7 +110,6 @@ if (count($liste)>0){
 					'#TITLE'		=> $title,
 					'#EXTENSION'	=> $extension,
 					'#ICONE_VISU'	=> $icone_visu,
-					'#THUMBNAIL'	=> $thumb,
 					'#SLASHEDNAME'	=> addslashes($nom),
 					'#SLASHEDFICHIER'	=> addslashes($fichier_short),
 				);
