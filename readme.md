@@ -18,6 +18,7 @@ Php 5 min and php5-gd
 ## New in 1.7
 * serious security enhancement by Oros ( https://www.ecirtam.net / https://github.com/Oros42 ) (Thanks a lot for this huge job !)
 * add: a link to clear stats
+* BEWARE! Because of the new data & files structure, all previous generated IDs will no longer be valid. 
 
 ## New in 1.6.3
 * added stats page
