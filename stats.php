@@ -15,6 +15,11 @@
 		$_SESSION['filter']='';
 	}
 
+	if (isset($_GET['kill']) && file_exists($_SESSION['stats_file'])){
+		$stats=array();
+		file_put_contents($_SESSION['stats_file'],'<?php /* '.base64_encode(gzdeflate(serialize($stats))).' */ ?>');
+
+	}
 	if (!empty($_GET['start'])){$from=$_GET['start'];}
 	$stats=(file_exists($_SESSION['stats_file']) ? unserialize(gzinflate(base64_decode(substr(file_get_contents($_SESSION['stats_file']),9,-strlen(6))))) : array() );
 	$stats=array_reverse($stats);
@@ -112,7 +117,7 @@
 		
 	</div>
 	<footer>
-
+	<a class="trash" title="" href="stats.php?kill&token=<?php newToken(true);?>"><?php e('Delete all stat data'); ?></a>
 		<div class="credits">Bozon v<?php echo VERSION;?> - <?php e('tiny file sharing app, coded with love and php by ');?> <a href="http://warriordudimanche.net">Bronco</a> - <a href="admin.php?deconnexion"><?php e('Logout'); ?></a></div>
 		<a href="https://github.com/broncowdd/BoZoN" class="github" title="<?php e('fork me on github');?>">&nbsp;</a>
 	</footer>

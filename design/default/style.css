@@ -592,7 +592,15 @@ img.exe,img.bat,img.iso,img.bin{background-image:url(img/exe.png)!important;}
 .stats .total_entries{font-size:12px;color:rgba(0,0,0,0.5);}
 .stats .button{background-color:rgba(0,0,0,0.2);text-decoration: none;color:rgba(0,0,0,0.5);}
 .stats em{color:rgba(0,0,0,0.3);}
-
+.stats .trash{
+	background:url(img/Trash.png) no-repeat left center;
+	display:inline-block;
+	padding:5px;border-radius: 3px;
+	padding-left:20px;
+	height:25px;			
+	font-size: 16px;	
+}
+.stats .trash:hover{background-color:red}
 
 /* Login page */
 	body.login{background: url(img/noise.png) #ddd;padding:10px;}
