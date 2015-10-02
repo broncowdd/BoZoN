@@ -7,7 +7,7 @@
 
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','1.7');
+	define('VERSION','1.7.1');
 	require_once('lang.php');
 	include('config.php');
 

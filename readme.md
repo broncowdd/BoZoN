@@ -115,3 +115,4 @@ All Bozon code and all the libs used in it are distributed under AGPL: feel free
 
 ## Special thanks
 To Cyrille Borne [ https://github.com/cborne & http://www.cyrille-borne.com ]: without your comments, issues reporting and enhancement ideas this app would never have been so complete ;-)
+To Oros [ https://github.com/Oros42 & https://www.ecirtam.net ]for his great security job ! 

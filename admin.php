@@ -54,7 +54,7 @@
 	if (!empty($_GET['path']) && trim($_GET['path'])!==false){
 		$path=$_GET['path'];
 		if($path=='/'){
-			$path=$_SESSION['upload_path'];
+			$path='';
 		}
 		if(check_path($path)){
 			$_SESSION['current_path']=$path;
