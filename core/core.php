@@ -193,7 +193,7 @@
 	 $url .= $_SERVER["REQUEST_URI"];
 	 return $url;
 	}
-	function rrmdir($rrmdir) { 
+	function rrmdir($dir) { 
 		# delete a folder and its content
 	   if (is_dir($dir)) { 
 	     $objects = scandir($dir); 
