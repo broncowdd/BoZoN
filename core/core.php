@@ -7,13 +7,19 @@
 
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','1.7.1');
+	define('VERSION','1.7.2');
 	require_once('lang.php');
 	include('config.php');
 
 	# Current session changing language
 	if (!empty($_GET['lang'])){$_SESSION['language']=strip_tags($_GET['lang']);header('location:admin.php');}
 	if (empty($_SESSION['language'])){$_SESSION['language']=$default_language;}
+	# Current session changing aspect
+	if (!empty($_GET['aspect'])){$_SESSION['aspect']=strip_tags($_GET['aspect']);header('location:admin.php');}
+	if (empty($_SESSION['aspect'])){$_SESSION['aspect']=$default_aspect;}
+	# Current session changing theme
+	if (!empty($_GET['theme'])){$_SESSION['theme']=strip_tags($_GET['theme']);header('location:admin.php');}
+	if (empty($_SESSION['theme'])){$_SESSION['theme']=$default_theme;}
 	
 	# SESSION VARS
 
@@ -160,13 +166,13 @@
 			return str_replace($extension,$add.'.'.$extension,$file);
 		}else{ return $file.$add;}
 	}
-	function kill_thumb_if_exists($f){
+	/*function kill_thumb_if_exists($f){
 		global $auto_thumb;
 		$filename=pathinfo($f,PATHINFO_FILENAME);
 		$ext=pathinfo($f,PATHINFO_EXTENSION);
 		$thumbname='thumbs/'.$filename.'_THUMB__'.$auto_thumb['default_width'].'x'.$auto_thumb['default_height'].'.'.$ext;
 		if (is_file($thumbname)){unlink($thumbname);}else{return false;}
-	}
+	}*/
 	function only_alphanum_and_dot($string){return preg_replace('#[^a-zA-Z0-9\. _]#','',$string);}
 	function file_curl_contents($url,$pretend=true){
 		# distant version of file_get_contents
@@ -193,7 +199,7 @@
 	 $url .= $_SERVER["REQUEST_URI"];
 	 return $url;
 	}
-	function rrmdir($dir) { 
+	function rrmdir($rrmdir) { 
 		# delete a folder and its content
 	   if (is_dir($dir)) { 
 	     $objects = scandir($dir); 
@@ -387,6 +393,31 @@
 	    return true; 
 	}
 
+	function zip($source, $destination)
+	{
+		if (!extension_loaded('zip') || !file_exists($source)) {return false;}
+		$zip = new ZipArchive();
+		if (!$zip->open($destination, ZIPARCHIVE::CREATE)) {return false;}
+		$source = str_replace('', '/', realpath($source));
+		if (is_dir($source) === true){
+			$files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
+			foreach ($files as $file){
+				$file = str_replace('', '/', $file);
+				// Ignore "." and ".." folders
+				if( in_array(substr($file, strrpos($file, '/')+1), array('.', '..')) ){continue;}
+				$file = realpath($file);
+				if (is_dir($file) === true){
+				$zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
+				}else if (is_file($file) === true){
+				$zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
+				}
+			}
+		}
+		else if (is_file($source) === true){
+			$zip->addFromString(basename($source), file_get_contents($source));
+		}
+	}
+	
 	function check_path($path){
 		return (strpos($path, '//')===false && strpos($path, '..')===false && ( empty($path[0]) || (!empty($path[0]) && $path[0]!='/') ) );
 	}

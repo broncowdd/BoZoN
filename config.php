@@ -14,5 +14,6 @@
 	$default_theme='default';	# you can make your own bozon design and set this variable with the folder skin's name inside the design folder
 	$default_max_lines_per_page_on_stats_page=100;
 	$default_limit_stat_file_entries=10000;
+	$default_aspect='list'; // «icon»/«list»
 
 ?>

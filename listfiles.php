@@ -4,7 +4,8 @@
 	* just list the files in the upload current path (with the filter if needed) 
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
-
+if (empty(session_id())){session_start();}
+$layout=$_SESSION['aspect'];
 if (!function_exists('store')){
 	if (!session_id()){session_start();}
 	include('core/core.php');
@@ -44,8 +45,8 @@ if ($mode=='move'){
 if ($mode=='links'){
 	# Add lock dialogbox to the page
 	$array=array(
-			'#TOKEN'	=> returnToken()
-		);
+		'#TOKEN'	=> returnToken()
+	);
 	echo template('password_lightbox',$array);
 }
 $save=false;
@@ -55,17 +56,18 @@ if (count($liste)>0){
 	$filelist='';
 	foreach ($liste as $fichier){
 		$nom=basename($fichier);
-		if ($nom!='index.html'&&empty($files[$fichier])){
+		$length_upload_path=strlen($_SESSION['upload_path']);
+		$nom_racine=substr($fichier, $length_upload_path);
+		if ($nom!='index.html'&&empty($files[$fichier])&&empty($files[$nom_racine])){
 			// generates the file ID if not present
 			$id=uniqid(true);
 			$ids[$id]=substr($fichier,$upload_path_size);
 			$files[$fichier]=$id;
 			$save=true;
-		}
-		
-		if ($nom!='index.html'&&!empty($files[$fichier])){
+		}elseif ($nom!='index.html'){
 			$taille=round(filesize($fichier)/1024,2);
-			$id=$files[$fichier];
+			if (!empty($files[$fichier])){$id=$files[$fichier];}
+			else{$id=$files[$nom_racine];}
 			$class='';$title='';
 			if (substr($id, 0,1)=='*'){
 				# add class burn id after access 
@@ -96,7 +98,7 @@ if (count($liste)>0){
 					'#SLASHEDNAME'		=> addslashes($nom),
 					'#SLASHEDFICHIER'	=> addslashes($fichier),
 				);
-				$folderlist.= template($mode.'_folder_item',$array);
+				$folderlist.= template($mode.'_folder_'.$layout,$array);
 			}elseif ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
 				# Item is a picture
 				auto_thumb($fichier_short,64,64);
@@ -113,7 +115,7 @@ if (count($liste)>0){
 					'#SLASHEDNAME'	=> addslashes($nom),
 					'#SLASHEDFICHIER'	=> addslashes($fichier_short),
 				);
-				$filelist.= template($mode.'_image_item',$array);
+				$filelist.= template($mode.'_image_'.$layout,$array);
 			}elseif ($extension=='zip'){
 				# Item is a zip file=> add change to folder
 				$icone_visu='<a class="tofolder" href="admin.php?unzip='.$id.'&token='.returnToken().'" title="'.e('Convert this zip file to folder',false).'">&nbsp;</a>';
@@ -130,7 +132,7 @@ if (count($liste)>0){
 					'#SLASHEDNAME'	=> addslashes($nom),
 					'#SLASHEDFICHIER'	=> addslashes($fichier_short),
 				);
-				$filelist.= template($mode.'_file_item',$array);
+				$filelist.= template($mode.'_file_'.$layout,$array);
 			}else {
 				# all other types
 				$array=array(
@@ -146,13 +148,13 @@ if (count($liste)>0){
 					'#SLASHEDNAME'	=> addslashes($nom),
 					'#SLASHEDFICHIER'	=> addslashes($fichier_short),
 				);
-				$filelist.= template($mode.'_file_item',$array);
+				$filelist.= template($mode.'_file_'.$layout,$array);
 			}
 		
 		}
 	}
 	echo $folderlist.$filelist;
-	if ($save){store();} // save in case of new files
+	if ($save){store($ids);} // save in case of new files
 }else{e('No file on the server');}
 
 

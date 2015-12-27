@@ -338,7 +338,7 @@ footer *{vertical-align: middle;padding:3px;}
    color: rgba(255,255,255,0.5)
 }
 
-/* icon files */
+/* list aspect */
 .list{
 	padding:10px;padding-top:0;
 	min-height:200px;
@@ -348,20 +348,19 @@ footer *{vertical-align: middle;padding:3px;}
 .list .folder{background:rgba(0,50,100,0.1);}
 .list .folder .over{position:relative;top:-32px;color:white;text-align:center;}
 .list li {
-	width:132px;
-	height:132px;
+	
+	min-height:26px;
 	overflow: hidden;
-	display:inline-block;
+	display:block;
 	list-style:none;
 	font-size:12px;
 	border-radius: 3px;
-	padding:10px;margin:10px;
+	padding:2px;margin:2px;
 	cursor:pointer;
 	word-spacing: word-wrap;
 	word-wrap:break-word;
 	overflow-wrap: break-word;
 	z-index:1;
-	text-align:center;
 	vertical-align: bottom;
 	border:1px solid rgba(0,0,0,0.1);
 	border-top-color:rgba(255,255,255,0.2);	
@@ -401,8 +400,8 @@ footer *{vertical-align: middle;padding:3px;}
 .list li .buttons{
 	width: 110px;
 	height: 20px;
-	position: absolute;
 	display: block;
+	float:right;
 	border-radius: 3px;
 	
 }
@@ -443,6 +442,9 @@ footer *{vertical-align: middle;padding:3px;}
 .list li a.tofolder{
 	background:url(img/folder16.png) no-repeat center center;	
 }
+.list li a.zipfolder{
+	background:url(img/download_folder.png) no-repeat center center;	
+}
 .list li a.movefolder:hover{background-color:rgba(255,0,0,0.8);}
 .list li a.close:hover{background-color:rgba(255,0,0,0.8);}
 .list li a.rename:hover{background-color:rgba(0,150,0,0.8);}
@@ -452,32 +454,187 @@ footer *{vertical-align: middle;padding:3px;}
 .list li a.renew:hover{background-color:rgba(0,150,250,0.8);}
 .list li a.locked:hover{background-color:rgba(100,100,100,0.8);}
 .list li a.tofolder:hover{background-color:rgba(200,100,100,0.8);}
+.list li a.zipfolder:hover{background-color:rgba(200,100,100,0.8);}
 
 
 .list li:hover a.close, .list li:hover a.movefolder, .list li:hover a.rename, .list li:hover a.link, .list li:hover a.visu,li:hover form,
-.list li:hover a.renew,.list li:hover a.burn,.list li:hover a.locked, .list li:hover a.tofolder
+.list li:hover a.renew,.list li:hover a.burn,.list li:hover a.locked, .list li:hover a.tofolder,.list li:hover a.zipfolder
 {display:inline-block;}
 .list li:hover .buttons{background-color:rgba(0,0,0,0.7);box-shadow:0 1px 2px rgba(0,0,0,0.5);}
 
 
 
 .list li a{
-	display:block;
+	display:inline-block;
 	text-decoration:none;
 }
 .list li>em {
 	font-style:italic;
-	display: block;
+	display:inline-block;
 	margin-bottom:5px;
 	margin-top:5px;
 }
 .list li a em {
 	max-height:30px;
 	font-style:normal;
+	margin-right:10px;
+	display:inline-block;
+}
+.list li a img{
+	width:20px;height:20px;
+	display:inline-block;
+	margin:auto;
+	border-radius: 2px;
+	/*box-shadow:0 1px 1px rgba(0,0,0,0.2);*/
+	background:url(img/unknown.png) no-repeat transparent center center;
+	background-size: contain;
+	vertical-align: middle;
+}
+
+/* icon aspect */
+.icon{
+	padding:10px;padding-top:0;
+	min-height:200px;
+	text-align: left;
+}
+.icon h1{font-size:30px;padding:5px;}
+.icon .folder{background:rgba(0,50,100,0.1);}
+.icon .folder .over{position:relative;top:-32px;color:white;text-align:center;}
+.icon li {
+	width:132px;
+	height:132px;
+	overflow: hidden;
+	display:inline-block;
+	list-style:none;
+	font-size:12px;
+	border-radius: 3px;
+	padding:10px;margin:10px;
+	cursor:pointer;
+	word-spacing: word-wrap;
+	word-wrap:break-word;
+	overflow-wrap: break-word;
+	z-index:1;
+	text-align:center;
+	vertical-align: bottom;
+	border:1px solid rgba(0,0,0,0.1);
+	border-top-color:rgba(255,255,255,0.2);	
+	background-color:rgba(255,255,255,0.1);
+	
+}
+.icon li.burn {
+	border:1px solid red;
+	box-shadow: 0 0 2px rgba(255,0,0,0.5);
+	background:url(img/burn.png) no-repeat 5px 5px rgba(255,0,0,0.7) ;
+}
+.icon li.burn:hover {	
+	background-color:rgba(255,0,0,0.9)!important;
+}
+.icon li.locked {
+	border:1px solid rgba(0,100,255,0.9);
+	box-shadow: 0 0 2px rgba(0,100,255,0.5);
+	background:url(img/locked.png) no-repeat 5px 5px rgba(0,100,255,0.7) ;
+}
+.icon li.locked:hover {	
+	background-color:rgba(0,100,255,0.9)!important;
+}
+
+.icon li:hover{
+	background-color:rgba(0,126,255,0.2);
+	box-shadow: 0 0 2px rgba(0,126,255,0.5);
+}
+.move .icon li:hover{
+	background-color:rgba(255,10,0,0.2);
+	box-shadow: 0 0 2px rgba(255,10,0,0.5);
+}
+.links .icon li:hover{
+	background-color:rgba(10,255,10,0.2);
+	box-shadow: 0 0 2px rgba(10,255,10,0.5);
+}
+
+.icon li .buttons{
+	width: 110px;
+	height: 20px;
+	position: absolute;
+	display: block;
+	border-radius: 3px;
+	
+}
+.icon li .buttons a{
+	display:block;
+	line-height:100%;
+	width:18px;height:18px;			
+	border-radius: 3px;
+	font-size: 14px;
+	display:none;
+	margin:1px;
+
+}
+.icon li a.movefolder{
+	background:url(img/move.png) no-repeat center center;
+}
+.icon li a.close{
+	background:url(img/Trash.png) no-repeat center center;
+}
+.icon li a.visu{
+	background:url(img/eye.png) no-repeat center center;
+}
+.icon li a.link{
+	background:url(img/link.png) no-repeat center center;
+}
+.icon li a.locked{
+	background:url(img/locked.png) no-repeat center center;
+}
+.icon li a.burn{
+	background:url(img/burn.png) no-repeat center center;
+}
+.icon li a.renew{
+	background:url(img/renew.png) no-repeat center center;
+}
+.icon li a.rename{
+	background:url(img/rename.png) no-repeat center center;	
+}
+.icon li a.tofolder{
+	background:url(img/folder16.png) no-repeat center center;	
+}
+.icon li a.zipfolder{
+	background:url(img/download_folder.png) no-repeat center center;	
+}
+.icon li a.movefolder:hover{background-color:rgba(255,0,0,0.8);}
+.icon li a.close:hover{background-color:rgba(255,0,0,0.8);}
+.icon li a.rename:hover{background-color:rgba(0,150,0,0.8);}
+.icon li a.link:hover{background-color:rgba(0,0,255,0.8);}
+.icon li a.visu:hover{background-color:rgba(0,150,155,0.8);}
+.icon li a.burn:hover{background-color:rgba(255,50,0,0.9);}
+.icon li a.renew:hover{background-color:rgba(0,150,250,0.8);}
+.icon li a.locked:hover{background-color:rgba(100,100,100,0.8);}
+.icon li a.tofolder:hover{background-color:rgba(200,100,100,0.8);}
+.icon li a.zipfolder:hover{background-color:rgba(200,100,100,0.8);}
+
+
+.icon li:hover a.close, .icon li:hover a.movefolder, .icon li:hover a.rename, .icon li:hover a.link, .icon li:hover a.visu,li:hover form,
+.icon li:hover a.renew,.icon li:hover a.burn,.icon li:hover a.locked, .icon li:hover a.tofolder,.icon li:hover a.zipfolder
+{display:inline-block;}
+.icon li:hover .buttons{background-color:rgba(0,0,0,0.7);box-shadow:0 1px 2px rgba(0,0,0,0.5);}
+
+
+
+.icon li a{
+	display:block;
+	text-decoration:none;
+}
+.icon li>em {
+	font-style:italic;
+	display: block;
+	margin-bottom:5px;
+	margin-top:5px;
+}
+.icon li a em {
+	max-height:30px;
+	font-style:normal;
 	margin-bottom:3px;
 	display: block;
 }
-.list li a img{
+.icon li a img{
 	width:64px;height:64px;
 	display:block;
 	margin:auto;
@@ -573,8 +730,6 @@ img.exe,img.bat,img.iso,img.bin{background-image:url(img/exe.png)!important;}
 	width:0;height:0;
 	border:0;
 	position:absolute;
-		top: -1000px;
-    left: -1000px;
 }
 
 /*stats page*/
@@ -769,7 +924,7 @@ ul.tree .vl{
 				text-shadow:0 1px 1px rgba(0,0,0,0.2);
 			}
 			#menu form:hover label{color:rgba(255,255,255,0.8);}
-			#menu form:hover input[type=text]{
+			#menu form:hover input[type=text],#menu form:hover  #menu form select{
 				border:2px solid rgba(255,255,255,0.2);
 				background:rgba(255,255,255,0.2);
 			}
@@ -778,7 +933,7 @@ ul.tree .vl{
 				border-top-color:rgba(200,200,200,0.1);	
 				background:rgba(255,255,255,0.2);
 			}
-			#menu form input[type=text]{
+			#menu form input[type=text],#menu form select{
 				display:inline-block;
 				width:250px;
 				border:2px solid rgba(255,255,255,0.1);
@@ -800,6 +955,8 @@ ul.tree .vl{
 				color:rgba(255,255,255,0.3);
 			}
 			a.button{margin:1px;}
+			
+
 			#menu form input[type=submit]:hover, .button:hover{
 				background:rgba(0,150,255,0.8);
 				box-shadow: 0 0 6px rgba(0,150,255,0.8);
@@ -833,7 +990,7 @@ ul.tree .vl{
 			}
 			.button img{float:right;display:block;}
 
-			#menu form input[type=text]:focus{
+			#menu form input[type=text]:focus, #menu form select:focus {
 				outline:0;
 				color:white;
 				text-shadow:0 0 1px rgba(0,200,255,0.8);
@@ -857,6 +1014,7 @@ ul.tree .vl{
 				background:rgba(255,255,255,0.2);
 				padding:5px;
 				border-radius:4px;
+				height:32px;    vertical-align: bottom;
 				color:rgba(255,255,255,0.3);
 			}
 			#menu .lang a.active{background:rgba(0,150,255,0.5);}
@@ -1042,17 +1200,22 @@ div.lightbox button
 	.w1000{display:none;}
 	ul.tree{width:95%;}
 
-	table{padding:0;}
-	td{
+	#content{
+		padding:0;
+		display: block!important;
+	}
+	.column{
+		min-height:300px;
+		margin-top:15px;
 		display:block;
-		width:95%!important;
+		width:100%!important;
 		padding:0;
 	}
 
 	.fil_ariane .home em{display:inline-block;}
 	.fil_ariane .home {
 		display:inline-block;
-		background:url(img/home.png) no-repeat 5px center #777;
+		background:url(img/home.png) no-repeat 5px center ;
 		width:auto;	
 		padding-left:32px;
 	}
@@ -1080,6 +1243,7 @@ div.lightbox button
 		display:inline-block;
 		width:32px;
 		height:32px;
+		opacity:1;
 	}
 	.list li .buttons{
 		width: auto;
@@ -1092,7 +1256,7 @@ div.lightbox button
 		box-shadow:0 1px 2px rgba(0,0,0,0.5);
 	}
 
-	.folder a 
+	
 
 /* transitions */
 img,

@@ -38,13 +38,16 @@
 	if (!empty($_GET['burn']) && trim($_GET['burn'])!==false){
 		$id_to_burn=$_GET['burn'];
 		$path=id2file($id_to_burn);
+
 		unset($ids[$id_to_burn]);
+
 		if (substr($id_to_burn,0,1)!='*'){
 			$ids['*'.$id_to_burn]=$path;
 		}else{
 			$ids[str_replace('*','',$id_to_burn)]=$path;
 		}
-		store();
+		
+		store($ids);
 		header('location:admin.php');
 		exit;
 	}	
@@ -122,10 +125,10 @@
 		if(is_file($_SESSION['upload_path'].$f)){
 			# delete file
 			unlink($_SESSION['upload_path'].$f);
-			unlink(get_thumbs_name($f));
+			$thumbfilename=get_thumbs_name($f);
+			if (is_file($thumbfilename)){unlink($thumbfilename);}
 			unset($ids[$_GET['del']]);
 			store();
-			kill_thumb_if_exists($f);
 		}else if (is_dir($_SESSION['upload_path'].$f)){
 			# delete dir
 			rrmdir($_SESSION['upload_path'].$f);
@@ -165,6 +168,18 @@
 		}
 
 		header('location:admin.php');
+		exit;
+	}
+
+	# zip and download a folder
+	if (!empty($_GET['zipfolder'])){
+		$folder=id2file($_GET['zipfolder']);
+		if (!is_dir('private/temp')){mkdir('private/temp');}
+		$zipfile='private/temp/'.basename($folder).'.zip';
+		
+
+		zip($_SESSION['upload_path'].$folder,$zipfile);
+		header('location: '.$zipfile);
 		exit;
 	}
 
@@ -275,7 +290,7 @@
 						?>
 					</div>
 				</header>
-				<ul class="list" id="liste">
+				<ul class="<?php echo $_SESSION['aspect'];?>" id="liste">
 
 					<h1><?php echo $_SESSION['filter'];?></h1>
 					<?php include('listfiles.php');?>

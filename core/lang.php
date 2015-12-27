@@ -84,6 +84,10 @@
 		'Origin'=>"Page d'origine",
 		'Host'=>'Hôte',
 		'Delete all stat data'=>'Supprimer les données statistiques',
+		'List'=>'Liste',
+		'Icons'=>'Icônes',
+		'Change theme'=>'Changer le thème',
+		'Download a zip from this folder'=>'Télécharger un zip à partir de ce dossier',
 	);
 
 	# ESPANOL
@@ -154,5 +158,9 @@
 		'Origin'=>"Página de origen",
 		'Host'=>'Huésped',
 		'Delete all stat data'=>'Borrar las estadìsticas',
+		'List'=>'Lista',
+		'Icons'=>'Íconos',
+		'Change theme'=>'Cambiar el aspecto',
+		'Download a zip from this folder'=>'Bajar un zip con esta carpeta',
 	);
 ?>

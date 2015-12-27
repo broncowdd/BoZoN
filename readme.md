@@ -12,8 +12,11 @@
 The share link is the file link in the admin's view (you can also access it by the button link on the file.)
 
 ## Required 
-Php 5 min and php5-gd
+Php 5 min, php5-gd, ZipArchive
 
+## New in 1.7.2
+- new list layout (change layout in config or in menu)
+- change theme whith get variable theme=xxx
 
 ## New in 1.7
 * serious security enhancement by Oros ( https://www.ecirtam.net / https://github.com/Oros42 ) (Thanks a lot for this huge job !)
@@ -115,4 +118,3 @@ All Bozon code and all the libs used in it are distributed under AGPL: feel free
 
 ## Special thanks
 To Cyrille Borne [ https://github.com/cborne & http://www.cyrille-borne.com ]: without your comments, issues reporting and enhancement ideas this app would never have been so complete ;-)
-To Oros [ https://github.com/Oros42 & https://www.ecirtam.net ]for his great security job ! 

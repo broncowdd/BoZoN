@@ -368,15 +368,15 @@ footer *{vertical-align: middle;padding:3px;}
 }
 
 /* icon files */
-.list{
+.icon{
 	padding:10px;padding-top:0;
 	min-height:200px;
 	text-align: left;
 }
-.list h1{font-size:30px;padding:5px;}
-.list .folder{background:rgba(0,50,100,0.1);}
-.list .folder .over{position:relative;top:-32px;color:white;text-align:center;}
-.list li {
+.icon h1{font-size:30px;padding:5px;}
+.icon .folder{background:rgba(0,50,100,0.1);}
+.icon .folder .over{position:relative;top:-32px;color:white;text-align:center;}
+.icon li {
 	width:132px;
 	height:132px;
 	overflow: hidden;
@@ -391,6 +391,150 @@ footer *{vertical-align: middle;padding:3px;}
 	overflow-wrap: break-word;
 	z-index:1;
 	text-align:center;
+	vertical-align: bottom;
+	border:1px solid rgba(0,0,0,0.1);
+	border-top-color:rgba(255,255,255,0.2);	
+	background-color:rgba(255,255,255,0.1);
+	
+}
+.icon li.burn {
+	border:1px solid red;
+	box-shadow: 0 0 2px rgba(255,0,0,0.5);
+	background:url(img/burn.png) no-repeat 5px 5px rgba(255,0,0,0.7) ;
+}
+.icon li.burn:hover {	
+	background-color:rgba(255,0,0,0.9)!important;
+}
+.icon li.locked {
+	border:1px solid rgba(0,100,255,0.9);
+	box-shadow: 0 0 2px rgba(0,100,255,0.5);
+	background:url(img/locked.png) no-repeat 5px 5px rgba(0,100,255,0.7) ;
+}
+.icon li.locked:hover {	
+	background-color:rgba(0,100,255,0.9)!important;
+}
+
+.icon li:hover{
+	background-color:rgba(0,126,255,0.2);
+	box-shadow: 0 0 2px rgba(0,126,255,0.5);
+}
+.move .icon li:hover{
+	background-color:rgba(255,10,0,0.2);
+	box-shadow: 0 0 2px rgba(255,10,0,0.5);
+}
+.links .icon li:hover{
+	background-color:rgba(10,255,10,0.2);
+	box-shadow: 0 0 2px rgba(10,255,10,0.5);
+}
+
+.icon li .buttons{
+	width: 110px;
+	height: 20px;
+	position: absolute;
+	display: block;
+	border-radius: 3px;
+	
+}
+.icon li .buttons a{
+	display:block;
+	line-height:100%;
+	width:18px;height:18px;			
+	border-radius: 3px;
+	font-size: 14px;
+	display:none;
+	margin:1px;
+	opacity:0.8;
+}
+.icon li .buttons a:hover{opacity:1;}
+
+
+.icon li a.movefolder{
+	background:url(img/move.png) no-repeat center center;
+}
+.icon li a.close{
+	background:url(img/Trash.png) no-repeat center center;
+}
+.icon li a.visu{
+	background:url(img/eye.png) no-repeat center center;
+}
+.icon li a.link{
+	background:url(img/link.png) no-repeat center center;
+}
+.icon li a.locked{
+	background:url(img/logout.png) no-repeat center center;
+}
+.icon li a.burn{
+	background:url(img/burn.png) no-repeat center center;
+}
+.icon li a.renew{
+	background:url(img/renew.png) no-repeat center center;
+}
+.icon li a.rename{
+	background:url(img/rename.png) no-repeat center center;	
+}
+.icon li a.tofolder{
+	background:url(img/folder16.png) no-repeat center center;	
+}
+.icon li a.zipfolder{
+	background:url(img/download_folder.png) no-repeat center center;	
+}
+
+.icon li:hover a.close, .icon li:hover a.movefolder, .icon li:hover a.rename, .icon li:hover a.link, .icon li:hover a.visu,li:hover form,
+.icon li:hover a.renew,.icon li:hover a.burn,.icon li:hover a.locked, .icon li:hover a.tofolder,.icon li:hover a.zipfolder
+{display:inline-block;}
+.icon li:hover .buttons{background-color:rgba(0,0,0,0.7);box-shadow:0 1px 2px rgba(0,0,0,0.5);}
+
+
+
+.icon li a{
+	display:block;
+	text-decoration:none;
+}
+.icon li>em {
+	font-style:italic;
+	display: block;
+	margin-bottom:5px;
+	margin-top:5px;
+}
+.icon li a em {
+	max-height:30px;
+	font-style:normal;
+	margin-bottom:3px;
+	display: block;
+}
+.icon li a img{
+	width:64px;height:64px;
+	display:block;
+	margin:auto;
+	border-radius: 2px;
+	/*box-shadow:0 1px 1px rgba(0,0,0,0.2);*/
+	background:url(img/inc.png) no-repeat transparent center center;
+}
+
+/* list files */
+.list{
+	padding:10px;padding-top:0;
+	min-height:200px;
+	text-align: left;
+}
+.list h1{font-size:30px;padding:5px;}
+.list .folder{background:rgba(0,50,100,0.1);}
+.list .folder .over{position:relative;top:-32px;color:white;text-align:center;}
+.list li {
+	
+	min-height:26px;
+	overflow: hidden;
+	display:block;
+	list-style:none;
+	font-size:12px;
+	border-radius: 3px;
+	padding:2px;margin:2px;
+	cursor:pointer;
+	word-spacing: word-wrap;
+	word-wrap:break-word;
+	overflow-wrap: break-word;
+	z-index:1;
+	text-align:left;
 	vertical-align: bottom;
 	border:1px solid rgba(0,0,0,0.1);
 	border-top-color:rgba(255,255,255,0.2);	
@@ -430,8 +574,8 @@ footer *{vertical-align: middle;padding:3px;}
 .list li .buttons{
 	width: 110px;
 	height: 20px;
-	position: absolute;
 	display: block;
+	float:right;
 	border-radius: 3px;
 	
 }
@@ -475,38 +619,40 @@ footer *{vertical-align: middle;padding:3px;}
 .list li a.tofolder{
 	background:url(img/folder16.png) no-repeat center center;	
 }
-
+.list li a.zipfolder{
+	background:url(img/download_folder.png) no-repeat center center;	
+}
 
 .list li:hover a.close, .list li:hover a.movefolder, .list li:hover a.rename, .list li:hover a.link, .list li:hover a.visu,li:hover form,
-.list li:hover a.renew,.list li:hover a.burn,.list li:hover a.locked, .list li:hover a.tofolder
+.list li:hover a.renew,.list li:hover a.burn,.list li:hover a.locked, .list li:hover a.tofolder,.list li:hover a.zipfolder
 {display:inline-block;}
 .list li:hover .buttons{background-color:rgba(0,0,0,0.7);box-shadow:0 1px 2px rgba(0,0,0,0.5);}
 
 
 
 .list li a{
-	display:block;
+	display:inline-block;
 	text-decoration:none;
 }
 .list li>em {
 	font-style:italic;
-	display: block;
+	display: inline-block;
 	margin-bottom:5px;
 	margin-top:5px;
 }
 .list li a em {
 	max-height:30px;
 	font-style:normal;
-	margin-bottom:3px;
-	display: block;
+	margin-right:10px;
+	display: inline-block;
 }
 .list li a img{
-	width:64px;height:64px;
-	display:block;
-	margin:auto;
+	width:20px;height:20px;
+	display:inline-block;
 	border-radius: 2px;
-	/*box-shadow:0 1px 1px rgba(0,0,0,0.2);*/
 	background:url(img/inc.png) no-repeat transparent center center;
+	background-size: contain;
+	vertical-align: middle;
 }
 img.zip,img.rar,img.gzip{background-image:url(img/zip.png)!important;}
 img.txt,img.ini,img.nfo{background-image:url(img/txt.png)!important;}
@@ -820,7 +966,7 @@ ul.tree .vl{
 			}
 
 
-			#menu form input[type=text]{
+			#menu form input[type=text],#menu form select{
 				display:inline-block;
 				width:250px;
 				height:29px;
@@ -835,13 +981,14 @@ ul.tree .vl{
 			    border: 1px solid #999;
 			    box-shadow: inset 0 1px 6px rgba(0,0,0,0.3);
 			}			
-			#menu input[type=text]:hover{
+			#menu input[type=text]:hover,#menu form select:hover{
 				border-color: rgba(100,100,100,0.8);
 				background-color:#fff;
 			}
 
 			#menu input[name=newfolder]{background:url(img/addfolder.png) no-repeat 3px center #eee!important;}
 			#menu input[name=filter]{background:url(img/search.png) no-repeat 3px center #eee!important ;}
+			#menu select[name=theme]{background:url(img/theme.png) no-repeat 3px center #eee!important ;}
 			#menu input[name=url]{background:url(img/tipiak.png) no-repeat 3px center #eee!important;}
 
 			#menu form input[type=submit], .button, #menu .lang a{
@@ -857,10 +1004,10 @@ ul.tree .vl{
 			    box-shadow: 0 1px 1px #ddd, 0 -1px 1px #999;
 			    text-shadow: 0 1px 1px #ddd;
 			    margin: 3px;
+			    height:32px;    vertical-align: bottom;
 			    background:linear-gradient(rgba(180,180,180,0.6),rgba(160,160,160,0.6));
 
 			}
-
 
 			#menu form input[type=submit]:hover, .button:hover, #menu .lang a:hover{
 				background:rgba(0,150,255,0.2);
@@ -883,7 +1030,7 @@ ul.tree .vl{
 			}
 			.button img{float:right;display:block;}
 
-			#menu form input[type=text]:focus{
+			#menu form input[type=text]:focus,#menu form select:focus{
 				outline:0;
 				color:#eee;
 				text-shadow:0 0 1px rgba(0,200,255,0.8);

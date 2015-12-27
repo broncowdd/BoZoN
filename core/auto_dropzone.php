@@ -78,7 +78,15 @@ if (!is_array($auto_dropzone['destination_filepath'])&&!is_dir($_SESSION['upload
     mkdir($_SESSION['upload_path'].$auto_dropzone['destination_filepath'],0744);file_put_contents($_SESSION['upload_path'].$auto_dropzone['destination_filepath'].'index.html','');
 }   
 
-$max=min($auto_dropzone['max_length'],intval($phpini['upload_max_filesize']['global_value']),intval($phpini['post_max_size']['global_value']));
+// Handle the unit (M/G) in max post/upload size
+$ini_max_upload=$phpini['upload_max_filesize']['global_value'];
+if (strpos($ini_max_upload,'G')!=false){$ini_max_upload=intval($ini_max_upload*1024);}
+else{$ini_max_upload=intval($ini_max_upload);}
+$ini_max_post=$phpini['upload_max_filesize']['global_value'];
+if (strpos($ini_max_post,'G')!=false){$ini_max_post=intval($ini_max_post*1024);}
+else{$ini_max_post=intval($ini_max_post);}
+
+$max=min($auto_dropzone['max_length'],$ini_max_upload,$ini_max_post);
 
 
 
