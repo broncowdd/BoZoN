@@ -14,9 +14,17 @@ The share link is the file link in the admin's view (you can also access it by t
 ## Required 
 Php 5 min, php5-gd, ZipArchive
 
+# Version history
+## New in 1.7.3
+- some bugs fixed (rename bug, home icon bug)
+- little changes on resolutions below 600 (switch from icon to list view)
+- added handheld rule for media queries
+
+
 ## New in 1.7.2
 - new list layout (change layout in config or in menu)
-- change theme whith get variable theme=xxx
+- change theme with get variable theme=xxx
+- 
 
 ## New in 1.7
 * serious security enhancement by Oros ( https://www.ecirtam.net / https://github.com/Oros42 ) (Thanks a lot for this huge job !)

@@ -144,9 +144,10 @@
 	# rename file/folder
 	if (!empty($_GET['id'])&&!empty($_GET['newname'])){
 		$oldfile=id2file($_GET['id']);
-		$path=addslash_if_needed($_SESSION['current_path']);
-		$newfile=$path.only_alphanum_and_dot($_GET['newname']);		
-
+		if ($_SESSION['current_path']!=''){$path=addslash_if_needed($_SESSION['current_path']);}
+		else{$path='';}
+		$newfile=$path.only_alphanum_and_dot($_GET['newname']);
+		
 		if ($newfile!=basename($oldfile) && check_path($newfile)){		
 			# if newname exists, change newname
 			if(is_file($_SESSION['upload_path'].$newfile) || is_dir($_SESSION['upload_path'].$newfile)){

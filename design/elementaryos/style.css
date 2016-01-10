@@ -501,6 +501,7 @@ footer *{vertical-align: middle;padding:3px;}
 	font-style:normal;
 	margin-bottom:3px;
 	display: block;
+
 }
 .icon li a img{
 	width:64px;height:64px;
@@ -645,6 +646,8 @@ footer *{vertical-align: middle;padding:3px;}
 	font-style:normal;
 	margin-right:10px;
 	display: inline-block;
+	    word-wrap: break-word;
+    word-break: break-all;
 }
 .list li a img{
 	width:20px;height:20px;
@@ -756,8 +759,8 @@ img.iso,img.bin{background-image:url(img/iso.png)!important;}
 	width:0;height:0;
 	border:0;
 	position:absolute;
-	top: -1000px;
-    left: -1000px;
+	top: -10000px;
+    left: -10000px;
 }
 
 /*stats page*/
@@ -1283,6 +1286,44 @@ div.lightbox button
 		background-color:rgba(0,0,0,0.7);
 		box-shadow:0 1px 2px rgba(0,0,0,0.5);
 	}
+
+	.icon li{
+		width:100%;
+		height:auto;
+		overflow-y:hidden;
+		display:block;
+		text-align:left;
+		padding-left:24px;
+	}
+	.icon li a img{
+		display:inline-block;
+		margin-right:5px;
+		margin-bottom:5px;
+	}
+	.icon li a em{display:block;}
+	.icon li a em.over{  
+		display:none;
+	}
+	.icon li .buttons a{
+		display:inline-block;
+		width:32px;
+		height:32px;
+		opacity:1;
+	}
+	.icon li .buttons{
+		width: auto;
+		height: 34px;
+		position: inherit;
+		display: inline-block;
+		float:right;
+		border-radius: 3px;
+		background-color:rgba(0,0,0,0.7);
+		box-shadow:0 1px 2px rgba(0,0,0,0.5);
+	}
+
+
+
+
 
 	.DD_dropzone{    background: url(img/bozondd.png) no-repeat center 70% rgba(0,0,0,0.1)!important;}
 }

@@ -235,7 +235,7 @@ $templates=array(
 			</div>
 			<a href="index.php?f=#ID" download="#FICHIER" >
 				<img src="index.php?f=#ID&thumbs" style="background:transparent;"/>
-				<em>#SIZE ko</em><em>#NAME</em>
+				<em>#SIZE ko</em><em title="#NAME">#NAME</em>
 			</a>
 		</li>
 	',
@@ -249,7 +249,7 @@ $templates=array(
 			</div>
 			<a href="index.php?f=#ID" download="#FICHIER" >
 				<img src="design/'.$_SESSION['theme'].'/img/ghost.png" class="#EXTENSION"/>
-				<em>#SIZE ko</em><em>#NAME</em>
+				<em>#SIZE ko</em><em title="#NAME">#NAME</em>
 			</a>
 		</li>
 	',
@@ -263,7 +263,7 @@ $templates=array(
 			</div>
 			<a href="admin.php?path=#FICHIER&token=#TOKEN" >
 				<img src="design/'.$_SESSION['theme'].'/img/folder.png" style="background:transparent;"/>
-				<em class="over">#SIZE</em><em>#NAME</em>
+				<em class="over">#SIZE</em><em title="#NAME">#NAME</em>
 			</a>
 		</li>
 	',
@@ -273,7 +273,7 @@ $templates=array(
 		<li class="#EXTENSION #CLASS" title="#TITLE">							
 			<a href="#selecttarget" onclick="put_file(\'#SLASHEDFICHIER\')">
 				<img src="index.php?f=#ID&thumbs" style="background:transparent;"/>
-				<em>#SIZE ko</em><em>#NAME</em>
+				<em>#SIZE ko</em><em title="#NAME">#NAME</em>
 			</a>
 		</li>
 	',
@@ -281,7 +281,7 @@ $templates=array(
 		<li class="#EXTENSION #CLASS" title="#TITLE">	
 			<a href="#selecttarget" onclick="put_file(\'#SLASHEDFICHIER\')">
 				<img class="#EXTENSION" src="design/'.$_SESSION['theme'].'/img/ghost.png"/>
-				<em>#SIZE ko</em><em>#NAME</em>
+				<em>#SIZE ko</em><em title="#NAME">#NAME</em>
 			</a>
 		</li>
 	',
@@ -292,7 +292,7 @@ $templates=array(
 			</div>
 			<a href="admin.php?path=#FICHIER&token=#TOKEN" >
 				<img src="design/'.$_SESSION['theme'].'/img/folder.png" style="background:transparent;"/>
-				<em>#NAME</em>
+				<em title="#NAME">#NAME</em>
 			</a>
 		</li>',
 
@@ -306,7 +306,7 @@ $templates=array(
 			</div>
 			<a href="index.php?f=#ID" download="#NAME">
 				<img src="index.php?f=#ID&thumbs" style="background:transparent;"/>
-				<em>#SIZE ko</em><em>#NAME</em>
+				<em>#SIZE ko</em><em title="#NAME">#NAME</em>
 			</a>
 		</li>
 	',
@@ -319,7 +319,7 @@ $templates=array(
 			</div>
 			<a href="index.php?f=#ID" download="#NAME">
 				<img class="#EXTENSION" src="design/'.$_SESSION['theme'].'/img/ghost.png"/>
-				<em>#SIZE ko</em><em>#NAME</em>
+				<em>#SIZE ko</em><em title="#NAME">#NAME</em>
 			</a>
 		</li>
 	',
@@ -332,7 +332,7 @@ $templates=array(
 			</div>
 			<a href="admin.php?path=#FICHIER&token=#TOKEN" >
 				<img src="design/'.$_SESSION['theme'].'/img/folder.png" style="background:transparent;"/>
-				<em class="over">#SIZE</em><em>#NAME</em>
+				<em class="over">#SIZE</em><em title="#NAME">#NAME</em>
 			</a>
 		</li>
 	',
