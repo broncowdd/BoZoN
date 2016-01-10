@@ -379,8 +379,10 @@
 	}
 
 	function navigatorLanguage(){
-		$language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-		return $language{0}.$language{1};
+		if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])){
+			$language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+			return $language{0}.$language{1};
+		}else{return 'fr';}
 	}
 
 

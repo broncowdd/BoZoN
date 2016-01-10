@@ -4,7 +4,8 @@
 	* just list the files in the upload current path (with the filter if needed) 
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
-if (empty(session_id())){session_start();}
+$sid=session_id();
+if (empty($sid)){session_start();}
 $layout=$_SESSION['aspect'];
 if (!function_exists('store')){
 	if (!session_id()){session_start();}
