@@ -45,7 +45,7 @@ $templates=array(
 						'.e('Please give a password to lock access to this file',false).'
 						<input type="text"  value="" name="password" id="password"/>
 						<input type="hidden" value="" name="id" id="ID_hidden"/>
-						<input type="hidden" name="token" value="'.$token.'"/>
+						<input type="hidden" name="token" value="#TOKEN"/>
 						<br/>
 						<input type="submit" value="ok" class="button"/>
 				    </form>
@@ -64,7 +64,7 @@ $templates=array(
 						<input type="text"  value="" name="newname" id="FILE_Rename" onFocus="this.select();" autofocus="true" />
 						<input type="submit" value="ok" class="button" />
 						<input type="hidden" value="" name="id" id="ID_Rename"/>
-						<input type="hidden" name="token" value="'.$token.'"/>
+						<input type="hidden" name="token" value="#TOKEN"/>
 						
 				    </form>
 				</figcaption>
@@ -80,7 +80,7 @@ $templates=array(
 				    <form action="admin.php" method="get"><br/>
 						'.e('Delete this file ?',false).'
 						<input type="hidden" value="" name="del" id="ID_Delete"/>
-						<input type="hidden" name="token" value="'.$token.'"/>
+						<input type="hidden" name="token" value="#TOKEN"/>
 						<br/>
 						<input type="submit" value="'.e('Yes',false).'" class="button" />
 				    </form>

@@ -7,7 +7,7 @@
 	$message='';
 	include ('core/auto_restrict.php'); # Admin only!
 	include('core/core.php');
-	
+
 
 
 
@@ -226,7 +226,7 @@
 		# turn normal share id into password hashed id
 		$ids=unstore();
 		unset($ids[$id]);
-		$ids[$password]=$file;
+		$ids[$password.$id]=$file;
 		store();
 		header('location:admin.php');
 		exit;

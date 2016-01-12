@@ -17,7 +17,7 @@
 
 	# FRENCH
 	$lang['fr']=array(
-		'Drag, drop, share.'=>'Glisse, d&eacute;pose, partage.',
+		'Drag, drop, share.'=>'Glisser, d&eacute;poser, partager.',
 		'Search in the uploaded files'=>'Rechercher dans les fichiers uploadés',
 		'Filter'=>'Mot-clé',
 		'Copy this share link'=>'Copiez ce lien de partage',

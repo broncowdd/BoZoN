@@ -15,6 +15,16 @@ The share link is the file link in the admin's view (you can also access it by t
 Php 5 min, php5-gd, ZipArchive
 
 # Version history
+
+## New in 1.7.4
+bug fixes (thx to chatainsim on Github)
+- #56: problem deleting a folder
+- #53: error deleting files you just uploaded
+- #55: password protection problem when a password is used for several files (caution, this fix is not compatible with old password protection)
+- disapearing files and folders until page is refreshed.
+- my blog's URL removed (too «hasbeen»: wink to eauland ;-)
+
+
 ## New in 1.7.3
 - some bugs fixed (rename bug, home icon bug)
 - little changes on resolutions below 600 (switch from icon to list view)

@@ -7,7 +7,7 @@
 
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','1.7.3');
+	define('VERSION','1.7.4');
 	require_once('lang.php');
 	include('config.php');
 
@@ -96,7 +96,7 @@
 		$ids=unstore();
 		$id=uniqid(true);
 		$ids[$id]=$string;
-		store();
+		store($ids);
 	}
 	# remove an id from id file
 	function removeID($id){
@@ -110,7 +110,7 @@
 		foreach($ids as $key=>$val){
 			if (!is_file($val) && !is_dir($val)){unset($ids[$key]);}
 		}
-		store();
+		store($ids);
 	}
 	# complete all missing ids 
 	function completeID($array_of_files){
@@ -199,7 +199,7 @@
 	 $url .= $_SERVER["REQUEST_URI"];
 	 return $url;
 	}
-	function rrmdir($rrmdir) { 
+	function rrmdir($dir) { 
 		# delete a folder and its content
 	   if (is_dir($dir)) { 
 	     $objects = scandir($dir); 

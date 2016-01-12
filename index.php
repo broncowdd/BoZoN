@@ -15,8 +15,13 @@
 		store_access_stat($f,$id);
 		if(!empty($f)){
 			# password mode
+			if (isset($_POST['password'])){
+				# the file id is a md5 password.original id
+				$blured=blur_password($_POST['password']);
+				$sub_id=str_replace($blured,'',$id); # here we trie to recover the original id to compare 
+			}
 			if (strlen($id)>23 && !isset($_POST['password'])){
-				$message= '<div class="lock"><img src="img/locked_big.png"/>
+				$message= '<div class="lock"><img src="design/'.$default_theme.'/img/locked_big.png"/>
 				<form action="index.php?f='.$id.'" method="post">
 					<label>'.e('This share is protected, please type the correct password:',false).'</label><br/>
 					<input type="password" name="password" class="button red"/>
@@ -24,7 +29,7 @@
 				</form>
 				</div>
 				';
-			}else if(!isset($_POST['password']) || isset($_POST['password']) && blur_password($_POST['password'])==$id){
+			}else if(!isset($_POST['password']) || isset($_POST['password']) && $blured.$sub_id==$id){
 				if(isset($_GET['thumbs'])){
 					$f=get_thumbs_name($f);
 				}else{
@@ -115,6 +120,7 @@
 	}
 	
 ?>
+<html>
 <head>
 	<title>BoZoN: <?php e('Drag, drop, share.');?></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -142,6 +148,7 @@
 	
 	<footer>
 	<?php echo $feeds_div;?>
-		<a href="http://warriordudimanche.net" class="wdd" >&nbsp;</a><span>Bozon v<?php echo VERSION;?> </span> <a href="https://github.com/broncowdd/BoZoN" class="github" title="<?php e('fork me on github');?>">&nbsp;</a>
+		<span>Bozon v<?php echo VERSION;?> </span> <a href="https://github.com/broncowdd/BoZoN" class="github" title="<?php e('fork me on github');?>">&nbsp;</a>
 	</footer>
 </body>
+</html>

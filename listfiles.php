@@ -13,9 +13,10 @@ if (!function_exists('store')){
 	include('core/auto_restrict.php');
 }
 include("core/auto_thumb.php");
-echo $templates['link_lightbox'];
-echo $templates['rename_lightbox'];
-echo $templates['delete_lightbox'];
+$lb_token=returnToken();
+echo str_replace('#TOKEN',$lb_token,$templates['link_lightbox']);
+echo str_replace('#TOKEN',$lb_token,$templates['rename_lightbox']);
+echo str_replace('#TOKEN',$lb_token,$templates['delete_lightbox']);
 
 // Configuration
 $upload_path_size=strlen($_SESSION['upload_path']);
