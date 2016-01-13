@@ -20,7 +20,12 @@
 <body>
   <header>
     <p id="logo">&nbsp;</p>
-    <p class="login"><a title="<?php e('Login'); ?>" href="admin.php"><?php e('Login'); ?></a></p>
+    <?php if($f){ ?>
+      <p class="login"><a title="<?php e('Login'); ?>" href="admin.php"><?php e('Login'); ?></a></p>
+    <?php }else if ($_SERVER['REQUEST_URI']!='/admin.php'){ ?>
+      <p class="login"><a title="<?php e('Login'); ?>" href="admin.php"><?php e('Create your account'); ?></a></p>
+    <?php } ?>
+    
     <div id="lang">
       <a href="#"><img title="" src="themes/<?php echo $_SESSION['theme']; ?>/img/en.png" alt="" /></a>
       <a href="#"><img title="" src="themes/<?php echo $_SESSION['theme']; ?>/img/fr.png" alt="" /></a>

@@ -121,7 +121,8 @@ footer #version {
   float: left;
 }
 
-#login #submit {
+#login #submit,
+#login #cya {
   width: 200px;
   text-indent: 0;
   float: right;
