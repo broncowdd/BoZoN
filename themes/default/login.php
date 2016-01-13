@@ -1,7 +1,8 @@
 <?php
-  include('header.php');
+  include('header.php'); 
 ?>
-
+  </header>
+  
   <div id="login" class="form_content">
     <form action="" method="post" name="">
       <?php 
