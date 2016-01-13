@@ -99,10 +99,10 @@
 			$auto_restrict['encryption_key']=md5(uniqid('', true));
 	
 			file_put_contents($auto_restrict['path_to_files'].'/auto_restrict_pass.php', '<?php $auto_restrict["login"]="'.$_POST['login'].'";$auto_restrict["encryption_key"]='.var_export($auto_restrict['encryption_key'],true).';$auto_restrict["salt"] = '.var_export($salt,true).'; $auto_restrict["pass"] = '.var_export(hash('sha512', $salt.$_POST['pass']),true).'; $auto_restrict["tokens_filename"] = "tokens_'.var_export(hash('sha512', $salt.uniqid('', true)),true).'.php";$auto_restrict["banned_ip_filename"] = "banned_ip_'.var_export(hash('sha512', $salt.uniqid('', true)),true).'.php";?>');
-			include('login_form.php');exit();
+			include('login.php');exit();
 		}
 		else{ 
-			include('login_form.php');exit();
+			include('login.php');exit();
 		}
 	}
 
@@ -142,7 +142,7 @@
 	if (!is_ok()){
 		@session_destroy();
 		if (!$auto_restrict['just_die_if_not_logged']){
-			include('login_form.php');
+			include('login.php');
 		} else {
 			echo $auto_restrict['error_msg'];
 		}

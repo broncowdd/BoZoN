@@ -1,0 +1,41 @@
+/* MOBILE */
+@media only screen and (max-width: 480px) {
+  
+  /* Structure */
+  header,
+  header #logo {
+    height: 78px;
+  }
+  
+  header #logo {
+    width: 75px;
+    background: transparent url('../img/logo.white.mobile.png') 0 9px no-repeat;
+  }
+  
+  #index,
+  #login {
+    min-height: 350px;
+  }
+  
+  footer {
+    clear: both;
+    position: relative;
+  }
+  
+  /* Se connecter */
+  #login {
+    width: 300px;
+  }
+  
+  #login input {
+    width: 300px;
+  }
+  
+  #login label {
+    width: 130px;
+  }
+  
+  #login #submit {
+    width: 130px;
+  }
+}

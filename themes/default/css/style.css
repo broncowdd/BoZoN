@@ -1,0 +1,132 @@
+/* STRUCTURE */
+body {
+  background: #fff;
+  color: #000;
+  font-family: arial, verdana, sans-serif;
+}
+
+header,
+header #logo {
+  height: 153px;
+}
+
+header,
+header a {
+  color: #fafafa;
+}
+
+header {
+  background: #0088ec;
+  border-bottom: 3px solid #dedede;
+}
+
+header #logo {
+  width: 150px;
+  margin: 0 auto;
+  background: transparent url('../img/logo.white.png') 0 18px no-repeat;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .35s ease-in-out;
+  transform: scale(1);
+}
+
+header #logo:hover {
+  transform: scale(1.20);
+}
+
+header .login {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  margin-right: 5px;
+}
+
+header .login a {
+  text-decoration: none;
+}
+
+header .login a:hover {
+  text-decoration: underline;
+}
+
+header #lang {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  margin-left: 5px;
+}
+
+footer {
+  clear: both;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 75px;
+  background: #f4fbff;
+}
+
+footer p a {
+  display: block;
+  margin: 0 auto;
+  padding: 2px 0;
+  width: 32px;
+  height: 32px;
+  background: transparent url('../img/github.png') 0 2px no-repeat;
+  opacity: 0.5;
+}
+
+footer #version {
+  height: 39px;
+  line-height: 39px;
+  vertical-align: middle;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+/* SE CONNECTER */
+#login {
+  width: 400px;
+  margin: 0 auto;
+}
+
+#login h2 {
+  margin: 20px 0;
+  font-size: 2em;
+  color: #0088ec;
+}
+
+#login input {
+  width: 400px;
+  height: 35px;
+  text-indent: 7px;
+  margin-bottom: 7px;
+  color: #85888b;
+  border: 1px solid #d6ecfc;
+  border-radius: 5px;
+}
+
+#login #cookie {
+  width: auto;
+  float: left;
+}
+
+#login label {
+  display: block;
+  width: 160px;
+  height: 42px;
+  line-height: 42px;
+  vertical-align: bottom;
+  font-size: 0.8em;
+  float: left;
+}
+
+#login #submit {
+  width: 200px;
+  text-indent: 0;
+  float: right;
+  background: #0088ec;
+  box-shadow: inset 0 0 15px #006bbb;
+  color: #fafafa;
+  cursor: pointer;
+}
