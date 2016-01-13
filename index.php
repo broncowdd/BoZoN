@@ -118,37 +118,6 @@
 			</div>';
 		}	
 	}
-	
+
+	include('themes/default/index.php');
 ?>
-<html>
-<head>
-	<title>BoZoN: <?php e('Drag, drop, share.');?></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="shortcut icon" type="/image/png" href="design/<?php echo $_SESSION['theme'];?>/img/bozonlogo2.png">
-	<link rel="stylesheet" type="text/css" href="design/<?php echo $_SESSION['theme'];?>/style.css">
-		
-</head>
-<body class="index">
-<header>
-	<div class="overlay">
-		<p class="logo"></p>
-		<div style="clear:both"></div>
-	</div>
-</header>
-<?php
-	if (!empty($message)){echo $message;}
-	else if ($tree){
-		completeID($tree);
-		draw_tree($tree);
-		# burn access ?
-		burned($id);
-	}?>
-	
-	<footer>
-	<?php echo $feeds_div;?>
-		<span>Bozon v<?php echo VERSION;?> </span> <a href="https://github.com/broncowdd/BoZoN" class="github" title="<?php e('fork me on github');?>">&nbsp;</a>
-	</footer>
-</body>
-</html>
