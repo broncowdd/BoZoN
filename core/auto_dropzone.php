@@ -439,7 +439,4 @@ if ($_FILES){
                 }           
             });
     </script>
-<?php }
-
-
- ?>
+<?php } ?>

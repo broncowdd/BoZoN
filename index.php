@@ -116,8 +116,8 @@
 				'.e('This link is no longer available, sorry.',false).'
 				<br/>
 			</div>';
-		}	
+		}
 	}
 
-	include('themes/default/index.php');
+	include('themes/'.$default_theme.'/index.php');
 ?>

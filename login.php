@@ -6,5 +6,5 @@
 	**/
 
 	include('core/core.php');
-	include('themes/'.$_SESSION['theme'].'/login.php');
+	include('themes/'.$default_theme.'/login.php');
 ?>

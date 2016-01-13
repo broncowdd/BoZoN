@@ -15,5 +15,4 @@
 	$default_max_lines_per_page_on_stats_page=100;
 	$default_limit_stat_file_entries=10000;
 	$default_aspect='list'; // «icon»/«list»
-
 ?>

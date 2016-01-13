@@ -1,7 +1,7 @@
 <?php
   include('header.php');
   
-  if($f){ 
+  if(file_exists ('private/auto_restrict_pass.php')){ 
 ?>
     <p class="login"><a title="<?php e('Login'); ?>" href="admin.php"><?php e('Login'); ?></a></p>
 <?php
