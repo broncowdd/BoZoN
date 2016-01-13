@@ -1,13 +1,9 @@
 <?php
   include('header.php');
 ?>
+  <p id="status"><a title="<?php e('Logout'); ?>" href="admin.php?deconnexion"><?php e('Logout'); ?></a></p>		
   </header>
   
-  
-  <div class="overlay">
-
-
-
 	<nav id="menu">
 		<div id="menu_icon" >&nbsp;</div>
 		<div style="clear:both"></div>
@@ -65,9 +61,6 @@
 					<input type="submit" value="ok"/>
 					<?php newToken();?>
 				</form>
-				<hr/>
-				<br/>
-				<a class="button red" href="admin.php?deconnexion"><?php e('Logout'); ?> <img src="design/<?php echo $_SESSION['theme'];?>/img/logout.png"/></a>
 			</div>
 		</div>
 
@@ -126,54 +119,6 @@
 
 		<?php } ?>
 		</div>
-		<div style="clear:both"></div>
-		<div class="credits">Bozon v<?php echo VERSION;?> - <?php e('tiny file sharing app, coded with love and php by ');?> <a href="http://warriordudimanche.net">Bronco</a> - <a href="admin.php?deconnexion"><?php e('Logout'); ?></a></div>
-		<a href="https://github.com/broncowdd/BoZoN" class="github" title="<?php e('fork me on github');?>">&nbsp;</a>
-
-
-<script>
-	menu=document.getElementById('menu');
-	menu_icon=document.getElementById('menu_icon');
-	body=document.getElementById('body');
-	cl='open';
-
-	// block closing menu by clicking on it
-	menu.addEventListener('click', function(event){
-        if(event.stopPropagation) { event.stopPropagation(); }		
-	});
-
-	// menu appears and vanish
-	menu_icon.addEventListener('click', function(event){
-		if (menu.classList) {
-		    menu.classList.toggle(cl)
-		} else {
-		    var classes = menu.className.split(' ')
-		    var existingIndex = classes.indexOf(cl)
-		    if (existingIndex >= 0)
-		      classes.splice(existingIndex, 1)
-		    else
-		      classes.push(cl);
-		    menu.className = classes.join(' ')
-		}
-        if(event.preventDefault) { event.preventDefault(); }
-        if(event.stopPropagation) { event.stopPropagation(); }
-		return false;
-	});
-	// close menu on clicking outside
-	body.addEventListener('click', function(event){
-		if (menu.classList) {
-		   menu.classList.remove(cl);
-		} else {
-		   var classes = el.className.split(' ')
-		    var existingIndex = classes.indexOf(cl)
-		    if (existingIndex >= 0){ classes.splice(existingIndex, 1);}		    
-		    el.className = classes.join(' ')
-		}
-        
-		
-	});
-
-</script>
 
 <?php
   include('footer.php');

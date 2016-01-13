@@ -35,18 +35,18 @@ header #logo:hover {
   transform: scale(1.20);
 }
 
-header .login {
+header #status {
   position: absolute;
   top: 5px;
   right: 0;
   margin-right: 5px;
 }
 
-header .login a {
+header #status a {
   text-decoration: none;
 }
 
-header .login a:hover {
+header #status a:hover {
   text-decoration: underline;
 }
 
