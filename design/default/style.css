@@ -776,7 +776,7 @@ img.exe,img.bat,img.iso,img.bin{background-image:url(img/exe.png)!important;}
 		font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 		font-size:18px;
 		background:url(img/noise.png) rgba(0,0,0,0.5);
-		width:250px;
+		max-width:600px;
 		height:auto;
 		text-shadow:0 1px 1px rgba(0,0,0,0.5);
 		color:rgba(255,255,255,0.8);
@@ -785,9 +785,16 @@ img.exe,img.bat,img.iso,img.bin{background-image:url(img/exe.png)!important;}
 	body.login h1{font-size:24px;text-align:center; font-weight: bold}
 	body.login h2{font-size:18px;text-align:center; }
 	.logo{background:url(img/bozonlogo3.png) no-repeat center center;width:auto;height:128px;margin:auto;}
-	body.login label{display:block;}
-	body.login input{width:100%;}
-	body.login input[type=checkbox]+label{display:inline;width:auto;cursor:pointer;}
+	body.login label{display:block;margin-top:15px;margin-bottom:5px;}
+	body.login input{    font-size: 32px;}
+	body.login input[type=checkbox]+label{
+		display:inline-block;
+		width:auto;
+		cursor:pointer;
+		padding-top: 16px;
+		padding-bottom: 16px;
+		font-size: 24px;
+	}
 	body.login input[type=checkbox]{display:inline;width:auto;}
 	body.login input{border-radius:3px;width:100%;}
 	body.login #login, body.login #pass{
@@ -798,12 +805,13 @@ img.exe,img.bat,img.iso,img.bin{background-image:url(img/exe.png)!important;}
 		border-radius:4px;
 		color:rgba(255,255,255,0.5)!important;
 	}
-	body.login #login:focus{text-shadow:0 0 3px orange;}
-	body.login #pass:focus{text-shadow:0 0 3px red;}
-	@media (max-width:600px){
-		body.login .form_content{width:90%;font-size:26px!important;}
-		body.login input{font-size:26px!important;}
+	input:-webkit-autofill {
+	    -webkit-box-shadow: 0 0 0px 1000px white inset;
+	    -webkit-text-fill-color: #555555 !important;
 	}
+	body.login #login:focus{text-shadow:0 0 3px rgba(0,0,0,0.3);}
+	body.login #pass:focus{text-shadow:0 0 3px rgba(0,0,0,0.3);}
+	
 	@viewport{
     width: device-width;
     zoom:1;

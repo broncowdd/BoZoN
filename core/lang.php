@@ -28,7 +28,7 @@
 		'Logout'=>'Déconnexion',
 		'Type to filter the list'=>'Filtrer la liste',
 		'Drop your files here or click to select a local file'=>'Glisser les fichiers ici ou cliquer pour sélectionner un fichier local',
-		'Please, login'=>'Connectez-vous',
+		'Please, login'=>'Se connecter',
 		'Create your account'=>'Créez votre compte',
 		'Login'=>'Login',
 		'Password'=>'Passe',
@@ -88,6 +88,7 @@
 		'Icons'=>'Icônes',
 		'Change theme'=>'Changer le thème',
 		'Download a zip from this folder'=>'Télécharger un zip à partir de ce dossier',
+		'Connect'=>'Se connecter',
 	);
 
 	# ESPANOL
@@ -162,5 +163,6 @@
 		'Icons'=>'Íconos',
 		'Change theme'=>'Cambiar el aspecto',
 		'Download a zip from this folder'=>'Bajar un zip con esta carpeta',
+		'Connect'=>'Conectarse',
 	);
 ?>
