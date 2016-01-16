@@ -5,9 +5,8 @@
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
 	$message='';
-	include ('core/auto_restrict.php'); # Admin only!
+	include('core/auto_restrict.php'); # Admin only!
 	include('core/core.php');
-
 
 
 
@@ -98,9 +97,10 @@
 				mkdir($complete, 0755, true);
 			}
 			addID($_SESSION['current_path'].'/'.$folder);
+			header('location:admin.php');
+			exit;
 		}
-		header('location:admin.php');
-		exit;
+		
 	}
 	
 	# get file from url
@@ -128,7 +128,7 @@
 			$thumbfilename=get_thumbs_name($f);
 			if (is_file($thumbfilename)){unlink($thumbfilename);}
 			unset($ids[$_GET['del']]);
-			store();
+			store($ids);
 		}else if (is_dir($_SESSION['upload_path'].$f)){
 			# delete dir
 			rrmdir($_SESSION['upload_path'].$f);
@@ -165,7 +165,7 @@
 			rename($_SESSION['upload_path'].$oldfile,$_SESSION['upload_path'].$newfile); 
 			rename(get_thumbs_name($oldfile),get_thumbs_name($newfile));
 			$ids[$_GET['id']]=$newfile;
-			store();
+			store($ids);
 		}
 
 		header('location:admin.php');
@@ -211,7 +211,7 @@
 				$id=file2id($file);
 				$ids=unstore();
 				$ids[$id]=$destination;
-				store();
+				store($ids);
 			}
 		}
 		header('location:admin.php');
@@ -227,7 +227,7 @@
 		$ids=unstore();
 		unset($ids[$id]);
 		$ids[$password.$id]=$file;
-		store();
+		store($ids);
 		header('location:admin.php');
 		exit;
 	}
@@ -275,7 +275,11 @@
 
 			<div class="column window">
 				<header>
-					<h2><?php e('Files list');?></h2>
+					<h2><?php 
+						if ($_SESSION['mode']=='links'){e('Manage links');}						
+						elseif ($_SESSION['mode']=='move') {e('Move files');}
+						else{e('Manage files');}
+					?></h2>
 					<div class="fil_ariane">
 						<a class="home" href="admin.php?path=/&token=<?php echo returnToken(true);?>"><em><?php e('Root');?>:</em>&nbsp;</a>
 						<?php 

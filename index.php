@@ -8,7 +8,6 @@
 	$message='';$tree=false;$feeds_div='';
 	include('core/core.php');
 	function burned($id){if (substr($id,0,1)=='*'){removeID($id);}}
-
 	if (!empty($_GET['f'])){
 		$id=strip_tags($_GET['f']);
 		$f=id2file($id);

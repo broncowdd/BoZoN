@@ -57,7 +57,8 @@ if (count($liste)>0){
 	$folderlist='';
 	$filelist='';
 	foreach ($liste as $fichier){
-		$nom=basename($fichier);
+
+		$nom=_basename($fichier);
 		$length_upload_path=strlen($_SESSION['upload_path']);
 		$nom_racine=substr($fichier, $length_upload_path);
 		if ($nom!='index.html'&&empty($files[$fichier])&&empty($files[$nom_racine])){
@@ -87,7 +88,7 @@ if (count($liste)>0){
 				}else{$icone_visu='';}
 			$fichier_short=substr($fichier,$upload_path_size);
 			if (is_dir($fichier)){
-				# Item is a folder
+				# Item is a folder				
 				$taille=count(_glob($fichier.'/'));
 				$array=array(
 					'#CLASS'			=> $class,

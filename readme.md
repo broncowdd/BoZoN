@@ -16,6 +16,15 @@ Php 5 min, php5-gd, ZipArchive
 
 # Version history
 
+## New in 1.7.5b
+- added a function to erase no longuer used ids
+- bugfix with file with accent on first char: a basename function bug ! oO
+
+## New in 1.7.5
+- change in the templates: templates are now html files, easier to modify
+- added the mode in the file list's title.
+
+
 ## New in 1.7.4
 bug fixes (thx to chatainsim on Github)
 - #56: problem deleting a folder

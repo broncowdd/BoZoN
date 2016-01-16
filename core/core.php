@@ -7,7 +7,7 @@
 
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','1.7.4');
+	define('VERSION','1.7.5b');
 	require_once('lang.php');
 	include('config.php');
 
@@ -53,7 +53,6 @@
 	if (!is_writable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not writable',false).'</div>';}
 	if (!is_readable($_SESSION['upload_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not readable',false).'</div>';}
 	if (!is_writable($_SESSION['upload_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not writable',false).'</div>';}
-	include('design/'.$_SESSION['theme'].'/templates.php');
 	$behaviour['FILES_TO_ECHO']=array('txt','js','html','php','SECURED_PHP','htm','shtml','shtm','css');
 	$behaviour['FILES_TO_RETURN']=/*array();*/array('jpg','jpeg','gif','png','pdf','swf','mp3','mp4','svg');
 
@@ -62,9 +61,9 @@
 	$auto_thumb['default_height']='64';
 	$auto_thumb['dont_try_to_resize_thumbs_files']=true;
 
-	include('design/'.$_SESSION['theme'].'/templates.php');
+	include('core/templates.php');
 
-	$ids=unstore();
+	$ids=purgeIDs();
 
 	# store all client access to a file
 	function store_access_stat($file=null,$id=null){
@@ -105,12 +104,12 @@
 		store($ids);
 	}
 	# remove all ids that are not actually linked to a file/folder
-	function purgeIDs(){
-		$ids=unstore();
-		foreach($ids as $key=>$val){
-			if (!is_file($val) && !is_dir($val)){unset($ids[$key]);}
-		}
-		store($ids);
+	function purgeIDs($ids=null){
+		if (!$ids){$ids=unstore();}
+		$nb=count($ids);
+		foreach($ids as $key=>$val){$val=$_SESSION['upload_path'].$val;if (!is_file($val) && !is_dir($val)){unset($ids[$key]);}}
+		if (count($ids)!=$nb){store($ids);}
+		return $ids;
 	}
 	# complete all missing ids 
 	function completeID($array_of_files){
@@ -321,7 +320,7 @@
 	    return $liste;
 	   
 	}
-	
+	function _basename($file){$array=explode('/',$file);if (is_array($array)){return end($array);}else{return $file;}} 
 	function tree($dir='.',$files=true){
          # scann a folder and subfolders and return the tree
         if (!isset($dossiers[0]) || $dossiers[0]!=$dir){$dossiers[0]=$dir;}
@@ -431,4 +430,5 @@
 		}
 		return 'thumbs/'.preg_replace('#\.(jpe?g|png|gif)#i','_THUMB__'.$auto_thumb['default_width'].'x'.$auto_thumb['default_height'].'.$1',$file);
 	}
+	function aff($var,$stop=true){echo '<pre>';var_dump($var);if ($stop){exit();}}
 ?>
