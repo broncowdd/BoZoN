@@ -169,27 +169,27 @@ To Cyrille Borne [ https://github.com/cborne & http://www.cyrille-borne.com ]: w
 
 
 ## auto_restrict.php : 
-### Allows the admin's access, security stuff, sanitize $_GET/$_POST, IP bannishment etc
+Allows the admin's access, security stuff, sanitize $_GET/$_POST, IP bannishment etc
 
 ## auto_dropzone.php : 
-### Handles the drag & drop feature (draws the dropzone and handles the file upload)
+Handles the drag & drop feature (draws the dropzone and handles the file upload)
 
 ## auto_thumb.php : 
-### Function which handles the thumbnails generation
+Function which handles the thumbnails generation
 
 ## Array2feed.php : 
-### Function which handles the thumbnails generationRSS feed generation
+Function which handles the thumbnails generationRSS feed generation
 
 ## listfiles.php :
 ### lists all the files/folders in the current_path.
 You'll find here the file/folder item template, the listing loop function and the auto_thumb function 
 
 ## config.php : 
-### Configuration variables
+Configuration variables
 
 ## IP_file.txt (if you don't rename it):
 ### a json file containing an array [ID]=>"file/path/file.ext"
 To get the path from the id use is2file and file2id to get the opposit.
 
 ## themes folder:
-### contains all the different skins
+This folder contains all the different skins
