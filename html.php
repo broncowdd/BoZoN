@@ -1,6 +1,6 @@
 <?php
 /**
-* BoZoN templates file
+* BoZoN html file
 * contains all bozon's html parts
 * Do not change the #CODE parts !
 * @author: Bronco (bronco@warriordudimanche.net)
@@ -332,8 +332,5 @@ $templates=array(
 			</a>
 		</li>
 	',
-
-
-
 	);
 ?>

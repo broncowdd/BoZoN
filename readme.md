@@ -12,7 +12,7 @@
 The share link is the file link in the admin's view (you can also access it by the button link on the file.)
 
 ## Required 
-Php 5 min, php5-gd, ZipArchive
+php5 or more, php5-gd, ZipArchive
 
 # Version history
 
@@ -191,8 +191,5 @@ You'll find here the file/folder item template, the listing loop function and th
 ### a json file containing an array [ID]=>"file/path/file.ext"
 To get the path from the id use is2file and file2id to get the opposit.
 
-## design folder:
+## themes folder:
 ### contains all the different skins
-The skin folder must contain templates.php (all the template code), style.css and img/ folder.
-The simplest way to make your own skin is to copy-paste an existing one and modify it.
-Then, chnage the config.php $default_theme variable to your folder's name.

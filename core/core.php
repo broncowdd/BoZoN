@@ -8,8 +8,19 @@
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
 	define('VERSION','1.7.4');
-	require_once('lang.php');
-	include('config.php');
+	
+	function e($txt,$echo=true){
+		global $lang;
+		if (isset($lang[$_SESSION['language']][$txt])){$t= $lang[$_SESSION['language']][$txt];}else{$t= $txt;}
+		if ($echo){echo $t;}else{return $t;}
+	}
+	$lang=array();
+
+  foreach (glob('locales/*.php') as $filename){
+    include $filename;
+  }
+
+  include('config.php');
 
 	# Current session changing language
 	if (!empty($_GET['lang'])){$_SESSION['language']=strip_tags($_GET['lang']);header('location:admin.php');}
@@ -53,7 +64,7 @@
 	if (!is_writable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not writable',false).'</div>';}
 	if (!is_readable($_SESSION['upload_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not readable',false).'</div>';}
 	if (!is_writable($_SESSION['upload_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not writable',false).'</div>';}
-	include('design/'.$_SESSION['theme'].'/templates.php');
+	include('html.php');
 	$behaviour['FILES_TO_ECHO']=array('txt','js','html','php','SECURED_PHP','htm','shtml','shtm','css');
 	$behaviour['FILES_TO_RETURN']=/*array();*/array('jpg','jpeg','gif','png','pdf','swf','mp3','mp4','svg');
 
@@ -62,7 +73,7 @@
 	$auto_thumb['default_height']='64';
 	$auto_thumb['dont_try_to_resize_thumbs_files']=true;
 
-	include('design/'.$_SESSION['theme'].'/templates.php');
+	include('html.php');
 
 	$ids=unstore();
 
