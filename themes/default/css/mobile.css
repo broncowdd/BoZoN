@@ -14,12 +14,18 @@
   
   #index,
   #login {
-    min-height: 350px;
+    min-height: 380px;
   }
   
   footer {
     clear: both;
     position: relative;
+    height: 56px;
+  }
+  
+  footer #version {
+    height: 20px;
+    line-height: 20px;
   }
   
   /* Se connecter */

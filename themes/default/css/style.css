@@ -57,6 +57,10 @@ header #lang {
   margin-left: 5px;
 }
 
+header #lang a {
+  margin-right: 5px;
+}
+
 footer {
   clear: both;
   position: fixed;

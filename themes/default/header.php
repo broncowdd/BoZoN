@@ -22,7 +22,10 @@
     <p id="logo">&nbsp;</p>
     
     <div id="lang">
-      <a href="#"><img title="" src="themes/default/img/en.png" alt="" /></a>
-      <a href="#"><img title="" src="themes/default/img/fr.png" alt="" /></a>
-      <a href="#"><img title="" src="themes/default/img/es.png" alt="" /></a>
+    <?php  
+      /* foreach ($lang as $l=>$content){
+        if ($_SESSION['language']==$l){$class=' class="active" ';}else{$class='';}
+          echo '<a '.$class.' href="'.$_SERVER['REQUEST_URI'].'?&amp;lang='.$l.'&amp;token='.returnToken().'"><img title="" src="themes/default/img/'.$l.'.png" alt="" /></a>';
+      } */
+    ?>
     </div>

@@ -8,13 +8,7 @@
 		<div id="menu_icon" >&nbsp;</div>
 		<div style="clear:both"></div>
 		<div class="lang">
-			<?php  
-				foreach ($lang as $l=>$content){
-					if ($_SESSION['language']==$l){$class=' class="active" ';}else{$class='';}
-					echo '<a '.$class.' href="admin.php?lang='.$l.'&token='.returnToken().'">'.$l.'</a>';
-				}
-				
-			?>
+
 			<a href="admin.php?aspect=icon&token=<?php newToken(true);?>" title=" <?php e('Icons'); ?>"><img src="design/<?php echo $_SESSION['theme'];?>/img/34.png"/></a>
 			<a href="admin.php?aspect=list&token=<?php newToken(true);?>" title=" <?php e('List');  ?>"><img src="design/<?php echo $_SESSION['theme'];?>/img/35.png"/></a>
 		
@@ -101,24 +95,6 @@
 			</div>
 		
 	</div>
-
-		<div class="w1000">
-		<?php if (!isset($_SESSION['mode']) || $_SESSION['mode']=='view'){ ?>
-			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/bozondd.png"/><p>1 <?php e('Drag the file you want to share to upload it on the server');?></p></div>
-			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/bozonsh.png"/><p>2 <?php e('Copy the file\'s link (right click on it)');?></p></div>
-			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/bozoncc.png"/><p>3 <?php e('Share the link with your buddies...');?></p></div>
-		<?php }else if ($_SESSION['mode']=='move'){ ?>
-			<div class="w50"><p><img src="design/<?php echo $_SESSION['theme'];?>/img/unknown.png"/><?php e('Move a file by clicking on it and choosing the destination folder in the list');?></p></div>
-			<div class="w50"><p><img src="design/<?php echo $_SESSION['theme'];?>/img/folder.png"/><?php e('Move a folder by clicking on the move icon and choosing the destination folder in the list');?></p></div>
-
-		<?php }else if ($_SESSION['mode']=='links'){ ?>
-			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/locked_big.png"/><p> <?php e('Lock the access to the file/folder with a password');?><br/><small><?php e('If you want to remove the password, just click on Renew button');?></small></p></div>
-			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/burn_big.png"/><p> <?php e('When burn is on, the user can access the file/folder only once');?></p></div>
-			<div class="w33"><img src="design/<?php echo $_SESSION['theme'];?>/img/renew_big.png"/><p> <?php e('Renew the share link of the file/folder (in case of a stolen link for example)');?></p></div>	
-
-
-		<?php } ?>
-		</div>
 
 <?php
   include('footer.php');
