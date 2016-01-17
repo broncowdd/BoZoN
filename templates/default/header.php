@@ -19,7 +19,7 @@
 
 <body>
   <header>
-    <p id="logo">&nbsp;</p>
+    <p id="logo"><a title="BoZoN | <?php e('Send, copy and share'); ?>" href="index.php">&nbsp;</a></p>
     
     <div id="lang">
     <?php  

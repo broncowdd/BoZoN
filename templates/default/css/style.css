@@ -1,6 +1,6 @@
 /* STRUCTURE */
 body {
-  background: #fff;
+  background: #fbfbfb;
   color: #000;
   font-family: arial, verdana, sans-serif;
 }
@@ -20,18 +20,20 @@ header {
   border-bottom: 3px solid #dedede;
 }
 
-header #logo {
+header #logo a {
+  display: block;
   width: 150px;
+  height: 150px;
   margin: 0 auto;
   background: transparent url('../img/logo.white.png') 0 18px no-repeat;
   position: relative;
   overflow: hidden;
-  cursor: pointer;
+  color: transparent;
   transition: all .35s ease-in-out;
   transform: scale(1);
 }
 
-header #logo:hover {
+header #logo a:hover {
   transform: scale(1.20);
 }
 
@@ -88,8 +90,48 @@ footer #version {
   text-align: center;
 }
 
+/* INDEX */
+#index {
+  color: #6a6e7c;
+  width: 600px;
+  margin: 0 auto;
+}
+
+#index a {
+  color: #0088ec;
+}
+
+#index #block {
+  margin-top: 100px;
+}
+
+#index #block div {
+  width: 300px;
+  float: left;
+}
+
+#index #block div .img {
+  height: 150px;
+}
+
+#index #block div .img {
+  display: inline;
+  text-align: center;
+}
+
+#index #block div p {
+  text-align: center;
+}
+
+#index #warning {
+  clear: left;
+  padding-top: 100px;
+  text-align: center;
+}
+
 /* SE CONNECTER */
 #login {
+  color: #6a6e7c;
   width: 400px;
   margin: 0 auto;
 }
@@ -134,4 +176,9 @@ footer #version {
   box-shadow: inset 0 0 15px #006bbb;
   color: #fafafa;
   cursor: pointer;
+}
+
+#login #submit:hover,
+#login #cya:hover {
+  opacity: 0.8;
 }

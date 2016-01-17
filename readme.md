@@ -15,6 +15,10 @@ L'installation est simple puisqu'il suffit de copier les fichiers décompressés
 - sources: les images créées ou modifiées avec Adobe Fireworks CS3, les autres données codées par des tiers
 - templates: thèmes de l'application
 
+## Ressources tierces
+
+- Images de la page index par Elyounssi Wahib: https://www.iconfinder.com/iconsets/mayssam
+
 ## ChangeLog
 
 ### 0.0.1

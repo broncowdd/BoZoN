@@ -11,14 +11,25 @@
 <?php
   }else{
 ?>
-    <p id="status"><a title="<?php e('Login'); ?>" href="login.php"><?php e('Create an account'); ?></a></p>
+    <p id="status"><a title="<?php e('Create an account'); ?>" href="login.php"><?php e('Create an account'); ?></a></p>
 <?php
   }
 ?>
   </header>
   
   <div id="index">
-
+    <div id="block">
+      <div>
+        <div class="img"><img src="templates/default/img/tosend.png" alt="" /></div>
+        <p><?php e('Send your files on the server'); ?></p>
+      </div>
+      <div>
+        <div class="img"><img src="templates/default/img/toshare.png" alt="" /></div>
+        <p><?php e('Share your files with friends'); ?></p>
+      </div>
+    </div>
+    
+    <p id="warning"><?php e('You need to <a title="Create an account" href="login.php">create an account</a> to use this web application'); ?></p>
   </div>
 
 <?php
