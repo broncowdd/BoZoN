@@ -3,4 +3,3 @@
   
   $language='fr';
   $template='default';
-?>

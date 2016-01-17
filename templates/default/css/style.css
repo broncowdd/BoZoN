@@ -94,7 +94,7 @@ footer #version {
 #index {
   color: #6a6e7c;
   width: 600px;
-  margin: 0 auto;
+  margin: 0 auto 175px auto; /* 75px > taille du footer, 100px > margin-top de #index #block */
 }
 
 #index a {
@@ -133,7 +133,7 @@ footer #version {
 #login {
   color: #6a6e7c;
   width: 400px;
-  margin: 0 auto;
+  margin: 0 auto 95px auto; /* 75px > taille du footer, 20px > margin-top de #login h2 */
 }
 
 #login h2 {

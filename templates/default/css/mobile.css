@@ -7,8 +7,9 @@
     height: 78px;
   }
   
-  header #logo {
+  header #logo a {
     width: 75px;
+    height: 75px;
     background: transparent url('../img/logo.white.mobile.png') 0 9px no-repeat;
   }
   
@@ -27,6 +28,35 @@
     height: 20px;
     line-height: 20px;
   }
+  
+  /* Index */
+#index {
+  width: auto;
+  margin-bottom: 40px; /* 40px > margin-top de #index #block */
+}
+
+#index #block {
+  margin-top: 40px;
+}
+
+#index #block div {
+  width: 320px;
+  margin-bottom: 40px;
+}
+
+#index #block div .img {
+  height: 74px;
+  margin-bottom: 0px;
+}
+
+#index #block div .img img {
+  width: 64px;
+  height: 64px;
+}
+
+#index #warning {
+  padding-top: 60px;
+}
   
   /* Se connecter */
   #login {
