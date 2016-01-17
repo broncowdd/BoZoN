@@ -2,7 +2,7 @@
   # FRENCH
   $lang['fr']=array(
     // header.php
-    'Send, copy and share'=>'Envoyer, copier et partager',
+    'Send and share your files'=>'Envoyer et partager vos fichiers',
     
     // <header>, (index.php, error.php)
     'Create an account'=>'Créer un compte',
