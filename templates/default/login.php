@@ -1,16 +1,16 @@
 <?php
-  include('header.php'); 
+    require __DIR__.'/header.php'; 
 ?>
   </header>
   
-  <div id="login" class="form_content">
+  <div id="login">
     <form action="" method="post" name="">
       <?php 
-        $f=file_exists($auto_restrict['path_to_files'].'/auto_restrict_pass.php');
+        $f=file_exists('data/account.php');
         if($f){
           echo '<h2>'.e('Login',false).'</h2>';
         }else{
-          echo '<h2>'.e('Create your account',false).'</h2>';
+          echo '<h2>'.e('Create an account',false).'</h2>';
         }
       ?>
       
@@ -29,5 +29,5 @@
   </div>
 
 <?php
-  include('footer.php');
+  require __DIR__.'/footer.php';
 ?>
