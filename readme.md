@@ -8,7 +8,7 @@ L'installation est simple puisqu'il suffit de copier les fichiers décompresser 
 
 ## Structure de la webapp
 
-- data: contient toutes les données de l'application, fichier, compte de l'utilisateur...
+- data: contient toutes les données de l'application, fichiers, compte de l'utilisateur...
 - lib: les fichiers php importants de l'application
 - locales: les traductions
 - sources: les images créées ou modifies avec Adobe Fireworks CS3, les autres données que des tiers ont codées
