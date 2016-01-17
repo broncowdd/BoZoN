@@ -18,6 +18,8 @@
   </header>
   
   <div id="index">
+    <h2><?php e('Send documents online'); ?></h2>
+    
     <div id="block">
       <div>
         <div class="img"><img src="templates/default/img/tosend.png" alt="" /></div>
