@@ -4,7 +4,7 @@
 
 Cette application requiet php5 ou plus
 
-L'installation est simple puisqu'il suffit de copier les fichiers décompresser sur votre serveur
+L'installation est simple puisqu'il suffit de copier les fichiers décompressés sur votre serveur
 
 ## Structure de la webapp
 
