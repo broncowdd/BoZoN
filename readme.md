@@ -17,6 +17,6 @@ L'installation est simple puisqu'il suffit de copier les fichiers décompresser 
 
 ### 0.0.1
 
-Réorganisation totale de l'application BoZoN: https://github.com/broncowdd/BoZoN
-Tout est repris en partant presque de 0
-Certaines fonctions de l'application originale seront conservées
+* Réorganisation totale de l'application BoZoN: https://github.com/broncowdd/BoZoN
+* Tout est repris en partant presque de 0
+* Certaines fonctions de l'application originale seront conservées
