@@ -30,33 +30,33 @@
   }
   
   /* Index */
-#index {
-  width: auto;
-  margin-bottom: 40px; /* 40px > margin-top de #index #block */
-}
-
-#index #block {
-  margin-top: 40px;
-}
-
-#index #block div {
-  width: 320px;
-  margin-bottom: 40px;
-}
-
-#index #block div .img {
-  height: 74px;
-  margin-bottom: 0px;
-}
-
-#index #block div .img img {
-  width: 64px;
-  height: 64px;
-}
-
-#index #warning {
-  padding-top: 60px;
-}
+  #index {
+    width: auto;
+    margin-bottom: 40px; /* 40px > margin-top de #index #block */
+  }
+  
+  #index #block {
+    margin-top: 40px;
+  }
+  
+  #index #block div {
+    width: 320px;
+    margin-bottom: 40px;
+  }
+  
+  #index #block div .img {
+    height: 74px;
+    margin-bottom: 0px;
+  }
+  
+  #index #block div .img img {
+    width: 64px;
+    height: 64px;
+  }
+  
+  #index #warning {
+    padding-top: 60px;
+  }
   
   /* Se connecter */
   #login {
