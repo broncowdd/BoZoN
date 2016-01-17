@@ -1,9 +1,9 @@
-# Application minimaliste pour envoyer des documents en ligne
+# Webapp minimaliste pour envoyer des documents en ligne
 !!! EN DÉVELOPPEMENT - À NE PAS INSTALLER POUR L'INSTANT !!!
 
 ## Installation
 
-Cette application requiet php5 ou plus
+Cette webapp requiet php5 ou plus
 
 L'installation est simple puisqu'il suffit de copier les fichiers décompressés sur votre serveur
 
@@ -13,11 +13,12 @@ L'installation est simple puisqu'il suffit de copier les fichiers décompressés
 - lib: les fichiers php importants de l'application
 - locales: les traductions
 - sources: les images créées ou modifiées avec Adobe Fireworks CS3, les autres données codées par des tiers
+- templates: thèmes de l'application
 
 ## ChangeLog
 
 ### 0.0.1
 
-* Réorganisation totale de l'application BoZoN: https://github.com/broncowdd/BoZoN
+* Réorganisation totale de la webapp BoZoN: https://github.com/broncowdd/BoZoN
 * Tout est repris en partant presque de 0
-* Certaines fonctions de l'application originale seront conservées
+* Certaines fonctions de la webapp originale seront conservées
