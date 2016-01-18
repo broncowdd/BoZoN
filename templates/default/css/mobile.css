@@ -41,7 +41,7 @@
   
   /* Index */
   #index {
-    width: auto;
+    width: 320px;
     margin-bottom: 40px; /* 40px > margin-top de #index #block */
   }
   
@@ -51,7 +51,7 @@
   
   #index #block div {
     width: 320px;
-    margin-bottom: 40px;
+    margin: 0 auto 40px auto;
   }
   
   #index #block div .img {
