@@ -13,6 +13,16 @@
     background: transparent url('../img/logo.white.mobile.png') 0 9px no-repeat;
   }
   
+  header #status {
+    height: 15px;
+    line-height: 15px;
+    vertical-align: middle;
+  }
+  
+  header #status a {
+    font-size: 0.8em;
+  }
+  
   #index,
   #login {
     min-height: 380px;
@@ -55,7 +65,7 @@
   }
   
   #index #warning {
-    padding-top: 60px;
+    padding-top: 40px;
   }
   
   /* Se connecter */
@@ -65,10 +75,6 @@
   
   #login input {
     width: 300px;
-  }
-  
-  #login label {
-    width: 130px;
   }
   
   #login #submit {

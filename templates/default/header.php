@@ -6,6 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">        
 <meta name="application-name" content="BoZoN">
 <meta name="msapplication-tooltip" content="<?php e('Send and share your files'); ?>">
 <meta name="msapplication-TileImage" content="templates/default/img/logo.png">

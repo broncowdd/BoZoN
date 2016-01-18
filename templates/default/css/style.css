@@ -44,14 +44,6 @@ header #status {
   margin-right: 5px;
 }
 
-header #status a {
-  text-decoration: none;
-}
-
-header #status a:hover {
-  text-decoration: underline;
-}
-
 header #lang {
   position: absolute;
   top: 5px;
@@ -163,12 +155,13 @@ footer #version {
 
 #login label {
   display: block;
-  width: 160px;
-  height: 42px;
-  line-height: 42px;
+  width: 155px;
+  height: 35px;
+  line-height: 35px;
   vertical-align: bottom;
   font-size: 0.8em;
   float: left;
+  margin-left: 5px;
 }
 
 #login #submit,

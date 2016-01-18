@@ -31,7 +31,17 @@
       </div>
     </div>
     
-    <p id="warning"><?php e('You need to <a title="Create an account" href="login.php">create an account</a> to use this web application'); ?></p>
+    <?php
+      if(file_exists('data/account/account.php')){
+    ?>
+      <p id="warning"><?php e('<a title="Login" href="login.php">Log in</a> to administer the web application'); ?></p>
+    <?php
+      }else{
+    ?>
+      <p id="warning"><?php e('You need to <a title="Create an account" href="login.php">create an account</a> to use this web application'); ?></p>
+    <?php
+      }
+    ?>
   </div>
 
 <?php

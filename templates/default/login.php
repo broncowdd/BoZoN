@@ -6,7 +6,7 @@
   <div id="login">
     <form action="" method="post" name="">
       <?php 
-        $f=file_exists('data/account.php');
+        $f=file_exists('data/account/account.php');
         if($f){
           echo '<h2>'.e('Login',false).'</h2>';
         }else{
