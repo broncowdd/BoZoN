@@ -1,19 +1,13 @@
 <?php
   require __DIR__.'/header.php';
   
-  if(isset($_SESSION['login']) && !empty($_SESSION['login'])){
-?>
-    <p id="status"><a title="<?php e('Logout'); ?>" href="?logout"><?php e('Logout'); ?></a></p>
-<?php
-  }else if(file_exists('data/account/account.php')){
-?>
-    <p id="status"><a title="<?php e('Login'); ?>" href="login.php"><?php e('Login'); ?></a></p>
-<?php
-  }else{
-?>
-    <p id="status"><a title="<?php e('Create an account'); ?>" href="login.php"><?php e('Create an account'); ?></a></p>
-<?php
-  }
+  if($_SESSION['login']):
+    echo '<p id="status"><a title="'.e('Logout',false).'" href="?logout">'.e('Logout',false).'</a></p>';
+  elseif(file_exists('data/account/account.php')):
+    echo '<p id="status"><a title="'.e('Login',false).'" href="login.php">'.e('Login',false).'</a></p>';
+  else:
+    echo '<p id="status"><a title="'.e('Create an account',false).'" href="login.php">'.e('Create an account',false).'</a></p>';
+  endif;
 ?>
   </header>
 
@@ -26,4 +20,3 @@
 
 <?php
   require __DIR__.'/footer.php';
-?>
