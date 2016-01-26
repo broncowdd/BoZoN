@@ -1,5 +1,6 @@
 <?php
 if (session_id()==''){session_start();}
+if (!is_file('core.php')){$path_core='core/';}else{$path_core='';}
 /* Auto_dropzone.php v1.2 # Version Bozon !!!!!!!!!
     author: Bronco
     email: bronco@warriordudimanche.net
@@ -63,7 +64,7 @@ $default_config=array(
     'dropzone_id'=>'dropArea',
     'dropzone_class'=>'dropArea',
     'destination_filepath'=>$_SESSION['current_path'].'/',     // this can be an array like 'jpg'=>'upload/jpeg/' or a string 'destination/'
-    'my_filepath'=>$_SERVER['SCRIPT_NAME'],
+    'my_filepath'=>'index.php'//$_SERVER['SCRIPT_NAME'],
 );
 
 foreach($default_config as $key=>$val){
@@ -82,7 +83,7 @@ if (!is_array($auto_dropzone['destination_filepath'])&&!is_dir($_SESSION['upload
 $ini_max_upload=$phpini['upload_max_filesize']['global_value'];
 if (strpos($ini_max_upload,'G')!=false){$ini_max_upload=intval($ini_max_upload*1024);}
 else{$ini_max_upload=intval($ini_max_upload);}
-$ini_max_post=$phpini['upload_max_filesize']['global_value'];
+$ini_max_post=$phpini['post_max_size']['global_value'];
 if (strpos($ini_max_post,'G')!=false){$ini_max_post=intval($ini_max_post*1024);}
 else{$ini_max_post=intval($ini_max_post);}
 
@@ -221,7 +222,7 @@ if ($_FILES){
     }
 ?>
 
-        <div class="column window <?php echo $auto_dropzone['dropzone_class']; ?> DD_dropzone" id="<?php echo $auto_dropzone['dropzone_id'];?>">
+        <div class="<?php echo $auto_dropzone['dropzone_class']; ?> DD_dropzone" id="<?php echo $auto_dropzone['dropzone_id'];?>">
             <header class="DD_text"><?php echo $auto_dropzone['dropzone_text'];?><br/><em>(max:<?php echo $max;?> Mo)</em></header>
 
             <div class="DD_info">
@@ -257,7 +258,7 @@ if ($_FILES){
         function reload_list(){
            //reload list
             var request = new XMLHttpRequest();
-            request.open('GET', 'listfiles.php', true);
+            request.open('GET','index.php?refresh&token=<?php newToken(true);?>', true);
             target=document.getElementById('liste');
             request.onload = function() {
               if (request.status >= 200 && request.status < 400) {
@@ -326,18 +327,19 @@ if ($_FILES){
 
             // drag leave
             function handleDragLeave(event) {
+                remove_class(dropArea,'DD_hover');
                 event.stopPropagation();
                 event.preventDefault();
-                remove_class(dropArea,'DD_hover');
+                
             }
 
             // drag drop
             function handleDrop(event) {
+                remove_class(dropArea,'DD_hover');
                 if(event.preventDefault) { event.preventDefault(); }
                 if(event.stopPropagation) { event.stopPropagation(); }
                 if (uploading==true){return false;}
                 processFiles(event.dataTransfer.files);
-                
                 return false;
             }
 
@@ -413,7 +415,9 @@ if ($_FILES){
                         uploadFile(nextFile, status);
                     }
                 } else {
-                    remove_class(dropArea,'DD_uploading')
+                    result.innerHTML='';
+                    remove_class(dropArea,'DD_uploading');
+
                     bar.style.width='0';
                     reload_list();
                     uploading=false;

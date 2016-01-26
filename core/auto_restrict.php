@@ -55,15 +55,15 @@
 	if (!isset($auto_restrict['max_security_issues_before_ban'])){	$auto_restrict['max_security_issues_before_ban']=5;}
 	if (!isset($auto_restrict['just_die_on_errors'])){				$auto_restrict['just_die_on_errors']=true;}// end script immediately instead of include loginform in case of user not logged;
 	if (!isset($auto_restrict['just_die_if_not_logged'])){			$auto_restrict['just_die_if_not_logged']=false;}// end script immediately instead of include loginform in case of banished ip or referer problem;
-	if (!isset($auto_restrict['tokens_expiration_delay'])){			$auto_restrict['tokens_expiration_delay']=3600;}//seconds
+	if (!isset($auto_restrict['tokens_expiration_delay'])){			$auto_restrict['tokens_expiration_delay']=7200;}//seconds
 	if (!isset($auto_restrict['kill_tokens_after_use'])){			$auto_restrict['kill_tokens_after_use']=false;}//false to allow the token to survive after it was used (for a form with multiple submits, like a preview button)
 	if (!isset($auto_restrict['use_GET_tokens_too'])){				$auto_restrict['use_GET_tokens_too']=true;}
-	if (!isset($auto_restrict['use_ban_IP_on_token_errors'])){		$auto_restrict['use_ban_IP_on_token_errors']=true;}
+	if (!isset($auto_restrict['use_ban_IP_on_token_errors'])){		$auto_restrict['use_ban_IP_on_token_errors']=false;}
 	if (!isset($auto_restrict['redirect_error'])){					$auto_restrict['redirect_error']='index.php';}// si précisé, pas de message d'erreur
-	if (!isset($auto_restrict['redirect_success'])){				$auto_restrict['redirect_success']='admin.php';}
+	if (!isset($auto_restrict['redirect_success'])){				$auto_restrict['redirect_success']='index.php?p=admin&token='.returnToken();}
 	if (!isset($auto_restrict['domain'])){							$auto_restrict['domain']=$_SERVER['SERVER_NAME'];}
-	if (!isset($auto_restrict['POST_striptags'])){					$auto_restrict['POST_striptags']=true;}// if true, all $_POST data will be strip_taged
-	if (!isset($auto_restrict['GET_striptags'])){					$auto_restrict['GET_striptags']=true;}// if true, all $_GET data will be strip_taged
+	if (!isset($auto_restrict['POST_striptags'])){					$auto_restrict['POST_striptags']=false;}// if true, all $_POST data will be strip_taged
+	if (!isset($auto_restrict['GET_striptags'])){					$auto_restrict['GET_striptags']=false;}// if true, all $_GET data will be strip_taged
 	if (!isset($auto_restrict['root'])){							$auto_restrict['root']='.';}
 	if (!isset($auto_restrict['path_from_root'])){					$auto_restrict['path_from_root']='';}
 	if (!empty($_SERVER['HTTP_REFERER'])){							$auto_restrict['referer']=returndomain($_SERVER['HTTP_REFERER']);}else{$auto_restrict['referer']='';}
@@ -99,10 +99,10 @@
 			$auto_restrict['encryption_key']=md5(uniqid('', true));
 	
 			file_put_contents($auto_restrict['path_to_files'].'/auto_restrict_pass.php', '<?php $auto_restrict["login"]="'.$_POST['login'].'";$auto_restrict["encryption_key"]='.var_export($auto_restrict['encryption_key'],true).';$auto_restrict["salt"] = '.var_export($salt,true).'; $auto_restrict["pass"] = '.var_export(hash('sha512', $salt.$_POST['pass']),true).'; $auto_restrict["tokens_filename"] = "tokens_'.var_export(hash('sha512', $salt.uniqid('', true)),true).'.php";$auto_restrict["banned_ip_filename"] = "banned_ip_'.var_export(hash('sha512', $salt.uniqid('', true)),true).'.php";?>');
-			include('login_form.php');exit();
+			header('location: index.php?p=login');exit();
 		}
 		else{ 
-			include('login_form.php');exit();
+			header('location: index.php?p=login');exit();
 		}
 	}
 
@@ -142,7 +142,7 @@
 	if (!is_ok()){
 		@session_destroy();
 		if (!$auto_restrict['just_die_if_not_logged']){
-			include('login_form.php');
+			header('location: index.php?p=login');
 		} else {
 			echo $auto_restrict['error_msg'];
 		}
@@ -363,11 +363,13 @@
 		// secure $_GET with token
 		if (!empty($_GET)&&$auto_restrict['use_GET_tokens_too']){
 			if (!isset($_GET['token'])){// no token given ? get out !
+				
 				if ($auto_restrict['use_ban_IP_on_token_errors']){add_banned_ip();} 
 				return false;
 			}
 			$token=$_GET['token'];
 			if (!isset($_SESSION[$token])){ // Problem with session token ? get out !
+				
 				if ($auto_restrict['use_ban_IP_on_token_errors']){add_banned_ip();}
 				return false;
 			}

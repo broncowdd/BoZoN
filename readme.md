@@ -3,18 +3,29 @@
 
 
 ## Minimalist Drag & drop file sharing app
-
-- Install: just unzip on your server; no database/ php 5.2. Then go to admin.php page and create your login/pass. 
+( http://bozon.warriordudimanche.net/ )
+- Install: just unzip on your server; no database/ php 5.2. Then go to index.php?p=admin page and create your login/pass. 
 - Config: just change config.php file. 
-- Upload a file: go to admin.php page, connect and then drop files in the dashed area... that's it !
+- Upload a file: go to index.php?p=admin page, connect and then drop files in the dashed area... that's it !
 - Organize files & folders, share them, manage the shared access etc.
 
-The share link is the file link in the admin's view (you can also access it by the button link on the file.)
+The share link is the file link in the admin's view (you can also access it by the button link on the file or the folder.)
 
 ## Required 
 Php 5 min, php5-gd, ZipArchive
 
 # Version history
+
+## New in 2.0 beta
+- major changes in bozon's structure: all is called from index page
+- real home page
+- major design improvements: lighter, no more menu etc.
+- bugfixes
+- all pages'files are now in the template folder (easier to modify)
+- html files replace the variable template (easier for designers ;-) 
+- language files are now seperated in a locale folder
+- language can now also be changed in user mode (not only admin)
+- default language: set at browser default if not specified in config
 
 ## New in 1.7.5b
 - added a function to erase no longuer used ids

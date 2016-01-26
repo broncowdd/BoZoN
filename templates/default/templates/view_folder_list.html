@@ -1,0 +1,14 @@
+
+		<li class="folder #CLASS" title="#TITLE">
+			<div class="buttons">
+				<a class="close" title="#tooltip_close" onclick="suppr('#ID');" href="#delete_box">&nbsp;</a>
+				<a class="rename" title="#tooltip_rename" onclick="put_file_and_id('#ID','#SLASHEDNAME');"  href="#rename_box">&nbsp;</a>
+				<a class="link" title="#tooltip_link" onclick="put_link('#ID');" href="#link_box">&nbsp;</a>
+				<a class="zipfolder" title="#tooltip_zipfolder" href="index.php?p=admin&zipfolder=#ID&token=#TOKEN">&nbsp;</a>
+			</div>
+			<a href="index.php?p=admin&path=#FICHIER&token=#TOKEN" >
+				<img src="#theme/img/folder.png" style="background:transparent;"/>
+				<em>#NAME</em> <em class="over">[ #SIZE ]</em>
+			</a>
+		</li>
+	

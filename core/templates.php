@@ -15,7 +15,9 @@ $replacement=array(
 	'#tooltip_lock'=>e('Put a password on this share',false),
 	'#tooltip_burn'=>e('Turn this share into a burn after access share',false),
 	'#tooltip_renew'=>e('Regen the share link',false),
+	'#tooltip_zipfolder'=>e('Download a zip from this folder',false),
 	'#Move_file_or_folder'=>e('Move file or folder',false),
+	'#Move_to'=>e('Move to',false),
 	'#Move'=>e('Move',false),
 	'#To'=>e('To',false),
 	'#Lock_access'=>e('Lock access',false),
@@ -26,9 +28,15 @@ $replacement=array(
 	'#Delete'=>e('Delete',false),
 	'#Share_link'=>e('Share link',false),
 	'#Copy_link'=>e('Copy this share link',false),
-	'#theme'=>$_SESSION['theme'],
+	'#theme'=>THEME_PATH,
 	'#YES'=>e('Yes',false),
 	'#Move_to'=>e('Move this file to another directory',false),
+	'#Create_new_folder'=>e('Create a subfolder',false),
+	'#Create_folder_title'=>e('Create a subfolder in this folder',false),
+	'#New_folder'=>e('New_folder',false),
+	'#paste_url'=>e('Paste a file\'s URL',false),
+	'#paste_url_title'=>e('Paste a file\'s URL to get it on this server',false),
+
 );
 if (!empty($token)){
 	$replacement['#TOKEN']=$token;
@@ -37,13 +45,13 @@ function load_templates($tpl_array=null){
 	global $replacement;
 	$k=array_keys($replacement);
 	$r=array_values($replacement);
+	$path=THEME_PATH.'/templates/';
 	if (empty($tpl_array)){
-		$tpl_array=_glob('design/'.$_SESSION['theme'].'/templates/',$pattern='html');
+		$tpl_array=_glob($path,$pattern='html');
 	}
 	foreach($tpl_array as $key=>$tpl){
 		$tpl=basename($tpl);
 		$tpl_name=substr($tpl,0,strlen($tpl)-5);
-		$path='design/'.$_SESSION['theme'].'/templates/';
 		$templates[$tpl_name]=str_replace($k,$r,file_get_contents($path.$tpl));
 	}
 	return $templates;

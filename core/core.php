@@ -7,19 +7,29 @@
 
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','1.7.5b');
-	require_once('lang.php');
+	define('VERSION','2.0 beta');
 	include('config.php');
+	if (!session_id()){session_start();}
+	$message='';
 
-	# Current session changing language
-	if (!empty($_GET['lang'])){$_SESSION['language']=strip_tags($_GET['lang']);header('location:admin.php');}
+	# secure get / post data (normally done in auto_restrict)
+	if (!empty($_GET)){$_GET=array_map('strip_tags',$_GET);}
+	if (!empty($_POST)){$_POST=array_map('strip_tags',$_POST);}
+	
+	
+
+
+
+	# locale
 	if (empty($_SESSION['language'])){$_SESSION['language']=$default_language;}
-	# Current session changing aspect
-	if (!empty($_GET['aspect'])){$_SESSION['aspect']=strip_tags($_GET['aspect']);header('location:admin.php');}
+	if (is_file('locale/'.$_SESSION['language'].'.php')){include('locale/'.$_SESSION['language'].'.php');}else{$lang=array();}
+	# file list layout
 	if (empty($_SESSION['aspect'])){$_SESSION['aspect']=$default_aspect;}
 	# Current session changing theme
-	if (!empty($_GET['theme'])){$_SESSION['theme']=strip_tags($_GET['theme']);header('location:admin.php');}
+	if (!empty($_GET['theme'])){$_SESSION['theme']=$_GET['theme'];header('location:index.php?p='.$page.'&token='.returnToken());}
 	if (empty($_SESSION['theme'])){$_SESSION['theme']=$default_theme;}
+	if (empty($_SESSION['mode'])){$_SESSION['mode']=$default_mode;}
+
 	
 	# SESSION VARS
 
@@ -42,10 +52,8 @@
 	if (!is_dir('thumbs/')){mkdir('thumbs/');}
 	if (!is_file('thumbs/.htaccess')){file_put_contents('thumbs/.htaccess', 'deny from all');}
 	if (!is_file('thumbs/index.html')){file_put_contents('thumbs/index.html',' ');}
-	if (!file_exists($_SESSION['id_file'])){$ids=array();store();}
-	if (!is_file($_SESSION['upload_path'].'.htaccess')){
-		file_put_contents($_SESSION['upload_path'].'.htaccess', 'deny from all');
-	}
+	if (!file_exists($_SESSION['id_file'])){$ids=array();store($ids);}
+	if (!is_file($_SESSION['upload_path'].'.htaccess')){file_put_contents($_SESSION['upload_path'].'.htaccess', 'deny from all');}
 	if (!is_file($_SESSION['stats_file'])){file_put_contents($_SESSION['stats_file'], array());}
 	if (!is_readable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not readable',false).'</div>';}
 	if (!is_readable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not readable',false).'</div>';}
@@ -60,6 +68,11 @@
 	$auto_thumb['default_width']='64';
 	$auto_thumb['default_height']='64';
 	$auto_thumb['dont_try_to_resize_thumbs_files']=true;
+
+	# CONSTANTS
+	define('THEME_PATH','templates/'.$_SESSION['theme'].'/');
+
+
 
 	include('core/templates.php');
 
@@ -90,6 +103,9 @@
 		file_put_contents($_SESSION['stats_file'], '<?php /* '.base64_encode(gzdeflate(serialize($stats))).' */ ?>');
 	}
 	
+	# Delete the id if it's a burn one
+	function burned($id){if ($id[0]=='*'&&!isset($_GET['thumbs'])){removeID($id);}}
+
 	# add an item to ID file
 	function addID($string){
 		$ids=unstore();
@@ -105,10 +121,15 @@
 	}
 	# remove all ids that are not actually linked to a file/folder
 	function purgeIDs($ids=null){
-		if (!$ids){$ids=unstore();}
-		$nb=count($ids);
-		foreach($ids as $key=>$val){$val=$_SESSION['upload_path'].$val;if (!is_file($val) && !is_dir($val)){unset($ids[$key]);}}
-		if (count($ids)!=$nb){store($ids);}
+		if (!$ids){$ids=unstore();}		
+		foreach($ids as $key=>$val){
+			if (empty($val)){unset($ids[$key]);}
+			else{
+				$val=$_SESSION['upload_path'].$val;
+				if (!is_file($val) && !is_dir($val)){unset($ids[$key]);}
+			}
+		}
+		store($ids);
 		return $ids;
 	}
 	# complete all missing ids 
@@ -136,7 +157,7 @@
 	}
 
 	function store($ids=null){
-		if (!$ids){global $ids;}
+		//if (!$ids){exit('erreur: pas de contenu');}
 		file_put_contents($_SESSION['id_file'], '<?php /* '.base64_encode(gzdeflate(serialize($ids))).' */ ?>');
 	}
 	function unstore(){
@@ -430,5 +451,81 @@
 		}
 		return 'thumbs/'.preg_replace('#\.(jpe?g|png|gif)#i','_THUMB__'.$auto_thumb['default_width'].'x'.$auto_thumb['default_height'].'.$1',$file);
 	}
-	function aff($var,$stop=true){echo '<pre>';var_dump($var);if ($stop){exit();}}
+
+	# locales functions 
+	function e($txt,$echo=true){
+		global $lang;
+		if (isset($lang[$txt])){$t= $lang[$txt];}else{$t= $txt;}
+		if ($echo){echo $t;}else{return $t;}
+	}
+	function available_languages(){
+		$l=_glob('locale/','php');
+		foreach($l as $key=>$lang){
+			$l[$key]=str_replace('.php','',basename($lang));
+		}
+
+		return $l;
+	}
+	# Links functions
+	# create language links
+	function make_lang_link($pattern='<a #CLASS href="index.php?p=#PAGE&lang=#LANG&token=#TOKEN">#LANG</a>'){
+		$langs=available_languages();
+		if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
+		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
+		foreach($langs as $lang){
+			if ($_SESSION['language']==$lang){$class=' class="active '.$lang.'" ';}else{$class=' class="'.$lang.'" ';}
+			echo str_replace(array('#CLASS','#LANG','#TOKEN','#PAGE'),array($class,$lang,$token,$page),$pattern);
+		}
+		
+	}
+
+	# create the connection/admin button
+	function make_connect_link($label_admin='&nbsp;',$label_logout='&nbsp;',$label_login='&nbsp;'){
+		if (is_admin_connected()){
+			if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
+			echo '<a id="admin_button" class="btn green" href="index.php?p=admin&token='.$token.'" title="'.e('Admin',false).'">'.$label_admin.'</a>';
+			echo '<a id="logout_button" class="btn red" href="index.php?deconnexion" title="'.e('Logout',false).'">'.$label_logout.'</a>';
+
+		}
+		else{echo '<a id="login_button" class="btn" href="index.php?p=login" title="'.e('Connection',false).'">'.$label_login.'</a>';}
+	}
+
+	# create the layout link (to change view)
+	function make_layout_link($pattern='<a class="#LAYOUT btn #CLASS" href="index.php?p=#PAGE&aspect=#LAYOUT&token=#TOKEN">&nbsp;</a>'){
+		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
+		if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
+		if ($_SESSION['aspect']=='icon'){$class=' active';}else{$class='';}
+		echo str_replace(array('#LAYOUT','#THEME','#TOKEN','#PAGE','#CLASS'),array('icon',THEME_PATH,$token,$page,$class),$pattern);
+		if ($_SESSION['aspect']=='list'){$class=' active';}else{$class='';}
+		echo str_replace(array('#LAYOUT','#THEME','#TOKEN','#PAGE','#CLASS'),array('list',THEME_PATH,$token,$page,$class),$pattern);
+	}
+
+	# create the mode links (to change access mode)
+
+	function make_mode_link($pattern='<a class="mode_#MODE btn #CLASS" title="#TITLE" href="index.php?p=admin&mode=#MODE&token=#TOKEN">&nbsp;</a>'){
+		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
+		if ($_SESSION['mode']=='view'){$class=' active';}else{$class='';}
+		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('view',e('Manage files',false),$token,$class),$pattern);
+		if ($_SESSION['mode']=='links'){$class=' active';}else{$class='';}
+		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('links',e('Manage links',false),$token,$class),$pattern);
+		if ($_SESSION['mode']=='move'){$class=' active';}else{$class='';}
+		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('move',e('Move files',false),$token,$class),$pattern);
+		
+	}
+
+	# Checks auto_restrict's session vars to know if admin is connected
+	function is_admin_connected(){
+		if (empty($_SESSION['id_user'])||empty($_SESSION['login'])||empty($_SESSION['expire'])){
+			return false;
+		}
+		return true;
+	}
+
+	# echo some classes depending on filemode, pages etc
+	function body_classes(){
+		if (!empty($_GET['p'])){echo $_GET['p'].' ';}else{echo 'home ';}
+		if (!empty($_SESSION['language'])){echo 'body_'.$_SESSION['language'].' ';}
+		if (!empty($_SESSION['aspect'])&&empty($_GET['f'])){echo $_SESSION['aspect'].' ';}
+	}
+	function aff($var,$stop=true){echo '<pre>';var_dump($var);echo '</pre>';if ($stop){exit();}}
 ?>
