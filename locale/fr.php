@@ -30,7 +30,7 @@
 		'Drop your files here or click to select a local file'=>'Glisser les fichiers ici ou cliquer pour sélectionner un fichier local',
 		'Please, login'=>'Se connecter',
 		'Create your account'=>'Créez votre compte',
-		'Login'=>'S\'identifier',
+		'Login'=>'Identifiant',
 		'Password'=>'Mot de passe',
 		'Stay connected'=>'Rester connecté',
 		'No file on the server'=>'Aucun fichier sur le serveur',
