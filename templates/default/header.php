@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>BoZoN | <?php e('Send, copy and share'); ?></title>
+<title>BoZoN | <?php e('Drag, drop, share.'); ?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
