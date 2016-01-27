@@ -18,13 +18,13 @@
 			<div style="clear:both"></div>
 		<h2><?php e('BoZoN can do more !');?></h2>
 		<ul>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/locked_big.png" alt="lock icon"/><?php e('Lock the access to the file/folder with a password');?></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/burn_big.png" alt="burn icon"/> <?php e('Share a file or a folder with a unique acces link with the «burn mode»:');?></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/renew_big.png" alt="renew icon"/> <?php e('Renew a share link with a single clic');?></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/zipfolder_big.png" alt="upload zip folder icon"/> <?php e('Download a folder content into a zip');?></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/smartphone_big.png" alt="smartphone icon"/> <?php e('Acces to BoZoN on smartphone without any specific app: your browser is enougth');?></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/unzipfolder_big.png" alt="unzip folder icon"/> <?php e('To upload a folder, just zip and upload it: with one clic it will be turned into a folder on the server.');?></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/design_big.png" alt="design icon"/> <?php e('Modify the templates & style to make your own BoZoN');?></li>
-		</ul>	
+			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/locked_big.png" alt="lock icon"/><span><?php e('Lock the access to the file/folder with a password');?></span></li>
+			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/burn_big.png" alt="burn icon"/><span><?php e('Share a file or a folder with a unique acces link with the «burn mode»:');?></span></li>
+			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/renew_big.png" alt="renew icon"/><span><?php e('Renew a share link with a single clic');?></span></li>
+			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/zipfolder_big.png" alt="upload zip folder icon"/><span><?php e('Download a folder content into a zip');?></span></li>
+			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/smartphone_big.png" alt="smartphone icon"/><span><?php e('Acces to BoZoN on smartphone without any specific app: your browser is enougth');?></span></li>
+			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/unzipfolder_big.png" alt="unzip folder icon"/><span><?php e('To upload a folder, just zip and upload it: with one clic it will be turned into a folder on the server.');?></span></li>
+			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/design_big.png" alt="design icon"/><span><?php e('Modify the templates & style to make your own BoZoN');?></span></li>
+		</ul>
 
 		</div>
