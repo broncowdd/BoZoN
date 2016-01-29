@@ -36,7 +36,7 @@
 	if (empty($_SESSION['stats_max_entries'])){$_SESSION['stats_max_entries']=$default_limit_stat_file_entries;}
 	if (empty($_SESSION['stats_max_lines'])){$_SESSION['stats_max_lines']=$default_max_lines_per_page_on_stats_page;}
 	if (empty($_SESSION['zip'])){$_SESSION['zip']=class_exists('ZipArchive');}
-	if (empty($_SESSION['home'])){$_SESSION['home'] =addslash_if_needed(dirname(getUrl()));}
+	if (empty($_SESSION['home'])){$_SESSION['home'] =getUrl();}
 	if (empty($_SESSION['upload_path'])){$_SESSION['upload_path']=addslash_if_needed($default_path);}
 	if (empty($_SESSION['id_file'])){$_SESSION['id_file']=$default_id_file;}
 	if (empty($_SESSION['stats_filestats_file'])){$_SESSION['stats_file']=$default_stat_file;}
@@ -214,10 +214,8 @@
 		return $data;
 	}
 	function getUrl() {
-	 $url = @( $_SERVER["HTTPS"] != 'on' ) ? 'http://'.$_SERVER["SERVER_NAME"] : 'https://'.$_SERVER["SERVER_NAME"];
-	 //$url .= ( $_SERVER["SERVER_PORT"] !== 80 ) ? ":".$_SERVER["SERVER_PORT"] : "";
-	 $url .= $_SERVER["REQUEST_URI"];
-	 return $url;
+		$url = @( $_SERVER["HTTPS"] != 'on' ) ? 'http://'.$_SERVER["SERVER_NAME"] : 'https://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"];
+		return $url;
 	}
 	function rrmdir($dir) { 
 		# delete a folder and its content
