@@ -99,10 +99,16 @@
 			$auto_restrict['encryption_key']=md5(uniqid('', true));
 	
 			file_put_contents($auto_restrict['path_to_files'].'/auto_restrict_pass.php', '<?php $auto_restrict["login"]="'.$_POST['login'].'";$auto_restrict["encryption_key"]='.var_export($auto_restrict['encryption_key'],true).';$auto_restrict["salt"] = '.var_export($salt,true).'; $auto_restrict["pass"] = '.var_export(hash('sha512', $salt.$_POST['pass']),true).'; $auto_restrict["tokens_filename"] = "tokens_'.var_export(hash('sha512', $salt.uniqid('', true)),true).'.php";$auto_restrict["banned_ip_filename"] = "banned_ip_'.var_export(hash('sha512', $salt.uniqid('', true)),true).'.php";?>');
-			header('location: index.php?p=login');exit();
+			// redirect to login form
+			if (!headers_sent()){header('location: index.php?p=login');}
+			else{echo '<script>document.location.href="index.php?p=login";</script>';}
+			exit;
 		}
 		else{ 
-			header('location: index.php?p=login');exit();
+			// redirect to login form
+			if (!headers_sent()){header('location: index.php?p=login');}
+			else{echo '<script>document.location.href="index.php?p=login";</script>';}
+			exit;
 		}
 	}
 
@@ -132,7 +138,17 @@
 	// user wants to logout (?logout $_GET var)
 	// ------------------------------------------------------------------	
 	if (isset($_GET['deconnexion'])||isset($_GET['logout'])){@session_destroy();delete_cookie();exit_redirect();}
+	// ------------------------------------------------------------------
+	
+	// ------------------------------------------------------------------
+	// No admin connected -> login
 	// ------------------------------------------------------------------	
+	if (empty($_SESSION['id_user'])||empty($_SESSION['login'])||empty($_SESSION['expire'])){
+		if (!headers_sent()){header('location: index.php?p=login');}
+		else{echo '<script>document.location.href="index.php?p=login";</script>';}
+		exit;
+	}
+	
 	// ------------------------------------------------------------------	
 	// if here, there's no login/logout process.
 	// Check referrer, ip
