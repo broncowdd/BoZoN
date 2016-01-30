@@ -10,6 +10,7 @@
 
 		
 		if(!empty($f)){
+			set_time_limit (0); 
 			store_access_stat($f,$id);
 			# password mode
 			if (isset($_POST['password'])){
