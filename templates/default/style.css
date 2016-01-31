@@ -222,11 +222,12 @@ header hr{
 /* gallery */
 .gallery{padding:10px;text-align:center;}
 body .gallery h1{text-align:center;font-size:48px;}
-.image{
+.image,.blank{
 	display:inline-block;    
 	vertical-align: bottom;
 	overflow: hidden;
     height: 256px;
+    width:256px;
     vertical-align: bottom;
 }
 .image img{border-radius: 3px;}
@@ -246,7 +247,7 @@ body .gallery h1{text-align:center;font-size:48px;}
 }
 .image:hover .info{top:-259px}
 .image .infoem{display:block;}
-
+.video{background:url(img/video.png) no-repeat;}
 
 /* share password form */
 .lock{
@@ -514,6 +515,9 @@ ul.list li.burn {
 .list li a.zipfolder{
 	background:url(img/download_folder.png) no-repeat center center;	
 }
+.list li a.qrcode{
+	background:url(img/qrcode.png) no-repeat center center;	
+}
 .list li a.movefolder:hover{background-color:rgba(255,0,0,0.8);}
 .list li a.close:hover{background-color:rgba(255,0,0,0.8);}
 .list li a.rename:hover{background-color:rgba(0,150,0,0.8);}
@@ -524,10 +528,11 @@ ul.list li.burn {
 .list li a.locked:hover{background-color:rgba(100,100,100,0.8);}
 .list li a.tofolder:hover{background-color:rgba(200,100,100,0.8);}
 .list li a.zipfolder:hover{background-color:rgba(200,100,100,0.8);}
+.list li a.qrcode:hover{background-color:rgba(200,100,100,0.8);}
 
 
 .list li:hover a.close, .list li:hover a.movefolder, .list li:hover a.rename, .list li:hover a.link, .list li:hover a.visu,li:hover form,
-.list li:hover a.renew,.list li:hover a.burn,.list li:hover a.locked, .list li:hover a.tofolder,.list li:hover a.zipfolder
+.list li:hover a.renew,.list li:hover a.burn,.list li:hover a.locked, .list li:hover a.tofolder,.list li:hover a.zipfolder,.list li:hover a.qrcode
 {display:inline-block;}
 .list li:hover .buttons{background-color:rgba(0,0,0,0.7);box-shadow:0 1px 2px rgba(0,0,0,0.5);}
 
@@ -1131,7 +1136,7 @@ div.lightbox button
 	padding:10px;
 }
 #link_box textarea{resize:none;}
-
+#qrcode_img{display:block;margin:5px auto;width:256px;height:256px;}
 
 /* Media queries */
 @media screen and (max-width:600px), handheld{

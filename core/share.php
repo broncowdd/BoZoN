@@ -34,10 +34,17 @@
 					# file request => return file according to $behaviour var (see core.php)
 					$type=_mime_content_type($f);
 					$ext=strtolower(pathinfo($f,PATHINFO_EXTENSION));
-					if (is_in($ext,'FILES_TO_ECHO')!==false){		
+					if ($ext=='md'){
+						include('core/markdown.php');
+						require(THEME_PATH.'/header_markdown.php');		
+						echo  parse(url2link(file_get_contents($f)));
+						require(THEME_PATH.'/footer_markdown.php');
+						
+					}
+					else if (is_in($ext,'FILES_TO_ECHO')!==false){		
 						require(THEME_PATH.'/header.php');		
 						echo '<pre>'.htmlspecialchars(file_get_contents($f)).'</pre>';
-						require(THEME_PATH.'/footer.php');
+						require(THEME_PATH.'/footer.php');						
 					}
 					else if (is_in($ext,'FILES_TO_RETURN')!==false){
 						header('Content-type: '.$type.'; charset=utf-8');
@@ -51,7 +58,7 @@
 						header('Content-Length: '.filesize($f));
 						// lance le téléchargement des fichiers non affichables
 						header('Content-Disposition: attachment; filename="'.basename($f).'"');
-						readfile($f);				
+						readfile($f);
 					}		
 					# burn access ?
 					burned($id);	

@@ -18,6 +18,7 @@ echo str_replace('#TOKEN',$lb_token,$templates['rename_lightbox']);
 echo str_replace('#TOKEN',$lb_token,$templates['delete_lightbox']);
 echo str_replace('#TOKEN',$lb_token,$templates['new_folder_lightbox']);
 echo str_replace('#TOKEN',$lb_token,$templates['download_url_lightbox']);
+echo str_replace('#TOKEN',$lb_token,$templates['qrcode_lightbox']);
 
 // Configuration
 $upload_path_size=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
@@ -165,7 +166,7 @@ if (count($liste)>0){
 }else{e('No file on the server');}
 
 ?>
-
+<script src="core/qr.js"></script>
 <script>
 	
 	function put_file(fichier){
@@ -179,5 +180,21 @@ if (count($liste)>0){
 		document.getElementById('ID_Rename').value=id;
 	}
 	function suppr(id){	document.getElementById('ID_Delete').value=id;}
+
+// function inspired by Timo http://lehollandaisvolant.net/tout/tools/qrcode/
+function qrcode(id) {
+	var data = "<?php echo $_SESSION['home'];?>?f="+id;
+	var options = {ecclevel:'M'};
+	var url = QRCode.generatePNG(data, options);
+	document.getElementById('qrcode_img').src = url;
+	return false;
+}
+
+
+function downloadImage() {
+	data = document.getElementById('outputimg').src;
+	document.getElementById('outputlink').href = data;
+}
+
 
 </script>

@@ -67,7 +67,7 @@
 	if (!empty($_SESSION['upload_user_path'])&&!is_readable($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not readable',false).'</div>';}
 	if (!empty($_SESSION['upload_user_path'])&&!is_writable($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not writable',false).'</div>';}
 	$behaviour['FILES_TO_ECHO']=array('txt','js','html','php','SECURED_PHP','htm','shtml','shtm','css');
-	$behaviour['FILES_TO_RETURN']=/*array();*/array('jpg','jpeg','gif','png','pdf','swf','mp3','mp4','svg');
+	$behaviour['FILES_TO_RETURN']=/*array();*/array('md','jpg','jpeg','gif','png','pdf','swf','mp3','mp4','svg');
 
  	$auto_dropzone['destination_filepath']=$_SESSION['current_path'].'/';
 	$auto_thumb['default_width']='64';
@@ -358,7 +358,7 @@
     }
     function only_image($tree){
     	unset($tree[0]);
-    	$ext='.png .jpg .jpeg .gif';
+    	$ext='.png .jpg .jpeg .gif .mp4';
     	foreach($tree as $file){
     		$extension=pathinfo($file,PATHINFO_EXTENSION);
     		if (!stripos($ext, $extension)){return false;}
@@ -406,14 +406,21 @@
 			global $gallery_thumbs_width;
 			$title=explode('/',$tree[0]);$title=$title[count($title)-1];unset($tree[0]);
 			echo '<section><ul class="gallery"><h1>'.$title.'</h1>';
+			
 			foreach($tree as $image){
 				$link='index.php?f='.file2id($image);
-				$size = getimagesize($image);
-				$size=$size[0].'x'.$size[1];
-				$file=basename($image);
-				auto_thumb($image,$width=$gallery_thumbs_width,$height=$gallery_thumbs_width,$add_to_thumb_filename='_THUMBGALLERY_',$crop_image=true);
-				echo '<a class="image" href="'.$link.'" ><img src="'.$link.'&gthumbs" alt="'.$file.'"/><span class="info"><em>'.$file.'</em> '.$size.'</span></a>';
-			}
+				$ext=strtolower(pathinfo($image,PATHINFO_EXTENSION));
+				if ($ext!='mp4'){					
+					$size = getimagesize($image);
+					$size=$size[0].'x'.$size[1];
+					$file=basename($image);
+					auto_thumb($image,$width=$gallery_thumbs_width,$height=$gallery_thumbs_width,$add_to_thumb_filename='_THUMBGALLERY_',$crop_image=true);
+					echo '<a class="image" href="'.$link.'" ><img src="'.$link.'&gthumbs" alt="'.$file.'"/><span class="info"><em>'.$file.'</em> '.$size.'</span></a>';
+
+				}else{
+					echo '<a class="image video" href="'.$link.'" ><div class="blank">&nbsp;</div><span class="info"><em>'.$file.'</em> '.$size.'</span></a>';
+				}
+							}
 			echo '</ul></section>';
 		}
 	}
