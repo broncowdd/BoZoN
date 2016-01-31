@@ -78,7 +78,7 @@ I used a few libs I made
 - auto_dropzone : a lib that handle the drag and drop function only by including it in a script
 - Array2feed.php : a function used to convert an array into a RSS feed without commiting suicide XD
 
-and sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
+and sorttables.js (http://www.kryogenix.org/code/browser/sorttable/) +qr.js (http://hg.mearie.org/qrjs/)
 
 ## Licence
 All Bozon code and all the libs used in it are distributed under AGPL: feel free to fork, adapt, distribute, comment etc but please, keep your fork free too ;-)
