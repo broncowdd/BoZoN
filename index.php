@@ -1,15 +1,25 @@
-<?php
+<?php 
 	/**
 	* BoZoN index page:
 	* joins all bozon parts and handles requests
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
+if (is_file('import.php')){header('location: import.php');}
 require('core/core.php');
 
 
 # thumbnail request
 if(isset($_GET['thumbs'])&&!empty($_GET['f'])){
-	$f=get_thumbs_name($f=id2file($_GET['f']));
+	$f=get_thumbs_name(id2file($_GET['f']));
+	$type=_mime_content_type($f);
+	header('Content-type: '.$type.'; charset=utf-8');
+	header('Content-Transfer-Encoding: binary');
+	header('Content-Length: '.filesize($f));
+	readfile($f);
+	exit;
+}
+if(isset($_GET['gthumbs'])&&!empty($_GET['f'])){
+	$f=get_thumbs_name_gallery(id2file($_GET['f']));
 	$type=_mime_content_type($f);
 	header('Content-type: '.$type.'; charset=utf-8');
 	header('Content-Transfer-Encoding: binary');
@@ -56,9 +66,14 @@ if (!empty($_GET['aspect'])){$_SESSION['aspect']=$_GET['aspect'];header('locatio
 
 	
 require(THEME_PATH.'/header.php');
-
-	# User get/post
-	if (!empty($page)&&is_file(THEME_PATH.$page.'.php')){
+	# users list request
+	if (isset($_GET['users_list'])){
+		echo '<div class="w1000">';
+		generate_users_formlist(e('Users list',false),e('Check users to delete account and files',false));// auto_restrict function
+		echo '</div>';
+	}
+	# page request
+	elseif (!empty($page)&&is_file(THEME_PATH.$page.'.php')){
 		# request for a specific page
 		include(THEME_PATH.$page.'.php');
 	}else{

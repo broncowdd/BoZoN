@@ -40,11 +40,11 @@ a:active{color:#333;}
 .middle,.middle *{vertical-align:middle;}
 
 /* global style for buttons/inputs */
-.btn{cursor:pointer;border-radius:3px;display:inline-block;padding:5px;border:1px solid #777; background-color:#888;margin:2px;box-shadow:0 1px 1px;}
+.btn, .users_list input[type=submit]{cursor:pointer;border-radius:3px;display:inline-block;padding:5px;border:1px solid #777; background-color:#888;margin:2px;box-shadow:0 1px 1px;}
 .btn:hover{border:1px solid #888; background-color:#999;}
 .npt{border-radius:3px;display:inline-block;padding:5px;border:1px solid #aaa;background-color:#eee;box-shadow: inset 0 1px 1px}
 .blue{color:white!important;background-color:#405bff;border-color:#05E;box-shadow: 0 1px 1px #04d}
-.red{background-color:#B30;border-color:#a20;box-shadow: 0 1px 1px #910;}
+.red, .users_list input[type=submit]{background-color:#B30;border-color:#a20;box-shadow: 0 1px 1px #910;}
 .white{background-color:#aaa;border-color:#999;}
 .white:hover{background-color:#bbb;border-color:#aaa;}
 .blue:hover{background-color:#17F;border-color:#16e;}
@@ -54,10 +54,23 @@ a:active{color:#333;}
 .orange{background-color:#f71;border-color:#e60;}
 .orange:hover{background-color:#f81;border-color:#f70;}
 
+/* Top bar*/
+#top_bar{background-color:rgba(0,0,0,0.3);margin-bottom:5px;border-bottom:1px solid rgba(0,0,0,0.2);}
+#top_bar a{color:#6E7EF5;border-left:1px solid rgba(0,0,0,0.2);border-right:1px solid rgba(0,0,0,0.2);}
+#top_bar a:hover{color:#ddd;background-color:rgba(0,0,0,0.3);}
+#top_bar .auto_restrict_userslist_link{background:url(img/users.png) no-repeat center center;width:32px;}
+#top_bar .auto_restrict_new_user_link{background:url(img/new_user.png) no-repeat center center;width:32px;}
+#top_bar .auto_restrict_new_user_link{background:url(img/new_user.png) no-repeat center center;width:32px;}
+#top_bar .log_file{background:url(img/log_file.png) no-repeat center center;width:32px;}
+#top_bar .home{background:url(img/home_16.png) no-repeat center center;width:32px;}
+
+/* Menu */
+#menu{float:left;}
+#menu a{display:inline-block;padding:5px;}
 
 /* lang */ 
-#lang a{display:inline-block;padding:5px;}
-#lang a:hover{}
+#lang{float:right;}
+#lang a{display:inline-block;padding:5px;width:auto;}
 #lang a.active{color:white;}
 #lang a.en{}
 #lang a.fr{}
@@ -81,8 +94,11 @@ a:active{color:#333;}
 
 /*admin/login/logout buttons*/
 #connect{display:inline-block;vertical-align:middle;}
-#admin_button,#logout_button,#login_button{
+#logout_button,#login_button{
 	height:32px;width:32px;background-position:center center;background-repeat:no-repeat;
+}
+#admin_button{
+	height:32px;min-width:32px;background-position:5px center;background-repeat:no-repeat;padding-left:20px;
 }
 #admin_button{background-image:url(img/user.png);}
 #login_button{background-image:url(img/locked.png);}
@@ -125,7 +141,8 @@ body{
 	-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
 }
 body.list,body.icon{padding:0;}
-body.login footer{position:absolute;bottom:0;}
+body.login footer{}
+
 body.move{}
 body.links{}
 body>header{
@@ -168,6 +185,15 @@ header hr{
 	text-shadow:0 1px 1px rgba(0,0,0,0.5);
 	text-align:center;
 }
+.success{
+	padding:20px;
+	background-color:rgba(0,255,0,0.7);
+	box-shadow: inset 0 0 2px green;
+	color:#040;
+	font-size:18px;
+	text-shadow:0 1px 1px rgba(0,0,0,0.5);
+	text-align:center;
+}
 
 #content{
 	width:100%;
@@ -193,11 +219,38 @@ header hr{
 
 	.column>header>h1{color:#07f;margin-bottom:15px;padding-left:0;}
 
+/* gallery */
+.gallery{padding:10px;text-align:center;}
+body .gallery h1{text-align:center;font-size:48px;}
+.image{
+	display:inline-block;    
+	vertical-align: bottom;
+	overflow: hidden;
+    height: 256px;
+    vertical-align: bottom;
+}
+.image img{border-radius: 3px;}
+.image .info{
+	background-color:rgba(0,0,0,0.4);
+	color:white;
+	padding:10px;
+	padding-top:20px;
+	position: relative;
+    top: 0px;
+    left: 0px;
+    word-wrap: break-word;
+    width: 256px;
+    height:256px;
+    display: inline-block;
+    display: block
+}
+.image:hover .info{top:-259px}
+.image .infoem{display:block;}
+
+
 /* share password form */
 .lock{
     padding: 10px;
-    /* background-color: rgba(0,0,0,0.1); */
-    /* box-shadow: inset 0 0 2px rgba(0,0,0,0.2); */
     width: 350px;
     margin: auto;
     margin-top: 30px;
@@ -766,7 +819,7 @@ li.DD_warning{
 .stats thead th{cursor:pointer;}
 .stats tbody tr:hover{background: rgba(0,0,0,0.1);}
 .stats th{border:1px solid #405bff;padding:6px 10px;cursor:default;background: #405bff;color:white;}
-.stats td{    word-break: break-all;width: auto;border:1px solid rgba(0,0,0,0.1);padding:6px 10px;cursor:default;background: rgba(255,255,255,0.5)}
+.stats td{    min-width: 150px; word-break: break-all;width: auto;border:1px solid rgba(0,0,0,0.1);padding:6px 10px;cursor:default;background: rgba(255,255,255,0.5)}
 .stats td:first-of-type{border:1px solid rgba(0,0,0,0.1);padding:5px;}
 .stats tfoot td{border:none;font-size:22px;}
 .stats tfoot tr{border:none;font-size:22px;}
@@ -916,9 +969,9 @@ ul.tree .mp4,ul.tree .flv,ul.tree .avi{color:rgba(0,140,100,0.6);}
 ul.tree .pdf{color:rgba(155,0,0,0.5);}
 ul.tree .folder{
 	color:rgba(0,0,0,0.7);
-	display:inline-block;
+	padding:3px;
 	background: rgba(0,0,0,0.1);
-	border-radius: 3px;
+	border-radius: 5px;
 }
 ul.tree .folder:first-of-type{font-size:26px;}
 ul.tree li:not(.folder){
@@ -1084,8 +1137,10 @@ div.lightbox button
 @media screen and (max-width:600px), handheld{
 	.DD_text{display:none;}
 	#admin_button,#logout_button,#login_button{
-		height:64px;width:64px;background-position:center center;background-repeat:no-repeat;
+		height:64px;min-width:64px;background-position:center center;background-repeat:no-repeat;
 	}
+	#search input[type=text].npt{height:64px;}
+	#top_bar a{border:1px solid rgba(0,0,0,0.2);display:block;text-align:center;}
 	.w50{width:100%;}
 	body header p.logo{
 		/*background:url(img/bozonlogo3.png) no-repeat center top;*/
@@ -1202,7 +1257,8 @@ label,
 #menu,
 #menu_icon,
 select,
-#search input
+#search input,
+.image .info
 {transition:all 300ms;}
 
 img:hover,
@@ -1213,5 +1269,6 @@ form:hover ,
 .lang:hover,
 #menu_icon:hover,
 select:hover,
-#search input:hover
+#search input:hover,
+.image:hover .info
 {transition:all 300ms;}

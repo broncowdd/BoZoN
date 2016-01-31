@@ -16,7 +16,7 @@
 	if (!empty($_GET['unzip']) && trim($_GET['unzip'])!==false){
 		$id=$_GET['unzip'];
 		$path=id2file($id);
-		unzip($_SESSION['upload_path'].$path,$_SESSION['upload_path'].dirname($path));
+		unzip($path,dirname($path));
 		header('location:index.php?p=admin&token='.returnToken());
 		exit;
 	}	
@@ -82,14 +82,14 @@
 	if (!empty($_GET['newfolder'])){
 		$folder=$_GET['newfolder'];
 		if(check_path($folder)){
-			foreach (array($_SESSION['upload_path'], 'thumbs/') as $root_folder) {
+			foreach (array($_SESSION['upload_root_path'].$_SESSION['upload_user_path'], 'thumbs/'.$_SESSION['upload_user_path']) as $root_folder) {
 				$complete=$root_folder.addslash_if_needed($_SESSION['current_path']).$folder;
 				if (is_dir($complete)){
 					# Folder already exists, rename
 					$folder=rename_item($folder);
 					$complete=$root_folder.$_SESSION['current_path'].'/'.$folder;
 				}
-				mkdir($complete, 0755, true);
+				mkdir($complete, 0744, true);
 			}
 			addID($_SESSION['current_path'].'/'.$folder);
 			header('location:index.php?p=admin&token='.returnToken());
@@ -102,12 +102,12 @@
 	if (!empty($_GET['url'])&&$_GET['url']!=''){
 		if ($content=file_curl_contents($_GET['url'])){
 			$basename=basename($_GET['url']);
-			$filename=addslash_if_needed($_SESSION['current_path']).$basename;			
-			if(is_file($_SESSION['upload_path'].$filename)){
+			$filename=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$basename;			
+			if(is_file($filename)){
 				$newfilename=uniqid().'_'.$basename;
-				$filename=addslash_if_needed($_SESSION['current_path']).$newfilename;
+				$filename=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$newfilename;
 			}		
-			file_put_contents($_SESSION['upload_path'].$filename,$content);
+			file_put_contents($filename,$content);
 			addID($filename);
 			header('location:index.php?p=admin&token='.returnToken());
 			exit;
@@ -117,16 +117,16 @@
 	# delete file/folder
 	if (!empty($_GET['del'])&&$_GET['del']!=''){
 		$f=id2file($_GET['del']);
-		if(is_file($_SESSION['upload_path'].$f)){
+		if(is_file($f)){
 			# delete file
-			unlink($_SESSION['upload_path'].$f);
+			unlink($f);
 			$thumbfilename=get_thumbs_name($f);
 			if (is_file($thumbfilename)){unlink($thumbfilename);}
 			unset($ids[$_GET['del']]);
 			store($ids);
-		}else if (is_dir($_SESSION['upload_path'].$f)){
+		}else if (is_dir($f)){
 			# delete dir
-			rrmdir($_SESSION['upload_path'].$f);
+			rrmdir($f);
 			rrmdir('thumbs/'.$f);
 			# remove all vanished sub files & folders from id file
 			purgeIDs();
@@ -139,25 +139,23 @@
 	# rename file/folder
 	if (!empty($_GET['id'])&&!empty($_GET['newname'])){
 		$oldfile=id2file($_GET['id']);
-		if ($_SESSION['current_path']!=''){$path=addslash_if_needed($_SESSION['current_path']);}
-		else{$path='';}
+		$path=dirname($oldfile).'/';
 		$newfile=$path.only_alphanum_and_dot($_GET['newname']);
 		
 		if ($newfile!=basename($oldfile) && check_path($newfile)){		
 			# if newname exists, change newname
-			if(is_file($_SESSION['upload_path'].$newfile) || is_dir($_SESSION['upload_path'].$newfile)){
+			if(is_file($newfile) || is_dir($newfile)){
 				$newfile=$path.rename_item(basename($newfile));
 			}
 			
-			if (is_dir($_SESSION['upload_path'].$oldfile)){
+			if (is_dir($oldfile)){
 				# for folders, must change the path in all sub items
 				foreach($ids as $id=>$path){
 					$ids[$id]=str_replace($oldfile, $newfile, $path);
 				}
 				
 			}
-
-			rename($_SESSION['upload_path'].$oldfile,$_SESSION['upload_path'].$newfile); 
+			rename($oldfile,$newfile); 
 			rename(get_thumbs_name($oldfile),get_thumbs_name($newfile));
 			$ids[$_GET['id']]=$newfile;
 			store($ids);
@@ -172,9 +170,7 @@
 		$folder=id2file($_GET['zipfolder']);
 		if (!is_dir('private/temp')){mkdir('private/temp');}
 		$zipfile='private/temp/'.basename($folder).'.zip';
-		
-
-		zip($_SESSION['upload_path'].$folder,$zipfile);
+		zip($folder,$zipfile);
 		header('location: '.$zipfile);
 		exit;
 	}
@@ -189,15 +185,15 @@
 		$destination=$_POST['destination'];
 		if($destination=='/'){	$destination=''; }
 		if (check_path($file) && check_path($destination)){
-			if (is_file($_SESSION['upload_path'].$file) || is_dir($_SESSION['upload_path'].$file)){
+			if (is_file($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$file) || is_dir($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$file)){
 				$file=stripslashes($file);
 				$destination = addslash_if_needed($destination).basename($file);
 				# if file/folder exists in destination folder, change name
-				if(is_file($_SESSION['upload_path'].$destination) || is_dir($_SESSION['upload_path'].$destination)){
+				if(is_file($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$destination) || is_dir($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$destination)){
 					$destination=addslash_if_needed($destination).rename_item(basename($file));
 				} 
 				# move file
-				rename($_SESSION['upload_path'].$file,$_SESSION['upload_path'].$destination);
+				rename($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$file,$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$destination);
 				if (!is_dir(dirname('thumbs/'.$destination))){
 					mkdir(dirname('thumbs/'.$destination),0744, true);
 				}

@@ -4,13 +4,12 @@
 	* handles a user share request
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
-	
+		
 		$id=strip_tags($_GET['f']);
-		$f=id2file($id);
-
+		$f=id2file($id); # complete filepath including profile folder
 		
 		if(!empty($f)){
-			set_time_limit (0); 
+			set_time_limit (0);
 			store_access_stat($f,$id);
 			# password mode
 			if (isset($_POST['password'])){
@@ -29,9 +28,7 @@
 				</div>
 				';
 				require(THEME_PATH.'/footer.php');
-			}else if(!isset($_POST['password']) || isset($_POST['password']) && $blured.$sub_id==$id){
-				$f=$_SESSION['upload_path'].$f;
-	
+			}else if(!isset($_POST['password']) || isset($_POST['password']) && $blured.$sub_id==$id){	
 				# normal mode or access granted
 				if ($f && is_file($f)){
 					# file request => return file according to $behaviour var (see core.php)
@@ -82,9 +79,9 @@
 
 				# json format of a shared folder (but not for a locked one)
 				if (isset($_GET['json']) && !empty($tree)  && strlen($id)<=23){
-					$upload_path_size=strlen($_SESSION['upload_path']);
+					$upload_path_size=strlen($_SESSION['upload_root_path']);
 					foreach ($tree as $branch){
-						$id_tree[file2id(substr($branch,$upload_path_size))]=$branch;
+						$id_tree[file2id($branch)]=$branch;
 					}
 					# burn access ?
 					burned($id);
@@ -102,9 +99,9 @@
 					);
 
 					include('core/Array2feed.php');
-					$upload_path_size=strlen($_SESSION['upload_path']);
+					$upload_path_size=strlen($_SESSION['upload_root_path']);
 					foreach ($tree as $branch){
-						$id_branch=file2id(substr($branch,$upload_path_size));
+						$id_branch=file2id($branch);
 						$rss['items'][]=array(
 							'title'=>basename($branch),
 							'description'=>'',

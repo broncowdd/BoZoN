@@ -4,11 +4,10 @@
 	* just list the files in the upload current path (with the filter if needed) 
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
-$sid=session_id();
-if (empty($sid)){session_start();}
+
+start_session();
 $layout=$_SESSION['aspect'];
 if (!function_exists('store')){
-	if (!session_id()){session_start();}
 	include('core/core.php');
 	if (!function_exists('newToken')){require_once('core/auto_restrict.php');} # Admin only!
 }
@@ -21,18 +20,18 @@ echo str_replace('#TOKEN',$lb_token,$templates['new_folder_lightbox']);
 echo str_replace('#TOKEN',$lb_token,$templates['download_url_lightbox']);
 
 // Configuration
-$upload_path_size=strlen($_SESSION['upload_path']);
+$upload_path_size=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
 if (empty($_SESSION['mode'])){$mode='view';}else{$mode=$_SESSION['mode'];}
 if (empty($_SESSION['filter'])){$mask='*';}else{$mask='*'.$_SESSION['filter'].'*';}
 if (empty($_SESSION['current_path'])){
-	$liste=_glob($_SESSION['upload_path'],$mask);
+	$liste=_glob($_SESSION['upload_root_path'].$_SESSION['upload_user_path'],$mask);
 }else{
-	$liste=_glob($_SESSION['upload_path'].addslash_if_needed($_SESSION['current_path']),$mask);
+	$liste=_glob($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].addslash_if_needed($_SESSION['current_path']),$mask);
 }
 if ($mode=='move'){
 	# Prépare folder tree 
 	$select_folder='<select name="destination" class="folder_list button"><option value="">'.e('Choose a folder',false).'</option>';
-	$folders_list=tree($_SESSION['upload_path'],false);
+	$folders_list=tree($_SESSION['upload_root_path'].$_SESSION['upload_user_path'],false);
 	$folders_list[0].='/';
 	foreach($folders_list as $folder){
 		$folder=substr($folder,$upload_path_size);
@@ -60,22 +59,23 @@ if (count($liste)>0){
 	$folderlist='';
 	$filelist='';
 	foreach ($liste as $fichier){
-
 		$nom=_basename($fichier);
-		$length_upload_path=strlen($_SESSION['upload_path']);
+		$length_upload_path=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
 		$nom_racine=substr($fichier, $length_upload_path);
 		if ($nom!='index.html'&&empty($files[$fichier])&&empty($files[$nom_racine])){
 			// generates the file ID if not present
 			$id=uniqid(true);
-			$ids[$id]=substr($fichier,$upload_path_size);
+			$ids[$id]=$fichier;
 			$files[$fichier]=$id;
 			$save=true;
+
 		}
 		if ($nom!='index.html'){
 			$taille=round(filesize($fichier)/1024,2);
 			if (!empty($files[$fichier])){$id=$files[$fichier];}
 			else{$id=$files[$nom_racine];}
 			$class='';$title='';
+
 			if (substr($id, 0,1)=='*'){
 				# add class burn id after access 
 				$class='burn';
@@ -108,7 +108,7 @@ if (count($liste)>0){
 				$folderlist.= template($mode.'_folder_'.$layout,$array);
 			}elseif ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
 				# Item is a picture
-				auto_thumb($fichier_short,64,64);
+				auto_thumb($fichier,64,64);
 				$array=array(
 					'#CLASS'		=> $class,
 					'#ID'			=> $id,

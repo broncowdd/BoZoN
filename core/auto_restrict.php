@@ -7,7 +7,7 @@
 	 * auto_restrict
 	 * @author bronco@warriordudimanche.com / www.warriordudimanche.net
 	 * @copyright open source and free to adapt (keep me aware !)
-	 * @version 3.4 - one user only version / version mono utilisateur
+	 * @version 4.0 - multi user
 	 *   
 	 * This script locks a page's access  
 	 * Just include it in the page you want to lock  
@@ -39,8 +39,8 @@
 	 * ajouter un fichier log de connexion
 	 * 
 	 * 
-	 * ajout 3.4 : 
-	 * bugfix de sécurité
+	 * ajout 4.0 : 
+	 * ajout du support multi utilisateur
 	*/	
 	@session_start();
 	// ------------------------------------------------------------------
@@ -66,51 +66,62 @@
 	if (!isset($auto_restrict['GET_striptags'])){					$auto_restrict['GET_striptags']=false;}// if true, all $_GET data will be strip_taged
 	if (!isset($auto_restrict['root'])){							$auto_restrict['root']='.';}
 	if (!isset($auto_restrict['path_from_root'])){					$auto_restrict['path_from_root']='';}
+	if (!isset($auto_restrict['add_remove_user_admin_only'])){		$auto_restrict['add_remove_user_admin_only']=true;}// only admin can add or remove a user (admin is the first user)
 	if (!empty($_SERVER['HTTP_REFERER'])){							$auto_restrict['referer']=returndomain($_SERVER['HTTP_REFERER']);}else{$auto_restrict['referer']='';}
 	$auto_restrict['path_to_my_folder']=$auto_restrict['root'].$auto_restrict['path_from_root'].'/';
 	$auto_restrict['path_to_files']=$auto_restrict['path_to_my_folder'].'private';
 	// ------------------------------------------------------------------
 	// secure $_POST & $_GET data 
+	// ------------------------------------------------------------------
 	if ($auto_restrict['POST_striptags']){$_POST=array_map('strip_tags',$_POST);}
 	if ($auto_restrict['GET_striptags']){$_GET=array_map('strip_tags',$_GET);}
+
 	// ------------------------------------------------------------------
 	// create cookie token folder
+	// ------------------------------------------------------------------
 	if (!is_dir($auto_restrict['path_to_files'])){mkdir($auto_restrict['path_to_files'],0700);chmod($auto_restrict['path_to_files'],0700);}
 	if (!is_writable($auto_restrict['path_to_files'])){echo '<p class="error">auto_restrict error: token folder is not writeable</p>';}
 	if (!is_file($auto_restrict['path_to_files'].'/.htaccess')){file_put_contents($auto_restrict['path_to_files'].'/.htaccess', 'deny from all');}
+	
 	// ------------------------------------------------------------------
-	// we create login pass and secure it, thanks to JérômeJ for the advises (http://www.olissea.com/)
-	// ------------------------------------------------------------------
-	// handles user login creation process 
-	// creates or include salt file
-	if(file_exists($auto_restrict['path_to_files'].'/auto_restrict_salt.php')){
-		include($auto_restrict['path_to_files'].'/auto_restrict_salt.php');
+	// checks auto_restrict's data file : include or create
+	// ------------------------------------------------------------------	
+	if(file_exists($auto_restrict['path_to_files'].'/auto_restrict_data.php')){
+		include($auto_restrict['path_to_files'].'/auto_restrict_data.php');
 	}else{
 		$auto_restrict['system_salt']=generate_salt(512);
-		file_put_contents($auto_restrict['path_to_files'].'/auto_restrict_salt.php', '<?php $auto_restrict["system_salt"]='.var_export($auto_restrict['system_salt'],true).'; ?>');
+		$ret="\n";
+		file_put_contents($auto_restrict['path_to_files'].'/auto_restrict_data.php', '<?php '.$ret.'$auto_restrict["system_salt"]='.var_export($auto_restrict['system_salt'],true).';'.$ret.'$auto_restrict["tokens_filename"] = "tokens_'.var_export(hash('sha512', $salt.uniqid('', true)),true).'.php";'.$ret.'$auto_restrict["banned_ip_filename"] = "banned_ip_'.var_export(hash('sha512', $salt.uniqid('', true)),true).'.php"; '.$ret.'?>');
 	}
-	// creates auto_restrict_pass.php with secured login pass data
-	if(file_exists($auto_restrict['path_to_files'].'/auto_restrict_pass.php')){
-		include($auto_restrict['path_to_files'].'/auto_restrict_pass.php');
+
+	// ------------------------------------------------------------------
+	// checks auto_restrict's users file : include or redirect to login page if no $_POST
+	// ------------------------------------------------------------------
+	if(file_exists($auto_restrict['path_to_files'].'/auto_restrict_users.php')){
+		// if file exists, include it
+		include($auto_restrict['path_to_files'].'/auto_restrict_users.php');
+	}else if(!isset($_POST['pass'])){ 
+		// or redirect to login form
+		safe_redirect('index.php?p=login');
 	}
-	if(!isset($auto_restrict['pass'])){
-		if(isset($_POST['pass'])&&isset($_POST['login'])&&$_POST['pass']!=''&&$_POST['login']!=''){ 
-			$salt = generate_salt(512);
-			$auto_restrict['encryption_key']=md5(uniqid('', true));
-	
-			file_put_contents($auto_restrict['path_to_files'].'/auto_restrict_pass.php', '<?php $auto_restrict["login"]="'.$_POST['login'].'";$auto_restrict["encryption_key"]='.var_export($auto_restrict['encryption_key'],true).';$auto_restrict["salt"] = '.var_export($salt,true).'; $auto_restrict["pass"] = '.var_export(hash('sha512', $salt.$_POST['pass']),true).'; $auto_restrict["tokens_filename"] = "tokens_'.var_export(hash('sha512', $salt.uniqid('', true)),true).'.php";$auto_restrict["banned_ip_filename"] = "banned_ip_'.var_export(hash('sha512', $salt.uniqid('', true)),true).'.php";?>');
-			// redirect to login form
-			if (!headers_sent()){header('location: index.php?p=login');}
-			else{echo '<script>document.location.href="index.php?p=login";</script>';}
-			exit;
-		}
-		else{ 
-			// redirect to login form
-			if (!headers_sent()){header('location: index.php?p=login');}
-			else{echo '<script>document.location.href="index.php?p=login";</script>';}
-			exit;
-		}
+
+	// ------------------------------------------------------------------
+	// New user request: add it, save and return to login page
+	// ------------------------------------------------------------------
+	if(!empty($_POST['pass'])&&isset($_POST['creation'])&&!empty($_POST['login'])){
+		if (!isset($auto_restrict['users'])){$auto_restrict['users']=array();}
+		$index=count($auto_restrict['users']);
+		$login=strip_tags($_POST['login']);
+		if (login_exists($login)){safe_redirect('index.php?p=login&newuser&error=1&token='.returnToken());}
+		$auto_restrict['users'][$index]['login'] = $login;
+		$auto_restrict['users'][$index]['encryption_key'] = md5(uniqid('', true));
+		$auto_restrict['users'][$index]['salt'] = generate_salt(512);
+		$auto_restrict['users'][$index]['pass'] = hash('sha512', $auto_restrict['users'][$index]['salt'].$_POST['pass']);
+		
+		if (!save_users()){exit('auto_restrict: problem saving users');}
+		safe_redirect('index.php?p=login&success&name='.$login.'&token='.returnToken());
 	}
+
 
 
 	// ------------------------------------------------------------------
@@ -119,36 +130,41 @@
 	if (is_file($auto_restrict['path_to_files'].'/'.$auto_restrict["banned_ip_filename"])){include($auto_restrict['path_to_files'].'/'.$auto_restrict["banned_ip_filename"]);}
 	// ------------------------------------------------------------------
 
-
-
 	// ------------------------------------------------------------------
 	// user tries to login
 	// ------------------------------------------------------------------	
 	if (isset($_POST['login'])&&isset($_POST['pass'])){
-		if (log_user($_POST['login'],$_POST['pass']) && isset($_POST['cookie'])){
+		$ok=log_user($_POST['login'],$_POST['pass']);
+		if (!$ok){safe_redirect('index.php?p=login&error=2');}
+		elseif (isset($_POST['cookie'])){
 			set_cookie();
 		}
 		// ------------------------------------------------------------------
 		// redirect if needed
 		// ------------------------------------------------------------------ 
-		if (!empty($auto_restrict['redirect_success'])){redirect_to($auto_restrict['redirect_success']);}
-
+		if (!empty($auto_restrict['redirect_success'])){
+			if (strpos($auto_restrict['redirect_success'], '&token=')!==false){
+				safe_redirect($auto_restrict['redirect_success'].'&token='.returnToken());
+			}else{
+				safe_redirect($auto_restrict['redirect_success']);
+			}
+		}
 	}
+
 	// ------------------------------------------------------------------
 	// user wants to logout (?logout $_GET var)
 	// ------------------------------------------------------------------	
 	if (isset($_GET['deconnexion'])||isset($_GET['logout'])){@session_destroy();delete_cookie();exit_redirect();}
-	// ------------------------------------------------------------------
-	
+	// ------------------------------------------------------------------	
+
+
 	// ------------------------------------------------------------------
 	// No admin connected -> login
 	// ------------------------------------------------------------------	
 	if (empty($_SESSION['id_user'])||empty($_SESSION['login'])||empty($_SESSION['expire'])){
-		if (!headers_sent()){header('location: index.php?p=login');}
-		else{echo '<script>document.location.href="index.php?p=login";</script>';}
-		exit;
+		if (!empty($_GET['p'])&&$_GET['p']!='login'){safe_redirect('index.php?p=login');}
 	}
-	
+
 	// ------------------------------------------------------------------	
 	// if here, there's no login/logout process.
 	// Check referrer, ip
@@ -158,7 +174,7 @@
 	if (!is_ok()){
 		@session_destroy();
 		if (!$auto_restrict['just_die_if_not_logged']){
-			header('location: index.php?p=login');
+			safe_redirect('index.php?p=login&error=1');
 		} else {
 			echo $auto_restrict['error_msg'];
 		}
@@ -182,6 +198,31 @@
 		
 	} 
 	
+	// ------------------------------------------------------------------
+	// users list form requests
+	// ------------------------------------------------------------------	
+	// Erase a user account
+	if (isset($_POST['user_key'])&&is_user_admin()){
+		foreach($_POST['user_key'] as $user_nb){
+			if (isset($auto_restrict['users'][$user_nb])){unset($auto_restrict['users'][$user_nb]);}
+		}
+		if (!empty($auto_restrict['users'])){save_users();}
+		else{
+			unlink($auto_restrict['path_to_files'].'/auto_restrict_users.php');
+			exit_redirect();
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -234,6 +275,28 @@
 
 	// ------------------------------------------------------------------
 
+	function save_users(){
+		global $auto_restrict;
+		$ret="\n";$data='<?php'.$ret;
+		if (!isset($auto_restrict['users'])){return false;}
+		foreach ($auto_restrict['users'] as $key=>$user){
+			$data.=	'# user : '.$user['login'].$ret
+					.'$auto_restrict["users"]["'.$user['login'].'"]["login"]="'.$user['login']
+					.'";$auto_restrict["users"]["'.$user['login'].'"]["encryption_key"]='.var_export($user['encryption_key'],true)
+					.';$auto_restrict["users"]["'.$user['login'].'"]["salt"] = '.var_export($user['salt'],true)
+					.'; $auto_restrict["users"]["'.$user['login'].'"]["pass"] = '.var_export($user['pass'],true).';'.$ret;
+		}
+		$data.=$ret.'?>';
+		return file_put_contents($auto_restrict['path_to_files'].'/auto_restrict_users.php', $data);
+	}
+	function login_exists($login=null){
+		global $auto_restrict;
+		if (empty($login)){return false;}
+		foreach ($auto_restrict['users'] as $key=>$user){
+			if ($user['login']==$login){return true;}
+		}
+	}
+
 	function id_user(){
 		$id=$_SERVER['REMOTE_ADDR'];
 		$id.='-'.$_SERVER['HTTP_USER_AGENT'];
@@ -252,14 +315,14 @@
 		// fatal problem
 		if (!checkReferer()){return death("You are definitely NOT from here !");}
 		if (!checkIP()){return death("Hey... you were banished, fuck off !");}
-		if (!checkToken()){return death("You need a valid token to do that, boy !");}
+		if (!checkToken()){return death("Invalid token");}
 
 		// 
 		if (checkCookie()){return true;}
 		if (!isset($_SESSION['id_user'])){return false;}
 		if ($_SESSION['expire']<time()){$expired=true;}
 		
-		$sid=Dechiffre($_SESSION['id_user'],$auto_restrict['encryption_key']);
+		$sid=Dechiffre($_SESSION['id_user'],$auto_restrict['users'][$_SESSION['login']]['encryption_key']);
 		$id=id_user();
 		if ($sid!=$id || $expired==true){// problème d'identité
 			return false;
@@ -271,30 +334,38 @@
 	}
 	
 	function death($msg="Don't try to be so clever !"){global $auto_restrict;if ($auto_restrict['just_die_on_errors']){die('<p class="error">'.$msg.'</p>');}else{return false;}}
-	
+	function is_user_admin(){
+		global $auto_restrict;
+		$first=first($auto_restrict['users']);
+		if ($auto_restrict['add_remove_user_admin_only']==false){return true;}
+		if (!empty($_SESSION['login'])&&$_SESSION['login']==$first['login']){return true;}
+		return false;
+	}
 	function log_user($login_donne,$pass_donne){
 		// create session vars
 		global $auto_restrict;
-		if ($auto_restrict['login']===$login_donne && $auto_restrict['pass']===hash('sha512', $auto_restrict["salt"].$pass_donne)){
-			$_SESSION['id_user']=chiffre(id_user(),$auto_restrict['encryption_key']);
-			$_SESSION['login']=$auto_restrict['login'];	
-			$_SESSION['expire']=time()+(60*$auto_restrict['session_expiration_delay']);			
-			return true;
-		}else if ($login_donne!='dis'&&$pass_donne!='connect'){
-			add_banned_ip();
+		session_destroy();session_start();
+		foreach ($auto_restrict['users'] as $key=>$user){
+			if ($user['login']===$login_donne && $user['pass']===hash('sha512', $user["salt"].$pass_donne)){
+				$_SESSION['id_user']=chiffre(id_user(),$user['encryption_key']);
+				$_SESSION['login']=$user['login'];	
+				$_SESSION['expire']=time()+(60*$auto_restrict['session_expiration_delay']);			
+				return true;
+			}
 		}
-		exit_redirect();
+		if ($login_donne!='dis'&&$pass_donne!='connect'){
+			add_banned_ip();
+		}else{exit_redirect();} 
 		return false;
 	}
 
-	function redirect_to($page){header('Location: '.$page); }
 	function exit_redirect(){
 		global $auto_restrict;
 		@session_unset();
 		@session_destroy();
 		delete_cookie();
 		if ($auto_restrict['redirect_error']&&$auto_restrict['redirect_error']!=''){
-				redirect_to($auto_restrict['redirect_error']);
+				safe_redirect($auto_restrict['redirect_error']);
 		}else{exit($auto_restrict['error_msg']);}
 	}
 	function generate_salt($length=256){
@@ -468,5 +539,49 @@
 			else if ($auto_restrict["banned_ip"][$ip]['date']<@date('U')){remove_banned_ip($ip);return true;} // old banishment 
 			return false;
 		}else{return true;}// ip is ok
+	}
+
+	// ------------------------------------------------------------------
+	// Misc 
+	// ------------------------------------------------------------------ 
+	// creates a form with the users list
+	function generate_users_formlist($text='Users list',$text2='Check users to delete account and files'){
+		global $auto_restrict;
+		if (!is_user_admin()){return false;}
+		echo '<h1>'.$text.'</h1><h2>'.$text2.'</h2><form action="" method="POST" class="auto_restrict_users_list"><ol>';
+		foreach ($auto_restrict['users'] as $key=>$user){
+			echo '<li>';
+				echo '<label>';
+				echo '<input type="checkbox" name="user_key[]" value="'.$key.'"/>';
+				newToken();
+				echo $user['login'];
+			echo '</li>';
+		}
+		echo '</ol><input type="submit" value="Ok"/></form>';
+	}
+
+	function safe_redirect($url=none){
+		if (!$url){return false;}
+		if (!headers_sent()){header('location: '.$url);}
+		else{echo '<script>document.location.href="'.$url.'";</script>';}
+		exit;
+	}
+
+	// creates the secured link to the users list form
+	function generate_users_list_link($text='See users list'){
+		if (!is_user_admin()){return false;}
+		echo '<a class="auto_restrict_userslist_link" href="'.$_SERVER["SCRIPT_NAME"].'?users_list&token='.returnToken().'" alt="link to users list" title="'.$text.'">&nbsp;</a>';
+	}
+	// creates the secured link to new user form
+	function generate_new_users_link($text='Add a user'){
+		if (!is_user_admin()){return false;}
+		echo '<a class="auto_restrict_new_user_link" href="index.php?p=login&newuser&token='.returnToken().'" alt="link to a new user" title="'.$text.'">&nbsp;</a>';
+	}
+
+	function first($array){
+		if (empty($array)){return false;}
+		$akeys=array_keys($array);
+		$key=array_shift($akeys);
+		return $array[$key];
 	}
 ?>

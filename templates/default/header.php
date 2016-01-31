@@ -17,14 +17,25 @@
 
 <body class="<?php body_classes();?>">
   	<header>
-  		<div id="lang">
-	      <?php  
-	      	/* you can change the generated link using another pattern as argument (keep the # tags !): 
-			'<a #CLASS href="index.php?p=#PAGE&lang=#LANG&token=#TOKEN">#LANG</a>'*/
-	        make_lang_link();
-	      ?>
+  		<div id="top_bar">
+  			<span id="menu">
+  				<a class="home" href="index.php" title="<?php e('Home');?>">&nbsp;</a><?php
+	  				if (is_admin_connected()&&empty($_GET['f'])){
+	  					generate_users_list_link(e('Users list',false));
+	  					generate_new_users_link(e('New user',false));
+	  					echo '<a class="log_file" href="index.php?p=stats&token='.returnToken().'" class="log_link" title="'.e('Access log file',false).'">&nbsp;</a>';
+	  				}
+  				?>
+  			</span>
+	  		<span id="lang">
+		      <?php  
+		      	/* you can change the generated link using another pattern as argument (keep the # tags !): 
+				'<a #CLASS href="index.php?p=#PAGE&lang=#LANG&token=#TOKEN">#LANG</a>'*/
+		        make_lang_link();
+		      ?>
+		    </span>
+		    <div style="clear:both"></div>
 	    </div>
-	    
 	    
 	    <?php 	if (is_admin_connected()&&!empty($page)&&empty($_GET['f'])){?>
 				    <div id="search" >

@@ -1,24 +1,19 @@
-<?php
+<?php 
 	/**
 	* BoZoN core part:
 	* Sets Constants, language, directories, htaccess and bozon's behaviour (files to download and files to echo)
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
-
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.0 beta');
+	define('VERSION','2.1');
 	include('config.php');
-	if (!session_id()){session_start();}
+	start_session();
 	$message='';
 
 	# secure get / post data (normally done in auto_restrict)
-	if (!empty($_GET)){$_GET=array_map('strip_tags',$_GET);}
-	if (!empty($_POST)){$_POST=array_map('strip_tags',$_POST);}
-	
-	
-
-
+	if (!empty($_GET)){$_GET=array_map('deep_strip_tags',$_GET);}
+	if (!empty($_POST)){$_POST=array_map('deep_strip_tags',$_POST);}
 
 	# locale
 	if (empty($_SESSION['language'])){$_SESSION['language']=$default_language;}
@@ -32,35 +27,45 @@
 
 	
 	# SESSION VARS
-
+	# Upload paths
+	if (empty($_SESSION['upload_root_path'])){$_SESSION['upload_root_path']=addslash_if_needed($default_path);}
+	if (empty($_SESSION['upload_user_path'])&&!empty($_SESSION['login'])){$_SESSION['upload_user_path']=$_SESSION['login'].'/';}
+	if (!is_dir($_SESSION['upload_root_path'])){ mkdir($_SESSION['upload_root_path'],0744, true); }
+	if (!empty($_SESSION['upload_user_path'])&&!is_dir($_SESSION['upload_root_path'].$_SESSION['upload_user_path'])){ mkdir($_SESSION['upload_root_path'].$_SESSION['upload_user_path'],0744, true); }
+	if (!is_file($_SESSION['upload_root_path'].'index.html')){ file_put_contents($_SESSION['upload_root_path'].'index.html',' '); }
+	if (!is_dir('thumbs/')){mkdir('thumbs/');}
+	if (!is_file('thumbs/.htaccess')){file_put_contents('thumbs/.htaccess', 'deny from all');}
+	if (!is_file('thumbs/index.html')){file_put_contents('thumbs/index.html',' ');}
+	if (!empty($_SESSION['upload_user_path'])&&!is_dir('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'])){ mkdir('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'],0744, true); }
+	if (!is_file('thumbs/'.$_SESSION['upload_root_path'].'.htaccess')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].'.htaccess', 'deny from all');}
+	if (!is_file('thumbs/'.$_SESSION['upload_root_path'].'index.html')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].'index.html',' ');}
+	if (!empty($_SESSION['upload_user_path'])&&!is_file('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'.htaccess')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'.htaccess', 'deny from all');}
+	if (!empty($_SESSION['upload_user_path'])&&!is_file('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'index.html')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'index.html',' ');}
+	
+	# others vars
 	if (empty($_SESSION['stats_max_entries'])){$_SESSION['stats_max_entries']=$default_limit_stat_file_entries;}
 	if (empty($_SESSION['stats_max_lines'])){$_SESSION['stats_max_lines']=$default_max_lines_per_page_on_stats_page;}
 	if (empty($_SESSION['zip'])){$_SESSION['zip']=class_exists('ZipArchive');}
-	if (empty($_SESSION['home'])){$_SESSION['home'] =getUrl();}
-	if (empty($_SESSION['upload_path'])){$_SESSION['upload_path']=addslash_if_needed($default_path);}
+	if (empty($_SESSION['home'])){$_SESSION['home'] =getUrl();}	
 	if (empty($_SESSION['id_file'])){$_SESSION['id_file']=$default_id_file;}
 	if (empty($_SESSION['stats_filestats_file'])){$_SESSION['stats_file']=$default_stat_file;}
 	if (empty($_SESSION['theme'])){$_SESSION['theme']=$default_theme;}
 	if (!isset($_SESSION['current_path'])){$_SESSION['current_path']="";}
-	if (!is_dir($_SESSION['upload_path'])){ mkdir($_SESSION['upload_path']); }
-	if (!is_file($_SESSION['upload_path'].'index.html')){ file_put_contents($_SESSION['upload_path'].'index.html',' '); }
+	if (!is_file($_SESSION['upload_root_path'].'index.html')){ file_put_contents($_SESSION['upload_root_path'].'index.html',' '); }
 	if (!is_dir('private')){mkdir('private',0744);}
 	if (!is_writable('private')){echo '<p class="error">auto_restrict error: token folder is not writeable</p>';}
 	if (!is_file('private/.htaccess')){file_put_contents('private/.htaccess', 'deny from all');}
 	if (!is_file('private/salt.php')){ file_put_contents('private/salt.php','<?php define("BOZON_SALT",'.var_export(generate_bozon_salt(),true).'); ?>'); }
 	else{include('private/salt.php');}
-	if (!is_dir('thumbs/')){mkdir('thumbs/');}
-	if (!is_file('thumbs/.htaccess')){file_put_contents('thumbs/.htaccess', 'deny from all');}
-	if (!is_file('thumbs/index.html')){file_put_contents('thumbs/index.html',' ');}
 	if (!file_exists($_SESSION['id_file'])){$ids=array();store($ids);}
-	if (!is_file($_SESSION['upload_path'].'.htaccess')){file_put_contents($_SESSION['upload_path'].'.htaccess', 'deny from all');}
+	if (!is_file($_SESSION['upload_root_path'].'.htaccess')){file_put_contents($_SESSION['upload_root_path'].'.htaccess', 'deny from all');}
 	if (!is_file($_SESSION['stats_file'])){file_put_contents($_SESSION['stats_file'], array());}
 	if (!is_readable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not readable',false).'</div>';}
 	if (!is_readable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not readable',false).'</div>';}
 	if (!is_writable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not writable',false).'</div>';}
 	if (!is_writable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not writable',false).'</div>';}
-	if (!is_readable($_SESSION['upload_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not readable',false).'</div>';}
-	if (!is_writable($_SESSION['upload_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not writable',false).'</div>';}
+	if (!empty($_SESSION['upload_user_path'])&&!is_readable($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not readable',false).'</div>';}
+	if (!empty($_SESSION['upload_user_path'])&&!is_writable($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not writable',false).'</div>';}
 	$behaviour['FILES_TO_ECHO']=array('txt','js','html','php','SECURED_PHP','htm','shtml','shtm','css');
 	$behaviour['FILES_TO_RETURN']=/*array();*/array('jpg','jpeg','gif','png','pdf','swf','mp3','mp4','svg');
 
@@ -73,11 +78,19 @@
 	define('THEME_PATH','templates/'.$_SESSION['theme'].'/');
 
 
-
 	include('core/templates.php');
-
 	$ids=purgeIDs();
 
+
+
+
+
+
+
+
+	# Functions 
+
+	function deep_strip_tags($var){     if (is_string($var)){return strip_tags($var);}     if (is_array($var)){return array_map('deep_strip_tags',$var);}     return $var; }
 	# store all client access to a file
 	function store_access_stat($file=null,$id=null){
 		if (!$file||!$id){return false;}
@@ -110,7 +123,7 @@
 	function addID($string){
 		$ids=unstore();
 		$id=uniqid(true);
-		$ids[$id]=$string;
+		$ids[$id]=$_SESSION['upload_user_path'].$string;
 		store($ids);
 	}
 	# remove an id from id file
@@ -121,11 +134,10 @@
 	}
 	# remove all ids that are not actually linked to a file/folder
 	function purgeIDs($ids=null){
-		if (!$ids){$ids=unstore();}		
+		if (!$ids){$ids=unstore();}	
 		foreach($ids as $key=>$val){
 			if (empty($val)){unset($ids[$key]);}
 			else{
-				$val=$_SESSION['upload_path'].$val;
 				if (!is_file($val) && !is_dir($val)){unset($ids[$key]);}
 			}
 		}
@@ -135,21 +147,22 @@
 	# complete all missing ids 
 	function completeID($array_of_files){
 		$ids=unstore();
-		$sdi=array_flip($ids);// paths are keys		
+		$sdi=id_file_reverse($ids);// paths are keys		
 		$save=false;
-		$upload_path_size=strlen($_SESSION['upload_path']);
+		$upload_path_size=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
 		foreach($array_of_files as $file){
 			$file=substr($file,$upload_path_size);
 			if (!isset($sdi[$file])){
 				$save=true;
-				$ids[uniqid(true)]=$file;
+				$id=uniqid(true);
+				$ids[$id]=$_SESSION['upload_user_path'].$file;
 			}
 		}
 		if ($save){
 			store($ids);
 			echo '<script>location.reload();</script>';
 		}
-	}	
+	}
 	function is_in($ext,$type){
 		global $behaviour;
 		if (!empty($behaviour[$type])){return array_search($ext,$behaviour[$type]);}else{return false;}
@@ -157,7 +170,6 @@
 	}
 
 	function store($ids=null){
-		//if (!$ids){exit('erreur: pas de contenu');}
 		file_put_contents($_SESSION['id_file'], '<?php /* '.base64_encode(gzdeflate(serialize($ids))).' */ ?>');
 	}
 	function unstore(){
@@ -186,13 +198,6 @@
 			return str_replace($extension,$add.'.'.$extension,$file);
 		}else{ return $file.$add;}
 	}
-	/*function kill_thumb_if_exists($f){
-		global $auto_thumb;
-		$filename=pathinfo($f,PATHINFO_FILENAME);
-		$ext=pathinfo($f,PATHINFO_EXTENSION);
-		$thumbname='thumbs/'.$filename.'_THUMB__'.$auto_thumb['default_width'].'x'.$auto_thumb['default_height'].'.'.$ext;
-		if (is_file($thumbname)){unlink($thumbname);}else{return false;}
-	}*/
 	function only_alphanum_and_dot($string){return preg_replace('#[^éèàçâêûîôÉÈÇÀÂÊÛÎÔÁÚÍÓÑáúíóña-zA-Z0-9\. _]#','',$string);}
 	function file_curl_contents($url,$pretend=true){
 		# distant version of file_get_contents
@@ -208,8 +213,6 @@
 		curl_setopt($ch, CURLOPT_REFERER, 'http://noreferer.com');// notez le referer "custom"
 		$data = curl_exec($ch);
 		$response_headers = curl_getinfo($ch);
-		// Google seems to be sending ISO encoded page + htmlentities, why??
-		//if($response_headers['content_type'] == 'text/html; charset=ISO-8859-1') $data = html_entity_decode(iconv('ISO-8859-1', 'UTF-8//TRANSLIT', $data)); 
 		curl_close($ch);
 		return $data;
 	}
@@ -348,45 +351,70 @@
         $list=_glob(addslash_if_needed($dir)); 
         
         foreach ($list as $dossier) {
-            //$dossiers[]=tree($dossier); 
             $dossiers=array_merge($dossiers,tree($dossier,$files));
         }
         return $dossiers;
     }
+    function only_image($tree){
+    	unset($tree[0]);
+    	$ext='.png .jpg .jpeg .gif';
+    	foreach($tree as $file){
+    		$extension=pathinfo($file,PATHINFO_EXTENSION);
+    		if (!stripos($ext, $extension)){return false;}
+    	}
+    	return true;
+    }
 	function draw_tree($tree){
-		$upload_path_size=strlen($_SESSION['upload_path']);
-		echo '<section><ul class="tree">';
-		$root=explode('/',$tree[0]);$fork='&#9500;';
-		$root=array_search(basename($tree[0]), $root)+1;
-		$level=0;$tab=str_repeat('&nbsp;',2);
-		for ($i=0;$i<count($tree);$i++){
-			$branch=$tree[$i];
-			if (isset($tree[$i+1])){$next=$tree[$i+1];}else{$next=false;}
-			if ($link=file2id(substr($branch,$upload_path_size))){ 
-				$ext='';
-				$level=count(explode('/',$branch))-$root;
-				if ($next){$next_level=count(explode('/',$next))-$root;}else{$next_level=0;}						
-				if ($level<0){$level=0;}
-				if ($next_level<0){$next_level=0;}
+		if (!only_image($tree)){
+			# file list tree
+			echo '<section><ul class="tree">';
+			$root=explode('/',$tree[0]);$fork='&#9500;';
+			$root=array_search(basename($tree[0]), $root)+1;
+			$level=0;$tab=str_repeat('&nbsp;',2);
+			for ($i=0;$i<count($tree);$i++){
+				$branch=$tree[$i];
+				if (isset($tree[$i+1])){$next=$tree[$i+1];}else{$next=false;}			
+				if ($link=file2id($branch)){ 
+					$ext='';
+					$level=count(explode('/',$branch))-$root;
+					if ($next){$next_level=count(explode('/',$next))-$root;}else{$next_level=0;}						
+					if ($level<0){$level=0;}
+					if ($next_level<0){$next_level=0;}
 
-				$ext=strtolower(pathinfo($branch,PATHINFO_EXTENSION));
-				$folder='';$basename=basename($branch);
+					$ext=strtolower(pathinfo($branch,PATHINFO_EXTENSION));
+					$folder='';$basename=basename($branch);
 
-				if(is_dir($branch)){
-					$folder=' folder';
+					if(is_dir($branch)){
+						$folder=' folder';
+					}
+					if ($level>$next_level || !$next){
+						$fork='&#9492;';
+					}else{$fork='&#9500;';}
+					if ($level<$next_level){
+						echo '<li>'.str_repeat('<span class="vl">'.$tab.'&#9474;'.$tab.'</span>', $level+1).'</li>';
+					}
+		
+					echo '<li><span class="vl">'.str_repeat($tab.'&#9474;'.$tab, $level).$tab.$fork.$tab.'</span><span class="'.$ext.$folder.'"><a href="index.php?f='.$link.'">'.$basename.'</a></span></li>';
+					if ($level>$next_level){echo '<li>'.str_repeat('<span class="vl">'.$tab.'&#9474;'.$tab.'</span>', $level).'</li>';}
 				}
-				if ($level>$next_level || !$next){
-					$fork='&#9492;';
-				}else{$fork='&#9500;';}
-				if ($level<$next_level){
-					echo '<li>'.str_repeat('<span class="vl">'.$tab.'&#9474;'.$tab.'</span>', $level+1).'</li>';
-				}
-	
-				echo '<li><span class="vl">'.str_repeat($tab.'&#9474;'.$tab, $level).$tab.$fork.$tab.'</span><span class="'.$ext.$folder.'"><a href="index.php?f='.$link.'">'.$basename.'</a></span></li>';
-				if ($level>$next_level){echo '<li>'.str_repeat('<span class="vl">'.$tab.'&#9474;'.$tab.'</span>', $level).'</li>';}
 			}
+			echo '</ul></section>';
+		}else{
+			# image gallery
+			if (!function_exists('auto_thumb')){include('core/auto_thumb.php');}
+			global $gallery_thumbs_width;
+			$title=explode('/',$tree[0]);$title=$title[count($title)-1];unset($tree[0]);
+			echo '<section><ul class="gallery"><h1>'.$title.'</h1>';
+			foreach($tree as $image){
+				$link='index.php?f='.file2id($image);
+				$size = getimagesize($image);
+				$size=$size[0].'x'.$size[1];
+				$file=basename($image);
+				auto_thumb($image,$width=$gallery_thumbs_width,$height=$gallery_thumbs_width,$add_to_thumb_filename='_THUMBGALLERY_',$crop_image=true);
+				echo '<a class="image" href="'.$link.'" ><img src="'.$link.'&gthumbs" alt="'.$file.'"/><span class="info"><em>'.$file.'</em> '.$size.'</span></a>';
+			}
+			echo '</ul></section>';
 		}
-		echo '</ul></section>';
 	}
 	
 	function template($key,$array){
@@ -447,9 +475,16 @@
 		if($file[0]=='/'){
 			$file=substr($file,1);
 		}
-		return 'thumbs/'.preg_replace('#\.(jpe?g|png|gif)#i','_THUMB__'.$auto_thumb['default_width'].'x'.$auto_thumb['default_height'].'.$1',$file);
+		return 'thumbs/'.preg_replace('#\.(jpe?g|png|gif)#i','_THUMB_'.$auto_thumb['default_width'].'x'.$auto_thumb['default_height'].'.$1',$file);
 	}
 
+	function get_thumbs_name_gallery($file){
+		global $gallery_thumbs_width;
+		if($file[0]=='/'){
+			$file=substr($file,1);
+		}
+		return 'thumbs/'.preg_replace('#\.(jpe?g|png|gif)#i','_THUMBGALLERY_'.$gallery_thumbs_width.'x'.$gallery_thumbs_width.'.$1',$file);
+	}
 	# locales functions 
 	function e($txt,$echo=true){
 		global $lang;
@@ -480,6 +515,7 @@
 	# create the connection/admin button
 	function make_connect_link($label_admin='&nbsp;',$label_logout='&nbsp;',$label_login='&nbsp;'){
 		if (is_admin_connected()){
+			if (!empty($_SESSION['login'])&&$label_admin=='&nbsp;'){$label_admin= $_SESSION['login'];}
 			if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
 			echo '<a id="admin_button" class="btn green" href="index.php?p=admin&token='.$token.'" title="'.e('Admin',false).'">'.$label_admin.'</a>';
 			echo '<a id="logout_button" class="btn red" href="index.php?deconnexion" title="'.e('Logout',false).'">'.$label_logout.'</a>';
@@ -499,7 +535,6 @@
 	}
 
 	# create the mode links (to change access mode)
-
 	function make_mode_link($pattern='<a class="mode_#MODE btn #CLASS" title="#TITLE" href="index.php?p=admin&mode=#MODE&token=#TOKEN">&nbsp;</a>'){
 		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
 		if ($_SESSION['mode']=='view'){$class=' active';}else{$class='';}
@@ -521,9 +556,13 @@
 
 	# echo some classes depending on filemode, pages etc
 	function body_classes(){
+		if (isset($_GET['users_list'])){echo 'users_list ';}
 		if (!empty($_GET['p'])){echo $_GET['p'].' ';}else{echo 'home ';}
 		if (!empty($_SESSION['language'])){echo 'body_'.$_SESSION['language'].' ';}
 		if (!empty($_SESSION['aspect'])&&empty($_GET['f'])){echo $_SESSION['aspect'].' ';}
 	}
+
+
+	function start_session(){if (!session_id()){session_start();}}
 	function aff($var,$stop=true){echo '<pre>';var_dump($var);echo '</pre>';if ($stop){exit();}}
 ?>

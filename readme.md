@@ -16,6 +16,16 @@ Php 5 min, php5-gd, ZipArchive
 
 # Version history
 
+## New in 2.1
+### /!\ Read carefully to avoid data loss !
+- added a top bar menu
+- added a minimalist auto gallery function: when a folder contains only images, it will be displayed as a gallery for the user.
+- bug fix on rss feed and share links
+- Added multiuser capacity ! Now, the admin (the first user) can create new users. Each user has his own separated upload folder.
+- Added a import script: beacause of multiuser change, the ID file, the upload folder, the users data has a new format...
+If you're upgrading from 2.0 or less, keep only private and upload folders, install bozon. 
+When you first start, it will ask you if you want to import previous data.
+
 ## New in 2.0 beta
 - major changes in bozon's structure: all is called from index page
 - real home page
@@ -61,75 +71,6 @@ bug fixes (thx to chatainsim on Github)
 * add: a link to clear stats
 * BEWARE! Because of the new data & files structure, all previous generated IDs will no longer be valid. 
 
-## New in 1.6.3
-* added stats page
-
-## New in 1.6.2
-* security bugfix
-
-## New in version 1.6.1
-* elementaryOS theme/skin
-* bugfix: #22 & #23
-
-## New in version 1.6
-* skin system to easily create your own theme 
-* bugfix: timezone error
-* add: tooltips on buttons
-* add: explaination on how to remove password
-* add: use navigator language by default
-* add: turn uploaded zip into a folder
-
-## New in version 1.5
-- add: a links mode 
-- add: a password protected share acces
-- add: a burn after access share mode: user can only acces the ressource one time
-- add: button in links mode, regen id for a file
-- add: rss feed for a folder share (bottom's index.php page)
-- add: json output link for shared folder content list (interoperability)
-- add: basic config file
-- bugfix: problem in some [exotic] server configs causing issues with mime type (personnal wink & thanks to Cyrille Borne for the help)
-- bugfix: free.fr hosting users can now install and use BoZoN ;-)
-
-## New in this version 1.4.1
-- add: a move file/folder mode (access with left menu)
-- add: new left-side menu (group all options inside)
-- add: a github link (wink Cyrille ;-)
-- bug fix: download problem with links of files geater than 1go
-- bug fix: better detection of too big files upload atempts
-- bug fix: better error detection with file selection fallback
-- add:visualiser et rendre le lien téléchargeable (download="")
-- add: active state on active language link
-- bugfix: disable dropzone during upload
-
-## New in version 1.4
-- add: allow extension rename
-- add: create subfolders
-- add: share a folder
-- add: user index.php page can list a shared folder content with share links
-- add: allow subfolder navigation & upload
-- add: direct subfolder item number on folder icon
-- add: delete folders, sub folders and their content
-- add: a share link button (click to prompt and ctrl+c the link)
-- bugfix: glob fallback for php < 5.2 
-- design: better icon placement on items
-- add: a fork help text
-
-## new in version 1.3 (actually still in beta testing but working):
-- add: rename file is now possible
-- add: upload a file using a fallback fileselect form
-- add: get a local version of a distant file only with it's URL
-- bugfix: search with only one result now return the result (!)
-- bugfix: link to file contains the filename
-- bugfix: ajax refreshing list problem (seems solved in almost all cases)
-
-## new in version 1.2:
-- add: filter/search on admin page
-- add: language support (see lang.php to translate it to another language)
-- change: design and logo
-- change: upload form to personal d&d lib (auto_dropzone)
-- update: auto_restrict to a better secured version
-- update: auto_thumbnail to the last version
-
 ## used libraries 
 I used a few libs I made
 - auto_restrict : to easily lock access to a page and handle basic security features
@@ -143,6 +84,8 @@ and sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
 All Bozon code and all the libs used in it are distributed under AGPL: feel free to fork, adapt, distribute, comment etc but please, keep your fork free too ;-)
 
 ## FAQ
+- _I want to add a user_ : There's a [New user] link in the admin's page top menu, click on it and put a login/pass
+- _I want to remove a user_ : Click on the [Users list] link in the admin's page top menu, check the user(s) you want to remove and click on ok.
 - _I've changed some config variables and nothing appends !_ : that's not an issue; all variables are in the Session, so you need to restart chromium/firefox/opera etc to see the changes 
 - _can't see icons / problems uploading / list refresh problem_ : take a look to access rights (folders / files)
 - _I want to change my password / I forgot my password !_ : just use your FTP client and delete «private/auto_restrict*.php» files, then try to login again and create a new login/pass.
