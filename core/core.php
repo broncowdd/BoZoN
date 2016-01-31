@@ -217,9 +217,10 @@
 		return $data;
 	}
 	function getUrl() {
-		$url = @( $_SERVER["HTTPS"] != 'on' ) ? 'http://'.$_SERVER["SERVER_NAME"] : 'https://'.$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"];
-		return $url;
-	}
+     $url = @( $_SERVER["HTTPS"] != 'on' ) ? 'http://'.$_SERVER["SERVER_NAME"] : 'https://'.$_SERVER["SERVER_NAME"];
+     $url .= $_SERVER["SCRIPT_NAME"];
+     return $url;
+    }
 	function rrmdir($dir) { 
 		# delete a folder and its content
 	   if (is_dir($dir)) { 
