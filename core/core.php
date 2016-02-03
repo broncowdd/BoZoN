@@ -120,8 +120,8 @@
 	function burned($id){if ($id[0]=='*'&&!isset($_GET['thumbs'])){removeID($id);}}
 
 	# add an item to ID file
-	function addID($string){
-		$ids=unstore();
+	function addID($string,$ids=null){
+		if (!$ids){$ids=unstore();}
 		$id=uniqid(true);
 		$ids[$id]=$_SESSION['upload_user_path'].$string;
 		store($ids);
