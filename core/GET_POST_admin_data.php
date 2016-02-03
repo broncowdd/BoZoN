@@ -26,7 +26,7 @@
 		$old_id=$_GET['renew'];
 		$path=id2file($old_id);
 		unset($ids[$old_id]);
-		addID($path);
+		addID($path,$ids);
 		header('location:index.php?p=admin&token='.returnToken());
 		exit;
 	}	
