@@ -1,1 +1,4 @@
-deny from all
+Order Allow,Deny
+<FilesMatch "qr.js">
+Allow from all
+</FilesMatch>
