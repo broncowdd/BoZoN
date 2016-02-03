@@ -16,6 +16,16 @@ Php 5 min, php5-gd, ZipArchive
 
 # Version history
 
+## New in 2.2beta
+- Added : double check for the password on profile creation
+- Added : password change for user connected
+- Added : markdown display for md files 
+- Added : qrcode to easily get a share on smartphone 
+- Added : secured rss feed for log file
+- Added : share folders between users \o/
+- Added : changes on files/folders only allowed to the owner
+- Bugfixes: htaccess problems, catching distant file path problem, some css problems
+
 ## New in 2.1
 ### /!\ Read carefully to avoid data loss !
 - added a top bar menu
@@ -78,7 +88,7 @@ I used a few libs I made
 - auto_dropzone : a lib that handle the drag and drop function only by including it in a script
 - Array2feed.php : a function used to convert an array into a RSS feed without commiting suicide XD
 
-and sorttables.js (http://www.kryogenix.org/code/browser/sorttable/) +qr.js (http://hg.mearie.org/qrjs/)
+and sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
 
 ## Licence
 All Bozon code and all the libs used in it are distributed under AGPL: feel free to fork, adapt, distribute, comment etc but please, keep your fork free too ;-)
@@ -99,3 +109,5 @@ All Bozon code and all the libs used in it are distributed under AGPL: feel free
 
 ## Special thanks
 To Cyrille Borne [ https://github.com/cborne & http://www.cyrille-borne.com ]: without your comments, issues reporting and enhancement ideas this app would never have been so complete ;-)
+
+

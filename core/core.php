@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.1');
+	define('VERSION','2.2beta');
 	include('config.php');
 	start_session();
 	$message='';
@@ -25,9 +25,9 @@
 	if (empty($_SESSION['theme'])){$_SESSION['theme']=$default_theme;}
 	if (empty($_SESSION['mode'])){$_SESSION['mode']=$default_mode;}
 
-	
 	# SESSION VARS
 	# Upload paths
+	if (empty($_SESSION['api_rss_key'])&&!empty($_SESSION['login'])){$_SESSION['api_rss_key']=hash_user($_SESSION['login']);}
 	if (empty($_SESSION['upload_root_path'])){$_SESSION['upload_root_path']=addslash_if_needed($default_path);}
 	if (empty($_SESSION['upload_user_path'])&&!empty($_SESSION['login'])){$_SESSION['upload_user_path']=$_SESSION['login'].'/';}
 	if (!is_dir($_SESSION['upload_root_path'])){ mkdir($_SESSION['upload_root_path'],0744, true); }
@@ -48,6 +48,7 @@
 	if (empty($_SESSION['zip'])){$_SESSION['zip']=class_exists('ZipArchive');}
 	if (empty($_SESSION['home'])){$_SESSION['home'] =getUrl();}	
 	if (empty($_SESSION['id_file'])){$_SESSION['id_file']=$default_id_file;}
+	if (empty($_SESSION['folder_share_file'])){$_SESSION['folder_share_file']=$default_folder_share_file;}
 	if (empty($_SESSION['stats_filestats_file'])){$_SESSION['stats_file']=$default_stat_file;}
 	if (empty($_SESSION['theme'])){$_SESSION['theme']=$default_theme;}
 	if (!isset($_SESSION['current_path'])){$_SESSION['current_path']="";}
@@ -55,6 +56,7 @@
 	if (!is_dir('private')){mkdir('private',0744);}
 	if (!is_writable('private')){echo '<p class="error">auto_restrict error: token folder is not writeable</p>';}
 	if (!is_file('private/.htaccess')){file_put_contents('private/.htaccess', 'deny from all');}
+	if (!is_file($_SESSION['folder_share_file'])){save_folder_share(array());}
 	if (!is_file('private/salt.php')){ file_put_contents('private/salt.php','<?php define("BOZON_SALT",'.var_export(generate_bozon_salt(),true).'); ?>'); }
 	else{include('private/salt.php');}
 	if (!file_exists($_SESSION['id_file'])){$ids=array();store($ids);}
@@ -89,8 +91,15 @@
 
 
 	# Functions 
+	function load($file){return (file_exists($file) ? unserialize(gzinflate(base64_decode(substr(file_get_contents($file),9,-strlen(6))))) : array() );}
+	function save($file,$data){return file_put_contents($file, '<?php /* '.base64_encode(gzdeflate(serialize($data))).' */ ?>');}
+	
+	function store($ids=null){return save($_SESSION['id_file'],$ids);}
+	function unstore(){return load($_SESSION['id_file']);}
+	function save_folder_share($array=null){return save($_SESSION['folder_share_file'],$array);}
+	function load_folder_share(){return load($_SESSION['folder_share_file']);}
 
-	function deep_strip_tags($var){     if (is_string($var)){return strip_tags($var);}     if (is_array($var)){return array_map('deep_strip_tags',$var);}     return $var; }
+	function deep_strip_tags($var){if (is_string($var)){return strip_tags($var);}if (is_array($var)){return array_map('deep_strip_tags',$var);}return $var; }
 	# store all client access to a file
 	function store_access_stat($file=null,$id=null){
 		if (!$file||!$id){return false;}
@@ -106,14 +115,14 @@
 			'id'=>$id,
 		);
 		//FIXME not very good when multi-call
-		$stats=(file_exists($_SESSION['stats_file']) ? unserialize(gzinflate(base64_decode(substr(file_get_contents($_SESSION['stats_file']),9,-strlen(6))))) : array() );
+		$stats=load($_SESSION['stats_file']);
 		if (!is_array($stats)){$stats=array();}
 		if (count($stats)>$_SESSION['stats_max_entries']){
 			$stats=array_values($stats);
 			unset($stats[0]);
 		}
 		$stats[]=$data;
-		file_put_contents($_SESSION['stats_file'], '<?php /* '.base64_encode(gzdeflate(serialize($stats))).' */ ?>');
+		save($_SESSION['stats_file'], $stats);
 	}
 	
 	# Delete the id if it's a burn one
@@ -169,12 +178,7 @@
 
 	}
 
-	function store($ids=null){
-		file_put_contents($_SESSION['id_file'], '<?php /* '.base64_encode(gzdeflate(serialize($ids))).' */ ?>');
-	}
-	function unstore(){
-		return (file_exists($_SESSION['id_file']) ? unserialize(gzinflate(base64_decode(substr(file_get_contents($_SESSION['id_file']),9,-strlen(6))))) : array() );
-	}
+
 	function id2file($id){
 		global $ids;
 		if (isset($ids[$id])){
@@ -567,9 +571,37 @@
 		if (isset($_GET['users_list'])){echo 'users_list ';}
 		if (!empty($_GET['p'])){echo $_GET['p'].' ';}else{echo 'home ';}
 		if (!empty($_SESSION['language'])){echo 'body_'.$_SESSION['language'].' ';}
+		if (!empty($_SESSION['mode'])){echo $_SESSION['mode'].' ';}
 		if (!empty($_SESSION['aspect'])&&empty($_GET['f'])){echo $_SESSION['aspect'].' ';}
 	}
 
+	# return the user's name hashed or the user's name corresponding to a hash 
+	function hash_user($user_or_hash){
+		if (!is_file('private/auto_restrict_users.php')){return false;}
+		include ('private/auto_restrict_users.php');
+		if (strlen($user_or_hash)>100){
+			# hash > user
+			foreach ($auto_restrict['users'] as $user=>$data){
+				$hash=hash('sha512',$data['salt'].$user);
+				if ($hash==$user_or_hash){return $user;}
+			}
+			
+			return false;
+		}else{
+			# user > hash
+			if (!empty($auto_restrict['users'][$user_or_hash])){
+				return hash('sha512',$auto_restrict['users'][$user_or_hash]['salt'].$user_or_hash);
+			}
+			return false;
+		}
+	}
+
+	# Check if current user is the id's owner 
+	function is_owner($id=null){
+		if (!$id || empty($_SESSION['login'])){return false;}
+		$file=explode('/',id2file($id));$owner=$file[1];
+		return $_SESSION['login']==$owner;
+	}
 
 	function start_session(){if (!session_id()){session_start();}}
 	function aff($var,$stop=true){echo '<pre>';var_dump($var);echo '</pre>';if ($stop){exit();}}

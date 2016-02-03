@@ -96,7 +96,8 @@
 			
 		
 	</div>
-	
+	<div class="feeds"><a href="<?php echo $_SESSION['home'];?>?key=<?php echo $_SESSION['api_rss_key'];?>&statrss" class="rss btn orange">rss</a> <a href="<?php echo $_SESSION['home'];?>?key=<?php echo $_SESSION['api_rss_key'];?>&statjson" class="json btn blue">Json</a></div>
+						
 <script src="core/sorttable.js"></script>
 <script>
 	menu=document.getElementById('menu');

@@ -22,7 +22,7 @@
 	}	
 
 	# renew file id
-	if (!empty($_GET['renew']) && trim($_GET['renew'])!==false){
+	if (!empty($_GET['renew']) && trim($_GET['renew'])!==false&&is_owner($_GET['renew'])){
 		$old_id=$_GET['renew'];
 		$path=id2file($old_id);
 		unset($ids[$old_id]);
@@ -32,7 +32,7 @@
 	}	
 
 	# create burn after acces state
-	if (!empty($_GET['burn']) && trim($_GET['burn'])!==false){
+	if (!empty($_GET['burn']) && trim($_GET['burn'])!==false&&is_owner($_GET['burn'])){
 		$id_to_burn=$_GET['burn'];
 		$path=id2file($id_to_burn);
 		unset($ids[$id_to_burn]);
@@ -45,7 +45,6 @@
 		header('location:index.php?p=admin&token='.returnToken());
 		exit;
 	}	
-
 
 	# subfolder path
 	if (!empty($_GET['path']) && trim($_GET['path'])!==false){
@@ -102,10 +101,10 @@
 	if (!empty($_GET['url'])&&$_GET['url']!=''){
 		if ($content=file_curl_contents($_GET['url'])){
 			$basename=basename($_GET['url']);
-			$filename=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$basename;			
+			$filename=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'].'/'.$basename;			
 			if(is_file($filename)){
 				$newfilename=uniqid().'_'.$basename;
-				$filename=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$newfilename;
+				$filename=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'].'/'.$newfilename;
 			}		
 			file_put_contents($filename,$content);
 			addID($filename);
@@ -137,7 +136,7 @@
 	}
 
 	# rename file/folder
-	if (!empty($_GET['id'])&&!empty($_GET['newname'])){
+	if (!empty($_GET['id'])&&!empty($_GET['newname'])&&is_owner($_GET['id'])){
 		$oldfile=id2file($_GET['id']);
 		$path=dirname($oldfile).'/';
 		$newfile=$path.only_alphanum_and_dot($_GET['newname']);
@@ -210,7 +209,7 @@
 	}
 
 	# Lock folder with password
-	if (!empty($_POST['password'])&&!empty($_POST['id'])){
+	if (!empty($_POST['password'])&&!empty($_POST['id'])&&is_owner($_POST['id'])){
 		$id=$_POST['id'];
 		$file=id2file($id);
 		$password=blur_password($_POST['password']);
@@ -224,6 +223,26 @@
 		exit;
 	}
 
+	# Handle folder share with users
+	if (!empty($_GET['users'])&&!empty($_GET['share'])&&is_owner($_GET['share'])){
+		$folder_id=$_GET['share'];
+		$users=$auto_restrict['users'];
+		unset($users[$_SESSION['login']]);
+		$shared_with=load_folder_share();
+		$sent=array_flip($_GET['users']);
+		foreach ($users as $login=>$data){
+			if (isset($sent[$login])){
+				# User checked: add share
+				$shared_with[$login][$folder_id]=array('folder'=>id2file($folder_id),'from'=>$_SESSION['login']);
+			}else{
+				# User not checked: remove share if exists
+				if (isset($shared_with[$login][$folder_id])){unset($shared_with[$login][$folder_id]);}
+			}
+		}
+		save_folder_share($shared_with);
+		header('location:index.php?p=admin&token='.returnToken());
+		exit;
+	}
 
 
 	if ($_FILES){include('core/auto_dropzone.php');exit();}

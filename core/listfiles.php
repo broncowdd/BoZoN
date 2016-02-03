@@ -7,6 +7,7 @@
 
 start_session();
 $layout=$_SESSION['aspect'];
+$shared_folders='';
 if (!function_exists('store')){
 	include('core/core.php');
 	if (!function_exists('newToken')){require_once('core/auto_restrict.php');} # Admin only!
@@ -19,6 +20,7 @@ echo str_replace('#TOKEN',$lb_token,$templates['delete_lightbox']);
 echo str_replace('#TOKEN',$lb_token,$templates['new_folder_lightbox']);
 echo str_replace('#TOKEN',$lb_token,$templates['download_url_lightbox']);
 echo str_replace('#TOKEN',$lb_token,$templates['qrcode_lightbox']);
+echo str_replace('#TOKEN',$lb_token,$templates['share_lightbox']);
 
 // Configuration
 $upload_path_size=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
@@ -53,18 +55,42 @@ if ($mode=='links'){
 	);
 	echo template('password_lightbox',$array);
 }
+if ($mode=='view'){
+	# Add shares from others users 
+	$shared_with=load_folder_share();
+	if (!empty($shared_with[$_SESSION['login']])){
+		$shared_folders.= '<ul class="shared_folders">';
+		foreach($shared_with[$_SESSION['login']] as $id=>$data){
+			$folder=basename($data['folder']);
+			$array=array(
+				'#CLASS'			=> 'shared_folder',
+				'#ID'				=> $id,
+				'#FICHIER'			=> $folder,
+				'#TOKEN'			=> returnToken(),
+				'#NAME'				=> $folder,
+				'#FROM'			=> $data['from'],
+			);
+			$shared_folders.= template($mode.'_shared_folder_'.$layout,$array);
+		}
+		$shared_folders.= '</ul>';
+		echo $shared_folders;
+	}
+}
 $save=false;
 
 if (count($liste)>0){
 	$files=array_flip($ids);
 	$folderlist='';
 	$filelist='';
+
+
+
 	foreach ($liste as $fichier){
 		$nom=_basename($fichier);
 		$length_upload_path=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
 		$nom_racine=substr($fichier, $length_upload_path);
 		if ($nom!='index.html'&&empty($files[$fichier])&&empty($files[$nom_racine])){
-			// generates the file ID if not present
+			# generates the file ID if not present
 			$id=uniqid(true);
 			$ids[$id]=$fichier;
 			$files[$fichier]=$id;
@@ -163,12 +189,17 @@ if (count($liste)>0){
 	}
 	echo $folderlist.$filelist;
 	if ($save){store($ids);} // save in case of new files
-}else{e('No file on the server');}
+}else{e('No file in your personal folder');}
 
 ?>
 <script src="core/qr.js"></script>
 <script>
-	
+	function get(url){	
+		request = new XMLHttpRequest();request.open('GET', url, false);
+		request.send();
+		return request.responseText;
+	}
+
 	function put_file(fichier){
 		document.getElementById('filename').value=fichier;
 		document.getElementById('filename_hidden').value=fichier;
@@ -178,6 +209,12 @@ if (count($liste)>0){
 	function put_file_and_id(id,file){
 		document.getElementById('FILE_Rename').value=file;
 		document.getElementById('ID_Rename').value=id;
+	}
+	function share(id,file){
+		document.getElementById('ID_folder').innerHTML=file;
+		document.getElementById('ID_share').value=id;
+		document.getElementById('Users_list').innerHTML=get('index.php?users_share_list='+id+'&token=<?php newToken(true);?>');
+
 	}
 	function suppr(id){	document.getElementById('ID_Delete').value=id;}
 

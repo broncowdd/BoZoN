@@ -6,39 +6,8 @@
 	**/
 if (is_file('import.php')){header('location: import.php');}
 require('core/core.php');
+require('core/commands_GET_vars.php');# handle no html content requests
 
-
-# thumbnail request
-if(isset($_GET['thumbs'])&&!empty($_GET['f'])){
-	$f=get_thumbs_name(id2file($_GET['f']));
-	$type=_mime_content_type($f);
-	header('Content-type: '.$type.'; charset=utf-8');
-	header('Content-Transfer-Encoding: binary');
-	header('Content-Length: '.filesize($f));
-	readfile($f);
-	exit;
-}
-if(isset($_GET['gthumbs'])&&!empty($_GET['f'])){
-	$f=get_thumbs_name_gallery(id2file($_GET['f']));
-	$type=_mime_content_type($f);
-	header('Content-type: '.$type.'; charset=utf-8');
-	header('Content-Transfer-Encoding: binary');
-	header('Content-Length: '.filesize($f));
-	readfile($f);
-	exit;
-}
-
-# share request
-if (!empty($_GET['f'])){
-	require('core/share.php');	
-	exit;
-}
-
-# Try to login or logout ? => auto_restrict
-if (!empty($_POST['pass'])&&!empty($_POST['login'])||isset($_GET['logout'])||isset($_GET['deconnexion'])){
-	require('core/auto_restrict.php');
-	exit;
-}
 
 if (is_admin_connected()){
 	# if admin is connected, use auto_restrict

@@ -7,7 +7,7 @@
 	 * auto_restrict
 	 * @author bronco@warriordudimanche.com / www.warriordudimanche.net
 	 * @copyright open source and free to adapt (keep me aware !)
-	 * @version 4.0 - multi user
+	 * @version 4.1 - multi user
 	 *   
 	 * This script locks a page's access  
 	 * Just include it in the page you want to lock  
@@ -39,6 +39,8 @@
 	 * ajouter un fichier log de connexion
 	 * 
 	 * 
+	 * ajout 4.1 : 
+	 * ajout du double check de passe et du changement de mdp
 	 * ajout 4.0 : 
 	 * ajout du support multi utilisateur
 	*/	
@@ -48,7 +50,7 @@
 	// ------------------------------------------------------------------
 	// you can modify this config before the include('auto_restrict.php');
 	if (!isset($auto_restrict['error_msg'])){						$auto_restrict['error_msg']='Erreur - impossible de se connecter.';}// utilisé si on ne veut pas rediriger
-	if (!isset($auto_restrict['cookie_name'])){						$auto_restrict['cookie_name']='auto_restrict';}// nom du cookie
+	if (!isset($auto_restrict['cookie_name'])){						$auto_restrict['cookie_name']='BoZoN';}// nom du cookie
 	if (!isset($auto_restrict['session_expiration_delay'])){		$auto_restrict['session_expiration_delay']=90;}//minutes
 	if (!isset($auto_restrict['cookie_expiration_delay'])){			$auto_restrict['cookie_expiration_delay']=365;}//days
 	if (!isset($auto_restrict['IP_banned_expiration_delay'])){		$auto_restrict['IP_banned_expiration_delay']=90;}//seconds
@@ -103,16 +105,18 @@
 	}else if(!isset($_POST['pass'])){ 
 		// or redirect to login form
 		safe_redirect('index.php?p=login');
+		exit;
 	}
 
 	// ------------------------------------------------------------------
 	// New user request: add it, save and return to login page
 	// ------------------------------------------------------------------
-	if(!empty($_POST['pass'])&&isset($_POST['creation'])&&!empty($_POST['login'])){
+	if(!empty($_POST['pass'])&&!empty($_POST['confirm'])&&isset($_POST['creation'])&&!empty($_POST['login'])&&empty($_POST['admin_password'])){
 		if (!isset($auto_restrict['users'])){$auto_restrict['users']=array();}
 		$index=count($auto_restrict['users']);
 		$login=strip_tags($_POST['login']);
 		if (login_exists($login)){safe_redirect('index.php?p=login&newuser&error=1&token='.returnToken());}
+		if ($_POST['pass']!=$_POST['confirm']){safe_redirect('index.php?p=login&newuser&error=3&token='.returnToken());}
 		$auto_restrict['users'][$index]['login'] = $login;
 		$auto_restrict['users'][$index]['encryption_key'] = md5(uniqid('', true));
 		$auto_restrict['users'][$index]['salt'] = generate_salt(512);
@@ -120,10 +124,27 @@
 		
 		if (!save_users()){exit('auto_restrict: problem saving users');}
 		safe_redirect('index.php?p=login&success&name='.$login.'&token='.returnToken());
+		exit;
 	}
 
 
-
+	// ------------------------------------------------------------------
+	// Change password request
+	// ------------------------------------------------------------------
+	if(!empty($_POST['pass'])&&!empty($_POST['confirm'])&&!empty($_POST['admin_password'])){
+		
+		if ($auto_restrict['users'][$_SESSION['login']]['pass']!==hash('sha512', $auto_restrict['users'][$_SESSION['login']]['salt'].$_POST['admin_password'])){
+			safe_redirect('index.php?p=login&change_password&error=4&token='.returnToken());
+			exit;
+		}
+		if ($_POST['pass']!=$_POST['confirm']){
+			safe_redirect('index.php?p=login&newuser&error=3&token='.returnToken());
+			exit;
+		}
+		$auto_restrict['users'][$_SESSION['login']]['pass']=hash('sha512', $auto_restrict['users'][$_SESSION['login']]['salt'].$_POST['pass']);
+		save_users();
+		safe_redirect('index.php?p=admin&token='.returnToken());
+	}
 	// ------------------------------------------------------------------
 	// load banned ip
 	// ------------------------------------------------------------------
@@ -133,7 +154,7 @@
 	// ------------------------------------------------------------------
 	// user tries to login
 	// ------------------------------------------------------------------	
-	if (isset($_POST['login'])&&isset($_POST['pass'])){
+	if (isset($_POST['login'])&&isset($_POST['pass'])&&empty($_POST['confirm'])&&empty($_POST['creation'])){
 		$ok=log_user($_POST['login'],$_POST['pass']);
 		if (!$ok){safe_redirect('index.php?p=login&error=2');}
 		elseif (isset($_POST['cookie'])){
@@ -174,7 +195,7 @@
 	if (!is_ok()){
 		@session_destroy();
 		if (!$auto_restrict['just_die_if_not_logged']){
-			safe_redirect('index.php?p=login&error=1');
+			safe_redirect('index.php?p=login');
 		} else {
 			echo $auto_restrict['error_msg'];
 		}
@@ -295,6 +316,7 @@
 		foreach ($auto_restrict['users'] as $key=>$user){
 			if ($user['login']==$login){return true;}
 		}
+		return false;
 	}
 
 	function id_user(){
@@ -311,7 +333,7 @@
 		// in case of problem, destroy session and redirect
 		global $auto_restrict;
 		$expired=false;
-		
+		if (!isset($_SESSION['id_user'])){return false;}
 		// fatal problem
 		if (!checkReferer()){return death("You are definitely NOT from here !");}
 		if (!checkIP()){return death("Hey... you were banished, fuck off !");}
@@ -319,7 +341,7 @@
 
 		// 
 		if (checkCookie()){return true;}
-		if (!isset($_SESSION['id_user'])){return false;}
+		
 		if ($_SESSION['expire']<time()){$expired=true;}
 		
 		$sid=Dechiffre($_SESSION['id_user'],$auto_restrict['users'][$_SESSION['login']]['encryption_key']);
@@ -577,7 +599,11 @@
 		if (!is_user_admin()){return false;}
 		echo '<a class="auto_restrict_new_user_link" href="index.php?p=login&newuser&token='.returnToken().'" alt="link to a new user" title="'.$text.'">&nbsp;</a>';
 	}
-
+	// creates the secured link to new password form
+	function generate_new_password_link($text='Change password'){
+		if (!is_user_admin()){return false;}
+		echo '<a class="auto_restrict_new_password_link" href="index.php?p=login&change_password&token='.returnToken().'" alt="link to a new password" title="'.$text.'">&nbsp;</a>';
+	}
 	function first($array){
 		if (empty($array)){return false;}
 		$akeys=array_keys($array);

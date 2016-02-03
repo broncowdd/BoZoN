@@ -42,7 +42,7 @@ a:active{color:#333;}
 /* global style for buttons/inputs */
 .btn, .users_list input[type=submit]{cursor:pointer;border-radius:3px;display:inline-block;padding:5px;border:1px solid #777; background-color:#888;margin:2px;box-shadow:0 1px 1px;}
 .btn:hover{border:1px solid #888; background-color:#999;}
-.npt{border-radius:3px;display:inline-block;padding:5px;border:1px solid #aaa;background-color:#eee;box-shadow: inset 0 1px 1px}
+.npt, #admin_password{border-radius:3px;display:inline-block;padding:5px;border:1px solid #aaa;background-color:#eee;box-shadow: inset 0 1px 1px}
 .blue{color:white!important;background-color:#405bff;border-color:#05E;box-shadow: 0 1px 1px #04d}
 .red, .users_list input[type=submit]{background-color:#B30;border-color:#a20;box-shadow: 0 1px 1px #910;}
 .white{background-color:#aaa;border-color:#999;}
@@ -60,7 +60,7 @@ a:active{color:#333;}
 #top_bar a:hover{color:#ddd;background-color:rgba(0,0,0,0.3);}
 #top_bar .auto_restrict_userslist_link{background:url(img/users.png) no-repeat center center;width:32px;}
 #top_bar .auto_restrict_new_user_link{background:url(img/new_user.png) no-repeat center center;width:32px;}
-#top_bar .auto_restrict_new_user_link{background:url(img/new_user.png) no-repeat center center;width:32px;}
+#top_bar .auto_restrict_new_password_link{background:url(img/newpass.png) no-repeat center center;width:32px;}
 #top_bar .log_file{background:url(img/log_file.png) no-repeat center center;width:32px;}
 #top_bar .home{background:url(img/home_16.png) no-repeat center center;width:32px;}
 
@@ -142,6 +142,7 @@ body{
 }
 body.list,body.icon{padding:0;}
 body.login footer{}
+body.login h2{font-size:32px;}
 
 body.move{}
 body.links{}
@@ -414,7 +415,8 @@ footer *{vertical-align: middle;padding:3px;}
 .list h1{font-size:30px;padding:5px;}
 .list .folder{background:rgba(0,50,100,0.1);}
 .list .folder .over{position:relative;top:-32px;color:white;text-align:center;}
-ul.list li {
+.list .owner{color:#05F;}
+ul.list li, #Users_list li{
 	
 	min-height:26px;
 	overflow: hidden;
@@ -434,6 +436,8 @@ ul.list li {
 	background-color:rgba(255,255,255,0.1);
 	
 }
+#Users_list{margin-top:20px;}
+#Users_list li *{vertical-align: bottom;}
 ul.list li.burn {
 	border:1px solid red;
 	box-shadow: 0 0 2px rgba(255,0,0,0.5);
@@ -454,18 +458,12 @@ ul.list li.burn {
 	background-color:rgba(0,100,255,0.9)!important;
 }
 
-.list li:hover{
+.list li:hover, #Users_list li:hover{
 	background-color:rgba(0,126,255,0.2);
 	box-shadow: 0 0 2px rgba(0,126,255,0.5);
 }
-.move .list li:hover{
-	background-color:rgba(255,10,0,0.2);
-	box-shadow: 0 0 2px rgba(255,10,0,0.5);
-}
-.links .list li:hover{
-	background-color:rgba(10,255,10,0.2);
-	box-shadow: 0 0 2px rgba(10,255,10,0.5);
-}
+.move .list li:hover{}
+.links .list li:hover{}
 
 .list li .buttons{
 	width: 110px;
@@ -473,7 +471,9 @@ ul.list li.burn {
 	display: block;
 	float:right;
 	border-radius: 3px;
-	
+}
+body.links .list li .buttons{
+	width: 130px;
 }
 .list li .buttons a{
 	display:block;
@@ -485,39 +485,19 @@ ul.list li.burn {
 	margin:1px;
 
 }
-.list li a.movefolder{
-	background:url(img/move.png) no-repeat center center;
-}
-.list li a.close{
-	background:url(img/Trash.png) no-repeat center center;
-}
-.list li a.visu{
-	background:url(img/eye.png) no-repeat center center;
-}
-.list li a.link{
-	background:url(img/link.png) no-repeat center center;
-}
-.list li a.locked{
-	background:url(img/locked.png) no-repeat center center;
-}
-.list li a.burn{
-	background:url(img/burn.png) no-repeat center center;
-}
-.list li a.renew{
-	background:url(img/renew.png) no-repeat center center;
-}
-.list li a.rename{
-	background:url(img/rename.png) no-repeat center center;	
-}
-.list li a.tofolder{
-	background:url(img/folder16.png) no-repeat center center;	
-}
-.list li a.zipfolder{
-	background:url(img/download_folder.png) no-repeat center center;	
-}
-.list li a.qrcode{
-	background:url(img/qrcode.png) no-repeat center center;	
-}
+.list li a.movefolder{background:url(img/move.png) no-repeat center center;}
+.list li a.close{background:url(img/Trash.png) no-repeat center center;}
+.list li a.visu{background:url(img/eye.png) no-repeat center center;}
+.list li a.link{background:url(img/link.png) no-repeat center center;}
+.list li a.locked{background:url(img/locked.png) no-repeat center center;}
+.list li a.burn{background:url(img/burn.png) no-repeat center center;}
+.list li a.renew{background:url(img/renew.png) no-repeat center center;}
+.list li a.rename{background:url(img/rename.png) no-repeat center center;	}
+.list li a.tofolder{background:url(img/folder16.png) no-repeat center center;	}
+.list li a.zipfolder{background:url(img/download_folder.png) no-repeat center center;}
+.list li a.qrcode{background:url(img/qrcode.png) no-repeat center center;}
+.list li a.usershare{background:url(img/users.png) no-repeat center center;}
+
 .list li a.movefolder:hover{background-color:rgba(255,0,0,0.8);}
 .list li a.close:hover{background-color:rgba(255,0,0,0.8);}
 .list li a.rename:hover{background-color:rgba(0,150,0,0.8);}
@@ -529,10 +509,11 @@ ul.list li.burn {
 .list li a.tofolder:hover{background-color:rgba(200,100,100,0.8);}
 .list li a.zipfolder:hover{background-color:rgba(200,100,100,0.8);}
 .list li a.qrcode:hover{background-color:rgba(200,100,100,0.8);}
+.list li a.usershare:hover{background-color:rgba(200,100,100,0.8);}
 
 
 .list li:hover a.close, .list li:hover a.movefolder, .list li:hover a.rename, .list li:hover a.link, .list li:hover a.visu,li:hover form,
-.list li:hover a.renew,.list li:hover a.burn,.list li:hover a.locked, .list li:hover a.tofolder,.list li:hover a.zipfolder,.list li:hover a.qrcode
+.list li:hover a.renew,.list li:hover a.burn,.list li:hover a.locked, .list li:hover a.tofolder,.list li:hover a.zipfolder,.list li:hover a.qrcode,.list li:hover a.usershare
 {display:inline-block;}
 .list li:hover .buttons{background-color:rgba(0,0,0,0.7);box-shadow:0 1px 2px rgba(0,0,0,0.5);}
 
@@ -576,7 +557,7 @@ ul.list li.burn {
 .icon h1{font-size:30px;padding:5px;}
 .icon .folder{background:rgba(0,50,100,0.1);}
 .icon .folder .over{position:relative;top:-32px;color:white;text-align:center;}
-ul.icon li {
+ul.icon>li {
 	width:132px;
 	height:132px;
 	overflow: hidden;
@@ -618,14 +599,8 @@ ul.icon li {
 	background-color:rgba(0,126,255,0.2);
 	box-shadow: 0 0 2px rgba(0,126,255,0.5);
 }
-.move .icon li:hover{
-	background-color:rgba(255,10,0,0.2);
-	box-shadow: 0 0 2px rgba(255,10,0,0.5);
-}
-.links .icon li:hover{
-	background-color:rgba(10,255,10,0.2);
-	box-shadow: 0 0 2px rgba(10,255,10,0.5);
-}
+.move .icon li:hover{}
+.links .icon li:hover{}
 
 .icon li .buttons{
 	width: 110px;
@@ -635,6 +610,11 @@ ul.icon li {
 	border-radius: 3px;
 	
 }
+body.links .icon li .buttons{
+	margin-left: -10px;
+    width: 130px;
+    }
+
 .icon li .buttons a{
 	display:block;
 	line-height:100%;
@@ -645,36 +625,19 @@ ul.icon li {
 	margin:1px;
 
 }
-.icon li a.movefolder{
-	background:url(img/move.png) no-repeat center center;
-}
-.icon li a.close{
-	background:url(img/Trash.png) no-repeat center center;
-}
-.icon li a.visu{
-	background:url(img/eye.png) no-repeat center center;
-}
-.icon li a.link{
-	background:url(img/link.png) no-repeat center center;
-}
-.icon li a.locked{
-	background:url(img/locked.png) no-repeat center center;
-}
-.icon li a.burn{
-	background:url(img/burn.png) no-repeat center center;
-}
-.icon li a.renew{
-	background:url(img/renew.png) no-repeat center center;
-}
-.icon li a.rename{
-	background:url(img/rename.png) no-repeat center center;	
-}
-.icon li a.tofolder{
-	background:url(img/folder16.png) no-repeat center center;	
-}
-.icon li a.zipfolder{
-	background:url(img/download_folder.png) no-repeat center center;	
-}
+.icon li a.movefolder{background:url(img/move.png) no-repeat center center;}
+.icon li a.close{background:url(img/Trash.png) no-repeat center center;}
+.icon li a.visu{background:url(img/eye.png) no-repeat center center;}
+.icon li a.link{background:url(img/link.png) no-repeat center center;}
+.icon li a.locked{background:url(img/locked.png) no-repeat center center;}
+.icon li a.burn{background:url(img/burn.png) no-repeat center center;}
+.icon li a.renew{background:url(img/renew.png) no-repeat center center;}
+.icon li a.rename{background:url(img/rename.png) no-repeat center center;	}
+.icon li a.tofolder{background:url(img/folder16.png) no-repeat center center;}
+.icon li a.zipfolder{background:url(img/download_folder.png) no-repeat center center;}
+.icon li a.usershare{background:url(img/users.png) no-repeat center center;}
+.icon li a.qrcode{background:url(img/qrcode.png) no-repeat center center;}
+
 .icon li a.movefolder:hover{background-color:rgba(255,0,0,0.8);}
 .icon li a.close:hover{background-color:rgba(255,0,0,0.8);}
 .icon li a.rename:hover{background-color:rgba(0,150,0,0.8);}
@@ -685,10 +648,12 @@ ul.icon li {
 .icon li a.locked:hover{background-color:rgba(100,100,100,0.8);}
 .icon li a.tofolder:hover{background-color:rgba(200,100,100,0.8);}
 .icon li a.zipfolder:hover{background-color:rgba(200,100,100,0.8);}
-
+.icon li a.usershare:hover{background-color:rgba(100,100,100,0.8);}
+.list li a.qrcode:hover{background-color:rgba(200,100,100,0.8);}
 
 .icon li:hover a.close, .icon li:hover a.movefolder, .icon li:hover a.rename, .icon li:hover a.link, .icon li:hover a.visu,li:hover form,
-.icon li:hover a.renew,.icon li:hover a.burn,.icon li:hover a.locked, .icon li:hover a.tofolder,.icon li:hover a.zipfolder
+.icon li:hover a.renew,.icon li:hover a.burn,.icon li:hover a.locked, .icon li:hover a.tofolder,.icon li:hover a.zipfolder,.icon li:hover a.usershare,
+.icon li:hover a.qrcode
 {display:inline-block;}
 .icon li:hover .buttons{background-color:rgba(0,0,0,0.7);box-shadow:0 1px 2px rgba(0,0,0,0.5);}
 
@@ -718,6 +683,7 @@ ul.icon li {
 	/*box-shadow:0 1px 1px rgba(0,0,0,0.2);*/
 	background:url(img/unknown.png) no-repeat transparent center center;
 }
+.icon .owner{color:#05F;}
 img.zip,img.rar,img.gzip,img.tgz{background-image:url(img/zip.png)!important;}
 img.txt,img.ini,img.nfo, img.css{background-image:url(img/txt.png)!important;}
 img.doc,img.odt,img.xdoc{background-image:url(img/doc.png)!important;}
@@ -858,7 +824,7 @@ li.DD_warning{
 	body.login input[type=submit]{display:inline-block;width:auto;width:10%;min-width:32px;float:right;}
 	body.login #cookie{display:inline-block!important;width:20px!important;height:20px;height:20px!important;vertical-align: middle;}
 	body.login input[type=checkbox]+label{display:inline-block;width:70%;height:20px;min-width:200px;vertical-align: middle;}
-	body.login #login, body.login #pass{
+	body.login #login,body.login #pass,body.login #confirm,#admin_password{
 		color:#444!important;
 		padding-left:32px;
 		background-position:7px center;
@@ -869,7 +835,7 @@ li.DD_warning{
 		font-size: 32px;
 	}
 	body.login #login{background-image:url('img/user_black.png');}
-	body.login #pass{background-image:url('img/locked_black.png');}
+	body.login #pass,body.login #confirm,#admin_password{background-image:url('img/locked_black.png');}
 	input:-webkit-autofill {
 	    -webkit-box-shadow: 0 0 0px 1000px white inset;
 	    -webkit-text-fill-color: #555555 !important;
@@ -1135,6 +1101,12 @@ div.lightbox button
 	width:100px;
 	padding:10px;
 }
+
+div.lightbox #Users_list {overflow-y:scroll;max-height: 200px;cursor:pointer;}
+div.lightbox #Users_list label{width: 320px;cursor:pointer;}
+
+#ID_folder{font-size: 32px; color:#05F;}
+.folder_share_user_list{margin-top:10px;}
 #link_box textarea{resize:none;}
 #qrcode_img{display:block;margin:5px auto;width:256px;height:256px;}
 
@@ -1145,7 +1117,7 @@ div.lightbox button
 		height:64px;min-width:64px;background-position:center center;background-repeat:no-repeat;
 	}
 	#search input[type=text].npt{height:64px;}
-	#top_bar a{border:1px solid rgba(0,0,0,0.2);display:block;text-align:center;}
+	#top_bar a{border:1px solid rgba(0,0,0,0.2);text-align:center;}
 	.w50{width:100%;}
 	body header p.logo{
 		/*background:url(img/bozonlogo3.png) no-repeat center top;*/
@@ -1179,8 +1151,8 @@ div.lightbox button
 		padding-left:32px;
 	}
 
-
 	.list{padding:0;}
+
 	ul.list li{
 		width:100%;
 		height:auto;
