@@ -1,4 +1,4 @@
 Order Allow,Deny
-<FilesMatch "qr.js">
+<FilesMatch "\.(js)$">
 Allow from all
 </FilesMatch>
