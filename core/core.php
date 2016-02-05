@@ -203,7 +203,7 @@
 			return str_replace($extension,$add.'.'.$extension,$file);
 		}else{ return $file.$add;}
 	}
-	function only_alphanum_and_dot($string){return preg_replace('#[^éèàçâêûîôÉÈÇÀÂÊÛÎÔÁÚÍÓÑáúíóña-zA-Z0-9\. _]#','',$string);}
+	function only_alphanum_and_dot($string){return preg_replace('#[^\-éèàçâêûîôÉÈÇÀÂÊÛÎÔÁÚÍÓÑáúíóña-zA-Z0-9\. _]#','',$string);}
 	function file_curl_contents($url,$pretend=true){
 		# distant version of file_get_contents
 		$ch = curl_init();
