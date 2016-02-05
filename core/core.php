@@ -34,6 +34,7 @@
 	if (!empty($_SESSION['upload_user_path'])&&!is_dir($_SESSION['upload_root_path'].$_SESSION['upload_user_path'])){ mkdir($_SESSION['upload_root_path'].$_SESSION['upload_user_path'],0744, true); }
 	if (!is_file($_SESSION['upload_root_path'].'index.html')){ file_put_contents($_SESSION['upload_root_path'].'index.html',' '); }
 	if (!is_dir('thumbs/')){mkdir('thumbs/');}
+	if (!empty($_SESSION['login'])&&!is_dir('thumbs/'.$_SESSION['login'])){mkdir('thumbs/'.$_SESSION['login']);}
 	if (!is_file('thumbs/.htaccess')){file_put_contents('thumbs/.htaccess', 'deny from all');}
 	if (!is_file('thumbs/index.html')){file_put_contents('thumbs/index.html',' ');}
 	if (!empty($_SESSION['upload_user_path'])&&!is_dir('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'])){ mkdir('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'],0744, true); }
