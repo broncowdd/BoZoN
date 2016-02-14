@@ -1,0 +1,265 @@
+/* Header */
+header {
+  min-height: 120px;
+  background: #405bff;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,100,255,0.5);
+}
+
+#top_bar {
+  height: 32px;
+  background: #2d3fae;
+  margin-bottom: 5px;
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+#top_bar a:hover {
+  color: #ddd;
+  background-color: #1f2c79;
+}
+
+#top_bar #icons a {
+  min-width: 32px;
+  height: 32px;
+  display: block;
+  float: left;
+}
+
+#top_bar .home {
+  background: transparent url('../img/header/home.png') center center no-repeat;
+}
+
+#top_bar .auto_restrict_userslist_link {
+  background: transparent url('../img/header/users.png') center center no-repeat;
+}
+
+#top_bar .auto_restrict_new_user_link {
+  background: transparent url('../img/header/new_user.png') center center no-repeat;
+}
+
+#top_bar .auto_restrict_new_password_link {
+  background: transparent url('../img/header/new_pass.png') center center no-repeat;
+}
+
+#top_bar .log_file {
+  background: transparent url('../img/header/log_file.png') center center no-repeat;
+}
+
+#top_bar #icons {
+  float: left;
+}
+
+#top_bar #icons a {
+  display: inline-block;
+  padding: 5px;
+  border-right: 1px solid rgba(0,0,0,0.2);
+}
+
+#top_bar #icons a,
+#top_bar #lang a {
+  color: #6e7ef5;
+}
+
+#top_bar #lang {
+  float: right;
+}
+
+#top_bar #lang a {
+  display: inline-block;
+  padding: 5px;
+  min-width: 32px;
+  width: auto;
+  border-left: 1px solid rgba(0,0,0,0.2);
+}
+
+#top_bar #lang a.active {
+  color: #fff;
+}
+
+#search {
+  float: right;
+  display: block;
+  margin-right: 2px;
+}
+
+#search input[type=text]{
+  margin-top: 3px;
+  height: 30px;
+  width: 30px;
+  padding-left: 30px;
+  background: #e9e9e9 url('../img/header/search.png') 8px center no-repeat;
+  border: 1px solid #d9d9d9;
+  border-radius: 3px;
+}
+
+#search input[type=text]:hover,
+#search input[type=text]:focus {
+  width: 200px;
+  background-color: #eee;
+}
+
+#connect {
+  clear: both;
+  display: block;
+  vertical-align: middle;
+}
+
+#connect #admin_button {
+  height: 32px;
+  line-height: 22px;
+  vertical-align: middle;
+  min-width: 32px;
+  padding-left: 20px;
+  background: #2d3fae url('../img/header/user.png') 5px center no-repeat;
+  color: #d6d9ee;
+  float: right;
+  text-indent: 5px;
+}
+
+#connect #logout_button,
+#connect #login_button {
+  height: 32px;
+  width: 32px;
+  float: right;
+}
+
+#connect #login_button{
+  background: #2d3fae url('../img/header/locked.png') center center no-repeat;
+}
+
+#connect #logout_button {
+  background: #2d3fae url('../img/header/logout.png') center center no-repeat;
+}
+
+body.login #connect #login_button {
+  display: none;
+}
+
+#logo {
+  clear: both;
+  width: 100%;
+  height: 150px;
+  padding-top: 118px;
+  background: transparent url('../img/header/logo.png') center top no-repeat;
+  color: #fff;
+  display: block;
+}
+
+
+/* Slogan seulement sur l'accueil */
+.slogan {
+  display:none;
+}
+
+body.home .slogan {
+  display: block;
+  font-size: 24px;
+  text-align: center;
+  color: #fff;
+}
+
+/* Dropzone */
+.DD_dropzone {
+  clear: both;
+  font-size: 1em;
+  cursor: pointer;	
+  text-align: center;
+  margin: auto;
+  width: 100%;
+  padding: 15px;
+  padding-top: 118px;
+  min-height: 100px;
+  min-width: 300px;
+  background: transparent url('../img/header/logo.png') center top no-repeat;
+}
+
+.DD_uploading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,5,0.8);
+}
+
+.DD_uploading .DD_text {
+  display: none;
+}
+
+.DD_hover {
+  background-color: #58f;
+}
+
+.DD_text {
+  color: #fff;
+  font-size: 16px;
+  margin-top: 15px;
+  font-weight: bold;
+  min-width: 300px;
+  max-width: 500px;
+  margin: auto;
+  text-shadow: 0 1px 1px #039;
+}
+
+.DD_text em {
+  font-size: 0.8em;
+  font-style: italic;
+}
+
+.DD_file,.DD_error {
+  padding: 10px;
+  border-radius: 3px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+ li.DD_success {
+  background-color: rgba(0,255,0,0.8);	
+}
+
+li.DD_error {
+  font-weight: bold;
+  background-color: rgba(255,0,0,0.8);
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(155,0,0,0.8)
+}
+
+li.DD_warning {
+  font-weight: bold;
+  background-color: rgba(255,150,0,0.8);
+  color: #fff;
+  line-height: 20px;
+  text-shadow: 0 1px 1px rgba(155,80,0,0.8)
+}
+
+.DD_info {
+  text-align: left;
+}
+
+.DD_info li.DD_file {
+  list-style: none;
+}
+
+#DD_progressbar {
+  overflow: hidden;
+  font-size: 0.8em;
+  border-radius: 3px;
+  padding: 3px 0;
+  text-align: center;
+  background: #bAd3ed;
+  box-shadow: 0 0 3px #405bff;
+  color: #000;
+  height: 20px;
+  width: 0%
+}
+
+.DD_hidden{
+  opacity: 0;
+  width: 0;
+  height: 0;
+  border: 0;
+  position: absolute;
+  top: -10000px;
+  left: -10000px;
+}

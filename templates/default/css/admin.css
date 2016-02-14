@@ -1,0 +1,90 @@
+/* Admin */
+#admin {
+  width: calc(100% - 8px);
+  margin: 0 auto;
+  color: #333;
+}
+
+/* menu */
+#admin #menu a {
+  display: block;
+  padding: 5px;
+  width: 34px;
+  height: 34px;
+  float: left;
+  margin-bottom: 10px;
+  border-top: 1px solid #888;
+  border-bottom: 1px solid #888;
+}
+
+#admin #menu a:first-child {
+  border-left: 1px solid #888;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+#admin #menu a:last-child {
+  border-right: 1px solid #888;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+#admin #menu #icon                  {background: #888 url('../img/admin/menu_icon.png') center center no-repeat;}
+#admin #menu #list                  {background: #888 url('../img/admin/menu_list.png') center center no-repeat;}
+#admin #menu #new_folder            {background: #888 url('../img/admin/menu_new_folder.png') center center no-repeat;}
+#admin #menu #download_url          {background: #888 url('../img/admin/menu_download_url.png') center center no-repeat;}
+#admin #menu #mode_view             {background: #888 url('../img/admin/menu_file.png') center center no-repeat;}
+#admin #menu #mode_links            {background: #888 url('../img/admin/menu_link.png') center center no-repeat;}
+#admin #menu #mode_move             {background: #888 url('../img/admin/menu_move.png') center center no-repeat;}
+
+/* fil ariane */
+#admin #fil_ariane{
+  clear: both;
+  width: 100%;
+  height: 32px;
+  line-height: 32px;
+  vertical-align: middle;
+  border-bottom: 1px solid #888;
+  font-size: 1em;
+}
+
+#admin #fil_ariane .ariane_home {
+  display: inline-block;
+  background: transparent url('../img/admin/fil_ariane_home.png') center center no-repeat;
+  width: 32px;
+  height: inherit;	
+}
+
+/* filtre */
+#admin #filter {
+  margin: 15px 0;
+  font-size: 0.9em;
+}
+
+/* explications sur les déplacements de fichiers, dossiers */
+#admin #move {
+  clear: both;
+  margin-top: 15px;
+}
+
+#admin #move ul li {
+  display: block;
+  padding-top: 10px;
+}
+
+#admin #move ul li span {
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 0.8em;
+}
+
+#admin #move ul li span.img {
+  width: 24px;
+  height: 24px;
+  padding-right: 5px;
+}
+
+#admin #move ul li span.img img {
+  height: inherit;
+  display: inline;
+}

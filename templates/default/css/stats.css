@@ -1,0 +1,76 @@
+/* Stats */
+#stats a {
+  color: #3e58f7;
+}
+
+#stats a:hover {
+  text-decoration: underline;
+}
+
+#stats h1 {
+  margin-bottom: 10px;
+}
+
+#stats .pagination {
+  text-align: center;
+  padding: 10px 0;
+}
+
+#stats table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: calc(100% - 8px);
+  table-layout: fixed;
+  background: #ddd;
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.35);
+}
+
+#stats table thead th {
+  background: #bbb;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #aaa;
+}
+
+#stats table thead th,
+#stats table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#stats table th.date,
+#stats table td.date,
+#stats table th.ip,
+#stats table td.ip,
+#stats table th.host,
+#stats table td.host {
+  width: 160px;
+}
+
+#stats table tr:nth-child(odd) {
+  background: #ccc;
+}
+
+#stats table td {
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+#stats #trash,
+#stats #feeds {
+  text-align: center;
+}
+
+#stats #trash a {
+  background: transparent url('../img/stats/trash.png') left center no-repeat;
+  height: 25px;
+  line-height: 25px;
+  vertical-align: middle;
+  padding-left: 20px;
+}
+
+#stats #message {
+  padding: 40px 0;
+  text-align: center;
+}

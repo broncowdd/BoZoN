@@ -1,0 +1,105 @@
+/* Initialisation */
+* {
+  box-sizing: border-box;
+}
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+}
+
+a:hover {
+  color:#03a;
+}
+
+a:visited {
+  color:#333;
+}
+
+a:active{
+  color:#333;
+}
+
+h1 {
+  color: #3e58f7;
+  font-size: 2em;
+  margin: 20px auto;
+  text-align: center;
+  width: calc(100% - 8px);
+}
+
+.clear {
+  clear: both;
+}
+
+body{
+  min-width: 320px;
+  background: #e9e9e9;
+  font-family: verdana, sans-serif;
+}
+
+.btn {
+  cursor: pointer;
+  border-radius: 3px;
+  display: inline-block;
+  padding: 5px;
+  border: 1px solid rgba(0,0,0,0.2);
+  margin: 2px;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+#submit {
+  width: 200px;
+  height: 35px;
+  text-indent: 0;
+  background: #415bfa;
+  box-shadow: inset 0 0 15px #006bbb;
+  color: #fff;
+  cursor: pointer;
+}
+
+img, a, input, li, .DD_dropzone, .DD_dropzone *,
+label, .lang, #menu, #menu_icon, select,
+#search input, .image .info {
+  transition: all 300ms;
+}
+
+img:hover, a:hover, input:hover, li:hover,
+form:hover , .lang:hover, #menu_icon:hover,
+select:hover, #search input:hover,
+.image:hover .info {
+  transition: all 300ms;
+}

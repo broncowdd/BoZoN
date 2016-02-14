@@ -1,0 +1,25 @@
+/* Footer */
+footer {
+  padding: 25px 0 15px 0;
+  clear: both;
+}
+
+footer a#github {
+  display: block;
+  margin: 0 auto;
+  background: transparent url('../img/footer/github.png') center center no-repeat;
+  width: 32px;
+  height: 32px;
+  opacity: 0.5;
+}
+
+footer a#github:hover {
+  opacity: 0.7;
+}
+
+footer #version {
+  font-size: 0.8em;
+  color: rgba(0,0,0,0.4);
+  margin-top: 10px;
+  text-align: center;
+}

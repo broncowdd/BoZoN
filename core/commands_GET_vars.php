@@ -56,7 +56,6 @@
 		exit;
 	}
 
-
 	# ask for rss stats 
 	if (isset($_GET['statrss'])&&!empty($_GET['key'])&&hash_user($_GET['key'])){
 		$rss=array('infos'=>'','items'=>'');

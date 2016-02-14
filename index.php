@@ -8,7 +8,6 @@ if (is_file('import.php')){header('location: import.php');}
 require('core/core.php');
 require('core/commands_GET_vars.php');# handle no html content requests
 
-
 if (is_admin_connected()){
 	# if admin is connected, use auto_restrict
 	require_once('core/auto_restrict.php');
@@ -37,9 +36,7 @@ if (!empty($_GET['aspect'])){$_SESSION['aspect']=$_GET['aspect'];header('locatio
 require(THEME_PATH.'/header.php');
 	# users list request
 	if (isset($_GET['users_list'])){
-		echo '<div class="w1000">';
 		generate_users_formlist(e('Users list',false),e('Check users to delete account and files',false));// auto_restrict function
-		echo '</div>';
 	}
 	# page request
 	elseif (!empty($page)&&is_file(THEME_PATH.$page.'.php')){

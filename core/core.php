@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.2beta');
+	define('VERSION','2.2beta2');
 	include('config.php');
 	start_session();
 	$message='';
@@ -519,7 +519,7 @@
 		if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
 		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
 		foreach($langs as $lang){
-			if ($_SESSION['language']==$lang){$class=' class="active '.$lang.'" ';}else{$class=' class="'.$lang.'" ';}
+			if ($_SESSION['language']==$lang){$class='class="active '.$lang.'"';}else{$class='class="'.$lang.'"';}
 			echo str_replace(array('#CLASS','#LANG','#TOKEN','#PAGE'),array($class,$lang,$token,$page),$pattern);
 		}
 		
@@ -530,31 +530,30 @@
 		if (is_admin_connected()){
 			if (!empty($_SESSION['login'])&&$label_admin=='&nbsp;'){$label_admin= $_SESSION['login'];}
 			if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
-			echo '<a id="admin_button" class="btn green" href="index.php?p=admin&token='.$token.'" title="'.e('Admin',false).'">'.$label_admin.'</a>';
-			echo '<a id="logout_button" class="btn red" href="index.php?deconnexion" title="'.e('Logout',false).'">'.$label_logout.'</a>';
-
+			echo '<a id="logout_button" class="btn" href="index.php?deconnexion" title="'.e('Logout',false).'">'.$label_logout.'</a>';
+			echo '<a id="admin_button" class="btn" href="index.php?p=admin&token='.$token.'" title="'.e('Admin',false).'">'.$label_admin.'</a>';
 		}
 		else{echo '<a id="login_button" class="btn" href="index.php?p=login" title="'.e('Connection',false).'">'.$label_login.'</a>';}
 	}
 
-	# create the layout link (to change view)
-	function make_layout_link($pattern='<a class="#LAYOUT btn #CLASS" href="index.php?p=#PAGE&aspect=#LAYOUT&token=#TOKEN">&nbsp;</a>'){
+	# create the menu link (to change view)
+	function make_menu_link($pattern='<a id="#MENU" class="#CLASS" href="index.php?p=#PAGE&aspect=#MENU&token=#TOKEN">&nbsp;</a>'."\n"){
 		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
 		if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
-		if ($_SESSION['aspect']=='icon'){$class=' active';}else{$class='';}
-		echo str_replace(array('#LAYOUT','#THEME','#TOKEN','#PAGE','#CLASS'),array('icon',THEME_PATH,$token,$page,$class),$pattern);
-		if ($_SESSION['aspect']=='list'){$class=' active';}else{$class='';}
-		echo str_replace(array('#LAYOUT','#THEME','#TOKEN','#PAGE','#CLASS'),array('list',THEME_PATH,$token,$page,$class),$pattern);
+		if ($_SESSION['aspect']=='icon'){$class='active';}else{$class='';}
+		echo str_replace(array('#MENU','#THEME','#TOKEN','#PAGE','#CLASS'),array('icon',THEME_PATH,$token,$page,$class),$pattern);
+		if ($_SESSION['aspect']=='list'){$class='active';}else{$class='';}
+		echo str_replace(array('#MENU','#THEME','#TOKEN','#PAGE','#CLASS'),array('list',THEME_PATH,$token,$page,$class),$pattern);
 	}
 
 	# create the mode links (to change access mode)
-	function make_mode_link($pattern='<a class="mode_#MODE btn #CLASS" title="#TITLE" href="index.php?p=admin&mode=#MODE&token=#TOKEN">&nbsp;</a>'){
+	function make_mode_link($pattern='<a id="mode_#MODE" class="#CLASS" title="#TITLE" href="index.php?p=admin&mode=#MODE&token=#TOKEN">&nbsp;</a>'."\n"){
 		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
 		if ($_SESSION['mode']=='view'){$class=' active';}else{$class='';}
 		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('view',e('Manage files',false),$token,$class),$pattern);
-		if ($_SESSION['mode']=='links'){$class=' active';}else{$class='';}
+		if ($_SESSION['mode']=='links'){$class='active';}else{$class='';}
 		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('links',e('Manage links',false),$token,$class),$pattern);
-		if ($_SESSION['mode']=='move'){$class=' active';}else{$class='';}
+		if ($_SESSION['mode']=='move'){$class='active';}else{$class='';}
 		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('move',e('Move files',false),$token,$class),$pattern);
 		
 	}
