@@ -13,13 +13,6 @@ The share link is the file link in the admin's view (you can also access it by t
 Php 5 or +, php5-gd, ZipArchive
 
 ## used libraries 
-I used a few libs I made
-- auto_restrict : to easily lock access to a page and handle basic security features
-- auto_thumbs : a function to generate all the thumbnails
-- auto_dropzone : a lib that handle the drag and drop function only by including it in a script
-- Array2feed.php : a function used to convert an array into a RSS feed without commiting suicide XD
-
-and
 - sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
 - lightbox.js (http://lokeshdhakar.com/projects/lightbox2/)
 
