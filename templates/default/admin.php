@@ -12,6 +12,7 @@
 <?php echo '<p id="msg">'.$message.'</p>'?>
 
 <div id="admin">
+<script type="text/javascript" src="<?php echo THEME_PATH; ?>/js/lightbox.js"></script>
   <h1>
   	<?php 
   		if ($_SESSION['mode']=='links'){e('Manage links');}						

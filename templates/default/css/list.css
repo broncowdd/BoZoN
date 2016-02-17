@@ -1,7 +1,7 @@
 /* List */
 /*
 Aucun fichier:
-.icon et .list ayant un min-height à 200px, on fixe ici la hauteur pour center le message verticalement
+.icon et .list ayant un min-height à 200px, on fixe ici la hauteur pour centrer le message verticalement
 */
 #nofile {
   height: 200px;

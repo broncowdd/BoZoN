@@ -115,7 +115,7 @@ if (count($liste)>0){
 			}
 			$extension=strtolower(pathinfo($fichier,PATHINFO_EXTENSION));
 			if (visualizeIcon($extension)){
-					$icone_visu='<a class="visu" href="index.php?f='.$id.'" target="_BLANK" title="'.e('View this file',false).'">&nbsp;</a>';
+					$icone_visu='<a class="visu" href="index.php?f='.$id.'" title="'.e('View this file',false).'" data-lightbox="'.$id.'" data-title=" ">&nbsp;</a>';
 				}else{$icone_visu='';}
 			$fichier_short=substr($fichier,$upload_path_size);
 			if (is_dir($fichier)){

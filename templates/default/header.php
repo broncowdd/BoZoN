@@ -12,7 +12,8 @@
 <meta name="msapplication-TileColor" content="#2c4aff">
 <link rel="apple-touch-icon" href="<?php echo THEME_PATH; ?>/favicon.png">
 <link rel="shortcut icon" type="image/png" href="<?php echo THEME_PATH; ?>/favicon.png">
-<link rel="stylesheet" type="text/css" href="<?php echo THEME_PATH; ?>/css/style.css">
+<script type="text/javascript" src="<?php echo THEME_PATH; ?>/js/lib/jquery-1.7.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo THEME_PATH; ?>/css/style.php">
 </head>
 
 <body class="<?php body_classes();?>">
