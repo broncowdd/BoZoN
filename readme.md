@@ -1,7 +1,7 @@
 # BoZoN
 
 ## Minimalist Drag & drop file sharing app
-( http://bozon.warriordudimanche.net/ )
+
 - Install: just unzip on your server; no database/ php 5.2. Then go to index.php?p=admin page and create your login/pass. 
 - Config: just change config.php file. 
 - Upload a file: go to index.php?p=admin page, connect and then drop files in the dashed area... that's it !
@@ -19,7 +19,9 @@ I used a few libs I made
 - auto_dropzone : a lib that handle the drag and drop function only by including it in a script
 - Array2feed.php : a function used to convert an array into a RSS feed without commiting suicide XD
 
-and sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
+and
+- sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
+- lightbox.js (http://lokeshdhakar.com/projects/lightbox2/)
 
 ## Licence
 All Bozon code and all the libs used in it are distributed under AGPL: feel free to fork, adapt, distribute, comment etc but please, keep your fork free too ;-)
