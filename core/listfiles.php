@@ -114,9 +114,13 @@ if (count($liste)>0){
 				$title=e('The user can access this only with the password', false);
 			}
 			$extension=strtolower(pathinfo($fichier,PATHINFO_EXTENSION));
-			if (visualizeIcon($extension)){
+			if (visualizeIcon($extension)){		
+        if ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
 					$icone_visu='<a class="visu" href="index.php?f='.$id.'" title="'.e('View this file',false).'" data-lightbox="'.$id.'" data-title=" ">&nbsp;</a>';
-				}else{$icone_visu='';}
+        }else{
+          $icone_visu='<a class="visu" href="index.php?f='.$id.'" title="'.e('View this file',false).'">&nbsp;</a>';
+        }
+			}else{$icone_visu='';}
 			$fichier_short=substr($fichier,$upload_path_size);
 			if (is_dir($fichier)){
 				# Item is a folder				
