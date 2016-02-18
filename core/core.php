@@ -69,7 +69,7 @@
 	if (!is_writable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not writable',false).'</div>';}
 	if (!empty($_SESSION['upload_user_path'])&&!is_readable($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not readable',false).'</div>';}
 	if (!empty($_SESSION['upload_user_path'])&&!is_writable($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing '.$_SESSION['current_path'].': folder not writable',false).'</div>';}
-	$behaviour['FILES_TO_ECHO']=array('txt','md','nfo','js','html','php','SECURED_PHP','htm','shtml','shtm','css','nfo','m3u');
+	$behaviour['FILES_TO_ECHO']=array('txt','md','nfo','js','html','php','SECURED_PHP','htm','shtml','shtm','css','m3u');
 	$behaviour['FILES_TO_RETURN']=/*array();*/array('md','jpg','jpeg','gif','png','pdf','swf','mp3','mp4','svg');
 
  	$auto_dropzone['destination_filepath']=$_SESSION['current_path'].'/';
