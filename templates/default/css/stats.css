@@ -16,6 +16,12 @@
   padding: 10px 0;
 }
 
+#stats #total {
+  width: calc(100% - 8px);
+  margin: 0 auto 5px auto;
+  font-size: 0.9em;
+}
+
 #stats table {
   border-spacing: 0;
   border-collapse: collapse;

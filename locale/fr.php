@@ -17,6 +17,7 @@
 		'BoZoN is a simple filesharing app.'=>'BoZoN est une application simplifiée de stockage et de partage de fichiers.',
 		'Just copy BoZoN\'s files on your server. That\'s it.'=>'Copiez simplement les fichiers de BoZoN sur votre serveur. C\'est tout.',
     
+    'Total:' => 'Total :',
     'Error, max filelength:' => 'Erreur, taille max par fichier :',
     'Error, forbidden file format!' => 'Erreur, format de fichier interdit !',
     'Export log:'=>'Exporter le journal :',

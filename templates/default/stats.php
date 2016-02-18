@@ -44,20 +44,20 @@
 	$t=returnToken();
 	if (!empty($stats[$from+$_SESSION['stats_max_lines']])){
 		$start=$from+$_SESSION['stats_max_lines'];
-		$button_next='<a class="button" href="index.php?p=stats&start='.$start.'&token='.$t.'">&#8680;</a>';
+		$button_next=' <a href="index.php?p=stats&start='.$start.'&token='.$t.'">&gt;</a>';
 	}
 	if ($from>0){
 		$start=$from-$_SESSION['stats_max_lines'];
 		if ($start<0){$start=0;}
-		$button_previous='<a class="button" href="index.php?p=stats&start='.$start.'&token='.$t.'">&#8678;</a>';
+		$button_previous='<a href="index.php?p=stats&start='.$start.'&token='.$t.'">&lt;</a> ';
 	}
 	$nb=count($stats);$c=0;
 	for($index=0;$index<$nb;$index+=$_SESSION['stats_max_lines']){	
 		$c++;	
 		if ($index!=$from){
-			$paginate.='<a class="button" href="index.php?p=stats&start='.$index.'&token='.$t.'">'.$c.'</a> ';
+			$paginate.='<a href="index.php?p=stats&start='.$index.'&token='.$t.'">'.$c.'</a> ';
 		}else{
-			$paginate.='<em class="">'.$c.'</em> ';
+			$paginate.='<em>'.$c.'</em> ';
 		}
 	}
 ?>
@@ -72,8 +72,10 @@
   ?>
   
 	<div class="pagination">
-		<?php echo $button_previous;?><?php echo $paginate;?><?php echo '[total: '.count($stats).']';?><?php echo $button_next;?>
+		<?php echo $button_previous;?><?php echo $paginate;?><?php echo $button_next;?>
 	</div>
+	
+	<p id="total"><?php e('Total:'); echo ' '.count($stats); ?></p>
 	
 	<table class="sortable">
 	<thead>
@@ -91,7 +93,7 @@
 	</table>
 	
 	<div class="pagination">
-		<?php echo $button_previous;?><?php echo $paginate;?><?php echo '[total: '.count($stats).']';?><?php echo $button_next;?>
+		<?php echo $button_previous;?><?php echo $paginate;?><?php echo $button_next;?>
 	</div>
 	
 	<p id="trash"><a title="<?php e('Delete all stat data'); ?>" href="index.php?p=stats&kill&token=<?php newToken(true);?>"><?php e('Delete all stat data'); ?></a></p>
