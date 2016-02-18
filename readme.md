@@ -15,13 +15,15 @@ Php 5 or +, php5-gd, ZipArchive
 ## used libraries
 JS:
 - jquery-1.7.1.min.js (https://jquery.com/)
-- sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
-- lightbox.js (http://lokeshdhakar.com/projects/lightbox2/)
-- m3uStreamPlayer.js (https://github.com/opi/m3uStreamPlayer)
 
 ## used scripts
 PHP:
 - "On-the-fly CSS Compression" (https://gist.github.com/manastungare/2625128)
+
+JS:
+- sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
+- lightbox.js (http://lokeshdhakar.com/projects/lightbox2/)
+- m3uStreamPlayer.js (https://github.com/opi/m3uStreamPlayer)
 
 ## Licence
 All Bozon code and all the libs used in it are distributed under AGPL: feel free to fork, adapt, distribute, comment etc but please, keep your fork free too ;-)
