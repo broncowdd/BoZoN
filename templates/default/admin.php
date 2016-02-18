@@ -7,12 +7,16 @@
 	**/
 	if (!function_exists('newToken')){require_once('core/auto_restrict.php');} # Admin only!
 	//include('core/GET_POST_admin_data.php');
+
+  if(isset($message) && !empty($message)){
+    echo '<p id="message">'.$message.'</p>';
+  }
 ?>
 
-<?php echo '<p id="msg">'.$message.'</p>'?>
-
 <div id="admin">
+<script type="text/javascript" src="<?php echo THEME_PATH; ?>/js/lib/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="<?php echo THEME_PATH; ?>/js/lightbox.js"></script>
+<script type="text/javascript" src="<?php echo THEME_PATH; ?>/js/m3uStreamPlayer.js"></script>
   <h1>
   	<?php 
   		if ($_SESSION['mode']=='links'){e('Manage links');}						
@@ -117,4 +121,15 @@
 	</div>
 <?php } ?>
 
+<script type="text/javascript">m3uStreamPlayer.init({selector: '#video', debug: true});</script>
+<script type="text/javascript">
+
+  /**
+   * Buttons
+   */
+  var buttonNextSource = document.querySelector('#video-next-source');
+  var buttonRandomizeSource = document.querySelector('#video-randomize-source');
+  buttonNextSource.addEventListener('click', function(){ m3uStreamPlayer.nextSource(document.querySelector('#video')); })
+  buttonRandomizeSource.addEventListener('click', function(){ v.randomizeSource(document.querySelector('#video')); })
+</script>
 </div>

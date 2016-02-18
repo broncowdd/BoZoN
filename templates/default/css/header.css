@@ -193,44 +193,41 @@ body.home .slogan {
 
 .DD_text {
   color: #fff;
-  font-size: 16px;
+  font-size: 1em;
   margin-top: 15px;
   font-weight: bold;
   min-width: 300px;
   max-width: 500px;
-  margin: auto;
+  margin: 10px auto auto auto;
   text-shadow: 0 1px 1px #039;
 }
 
-.DD_text em {
+.DD_max {
+  color: #fff;
   font-size: 0.8em;
   font-style: italic;
 }
 
 .DD_file,.DD_error {
   padding: 10px;
-  border-radius: 3px;
   display: block;
   margin-bottom: 5px;
+  text-align: center;
+  border-radius: 3px;
+  color: #000;
+  font-size: 0.8em;
 }
 
- li.DD_success {
-  background-color: rgba(0,255,0,0.8);	
+li.DD_success {
+  color: #87c540;
 }
 
 li.DD_error {
-  font-weight: bold;
-  background-color: rgba(255,0,0,0.8);
-  color: #fff;
-  text-shadow: 0 1px 1px rgba(155,0,0,0.8)
+  background: #e82110;
 }
 
 li.DD_warning {
-  font-weight: bold;
-  background-color: rgba(255,150,0,0.8);
-  color: #fff;
-  line-height: 20px;
-  text-shadow: 0 1px 1px rgba(155,80,0,0.8)
+  background: #e9e9e9;
 }
 
 .DD_info {

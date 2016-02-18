@@ -81,7 +81,8 @@ body{
   opacity: 0.8;
 }
 
-#submit {
+#submit,
+.submit {
   width: 200px;
   height: 35px;
   text-indent: 0;
