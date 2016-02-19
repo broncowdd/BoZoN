@@ -1,0 +1,150 @@
+/* Dialog boxes */
+.dialog {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.dialog:target {
+  display: table;
+}
+
+.dialog figure {
+  display: table-cell;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.dialog figure figcaption {
+  display: block;
+  margin: auto;
+  padding: 0;
+  background: linear-gradient(#ddd,#eee);
+  position: relative;
+  overflow: auto;
+  border: 1px #666 solid;
+  border-top: 1px #08D solid;
+  border-bottom: 1px #555 solid;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  text-align: justify;
+  font-size: 14px;
+}
+
+.dialog figure .closemsg {
+  display: block;
+  margin: auto;
+  height: 0;
+  overflow: visible;
+  text-align: right;
+  z-index: 2;
+  cursor: default;
+}
+
+.dialog figure .closemsg,
+.dialog figure figcaption {
+  width: 400px;
+}
+
+.dialog figure .closemsg::after {
+  content: "\00D7";
+  font-size: 20px;
+  display: inline-block;
+  position: relative;
+  right: 8px;
+  top: 11px;
+  z-index: 3;
+  color: rgba(0,0,0,0.8);
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dialog figure .closemsg::before {
+  content: "";
+  display: block;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8); 
+}
+
+.dialog select {
+  display: block;
+  width: 100%;
+  height: 32px;
+  color: rgba(0,0,0,0.7);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.dialog h1 {
+  background: linear-gradient(#304bef,#405bff);
+  margin: 0;
+  padding: 10px;
+  font-weight: bold;
+  border-bottom: 1px rgba(0,0,0,0.2) solid;
+  font-size: 18px;
+  color: #fff;
+  width: 100%;
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.9);
+  margin-bottom: 0;
+}
+
+.dialog form{
+  padding: 15px;
+}
+
+.dialog label{
+  color: rgba(0,0,0,0.7);  
+  padding-bottom: 7px;
+  display: inline-block;
+}
+
+.dialog input[type=text],
+.dialog textarea {
+  display: block;
+  background: linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,0.2));
+  border: 1px solid rgba(0,0,0,0.3);
+  border-bottom: 1px rgba(255,255,255,0.3) solid;
+  font-size: 14px;
+  color: rgba(0,0,0,0.5);
+  text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+  margin-bottom: 20px;
+  margin-top: 5px;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+  width: 100%;
+  padding: 6px;
+}
+
+.dialog .submit {
+  display: block;
+  margin: 0 auto;
+  margin-top: 25px;
+  width: 100px;
+}
+
+#link_box textarea {
+  resize:none;
+}
+
+#qrcode_img {
+  display: block;
+  margin: 5px auto;
+  width: 256px;
+  height: 256px;
+}

@@ -234,19 +234,6 @@
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 	// ------------------------------------------------------------------	
 	// crypt functions 
 	// form http://www.info-3000.com/phpmysql/cryptagedecryptage.php
@@ -570,16 +557,16 @@
 	function generate_users_formlist($text='Users list',$text2='Check users to delete account and files'){
 		global $auto_restrict;
 		if (!is_user_admin()){return false;}
-		echo '<h1>'.$text.'</h1><h2>'.$text2.'</h2><form action="" method="POST" class="auto_restrict_users_list"><ol>';
+		echo '<div id="userslist">'."\n".'<h1>'.$text.'</h1>'."\n".'<p>'.$text2.'</p>'."\n".'<form action="" method="POST" class="auto_restrict_users_list">'."\n".'<ul>'."\n";
 		foreach ($auto_restrict['users'] as $key=>$user){
-			echo '<li>';
+			echo '<li>'."\n";
 				echo '<label>';
 				echo '<input type="checkbox" name="user_key[]" value="'.$key.'"/>';
 				newToken();
-				echo $user['login'];
-			echo '</li>';
+				echo '<span>'.$user['login'].'</span>';
+			echo '</li>'."\n";
 		}
-		echo '</ol><input type="submit" value="Ok"/></form>';
+		echo '</ul>'."\n".'<p class="clear"><input id="submit" type="submit" class="btn" value="Ok" /></p>'."\n".'</form>'."\n".'</div>';
 	}
 
 	function safe_redirect($url=none){

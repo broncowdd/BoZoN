@@ -1,0 +1,55 @@
+/* Mobile */
+@media screen and (max-width:480px) {
+  /* Ini */
+  #submit {
+    width: 130px;
+  }
+  
+  /* Header */
+  #search {
+    float: left;
+    margin-left: 2px;
+  }
+  
+  #search input[type=text]:hover,
+  #search input[type=text]:focus {
+    width: 150px;
+  }
+  
+  /* Login */
+  #login #form {
+    width: 300px;
+  }
+  
+  #login #form input:not(#submit) {
+    width: 300px;
+  }
+  
+  #login #form label {
+    width: 130px;
+  }
+  
+  #login #form #cookie {
+    margin-top: 12px;
+    display: inline-block !important;
+    width: 20px !important;
+    height: 20px;
+    height: 20px !important;
+  }
+  
+  /* Stats */
+  #stats table th.ip,
+  #stats table td.ip,
+  #stats table th.origin,
+  #stats table td.origin,
+  #stats table th.host,
+  #stats table td.host {
+    display: none;
+  }
+  
+  /* Dialog */
+  div.dialog figure .closemsg,
+  div.dialog figure figcaption {
+    width: 280px;
+  }
+}

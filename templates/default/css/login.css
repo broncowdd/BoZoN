@@ -1,0 +1,54 @@
+/* Login */
+#login #form {
+  width: 400px;
+  margin: 0 auto;
+}
+
+#login #form .error,
+#login #form .success {
+  font-size: 0.8em;
+  margin-bottom: 2px;
+  word-wrap: break-word;
+}
+
+/*
+#login #form .error {
+  color: #e82110;
+}
+
+#login #form .success {
+  color: #87c540;
+}*/
+
+#login #form #user {
+  margin: 5px 0;
+}
+
+#login #form input:not(#submit) {
+  width: 400px;
+  height: 35px;
+  text-indent: 7px;
+  margin-bottom: 7px;
+  color: #85888b;
+  border: 1px solid #d6ecfc;
+  border-radius: 5px;
+}
+
+#login #form #cookie {
+  width: 20px !important; /* force, mauvaise interprétation de firefox avec :not(#submit) ci-dessus */
+  float: left;
+}
+
+#login #form label {
+  display: block;
+  width: 160px;
+  height: 42px;
+  line-height: 42px;
+  vertical-align: bottom;
+  font-size: 0.8em;
+  float: left;
+}
+
+#login #form #submit {
+  float: right;
+}

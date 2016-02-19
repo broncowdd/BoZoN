@@ -34,17 +34,16 @@
 					# file request => return file according to $behaviour var (see core.php)
 					$type=_mime_content_type($f);
 					$ext=strtolower(pathinfo($f,PATHINFO_EXTENSION));
-					if ($ext=='md'){
-						include('core/markdown.php');
-						require(THEME_PATH.'/header_markdown.php');		
-						echo  parse(url2link(file_get_contents($f)));
-						require(THEME_PATH.'/footer_markdown.php');
-						
-					}
-					else if (is_in($ext,'FILES_TO_ECHO')!==false){		
-						require(THEME_PATH.'/header.php');		
-						echo '<pre>'.htmlspecialchars(file_get_contents($f)).'</pre>';
-						require(THEME_PATH.'/footer.php');						
+					if (is_in($ext,'FILES_TO_ECHO')!==false){
+					  $view=htmlspecialchars(file_get_contents($f));
+					  if(!isset($_GET['view'])){
+              header('Content-type: '.$type.'; charset=utf-8');
+  						header('Content-Transfer-Encoding: binary');	
+  						echo $view;
+            }else{
+              //affichage des fichiers text, md, et nfo comme renseigné dans le fichier listfiles.php en mode view dans le navigateur
+              echo '<html>'."\n".'<head></head>'."\n".'<body>'."\n".'<pre>'.$view.'</pre>'."\n".'</body>'."\n".'</html>';
+            }		
 					}
 					else if (is_in($ext,'FILES_TO_RETURN')!==false){
 						header('Content-type: '.$type.'; charset=utf-8');
@@ -131,8 +130,5 @@
 				<br/>
 			</div>';
 			require(THEME_PATH.'/footer.php');
-		}	
-	
-
-
+		}
 ?>

@@ -12,15 +12,15 @@ if (!function_exists('store')){
 	include('core/core.php');
 	if (!function_exists('newToken')){require_once('core/auto_restrict.php');} # Admin only!
 }
-include("core/auto_thumb.php");
+include('core/auto_thumb.php');
 $lb_token=returnToken();
-echo str_replace('#TOKEN',$lb_token,$templates['link_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['rename_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['delete_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['new_folder_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['download_url_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['qrcode_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['share_lightbox']);
+echo str_replace('#TOKEN',$lb_token,$templates['dialog_link']);
+echo str_replace('#TOKEN',$lb_token,$templates['dialog_rename']);
+echo str_replace('#TOKEN',$lb_token,$templates['dialog_delete']);
+echo str_replace('#TOKEN',$lb_token,$templates['dialog_new_folder']);
+echo str_replace('#TOKEN',$lb_token,$templates['dialog_download_url']);
+echo str_replace('#TOKEN',$lb_token,$templates['dialog_qrcode']);
+echo str_replace('#TOKEN',$lb_token,$templates['dialog_share']);
 
 // Configuration
 $upload_path_size=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
@@ -46,14 +46,14 @@ if ($mode=='move'){
 			'#LIST_FILES_SELECT'	=> $select_folder,
 			'#TOKEN'				=> returnToken(),
 		);
-	echo template('move_lightbox',$array);
+	echo template('dialog_move',$array);
 }
 if ($mode=='links'){
 	# Add lock dialogbox to the page
 	$array=array(
 		'#TOKEN'	=> returnToken()
 	);
-	echo template('password_lightbox',$array);
+	echo template('dialog_password',$array);
 }
 if ($mode=='view'){
 	# Add shares from others users 
@@ -107,16 +107,33 @@ if (count($liste)>0){
 				# add class burn id after access 
 				$class='burn';
 				$title=e('The user can access this only one time', false);
-			}else
-			if (strlen($id)>strlen(uniqid(true))){
+			}elseif (strlen($id)>strlen(uniqid(true))){
 				# add class password protected 
 				$class='locked';
 				$title=e('The user can access this only with the password', false);
 			}
 			$extension=strtolower(pathinfo($fichier,PATHINFO_EXTENSION));
-			if (visualizeIcon($extension)){
-					$icone_visu='<a class="visu" href="index.php?f='.$id.'" target="_BLANK" title="'.e('View this file',false).'">&nbsp;</a>';
-				}else{$icone_visu='';}
+			if (visualizeIcon($extension)){		
+        if ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
+					$icone_visu='<a class="visu" href="index.php?f='.$id.'" title="'.e('View this file',false).'" data-lightbox="'.$id.'" data-title=" ">&nbsp;</a>';
+        }elseif($extension=='m3u'){
+          /*
+          == Test ==
+          $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+          $flip=array_flip($files);
+          $icone_visu='<span class="visu">
+                          <video id="video" controls width="640" data-playlist="'.$protocol.$_SERVER['HTTP_HOST'].'/'.$flip[$id].'"></video>
+                        </span>';*/
+          
+          $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+          $icone_visu='<a class="visu" title="'.e('View this file',false).'" onclick="" href="#">&nbsp;</a>';
+          //'.$protocol.$_SERVER['HTTP_HOST'].'/index.php?f='.$id.'
+        }elseif($extension=='txt'||$extension=='nfo'||$extension=='md'){
+          $icone_visu='<a class="visu" href="index.php?f='.$id.'&amp;view" title="'.e('View this file',false).'">&nbsp;</a>';
+        }else{
+          $icone_visu='<a class="visu" href="index.php?f='.$id.'" title="'.e('View this file',false).'">&nbsp;</a>';
+        }
+			}else{$icone_visu='';}
 			$fichier_short=substr($fichier,$upload_path_size);
 			if (is_dir($fichier)){
 				# Item is a folder				
@@ -189,49 +206,7 @@ if (count($liste)>0){
 	}
 	echo $folderlist.$filelist;
 	if ($save){store($ids);} // save in case of new files
-}else{e('No file in your personal folder');}
-
+}else{
+  echo '<p id="nofile">'.e('No file in your personal folder',false).'</p>';
+}
 ?>
-<script src="core/qr.js"></script>
-<script>
-	function get(url){	
-		request = new XMLHttpRequest();request.open('GET', url, false);
-		request.send();
-		return request.responseText;
-	}
-
-	function put_file(fichier){
-		document.getElementById('filename').value=fichier;
-		document.getElementById('filename_hidden').value=fichier;
-	}
-	function put_id(id){document.getElementById('ID_hidden').value=id;}
-	function put_link(id){document.getElementById('link').value="<?php echo $_SESSION['home'];?>?f="+id;}
-	function put_file_and_id(id,file){
-		document.getElementById('FILE_Rename').value=file;
-		document.getElementById('ID_Rename').value=id;
-	}
-	function share(id,file){
-		document.getElementById('ID_folder').innerHTML=file;
-		document.getElementById('ID_share').value=id;
-		document.getElementById('Users_list').innerHTML=get('index.php?users_share_list='+id+'&token=<?php newToken(true);?>');
-
-	}
-	function suppr(id){	document.getElementById('ID_Delete').value=id;}
-
-// function inspired by Timo http://lehollandaisvolant.net/tout/tools/qrcode/
-function qrcode(id) {
-	var data = "<?php echo $_SESSION['home'];?>?f="+id;
-	var options = {ecclevel:'M'};
-	var url = QRCode.generatePNG(data, options);
-	document.getElementById('qrcode_img').src = url;
-	return false;
-}
-
-
-function downloadImage() {
-	data = document.getElementById('outputimg').src;
-	document.getElementById('outputlink').href = data;
-}
-
-
-</script>

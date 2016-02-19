@@ -1,7 +1,7 @@
 <?php
 if (session_id()==''){session_start();}
 if (!is_file('core.php')){$path_core='core/';}else{$path_core='';}
-/* Auto_dropzone.php v1.2 # Version Bozon !!!!!!!!!
+/* Auto_dropzone.php v1.3 # Version Bozon !!!!!!!!!
     author: Bronco
     email: bronco@warriordudimanche.net
     web: http://warriordudimanche.net
@@ -38,7 +38,7 @@ if (!is_file('core.php')){$path_core='core/';}else{$path_core='';}
     'dropzone_text'=>'D&D here !',
     'dropzone_id'=>'drop_images', 
     'dropzone_class'=>'drop_images', 
-    'forbidden_filetypes'=>'exe,php',
+    'forbidden_filetypes'=>'php',
     'use_style'=>true, // false if you're using an css file
   );
   
@@ -153,8 +153,7 @@ if ($_FILES){
             is_array($auto_dropzone['destination_filepath'])
             &&!empty($auto_dropzone['destination_filepath'][$sFileExt])
             &&!is_dir($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$auto_dropzone['destination_filepath'][$sFileExt])
-            ||
-            is_string($auto_dropzone['destination_filepath'])
+            ||is_string($auto_dropzone['destination_filepath'])
             &&!is_dir($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$auto_dropzone['destination_filepath'])
         ){
             //local upload dir error
@@ -182,60 +181,27 @@ if ($_FILES){
     }
     exit();
 }else{
-    // GENERATE DROPZONE
-    if ($auto_dropzone['use_style']){
-        echo '
-        <style>
-            .DD_dropzone{
-                font-family:courier;cursor:pointer;
-                text-shadow:0 2px 1px white;
-                box-sizing: border-box;
-                text-align:center;
-                box-shadow:inset 0 2px 3px;
-                margin:5px;padding:20px;
-                width:100%;min-height:100px;
-                border-radius:3px;border:3px dashed darkblue;
-                background-color:#99F;
-            }
-            .DD_uploading{ background-color:orange;}
-            .DD_hover{background-color:yellow;box-shadow:inset 0 4px 8px;}
-            .DD_text{font-size:30px;margin:15px 0;font-weight:bold;text-shadow:0 2px 2px white;}
-            .DD_file,.DD_error{padding:10px;box-sizing: border-box;border-radius:3px;box-shadow:0 1px 2px #0A0;display:block;margin-bottom:5px;}
-            .DD_success{background-color:#0F0;}
-            .DD_error{font-weight:bold;background-color:#F00;color:white;box-shadow:0 1px 2px #F00;text-shadow: 0 1px 1px maroon}
-            .DD_info{font-size:12px;text-align:left;}
-            .DD_info li.DD_file{list-style:none;}
-            #DD_progressbar{
-                overflow:hidden;
-                font-size:12px;
-                box-sizing: border-box;
-                border-radius:3px;
-                padding:3px 0;
-                text-align:center;
-                background-color:#3f3;
-                box-shadow:0 0 3px #0F0;
-                height:20px;width:0%
-            }
-            .DD_hidden{display:none;
-        </style>
-        ';
-    }
+    $filelength=e('Error, max filelength:',false);
+    $filelength.=' '.$max.' Mo';
+    $forbidden=e('Error, forbidden file format!',false);
 ?>
 
-        <div class="<?php echo $auto_dropzone['dropzone_class']; ?> DD_dropzone" id="<?php echo $auto_dropzone['dropzone_id'];?>">
-            <header class="DD_text"><?php echo $auto_dropzone['dropzone_text'];?><br/><em>(max:<?php echo $max;?> Mo)</em></header>
+    <div class="<?php echo $auto_dropzone['dropzone_class']; ?> DD_dropzone" id="<?php echo $auto_dropzone['dropzone_id'];?>">
+        <p class="DD_text"><?php echo $auto_dropzone['dropzone_text'];?></p>
+        <p class="DD_max">(max: <?php echo $max;?> Mo)</p>
 
-            <div class="DD_info">
-                <div id="result"></div>
-                <div id="DD_progressbar"></div>
-            </div>
+        <div class="DD_info">
+            <div id="result"></div>
+            <div id="DD_progressbar"></div>
         </div>
-        <form action="#" method="post" enctype="multipart/form-data" id="DD_fallback_form" >
-            <input type="file" name="myfile" id="fileToUpload" class="DD_hidden"/>
-            <input type="hidden" value="fallback" name="fallback"/>
-            <input type="submit" id="DD_submit" class="DD_hidden"/>
-        </form>
-
+    </div>
+    
+    <form action="#" method="post" enctype="multipart/form-data" id="DD_fallback_form" >
+        <input type="file" name="myfile" id="fileToUpload" class="DD_hidden"/>
+        <input type="hidden" value="fallback" name="fallback"/>
+        <input type="submit" id="DD_submit" class="DD_hidden"/>
+    </form>
+    
     <script>
         document.body.addEventListener("dragover",function(e){
          
@@ -406,10 +372,10 @@ if ($_FILES){
                     var nextFile = list.shift();
 
                     if (nextFile.size >= <?php echo $max*1048576; ?>) { 
-                        result.innerHTML += '<li class="DD_error">'+nextFile.name+': Error, max filelength: <?php echo $max;?> Mo </li>';
+                        result.innerHTML += '<li class="DD_error">'+nextFile.name+': <?php echo $filelength; ?></li>';
                         handleComplete(nextFile.size);                        
-                    } else if(is_allowed(nextFile.type)==false){                        
-                        result.innerHTML += '<li class="DD_error">'+nextFile.name+': Error, forbidden file format !</li>';
+                    } else if(is_allowed(nextFile.type)==false){                    
+                        result.innerHTML += '<li class="DD_error">'+nextFile.name+': <?php echo $forbidden; ?></li>';
                         handleComplete(nextFile.size);
                     } else {
                         uploadFile(nextFile, status);
@@ -435,9 +401,9 @@ if ($_FILES){
             });
             document.getElementById('fileToUpload').addEventListener('change', function(){
                 if (this.files[0].size >= <?php echo $max*1048576; ?>) { 
-                    result.innerHTML += '<li class="DD_error">'+this.files[0].name+': Error, max filelength: <?php echo $max;?> Mo </li>';                                         
+                    result.innerHTML += '<li class="DD_error">'+this.files[0].name+': <?php echo $filelength; ?></li>';                                         
                 }else if(is_allowed(this.files[0].type)==false){                        
-                    result.innerHTML += '<li class="DD_error">'+this.files[0].name+': Error, forbidden file format !</li>';                    
+                    result.innerHTML += '<li class="DD_error">'+this.files[0].name+': <?php echo $forbidden; ?></li>';                    
                 } else {
                     uploadFile(this.files[0],'');     
                 }           
