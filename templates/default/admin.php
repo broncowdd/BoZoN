@@ -89,20 +89,19 @@
   	}
   	
   	function suppr(id){	document.getElementById('ID_Delete').value=id;}
-  
-  // function inspired by Timo http://lehollandaisvolant.net/tout/tools/qrcode/
-  function qrcode(id) {
-  	var data = "<?php echo $_SESSION['home'];?>?f="+id;
-  	var options = {ecclevel:'M'};
-  	var url = QRCode.generatePNG(data, options);
-  	document.getElementById('qrcode_img').src = url;
-  	return false;
-  }
-  
-  function downloadImage() {
-  	data = document.getElementById('outputimg').src;
-  	document.getElementById('outputlink').href = data;
-  }
+    
+    function qrcode(id) {
+    	var data = "<?php echo $_SESSION['home'];?>?f="+id;
+    	var options = {ecclevel:'M'};
+    	var url = QRCode.generatePNG(data, options);
+    	document.getElementById('qrcode_img').src = url;
+    	return false;
+    }
+    
+    function downloadImage() {
+    	data = document.getElementById('outputimg').src;
+    	document.getElementById('outputlink').href = data;
+    }
   </script>
   </ul>
 

@@ -2,7 +2,7 @@
 
 ## Minimalist Drag & drop file sharing app
 
-- Install: just unzip on your server; no database/ php 5.2. Then go to index.php?p=admin page and create your login/pass. 
+- Install: just unzip on your server; no database/ php 5.2 and create an admin account. 
 - Config: just change config.php file. 
 - Upload a file: go to index.php?p=admin page, connect and then drop files in the dashed area... that's it !
 - Organize files & folders, share them, manage the shared access etc.
@@ -10,7 +10,7 @@
 The share link is the file link in the admin's view (you can also access it by the button link on the file or the folder.)
 
 ## Required 
-Php 5 or +, php5-gd, ZipArchive
+php 5 or more, php5-gd, ZipArchive
 
 ## used libraries
 JS:
@@ -21,12 +21,19 @@ PHP:
 - "On-the-fly CSS Compression" (https://gist.github.com/manastungare/2625128)
 
 JS:
-- sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
+- qr.js (https://bitbucket.org/lifthrasiir/qrjs/)
 - lightbox.js (http://lokeshdhakar.com/projects/lightbox2/)
 - m3uStreamPlayer.js (https://github.com/opi/m3uStreamPlayer)
+- sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
 
 ## Licence
-All Bozon code and all the libs used in it are distributed under AGPL: feel free to fork, adapt, distribute, comment etc but please, keep your fork free too ;-)
+- AGPLv3 (http://www.gnu.org/licenses/agpl-3.0.txt)
+
+##Contributors
+- [List of contributors](contributors.md)
+
+##News
+- [Show changelog](changelog.md)
 
 ## FAQ
 - _I want to add a user_ : There's a [New user] link in the admin's page top menu, click on it and put a login/pass
