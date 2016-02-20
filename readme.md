@@ -2,7 +2,7 @@
 
 ## Minimalist Drag & drop file sharing app
 
-- Install: just unzip on your server; no database/ php 5.2 and create an admin account. 
+- Install: just unzip on your server and create an admin account. 
 - Config: just change config.php file. 
 - Upload a file: go to index.php?p=admin page, connect and then drop files in the dashed area... that's it !
 - Organize files & folders, share them, manage the shared access etc.
@@ -12,11 +12,11 @@ The share link is the file link in the admin's view (you can also access it by t
 ## Required 
 php 5 or more, php5-gd, ZipArchive
 
-## used libraries
+## Used libraries
 JS:
 - jquery-1.7.1.min.js (https://jquery.com/)
 
-## used scripts
+## Used scripts
 PHP:
 - "On-the-fly CSS Compression" (https://gist.github.com/manastungare/2625128)
 
@@ -24,6 +24,7 @@ JS:
 - qr.js (https://bitbucket.org/lifthrasiir/qrjs/)
 - lightbox.js (http://lokeshdhakar.com/projects/lightbox2/)
 - m3uStreamPlayer.js (https://github.com/opi/m3uStreamPlayer)
+- scrolltotop.js (https://github.com/jerrywham-pluxml5-2/scrollToTop)
 - sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
 
 ## Licence

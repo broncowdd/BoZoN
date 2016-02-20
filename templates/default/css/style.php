@@ -26,6 +26,7 @@ $cssFiles = array(
   "footer.css",
   "mobile.css",
   "lightbox.css",
+  "scrolltotop.css"
 );
 
 /**

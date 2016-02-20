@@ -8,11 +8,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="application-name" content="BoZoN">
 <meta name="msapplication-tooltip" content="<?php e('Drag, drop, share.'); ?>">
-<meta name="msapplication-TileImage" content="<?php echo THEME_PATH; ?>/favicon.png">
+<meta name="msapplication-TileImage" content="<?php echo THEME_PATH; ?>favicon.png">
 <meta name="msapplication-TileColor" content="#2c4aff">
-<link rel="apple-touch-icon" href="<?php echo THEME_PATH; ?>/favicon.png">
-<link rel="shortcut icon" type="image/png" href="<?php echo THEME_PATH; ?>/favicon.png">
-<link rel="stylesheet" type="text/css" href="<?php echo THEME_PATH; ?>/css/style.php">
+<link rel="apple-touch-icon" href="<?php echo THEME_PATH; ?>favicon.png">
+<link rel="shortcut icon" type="image/png" href="<?php echo THEME_PATH; ?>favicon.png">
+<link rel="stylesheet" type="text/css" href="<?php echo THEME_PATH; ?>css/style.php">
 </head>
 
 <body class="<?php body_classes();?>">

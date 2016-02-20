@@ -1,0 +1,23 @@
+/* Scrolltotop */
+#toplink {
+  font-size: 0.9em;
+}
+
+#toplink a, 
+#toplink a:visited, 
+#toplink a:link, 
+#toplink a:hover, 
+#toplink a:focus, 
+#toplink a:active {
+  display: block;
+  color: #405bff;
+  position: fixed;
+  right: 10px;
+  bottom: 16px;
+  height: 30px;
+  font-family: Times, Serif; /* Pour une compatibilité maximale de l'affichage de la flèche, ne pas modifier la police */
+  font-size: 230%;
+  line-height: 0;
+  text-decoration: none;
+  outline: 0;
+}
