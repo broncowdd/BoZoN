@@ -1,5 +1,23 @@
 <?php
 
+const EXIF_ORIENTATION_TOP=1;
+const EXIF_ORIENTATION_BOTTOM=3;
+const EXIF_ORIENTATION_RIGHT=6;
+const EXIF_ORIENTATION_LEFT=8;
+
+function get_rotation_angle($exif_orientation){
+	if (EXIF_ORIENTATION_BOTTOM == $exif_orientation){
+		return 180;
+	}
+	if (EXIF_ORIENTATION_RIGHT == $exif_orientation){
+		return 270;
+	}
+	if (EXIF_ORIENTATION_LEFT == $exif_orientation){
+		return 90;
+	}
+	return 0;
+}
+
 function auto_thumb($img,$width=null,$height=null,$add_to_thumb_filename='_THUMB_',$crop_image=true){
 	### VERSION MODIFIEE POUR BOZON ###
 	// initialisation
@@ -73,8 +91,17 @@ function auto_thumb($img,$width=null,$height=null,$add_to_thumb_filename='_THUMB
 		imagefill($thumb, 0, 0, $transparent_index);
 		imagecolortransparent($thumb, $transparent_index);
 	}
-	
+
 	imagecopyresampled($thumb,$src,0,0,$recadrageX,$recadrageY,$width,$height,$src_width,$src_height);
+
+	// gestion de la rotation
+	$exif = exif_read_data($img);
+	if ($exif && array_key_exists('Orientation', $exif)) {
+		$orientation = $exif['Orientation'];
+		$angle = get_rotation_angle($orientation);
+		$thumb = imagerotate($thumb, $angle, 0);
+	}
+
 	imagepng($thumb, $thumb_name);
 	imagedestroy($thumb);
 	
