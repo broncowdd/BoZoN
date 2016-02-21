@@ -140,8 +140,8 @@ body.login #connect #login_button {
   clear: both;
   width: 100%;
   height: 150px;
-  padding-top: 118px;
-  background: transparent url('../img/header/logo.png') center top no-repeat;
+  padding-top: 128px;
+  background: transparent url('../img/header/logo.png') center 10px no-repeat;
   color: #fff;
   display: block;
 }
@@ -168,10 +168,10 @@ body.home .slogan {
   margin: auto;
   width: 100%;
   padding: 15px;
-  padding-top: 118px;
+  padding-top: 128px;
   min-height: 100px;
   min-width: 300px;
-  background: transparent url('../img/header/logo.png') center top no-repeat;
+  background: transparent url('../img/header/logo.png') center 10px no-repeat;
 }
 
 .DD_uploading {

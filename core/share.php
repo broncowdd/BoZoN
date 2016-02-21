@@ -20,10 +20,10 @@
 			if (strlen($id)>23 && !isset($_POST['password'])){
 				require(THEME_PATH.'/header.php');
 				echo '<div id="lock">
+				<p id="message">'.e('This share is protected, please type the correct password:',false).'</p>
 				<form action="index.php?f='.$id.'" method="post">
-					<label>'.e('This share is protected, please type the correct password:',false).'</label><br/>
 					<input type="password" name="password" />
-					<input id="submit" type="submit" value="Ok" />
+					<input id="submit" type="submit" value="Ok" class="btn" />
 				</form>
 				</div>
 				';
