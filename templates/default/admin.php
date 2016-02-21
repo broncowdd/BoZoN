@@ -61,45 +61,44 @@
   <ul id="list" class="<?php echo $_SESSION['aspect'];?>">
   <?php include('core/listfiles.php');?>
   
-  <script>
-  	function get(url){	
-  		request = new XMLHttpRequest();request.open('GET', url, false);
-  		request.send();
-  		return request.responseText;
-  	}
-  	
-  	function put_file(fichier){
-  		document.getElementById('filename').value=fichier;
-  		document.getElementById('filename_hidden').value=fichier;
-  	}
-  	
-  	function put_id(id){document.getElementById('ID_hidden').value=id;}
-  	function put_link(id){document.getElementById('link').value="<?php echo $_SESSION['home'];?>?f="+id;}
-  	function put_file_and_id(id,file){
-  		document.getElementById('FILE_Rename').value=file;
-  		document.getElementById('ID_Rename').value=id;
-  	}
-  	
-  	function share(id,file){
-  		document.getElementById('ID_folder').innerHTML=file;
-  		document.getElementById('ID_share').value=id;
-  		document.getElementById('Users_list').innerHTML=get('index.php?users_share_list='+id+'&token=<?php newToken(true);?>');
-  
-  	}
-  	
-  	function suppr(id){	document.getElementById('ID_Delete').value=id;}
+  <script type="text/javascript">
+    function get(url){	
+      request = new XMLHttpRequest();request.open('GET', url, false);
+      request.send();
+      return request.responseText;
+    }
+    
+    function put_file(fichier){
+      document.getElementById('filename').value=fichier;
+      document.getElementById('filename_hidden').value=fichier;
+    }
+    
+    function put_id(id){document.getElementById('ID_hidden').value=id;}
+    function put_link(id){document.getElementById('link').value="<?php echo $_SESSION['home'];?>?f="+id;}
+    function put_file_and_id(id,file){
+      document.getElementById('FILE_Rename').value=file;
+      document.getElementById('ID_Rename').value=id;
+    }
+    
+    function share(id,file){
+      document.getElementById('ID_folder').innerHTML=file;
+      document.getElementById('ID_share').value=id;
+      document.getElementById('Users_list').innerHTML=get('index.php?users_share_list='+id+'&token=<?php newToken(true);?>');
+    }
+    
+    function suppr(id){	document.getElementById('ID_Delete').value=id;}
     
     function qrcode(id) {
-    	var data = "<?php echo $_SESSION['home'];?>?f="+id;
-    	var options = {ecclevel:'M'};
-    	var url = QRCode.generatePNG(data, options);
-    	document.getElementById('qrcode_img').src = url;
-    	return false;
+      var data = "<?php echo $_SESSION['home'];?>?f="+id;
+      var options = {ecclevel:'M'};
+      var url = QRCode.generatePNG(data, options);
+      document.getElementById('qrcode_img').src = url;
+      return false;
     }
     
     function downloadImage() {
-    	data = document.getElementById('outputimg').src;
-    	document.getElementById('outputlink').href = data;
+      data = document.getElementById('outputimg').src;
+      document.getElementById('outputlink').href = data;
     }
   </script>
   </ul>
