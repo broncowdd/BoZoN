@@ -81,6 +81,31 @@
     'Filter:'=>'Filtre :',
     'Path:'=>'Chemin :',
     
+    // Dialog (Rename)
+    'Rename'=>'Renommer',
+    'Rename this item?'=>'Renommer cet élément ?',
+    
+    // Dialog (Supprimer)
+    'Delete'=>'Supprimer',
+    'Delete this item?'=>'Supprimer cet élément ?',
+    
+    // Dialog (Share)
+    'Share link'=>'Lien de partage',
+    'Copy this share link'=>'Copiez ce lien de partage',
+    
+    // Dialog (Lock access)
+    'Lock access'=>"Verrouiller l'accès",
+    'Please give a password to lock access to this file'=>"Saisir un mot de passe pour verrouiller cette ressource",
+    
+    // Dialog (Move item)
+    'Move file or folder'=>'Dépl. fichier/dossier',
+    'Move:'=>'Déplacer :',
+    'To:'=>'Vers :',
+    
+    
+    
+    
+    
     
     
     
@@ -93,11 +118,8 @@
     'Share this folder with another user'=>'Partager ce dossier avec un autre utilisateur' ,
     'Select the users you want to share with'=>'Sélectionnez les utilisateurs avec qui partager ce dossier' ,
     'Search in the uploaded files'=>'Rechercher dans les fichiers envoyés',
-    'Copy this share link'=>'Copiez ce lien de partage',
     'Type to filter the list'=>'Filtrer la liste',
     'No file in your personal folder'=>'Aucun fichier dans votre dossier personnel',
-    'Delete this item?'=>'Supprimer cet élément ?',
-    'Rename this item?'=>'Renommer cet élément ?',
     'Problem accessing remote file.'=>'Problème d\'acces au fichier distant',
     'Paste a file\'s URL to get it on this server'=>'Coller l\'URL d\'un fichier pour le récupérer sur ce serveur',
     'Paste a file\'s URL'=>'Coller l\'URL d\'un fichier',
@@ -107,14 +129,9 @@
     'Manage links'=>'Gérer les liens',
     'Move files'=>'Déplacer des fichiers',
     'Manage files'=>'Gérer les fichiers',
-    'Move file or folder'=>'Dépl. fichier/dossier',
-    'Move'=>'Déplacer',
     'Move to'=>'Déplacer vers',
-    'To'=>'Vers',
     'Yes'=>'Oui',
     'Files list'=>'Liste de fichiers',
-    'Rename'=>'Renommer',
-    'Delete'=>'Supprimer',
     'Move a file by clicking on it and choosing the destination folder in the list'=>'Déplacer un fichier en cliquant dessus puis en sélectionnant la destination dans la liste',
     'Move a folder by clicking on the move icon and choosing the destination folder in the list'=>'Déplacer un dossier en cliquant sur "Déplacer" puis en sélectionnant la destination dans la liste',
     'When burn is on, the user can access the file/folder only once'=>"Quand l'item est en mode burn, l'utilisateur ne pourra accéder à la ressource qu'une seule fois",
@@ -124,10 +141,7 @@
     'This page in'=>"Cette page au format ",
     'This link is no longer available, sorry.'=>"Ce lien n'est plus valable, désolé.",
     'Choose a folder'=>'Choisissez un dossier',
-    'Please give a password to lock access to this file'=>"Saisir un mot de passe pour verrouiller cette ressource",
-    'Lock access'=>"Verrouiller l'accès",
     'Root'=>'Racine',
-    'Share link'=>'Lien de partage',
     'View this file'=>'Voir ce fichier',
     'Delete this file'=>'Supprimer ce fichier',
     'Get the share link'=>'Obtenir le lien de partage',

@@ -1,4 +1,4 @@
 <?php
 # ENGLISH
-	$lang=array();
+  $lang=array();
 ?>
