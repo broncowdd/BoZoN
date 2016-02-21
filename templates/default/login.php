@@ -37,8 +37,8 @@ if (!function_exists('is_admin_connected')){
     	echo '<div class="error">';
     		if ($_GET['error']==1){e('This login is not available, please try another one');}
     		if ($_GET['error']==2){e('Wrong combination login/pass');}
-    		if ($_GET['error']==3){e('The passwords doesn\'t match.');}
-    		if ($_GET['error']==4){e('Problem with admin password.');}
+    		if ($_GET['error']==3){e('The passwords doesn\'t match');}
+    		if ($_GET['error']==4){e('Problem with admin password');}
     	echo '</div>'; 
     }
     if (isset($_GET['success'])){

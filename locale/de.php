@@ -31,7 +31,6 @@
 		'Copy this share link'=>'Freigabe-Link kopieren',
 		'Drag the file you want to share to upload it on the server'=>'Lade Dateien per Drag & Drop auf den Server hoch!',
 		'Share the link with your friends'=>'Teile Freigabe-Links mit deinen Freunden!',
-		'tiny file sharing app, coded with love and php by '=>'tiny file sharing app, coded with love and php by ',
 		'Logout'=>'Abmelden',
 		'Type to filter the list'=>'Liste filtern',
 		'Drop your files here or click to select a local file'=>'Lasse die Dateien hier fallen oder wähle eine lokale Datei aus',

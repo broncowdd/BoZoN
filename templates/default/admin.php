@@ -14,9 +14,9 @@
 ?>
 
 <div id="admin">
-<script type="text/javascript" src="<?php echo THEME_PATH; ?>/js/lib/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="<?php echo THEME_PATH; ?>/js/lightbox.js"></script>
-<script type="text/javascript" src="<?php echo THEME_PATH; ?>/js/m3uStreamPlayer.js"></script>
+<script type="text/javascript" src="js/lib/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/lightbox.js"></script>
+<script type="text/javascript" src="js/qr.js"></script>
   <h1>
   	<?php 
   		if ($_SESSION['mode']=='links'){e('Manage links');}						
@@ -61,7 +61,6 @@
   <ul id="list" class="<?php echo $_SESSION['aspect'];?>">
   <?php include('core/listfiles.php');?>
   
-  <script src="<?php echo THEME_PATH; ?>js/qr.js"></script>
   <script>
   	function get(url){	
   		request = new XMLHttpRequest();request.open('GET', url, false);
@@ -119,16 +118,4 @@
   	</ul>
 	</div>
 <?php } ?>
-
-<script type="text/javascript">m3uStreamPlayer.init({selector: '#video', debug: true});</script>
-<script type="text/javascript">
-
-  /**
-   * Buttons
-   */
-  var buttonNextSource = document.querySelector('#video-next-source');
-  var buttonRandomizeSource = document.querySelector('#video-randomize-source');
-  buttonNextSource.addEventListener('click', function(){ m3uStreamPlayer.nextSource(document.querySelector('#video')); })
-  buttonRandomizeSource.addEventListener('click', function(){ v.randomizeSource(document.querySelector('#video')); })
-</script>
 </div>

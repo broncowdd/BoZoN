@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.2.b3');
+	define('VERSION','2.2.b4');
 	include('config.php');
 	start_session();
 	$message='';

@@ -104,7 +104,7 @@
 	?>
 </div>
 
-<script src="<?php echo THEME_PATH; ?>js/sorttable.js"></script>
+<script src="js/sorttable.js"></script>
 <script>
 	menu=document.getElementById('menu');
 	menu_icon=document.getElementById('menu_icon');

@@ -117,17 +117,7 @@ if (count($liste)>0){
         if ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
 					$icone_visu='<a class="visu" href="index.php?f='.$id.'" title="'.e('View this file',false).'" data-lightbox="'.$id.'" data-title=" ">&nbsp;</a>';
         }elseif($extension=='m3u'){
-          /*
-          == Test ==
-          $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-          $flip=array_flip($files);
-          $icone_visu='<span class="visu">
-                          <video id="video" controls width="640" data-playlist="'.$protocol.$_SERVER['HTTP_HOST'].'/'.$flip[$id].'"></video>
-                        </span>';*/
-          
-          $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-          $icone_visu='<a class="visu" title="'.e('View this file',false).'" onclick="" href="#">&nbsp;</a>';
-          //'.$protocol.$_SERVER['HTTP_HOST'].'/index.php?f='.$id.'
+          $icone_visu='<a class="visu" href="index.php?f='.$id.'&amp;read=m3u" title="'.e('View this file',false).'">&nbsp;</a>';
         }elseif($extension=='txt'||$extension=='nfo'||$extension=='md'){
           $icone_visu='<a class="visu" href="index.php?f='.$id.'&amp;view" title="'.e('View this file',false).'">&nbsp;</a>';
         }else{

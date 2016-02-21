@@ -23,6 +23,7 @@ $cssFiles = array(
   "login.css",
   "stats.css",
   "userslist.css",
+  "lock.css",
   "footer.css",
   "mobile.css",
   "lightbox.css",

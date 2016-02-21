@@ -23,8 +23,8 @@ PHP:
 JS:
 - qr.js (https://bitbucket.org/lifthrasiir/qrjs/)
 - lightbox.js (http://lokeshdhakar.com/projects/lightbox2/)
-- m3uStreamPlayer.js (https://github.com/opi/m3uStreamPlayer)
-- scrolltotop.js (https://github.com/jerrywham-pluxml5-2/scrollToTop)
+- m3uStreamPlayer.js (https://github.com/opi/m3uStreamPlayer/)
+- scrolltotop.js (https://github.com/jerrywham-pluxml5-2/scrollToTop/)
 - sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
 
 ## Licence

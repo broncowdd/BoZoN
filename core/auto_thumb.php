@@ -1,5 +1,4 @@
 <?php
-
 const EXIF_ORIENTATION_TOP=1;
 const EXIF_ORIENTATION_BOTTOM=3;
 const EXIF_ORIENTATION_RIGHT=6;
@@ -107,6 +106,4 @@ function auto_thumb($img,$width=null,$height=null,$add_to_thumb_filename='_THUMB
 	
 	return $thumb_name;
 }
-
-
 ?>
