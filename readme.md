@@ -31,7 +31,7 @@ JS:
 - sorttables.js (http://www.kryogenix.org/code/browser/sorttable/)
 
 ## Licence
-- AGPLv3 (http://www.gnu.org/licenses/agpl-3.0.txt)
+- [AGPLv3](agpl-3.0.txt)
 
 ##Contributors
 - [List of contributors](contributors.md)
