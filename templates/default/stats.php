@@ -98,8 +98,8 @@
   ?>
 </div>
 
-<script src="inc/js/sorttable.js"></script>
-<script>
+<script type="text/javascript" src="inc/js/sorttable.js"></script>
+<script type="text/javascript">
   menu=document.getElementById('menu');
   menu_icon=document.getElementById('menu_icon');
   body=document.getElementById('body');
