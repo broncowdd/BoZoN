@@ -4,10 +4,10 @@
   	<p><?php e('Easy to install, free and opensource.'); ?></p>
   	<p><?php e('Just copy BoZoN\'s files on your server. That\'s it.'); ?> </p>
   	<p id="logos">
-      <img src="<?php echo THEME_PATH;?>img/home/logo_php.png" alt="logo php"/>
-      <img src="<?php echo THEME_PATH;?>img/home/logo_js.png" alt="logo js"/>
-      <img src="<?php echo THEME_PATH;?>img/home/logo_css.png" alt="logo css"/>
-      <img src="<?php echo THEME_PATH;?>img/home/logo_html.png" alt="logo css"/>
+      <img src="<?php echo THEME_PATH; ?>img/home/logo_php.png" alt="logo php"/>
+      <img src="<?php echo THEME_PATH; ?>img/home/logo_js.png" alt="logo js"/>
+      <img src="<?php echo THEME_PATH; ?>img/home/logo_css.png" alt="logo css"/>
+      <img src="<?php echo THEME_PATH; ?>img/home/logo_html.png" alt="logo css"/>
   	</p>
   	
     <div id="agpl">
@@ -20,7 +20,7 @@
   	<h2><?php e('Easy to use!'); ?></h2>
   	<div id="notes">
   		<div>
-        <img class="big" src="<?php echo THEME_PATH;?>img/home/tosend.png" alt="" />
+        <img class="big" src="<?php echo THEME_PATH; ?>img/home/tosend.png" alt="" />
         <p><?php e('Drag the file you want to share to upload it on the server'); ?></p>
       </div>
   		<div>

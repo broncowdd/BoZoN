@@ -15,11 +15,11 @@
 <link rel="stylesheet" type="text/css" href="<?php echo THEME_PATH; ?>css/style.php">
 </head>
 
-<body class="<?php body_classes();?>">
+<body>
 <header>
   <div id="top_bar">
     <span id="icons">
-      <a class="home" href="index.php" title="<?php e('Home');?>">&nbsp;</a>
+      <a class="home" href="index.php" title="<?php e('Home'); ?>">&nbsp;</a>
       <?php
         if (is_admin_connected()&&empty($_GET['f'])){
           generate_users_list_link(e('Users list',false));
@@ -32,7 +32,7 @@
     <span id="lang">
     <?php  
       /* you can change the generated link using another pattern as argument (keep the # tags !): 
-      '<a #CLASS href="index.php?p=#PAGE&lang=#LANG&token=#TOKEN">#LANG</a>'*/
+      '<a #CLASS href="index.php?p=#PAGE&lang=#LANG&token=#TOKEN">#LANG</a>' */
       make_lang_link();
     ?>
     </span>
@@ -40,35 +40,34 @@
   
   <div id="connect">
   <?php
-    if (empty($_GET['f'])){
-      /* you can add labels if you want like make_connect_link('Admin','Logout','Connection') */
+    if (empty($_GET['f']))
+      // you can add labels if you want like make_connect_link('Admin','Logout','Connection')
       make_connect_link();
-    }
   ?>
   </div>
   
   <?php
-    if (is_admin_connected()&&!empty($page)&&empty($_GET['f'])){
+    if(is_admin_connected() && !empty($page)&&empty($_GET['f'])):
   ?>
     <div id="search" >
       <form action="index.php" method="get" class="searchform">
-        <input type="text" class="npt" name="filter" value="<?php if (!empty($_SESSION['filter'])){echo $_SESSION['filter'];} ?>" title="<?php e('Search in the uploaded files'); ?>" placeholder="<?php e('Filter'); ?>"/>
+        <input type="text" class="npt" name="filter" value="<?php if (!empty($_SESSION['filter'])) echo $_SESSION['filter']; ?>" title="<?php e('Search in the uploaded files'); ?>" placeholder="<?php e('Filter'); ?>"/>
         <input type="hidden" value="admin" name="p"/>
-        <?php newToken();?>
+        <?php newToken(); ?>
       </form>
     </div>
 
   <?php
-    }
+    endif;
     
-    if (!is_admin_connected()||!empty($_GET['f'])){ ?>
+    if(!is_admin_connected() || !empty($_GET['f'])): ?>
       <a id="logo" href="index.php">BoZoN</a>
       <h2 class="slogan"><?php e('Drag, drop, share.');?></h2>
   <?php 
-    }else{
+    else:
     
-    include('core/auto_dropzone.php');
+    include 'core/auto_dropzone.php';
     
-    }
+    endif;
   ?>
 </header>

@@ -7,11 +7,10 @@
 if (!function_exists('is_admin_connected')){
   # Checks auto_restrict's session vars to know if admin is connected
   function is_admin_connected(){
-    if (empty($_SESSION['id_user'])||empty($_SESSION['login'])||empty($_SESSION['expire'])){
+    if (empty($_SESSION['id_user'])||empty($_SESSION['login'])||empty($_SESSION['expire']))
       return false;
-    }
-    return true;
-  }
+    else
+      return true;
 }
 ?>
 
@@ -21,13 +20,9 @@ if (!function_exists('is_admin_connected')){
     $n=isset($_GET['newuser']);
     $p=isset($_GET['change_password']);
     $input_login='<input type="text" name="login" id="login" required="required" autofocus placeholder="'.e('Login',false).'"/>';
-    if(!$f||$n){
-      echo '<h1>'.e('Create an account',false).'</h1>';
-    }else if($p&&is_admin_connected()){
-      echo '<h1>'.e('Change password',false).'</h1>';
-    }else{
-      echo '<h1>'.e('Please, login',false).'</h1>';
-    }
+    if(!$f || $n)                    echo '<h1>'.e('Create an account',false).'</h1>';
+    elseif($p&&is_admin_connected()) echo '<h1>'.e('Change password',false).'</h1>';
+    else                             echo '<h1>'.e('Please, login',false).'</h1>';
   ?>
   
   <div id="form">
@@ -35,17 +30,17 @@ if (!function_exists('is_admin_connected')){
     # error messages
     if (!empty($_GET['error'])){
       echo '<div class="error">';
-        if ($_GET['error']==1){e('This login is not available, please try another one');}
-        if ($_GET['error']==2){e('Wrong combination login/pass');}
-        if ($_GET['error']==3){e('The passwords doesn\'t match');}
-        if ($_GET['error']==4){e('Problem with admin password');}
+        if ($_GET['error']==1) e('This login is not available, please try another one');
+        if ($_GET['error']==2) e('Wrong combination login/pass');
+        if ($_GET['error']==3) e('The passwords doesn\'t match');
+        if ($_GET['error']==4) e('Problem with admin password');
       echo '</div>'; 
     }
     if (isset($_GET['success'])){
       echo '<div class="success">';
       if (empty($_GET['success'])){
         e('Account created:');
-        if (!empty($_GET['name'])){echo ' <em>'.$_GET['name'].'</em> ';}
+        if (!empty($_GET['name'])) echo ' <em>'.$_GET['name'].'</em> ';
       }elseif ($_GET['success']==1){
         echo '<div class="success">';
         e('Password changed'); 
@@ -56,10 +51,10 @@ if (!function_exists('is_admin_connected')){
     
     <form action="index.php" method="post" name="">				
       <?php 
-          if(!$f||$n){
+          if(!$f || $n){
             echo '<input type="hidden" name="creation" value="1"/>';
             echo $input_login;
-          }else if($p&&is_admin_connected()){
+          }elseif($p&&is_admin_connected()){
             echo '<p id="user">'.e('User:',false).'&nbsp;'.$_SESSION['login'].'</p>';	
             adminPassword($label='',$placeholder=e('Old password',false));
           }else{
@@ -68,12 +63,12 @@ if (!function_exists('is_admin_connected')){
       ?>
       
       <input type="password" name="pass" id="pass" required="required" onKeyup="check();" placeholder="<?php e('Password'); ?>"/>	
-      <?php if ($n&&is_admin_connected()||$p&&is_admin_connected()||!$f){?>
+      <?php if($n && is_admin_connected() || $p && is_admin_connected() || !$f): ?>
         <input type="password" name="confirm" id="confirm" onKeyup="check();" required="required" placeholder="<?php e('Repeat password'); ?>"/>	
-      <?php } ?>
-      <?php if (is_admin_connected()){newToken();}?>
+      <?php endif; ?>
+      <?php if(is_admin_connected()) newToken();?>
       <div>
-        <?php if($f&&!$n&&!is_admin_connected()){echo '<input id="cookie" type="checkbox" value="cookie" name="cookie" /><label for="cookie">'.e('Stay connected',false).'</label>';} ?>
+        <?php if($f && !$n && !is_admin_connected()) echo '<input id="cookie" type="checkbox" value="cookie" name="cookie" /><label for="cookie">'.e('Stay connected',false).'</label>'; ?>
         <input id="submit" type="submit" class="btn" value="Ok" />	
       </div>
     </form>
