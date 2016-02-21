@@ -20,7 +20,7 @@
     
     // Home
     'BoZoN is a simple filesharing app.'=>'BoZoN est une application simplifiée de stockage et de partage de fichiers.',
-    'Easy to install, free and opensource'=>'Simple à installer, libre et opensource',
+    'Easy to install, free and opensource.'=>'Simple à installer, libre et opensource.',
     'Just copy BoZoN\'s files on your server. That\'s it.'=>'Copiez simplement les fichiers de BoZoN sur votre serveur. C\'est tout.',
     'You can freely fork BoZoN and use it as specified in the AGPL licence'=>'Vous pouvez librement forker et utiliser BoZoN comme spécifié dans la licence AGPL',
     'More info'=>'En savoir plus',
@@ -73,6 +73,9 @@
     'Delete all stat data'=>'Supprimer les données statistiques',
     'Export log:'=>'Exporter le journal :',
     
+    // Users List
+    'Check users to delete account and files'=>'Selectionnez les utilisateurs pour supprimer leur compte et leurs fichiers.',
+    
     // Admin
     'Filter'=>'Mot-clé',
     'Filter:'=>'Filtre :',
@@ -90,7 +93,6 @@
     'Share this folder with another user'=>'Partager ce dossier avec un autre utilisateur' ,
     'Select the users you want to share with'=>'Sélectionnez les utilisateurs avec qui partager ce dossier' ,
     'Search in the uploaded files'=>'Rechercher dans les fichiers envoyés',
-    'Check users to delete account and files'=>'Selectionnez les utilisateurs pour supprimer leur compte et leurs fichiers.',
     'Copy this share link'=>'Copiez ce lien de partage',
     'Type to filter the list'=>'Filtrer la liste',
     'No file in your personal folder'=>'Aucun fichier dans votre dossier personnel',

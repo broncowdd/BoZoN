@@ -1,7 +1,7 @@
 <div id="home">
   <div id="center">
   	<h1><?php e('BoZoN is a simple filesharing app.'); ?></h1>
-  	<p><?php e('Easy to install, free and opensource'); ?></p>
+  	<p><?php e('Easy to install, free and opensource.'); ?></p>
   	<p><?php e('Just copy BoZoN\'s files on your server. That\'s it.'); ?> </p>
   	<p id="logos">
   		<img src="<?php echo THEME_PATH;?>img/home/logo_php.png" alt="logo php"/>

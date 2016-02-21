@@ -12,7 +12,7 @@
  * <link rel="stylesheet" type="text/css" media="screen, print, projection" href="/css/compressed.css.php" />
  */
 
-/* Add your CSS files to this array (THESE ARE ONLY EXAMPLES) */
+/* Add your CSS files to this array */
 $cssFiles = array(
   "ini.css",
   "header.css",
@@ -26,8 +26,8 @@ $cssFiles = array(
   "lock.css",
   "footer.css",
   "mobile.css",
-  "lightbox.css",
-  "scrolltotop.css"
+  "../../../inc/css/lightbox.css",
+  "../../../inc/css/scrolltotop.css",
 );
 
 /**

@@ -2,7 +2,7 @@
 	# ESPANOL
 	$lang=array(
 		# Home text
-		'Easy to install, free and opensource'=>'Fácil de instalar, libre y de código abierto',
+		'Easy to install, free and opensource.'=>'Fácil de instalar, libre y de código abierto.',
 		'Easy to use!'=>'Fácil de utilizar',
 		'You can freely fork BoZoN and use it as specified in the AGPL licence'=>'Puedes copiar y modificar libremente esta utilidad según la licencia AGPL',
 		'Modify the templates & style to make your own BoZoN'=>'Crea tu propio BoZoN cambiando el tema y el estilo css',

@@ -14,9 +14,9 @@
 ?>
 
 <div id="admin">
-<script type="text/javascript" src="js/lib/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/lightbox.js"></script>
-<script type="text/javascript" src="js/qr.js"></script>
+<script type="text/javascript" src="inc/js/lib/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="inc/js/lightbox.js"></script>
+<script type="text/javascript" src="inc/js/qr.js"></script>
   <h1>
   	<?php 
   		if ($_SESSION['mode']=='links'){e('Manage links');}						

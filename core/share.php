@@ -54,7 +54,7 @@
               $uri_parts=explode('?', $_SERVER['REQUEST_URI'], 2);
               $uri=$protocol.$_SERVER['HTTP_HOST'].$uri_parts[0].'?f='.$_GET['f'];
               echo '<html>'."\n".
-                   '<head><script type="text/javascript" src="js/m3uStreamPlayer.js"></script></head>'."\n".
+                   '<head><script type="text/javascript" src="inc/js/m3uStreamPlayer.js"></script></head>'."\n".
                    '<body>'."\n".
                    '<video id="video" controls loop width="640" height="30" data-playlist="'.$uri.'"></video>'."\n".
                    '<div id="controls">'."\n".

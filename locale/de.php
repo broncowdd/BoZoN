@@ -2,7 +2,7 @@
 # GERMAN
 	$lang=array(
 		# Home text
-		'Easy to install, free and opensource'=>'Einfach zu installieren, gratis und Open Source',
+		'Easy to install, free and opensource.'=>'Einfach zu installieren, gratis und Open Source.',
 		'Easy to use!'=>'Benutzerfreundlich !',
 		'You can freely fork BoZoN and use it as specified in the AGPL licence'=>'Du kannst BoZoN einfach auschecken und benutzen, wie in der AGPL beschrieben.',
 		'Modify the templates & style to make your own BoZoN'=>'Modifiziere die Templates & Themes und mach\' dir dein eigenes BoZoN',

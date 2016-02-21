@@ -104,7 +104,7 @@
 	?>
 </div>
 
-<script src="js/sorttable.js"></script>
+<script src="inc/js/sorttable.js"></script>
 <script>
 	menu=document.getElementById('menu');
 	menu_icon=document.getElementById('menu_icon');
