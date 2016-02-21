@@ -92,7 +92,7 @@
   
   <p id="trash"><a title="<?php e('Delete all stat data'); ?>" href="index.php?p=stats&amp;kill&amp;token=<?php newToken(true); ?>"><?php e('Delete all stat data'); ?></a></p>
   
-  <div id="feeds"><?php e('Export log:'); ?> <a href="<?php echo $_SESSION['home']; ?>?key=<?php echo $_SESSION['api_rss_key']; ?>&statrss">Rss</a> <a href="<?php echo $_SESSION['home']; ?>?key=<?php echo $_SESSION['api_rss_key']; ?>&statjson">Json</a></div>
+  <div id="feeds"><?php e('Export log:'); ?> <a href="<?php echo $_SESSION['home']; ?>?key=<?php echo $_SESSION['api_rss_key']; ?>&amp;statrss">Rss</a> <a href="<?php echo $_SESSION['home']; ?>?key=<?php echo $_SESSION['api_rss_key']; ?>&amp;statjson">Json</a></div>
   <?php
   endif;
   ?>
