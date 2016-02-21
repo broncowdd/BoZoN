@@ -518,7 +518,7 @@
 	}
 	# Links functions
 	# create language links
-	function make_lang_link($pattern='<a #CLASS href="index.php?p=#PAGE&lang=#LANG&token=#TOKEN">#LANG</a>'){
+	function make_lang_link($pattern='<a #CLASS href="index.php?p=#PAGE&amp;lang=#LANG&amp;token=#TOKEN">#LANG</a>'){
 		$langs=available_languages();
 		if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
 		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}

@@ -25,7 +25,7 @@
           generate_users_list_link(e('Users list',false));
           generate_new_users_link(e('New user',false));
           generate_new_password_link(e('Change password',false));
-          echo '<a class="log_file" href="index.php?p=stats&token='.returnToken().'" class="log_link" title="'.e('Access log file',false).'">&nbsp;</a>';
+          echo '<a class="log_file" href="index.php?p=stats&amp;token='.returnToken().'" class="log_link" title="'.e('Access log file',false).'">&nbsp;</a>';
         }
       ?>
     </span>
