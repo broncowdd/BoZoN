@@ -33,10 +33,11 @@ JS:
 ## Licence
 - [AGPLv3](agpl-3.0.txt)
 
-##Contributors
+## Authors
+- Original author: [bronco](https://github.com/broncowdd) (http://warriordudimanche.net/)
 - [List of contributors](contributors.md)
 
-##News
+## News
 - [Show changelog](changelog.md)
 
 ## FAQ
