@@ -42,7 +42,7 @@ if(!empty($_GET['aspect'])){
 
 require THEME_PATH.'/header.php';
   // users list request
-  if (isset($_GET['users_list'])){
+  if(isset($_GET['users_list']))
     generate_users_formlist(e('Users list',false),e('Check users to delete account and files',false)); // auto_restrict function
   
 	// page request
