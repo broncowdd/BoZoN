@@ -17,7 +17,10 @@ if(is_admin_connected()){
     include 'core/listfiles.php';
     exit;
   }
-  if(empty($_GET['p']) && !empty($_GET) || count($_GET)>2 || !empty($_POST)) include 'core/GET_POST_admin_data.php';
+  
+  if(empty($_GET['p']) && !empty($_GET) || count($_GET)>2 || !empty($_POST))
+    include 'core/GET_POST_admin_data.php';
+  
   if(!empty($_FILES)){
     include 'core/auto_dropzone.php';
     exit();
@@ -25,14 +28,14 @@ if(is_admin_connected()){
 
 }else $token='';
 
-$page='';
-if (!empty($_GET['p'])) $page=$_GET['p'];
-if (!empty($_GET['lang'])){
+if(!empty($_GET['p'])) $page=$_GET['p'];
+else $page='';
+if(!empty($_GET['lang'])){
   $_SESSION['language']=$_GET['lang'];
   header('location:index.php?p='.$page.'&token='.$token);
 }
 
-if (!empty($_GET['aspect'])){
+if(!empty($_GET['aspect'])){
   $_SESSION['aspect']=$_GET['aspect'];
   header('location:index.php?p='.$page.'&token='.$token);
 }
@@ -41,16 +44,15 @@ require THEME_PATH.'/header.php';
   // users list request
   if (isset($_GET['users_list'])){
     generate_users_formlist(e('Users list',false),e('Check users to delete account and files',false)); // auto_restrict function
-  }
   
 	// page request
-  elseif (!empty($page)&&is_file(THEME_PATH.$page.'.php')){
+  elseif(!empty($page)&&is_file(THEME_PATH.$page.'.php'))
     // request for a specific page
     include THEME_PATH.$page.'.php';
-  }else{
+    
+  else
     // no page request -> home
     include THEME_PATH.'home.php';
-  }
   
 require THEME_PATH.'/footer.php';
 ?>
