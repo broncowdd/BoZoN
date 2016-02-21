@@ -45,11 +45,11 @@ require THEME_PATH.'/header.php';
   if(isset($_GET['users_list']))
     generate_users_formlist(e('Users list',false),e('Check users to delete account and files',false)); // auto_restrict function
   
-	// page request
+  // page request
   elseif(!empty($page)&&is_file(THEME_PATH.$page.'.php'))
     // request for a specific page
     include THEME_PATH.$page.'.php';
-    
+  
   else
     // no page request -> home
     include THEME_PATH.'home.php';
