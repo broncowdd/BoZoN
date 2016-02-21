@@ -59,7 +59,7 @@
     'Old password'=>'Ancien mot de passe',
     'Repeat password'=>'Resaisir le mot de passe',
 		
-		'Account created:'=>'Compte créé :',
+    'Account created:'=>'Compte créé :',
     'Create an account'=>'Créer un compte',
     
     // Stats
