@@ -11,6 +11,7 @@ if (!function_exists('is_admin_connected')){
       return false;
     else
       return true;
+  }
 }
 ?>
 
