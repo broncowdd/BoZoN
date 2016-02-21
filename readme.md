@@ -1,6 +1,6 @@
 # BoZoN
 
-## Minimalist Drag & drop file sharing app
+## Minimalist drag & drop file sharing app
 
 - Install: just unzip on your server and create an admin account. 
 - Config: just change config.php file. 
@@ -10,9 +10,12 @@
 The share link is the file link in the admin's view (you can also access it by the button link on the file or the folder.)
 
 ## Required 
-php 5 or more, php5-gd, ZipArchive
+php 5.3 or more, php5-gd, ZipArchive
 
 ## Used libraries
+PHP:
+- Markdown (https://github.com/michelf/php-markdown)
+
 JS:
 - jquery-1.7.1.min.js (https://jquery.com/)
 
