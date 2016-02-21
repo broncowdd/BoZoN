@@ -85,7 +85,7 @@
     'Rename'=>'Renommer',
     'Rename this item?'=>'Renommer cet élément ?',
     
-    // Dialog (Supprimer)
+    // Dialog (Delete)
     'Delete'=>'Supprimer',
     'Delete this item?'=>'Supprimer cet élément ?',
     
