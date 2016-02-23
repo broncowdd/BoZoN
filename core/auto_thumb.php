@@ -76,7 +76,7 @@ function auto_thumb($img,$width=null,$height=null,$add_to_thumb_filename='_THUMB
 	
 	
 	$fonction='imagecreatefrom'.$extension;
-	$src  = $fonction($img);  // que c'est pratique ça ^^ !
+	$src  = $fonction($img) or die;  // que c'est pratique ça ^^ !
 	
 	// création image
 	$thumb = imagecreatetruecolor($width,$height);
