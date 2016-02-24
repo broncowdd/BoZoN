@@ -32,23 +32,6 @@ if (empty($_SESSION['current_path'])){
 $liste=_glob($path_list,$mask);
 $size_folder=folder_size($path_list);
 
-if ($mode=='move'){
-	# Prepare folder tree 
-	$select_folder='<select name="destination" class="folder_list button"><option value="">'.e('Choose a folder',false).'</option>';
-	$folders_list=tree($_SESSION['upload_root_path'].$_SESSION['upload_user_path'],false);
-	$folders_list[0].='/';
-	foreach($folders_list as $folder){
-		$folder=substr($folder,$upload_path_size);
-		$select_folder.='<option value="'.$folder.'">'.$folder.'</option>';
-	}
-	$select_folder.='</select>';
-	# Add move dialogbox to the page
-	$array=array(
-			'#LIST_FILES_SELECT'	=> $select_folder,
-			'#TOKEN'				=> returnToken(),
-		);
-	echo template('dialog_move',$array);
-}
 if ($mode=='links'){
 	# Add lock dialogbox to the page
 	$array=array(
@@ -77,6 +60,22 @@ if ($mode=='view'){
 		$shared_folders.= '</div>';
 		
 	}
+
+	# Prepare folder tree 
+	$select_folder='<select name="destination" class="folder_list button"><option value="">'.e('Choose a folder',false).'</option>';
+	$folders_list=tree($_SESSION['upload_root_path'].$_SESSION['upload_user_path'],false);
+	$folders_list[0].='/';
+	foreach($folders_list as $folder){
+		$folder=substr($folder,$upload_path_size);
+		$select_folder.='<option value="'.$folder.'">'.$folder.'</option>';
+	}
+	$select_folder.='</select>';
+	# Add move dialogbox to the page
+	$array=array(
+			'#LIST_FILES_SELECT'	=> $select_folder,
+			'#TOKEN'				=> returnToken(),
+		);
+	echo template('dialog_move',$array);
 }
 $save=false;
 

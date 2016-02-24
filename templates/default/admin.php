@@ -29,7 +29,6 @@
   <h1>
   	<?php 
   		if ($_SESSION['mode']=='links'){e('Manage links');}						
-  		elseif ($_SESSION['mode']=='move') {e('Move files');}
   		else{e('Manage files');}
   	?>
   </h1>
@@ -45,7 +44,7 @@
   	<a id="download_url" title="<?php e('Paste a file\'s URL to get it on this server');?>" href="#download_box">&nbsp;</a>
   	<?php make_mode_link(); ?>
     <span id="delete_selection" title="<?php e('Delete selected items');?>"></span>
-    <span id="move_selection" title="<?php e('Delete selected items');?>"></span>
+   
     
   </div>
 
@@ -151,19 +150,6 @@
   </script>
 
 
-<?php if ($_SESSION['mode']=='move'){ ?>
-	<div id="move">
-  	<ul>
-  		<li>
-        <span class="img"><img src="<?php echo THEME_PATH; ?>img/admin/move_file.png" alt=""/></span>
-        <span class="text"><?php e('Move a file by clicking on it and choosing the destination folder in the list'); ?></span>
-      </li>
-  		<li>
-        <span class="img"><img src="<?php echo THEME_PATH; ?>img/admin/move_folder.png" alt=""/></span>
-        <span class="text"><?php e('Move a folder by clicking on the move icon and choosing the destination folder in the list'); ?></span>
-      </li>
-  	</ul>
-	</div>
-<?php } ?>
+
 </div>
 <script src="core/js/sorttable.js"></script>

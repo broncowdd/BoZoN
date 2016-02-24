@@ -47,8 +47,6 @@
   border-radius: 3px;
   margin-left:0;
 }
-#admin #menu #move_selection
-{  background: #e20 url('../img/list/move.png') center center no-repeat;}
   
 #admin #menu #icon                  {background: #basic_color_neutral url('../img/admin/menu_icon.png') center center no-repeat;}
 #admin #menu #list                  {background: #basic_color_neutral url('../img/admin/menu_list.png') center center no-repeat;}
@@ -56,7 +54,6 @@
 #admin #menu #download_url          {background: #basic_color_neutral url('../img/admin/menu_download_url.png') center center no-repeat;}
 #admin #menu #mode_view             {background: #basic_color_neutral url('../img/admin/menu_file.png') center center no-repeat;}
 #admin #menu #mode_links            {background: #basic_color_neutral url('../img/admin/menu_link.png') center center no-repeat;}
-#admin #menu #mode_move             {background: #basic_color_neutral url('../img/admin/menu_move.png') center center no-repeat;}
 
 /* fil ariane */
 #admin #fil_ariane{
@@ -100,33 +97,6 @@
   font-size: 0.9em;
 }
 
-/* explications sur les déplacements de fichiers, dossiers */
-#admin #move {
-  clear: both;
-  margin-top: 15px;
-}
-
-#admin #move ul li {
-  display: block;
-  padding-top: 10px;
-}
-
-#admin #move ul li span {
-  display: table-cell;
-  vertical-align: middle;
-  font-size: 0.8em;
-}
-
-#admin #move ul li span.img {
-  width: 24px;
-  height: 24px;
-  padding-right: 5px;
-}
-
-#admin #move ul li span.img img {
-  height: inherit;
-  display: inline;
-}
 
 #ID_folder{text-align:center;color:rgba(0,0,0,0.8);font-size:1.2em;}
 

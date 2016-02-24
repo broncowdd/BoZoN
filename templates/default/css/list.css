@@ -144,11 +144,6 @@ Aucun fichier:
   box-shadow: 0 0 2px rgba(0,100,255,0.5);
 }
 
-.move .list tr:hover{background-color:#hover_color_light;}
-.move .icon li:hover {
-  background-color: #hover_color_neutral!important;
- 
-}
 
 .links .list tr:hover{background-color: #hover_color_light;}
 .links .icon li:hover {

@@ -60,55 +60,43 @@ function auto_thumb($img,$width=null,$height=null,$add_to_thumb_filename='_THUMB
 		}
 	}
 
-	if(!function_exists(is_image)){
-		function is_image($path){
-			if(!empty($path))
-			 $a = getimagesize($path);
-			$image_type = $a[2];
 
-			if(in_array($image_type , array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP))) return true;
-			return false;
-		}
-	}
-	$verif=is_image($img);
 
-	if($verif){
-		// en fonction de l'extension
-		$fichier = pathinfo($img);
-		$extension=str_ireplace('jpg','jpeg',$fichier['extension']);
-		
-		
-		$fonction='imagecreatefrom'.$extension;
-		if (!$src  = $fonction($img)){return false;}
-		
-		// création image
-		$thumb = imagecreatetruecolor($width,$height);
-		
-		// gestion de la transparence 
-		// (voir fonction de Seebz: http://code.seebz.net/p/imagethumb/)
-		if( $extension=='png' ){imagealphablending($thumb,false);imagesavealpha($thumb,true);}
-		if( $extension=='gif'  && @imagecolortransparent($img)>=0 ){
-			$transparent_index = @imagecolortransparent($img);
-			$transparent_color = @imagecolorsforindex($img, $transparent_index);
-			$transparent_index = imagecolorallocate($thumb, $transparent_color['red'], $transparent_color['green'], $transparent_color['blue']);
-			imagefill($thumb, 0, 0, $transparent_index);
-			imagecolortransparent($thumb, $transparent_index);
-		}
-		
-		imagecopyresampled($thumb,$src,0,0,$recadrageX,$recadrageY,$width,$height,$src_width,$src_height);
-		
-		// gestion de la rotation
-		@$exif = exif_read_data($img);
-		if ($exif && array_key_exists('Orientation', $exif)) {
-			$orientation = $exif['Orientation'];
-			$angle = get_rotation_angle($orientation);
-			$thumb = imagerotate($thumb, $angle, 0);
-		}
-		imagepng($thumb, $thumb_name);
-		imagedestroy($thumb);
-		
-		return $thumb_name;
+	// en fonction de l'extension
+	$fichier = pathinfo($img);
+	$extension=str_ireplace('jpg','jpeg',$fichier['extension']);
+	
+	
+	$fonction='imagecreatefrom'.$extension;
+	if (!$src  = $fonction($img)){return false;}
+	
+	// création image
+	$thumb = imagecreatetruecolor($width,$height);
+	
+	// gestion de la transparence 
+	// (voir fonction de Seebz: http://code.seebz.net/p/imagethumb/)
+	if( $extension=='png' ){imagealphablending($thumb,false);imagesavealpha($thumb,true);}
+	if( $extension=='gif'  && @imagecolortransparent($img)>=0 ){
+		$transparent_index = @imagecolortransparent($img);
+		$transparent_color = @imagecolorsforindex($img, $transparent_index);
+		$transparent_index = imagecolorallocate($thumb, $transparent_color['red'], $transparent_color['green'], $transparent_color['blue']);
+		imagefill($thumb, 0, 0, $transparent_index);
+		imagecolortransparent($thumb, $transparent_index);
 	}
+	
+	imagecopyresampled($thumb,$src,0,0,$recadrageX,$recadrageY,$width,$height,$src_width,$src_height);
+	
+	// gestion de la rotation
+	@$exif = exif_read_data($img);
+	if ($exif && array_key_exists('Orientation', $exif)) {
+		$orientation = $exif['Orientation'];
+		$angle = get_rotation_angle($orientation);
+		$thumb = imagerotate($thumb, $angle, 0);
+	}
+	imagepng($thumb, $thumb_name);
+	imagedestroy($thumb);
+	
+	return $thumb_name;
 }
 
 

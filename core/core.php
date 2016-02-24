@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.3 beta');
+	define('VERSION','2.3');
 	include('config.php');
 	start_session();
 	$message='';
@@ -654,10 +654,7 @@
 		if ($_SESSION['mode']=='view'){$class='active';}else{$class='';}
 		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('view',e('Manage files',false),$token,$class),$pattern);
 		if ($_SESSION['mode']=='links'){$class='active';}else{$class='';}
-		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('links',e('Manage links',false),$token,$class),$pattern);
-		if ($_SESSION['mode']=='move'){$class='active';}else{$class='';}
-		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('move',e('Move files',false),$token,$class),$pattern);
-		
+		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('links',e('Manage links',false),$token,$class),$pattern);		
 	}
 
 	# Checks auto_restrict's session vars to know if a user is connected
