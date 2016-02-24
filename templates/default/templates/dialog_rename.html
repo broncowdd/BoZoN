@@ -1,0 +1,17 @@
+
+		<div class="dialog" id="rename_box" onmousemove="document.getElementById('FILE_Rename').focus();">
+			<figure>
+				<a href="#" class="closemsg"></a>
+				<figcaption>
+					<h1>#Rename</h1>
+				    <form action="index.php" method="get">
+						<p>#Rename_item</p>
+						<input type="text" class="npt" value="" name="newname" id="FILE_Rename" onFocus="this.select();" autofocus="true" required/>
+						<input id="submit" type="submit" value="ok" class="btn blue" />
+						<input type="hidden" value="" name="id" id="ID_Rename" />
+						<input type="hidden" name="p" value="admin" />
+						<input type="hidden" name="token" value="#TOKEN" />
+				    </form>
+				</figcaption>
+			</figure>
+		</div>

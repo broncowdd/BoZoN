@@ -1,0 +1,17 @@
+
+		<div class="dialog" id="download_box" onmousemove="document.getElementById('url_file').focus();">
+			<figure>
+				<a href="#" class="closemsg"></a>
+				<figcaption>
+					<h1>#paste_url</h1>
+				    <form action="index.php" method="get"><br/>
+						<input type="text" id="url_file" name="url" class="npt" value="" title="#paste_url" placeholder="http://www.url.com/file.jpg" required/>
+						<input type="text" id="local_filename" name="filename" class="npt" value="" title="#local_filename" placeholder="#filename"/>
+						<input type="hidden" name="token" value="#TOKEN"/>
+						<input type="hidden" name="p" value="admin"/>
+						<br/>
+						<input id="submit" type="submit" value="Ok" class="btn" />
+				    </form>
+				</figcaption>
+			</figure>
+		</div>

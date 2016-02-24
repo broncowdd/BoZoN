@@ -1,0 +1,26 @@
+#users_page table{width:100%;border-collapse: collapse}
+#users_page td{vertical-align: top;width:50%;padding:10px;}
+#users_page .dialog{display:block;position:relative;width:100%;}
+#users_page .dialog td{width:auto;padding:0;vertical-align: middle;}
+#users_page .dialog tr{padding-bottom:5px;margin-bottom:5px;border-bottom:1px solid rgba(0,0,0,0.2);vertical-align: middle;}
+#users_page .dialog figcaption{width:100%;}
+#users_page .dialog figure{width:100%;display:block;}
+#users_page .dialog h2{padding:15px;}
+#users_page .dialog label{cursor:pointer;word-break: break-all;padding:0;}
+#users_page .dialog .folder_size_users_list li {vertical-align: middle}
+#users_page .dialog .admin{color:rgba(200,0,0,0.8);}
+#users_page label span{padding:3px;}
+#users_page label span em{color:rgba(0,0,0,0.5);}
+#users_page input[type=number]:hover{background-color:rgba(255,255,255,0.9);}
+#users_page input[type=number]:focus{background-color:rgba(255,255,255,0.9);color:rgba(0,0,0,0.9);}
+#users_page input[type=number]{
+  height: 24px;
+  text-indent: 7px;
+  width:100%;
+  margin-bottom: 3px;
+  margin-top: 3px;
+  color: rgba(0,0,0,0.4);
+  background:rgba(255,255,255,0.5);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 5px;
+}

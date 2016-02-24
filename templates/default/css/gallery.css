@@ -1,0 +1,33 @@
+/* gallery */
+.gallery{padding:10px;text-align:center;}
+body .gallery h1{text-align:center;font-size:48px;}
+.image,.blank{
+	display:inline-block;    
+	vertical-align: bottom;
+	overflow: hidden;
+    height: 256px;
+    width:256px;
+    vertical-align: bottom;
+}
+.image img{border-radius: 3px;}
+.image .info{
+	background-color:rgba(0,0,0,0.4);
+	color:rgba(255,255,255,0.6);
+	text-shadow: 0 1px 1px black;
+	padding:10px;
+	padding-top:20px;
+	position: relative;
+    top: 0px;
+    left: 0px;
+    word-wrap: break-word;
+    width: 256px;
+    height:256px;
+    display: block;
+    margin:0;
+    border-radius:3px;
+    opacity:0;
+
+}
+.image:hover .info{top:-259px;opacity:100;}
+.image .info em{display:block;color:white;margin-bottom:5px;}
+.video{/*background:url(img/video.png) no-repeat;*/}

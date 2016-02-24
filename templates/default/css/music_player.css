@@ -1,0 +1,179 @@
+/* music player */
+     .audiojs audio {
+         position: absolute;
+         left: -1px;
+     }
+     .audiojs {
+     	cursor:default;
+         width: 100%;
+         height: 36px;
+         /*background-color:#405bff;border-color:#05E;box-shadow: 0 1px 1px #04d;*/
+         overflow: hidden;
+         border-top:1px solid rgba(0,0,0,0.2);
+         border-bottom:1px solid rgba(0,0,0,0.2);
+         font-family: monospace;
+         font-size: 12px;
+         margin-bottom:20px;
+             display: flex;
+    x-justify-content: space-around;
+    x-align-items: stretch;
+     }
+     .audiojs .play-pause:hover {background-color:rgba(0,100,255,0.2);}
+     .audiojs .play-pause {
+     	flex: 0 0 40px;
+         width: 40px;
+         height: 40px;
+         padding: 4px 6px;
+         margin: 0px;
+         
+         overflow: hidden;
+         cursor:pointer;
+         background-color:rgba(0,0,0,0.1);
+     }
+     .audiojs p {
+         display: none;
+         width: 25px;
+         height: 40px;
+         margin: 0px;
+         cursor: pointer;
+     }
+     .audiojs .play {
+         display: block;
+     }
+     .audiojs .scrubber {
+     	cursor:pointer;
+         position: relative;
+         width:100%;
+         background: rgba(0,0,0,0.1);
+         height: 14px;
+         margin: 10px;
+         border-top: 1px solid rgba(0,0,0,0.3);
+         border-left: 0px;
+         border-bottom: 0px;
+         overflow: hidden;
+         border-radius:3px;
+     }
+     .audiojs .progress {
+         position: absolute;
+         top: 0px;
+         left: 0px;
+         height: 13px;
+         width: 0px;
+         background: rgba(0,0,0,0.1);
+             border-radius: 0 4px 4px 0;
+             box-shadow:inset 0 0 2px 2px rgba(255,255,255,0.1);
+         z-index: 1;
+         
+     }
+     .audiojs .loaded {
+         position: absolute;border-radius: 0 4px 4px 0;
+         top: 0px;
+         left: 0px;
+         height: 13px;
+         width: 0px;
+         background: rgba(0,0,0,0.1);box-shadow:inset 0 0 2px 2px rgba(255,255,255,0.1);
+         
+     }
+     .audiojs .time {
+     	text-shadow:0 1px 1px rgba(255,255,255,0.5);
+		width:100px;
+		flex: 0 0 100px;
+		height: 36px;
+		line-height: 36px;
+		margin: 0px 0px 0px 6px;
+		padding: 0px 6px 0px 12px;
+		color: #333;
+     }
+     .audiojs .time em {
+         padding: 0px 2px 0px 0px;
+         color: #444;
+         font-style: normal;
+     }
+     .audiojs .time strong {
+         padding: 0px 0px 0px 2px;
+         font-weight: normal;
+     }
+     .audiojs .error-message {
+         float: left;
+         display: none;
+         margin: 0px 10px;
+         height: 36px;
+         width: 400px;
+         overflow: hidden;
+         line-height: 36px;
+         white-space: nowrap;
+         color: #fff;
+         text-overflow: ellipsis;
+         -o-text-overflow: ellipsis;
+         -icab-text-overflow: ellipsis;
+         -khtml-text-overflow: ellipsis;
+         -moz-text-overflow: ellipsis;
+         -webkit-text-overflow: ellipsis;
+     }
+     .audiojs .error-message a {
+         color: #eee;
+         text-decoration: none;
+         padding-bottom: 1px;
+         border-bottom: 1px solid #999;
+         white-space: wrap;
+     }
+     .audiojs .play {
+         background: url("../img/player-graphics.png") -2px -1px no-repeat ;
+     }
+     .audiojs .loading {
+         background: url("../img/player-graphics.png") -2px -31px no-repeat;
+     }
+     .audiojs .error {
+         background: url("../img/player-graphics.png") -2px -61px no-repeat;
+     }
+     .audiojs .pause {
+         background: url("../img/player-graphics.png") -2px -91px no-repeat;
+     }
+     .playing .play,
+     .playing .loading,
+     .playing .error {
+         display: none;
+         background-color:rgba(0,0,0,0.1);
+     }
+     .playing .pause {
+         display: block;
+     }
+     .loading .play,
+     .loading .pause,
+     .loading .error {
+         display: none;
+     }
+     .loading .loading {
+         display: block;
+     }
+     .error .time,
+     .error .play,
+     .error .pause,
+     .error .scrubber,
+     .error .loading {
+         display: none;
+     }
+     .error .error {
+         display: block;
+     }
+     .error .play-pause p {
+         cursor: auto;
+     }
+     .error .error-message {
+         display: block;
+     }
+.music_player{padding:10px;}
+.music_player a {
+	display:block;
+	padding:5px;
+	margin-bottom:5px;
+	margin-top:5px;
+	border-bottom:1px solid rgba(0,0,0,0.1);
+	text-shadow:0 1px 1px rgba(255,255,255,0.5);
+}
+.music_player .audiojs {}
+
+.music_player .audiojs p{margin:0;}
+
+.music_player a.playing{color:white;text-shadow:0 1px 1px rgba(0,0,0,0.3);background-color:rgba(0,0,0,0.4);border-radius:3px;padding:10px;}
+.music_player a.playing:hover{color:#cef;}

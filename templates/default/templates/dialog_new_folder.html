@@ -1,0 +1,16 @@
+
+		<div class="dialog" id="New_folder_box" onmousemove="document.getElementById('new_folder').focus();">
+			<figure>
+				<a href="#" class="closemsg"></a>
+				<figcaption>
+					<h1>#Create_new_folder</h1>
+				    <form action="index.php" method="get"><br/>
+						<input type="text" id="new_folder" name="newfolder"  class="npt"  value="" title="#Create_folder_title" placeholder="#New_folder"  required/>
+						<input type="hidden" name="token" value="#TOKEN" />
+						<input type="hidden" name="p" value="admin" />
+						<br/>
+						<input id="submit" type="submit" value="Ok" class="btn" />
+				    </form>
+				</figcaption>
+			</figure>
+		</div>

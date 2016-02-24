@@ -1,0 +1,34 @@
+/* Users List */
+#userslist p {
+  width: calc(100% - 8px);
+  text-align: center;
+}
+
+#userslist ul {
+  width: 312px;
+  margin: 15px auto 0 auto;
+}
+
+#userslist ul li {
+  display: block;
+}
+
+#userslist ul li input,
+#userslist ul li span {
+  display: block;
+  float: left;
+}
+
+#userslist ul li span {
+  width: calc(100% - 20px);
+  word-wrap: break-word;
+}
+
+#userslist .clear {
+  padding-top: 15px;
+}
+
+#userslist #submit {
+  display: block;
+  margin: 15px auto 0 auto;
+}
