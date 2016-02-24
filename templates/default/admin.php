@@ -152,4 +152,5 @@
 
 
 </div>
+<script type="text/javascript" src="core/js/scrolltotop.js"></script>
 <script src="core/js/sorttable.js"></script>
