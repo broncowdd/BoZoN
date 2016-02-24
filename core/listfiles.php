@@ -128,7 +128,7 @@ if (count($liste)>0){
 			if (is_dir($fichier)){
 				# Item is a folder
 				if (only_image($fichier) || only_sound($fichier)){$icone_visu='<a class="visu" href="index.php?f='.$id.'" title="'.e('View this share',false).'">&nbsp;</a>';}				
-				$taille=folder_size($fichier);
+				if (isset($allow_folder_size_stat)&&$allow_folder_size_stat){$taille=folder_size($fichier);}else{$taille='';}
 				$array=array(
 					'#CLASS'			=> $class,
 					'#ID'				=> $id,
