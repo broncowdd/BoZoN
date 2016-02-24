@@ -17,6 +17,7 @@
 	$default_limit_stat_file_entries=10000;
 	$default_aspect='list'; 									# «icon»/«list»
 	$default_mode='view'; 										# «view»/«links»/«move»
+	$allow_folder_size_stat=true;								# show folder size 
 	$gallery_thumbs_width=256;
 	$default_profile_folder_max_size=50; 						# false = infinite or specify in MB
 ?>
