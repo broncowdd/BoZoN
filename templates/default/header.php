@@ -24,14 +24,16 @@
     <span id="icons">
       <a class="home" href="index.php" title="<?php e('Home');?>">&nbsp;</a>
       <?php
-        if (function_exists('is_user_admin')&&is_user_admin()&&empty($_GET['f'])){
-          generate_users_list_link(e('Users list',false));
-          generate_new_users_link(e('New user',false));
-          echo '<a class="log_file" href="index.php?p=stats&token='.returnToken().'" class="log_link" title="'.e('Access log file',false).'">&nbsp;</a>';
-        }
-        if (is_user_connected()){
-          generate_new_password_link(e('Change password',false));
-          echo '<a href="#" id="upload_button" onclick="toggleClass(\'#upload\',\'hidden\')" ondragenter="toggleClass(\'#upload\',\'hidden\')" title="'.e('Click or dragover to reveal dropzone',false).'">Upload</a>';
+       if (empty($_GET['f'])){
+          if (function_exists('is_user_admin')&&is_user_admin()&&empty($_GET['f'])){
+            generate_users_list_link(e('Users list',false));
+            generate_new_users_link(e('New user',false));
+            echo '<a class="log_file" href="index.php?p=stats&token='.returnToken().'" class="log_link" title="'.e('Access log file',false).'">&nbsp;</a>';
+          }
+          if (is_user_connected()){
+            generate_new_password_link(e('Change password',false));
+            echo '<a href="#" id="upload_button" onclick="toggleClass(\'#upload\',\'hidden\')" ondragenter="toggleClass(\'#upload\',\'hidden\')" title="'.e('Click or dragover to reveal dropzone',false).'">Upload</a>';
+          }
         }
       ?>
     </span>
