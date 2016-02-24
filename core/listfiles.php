@@ -30,7 +30,7 @@ if (empty($_SESSION['current_path'])){
 	$path_list=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].addslash_if_needed($_SESSION['current_path']);
 }
 $liste=_glob($path_list,$mask);
-$size_folder=folder_size($path_list);
+if ($allow_folder_size_stat){$size_folder=folder_size($path_list);}
 
 if ($mode=='links'){
 	# Add lock dialogbox to the page
@@ -220,10 +220,10 @@ if (count($liste)>0){
 	}
 	echo $shared_folders.$folderlist.$filelist;
 	if ($layout=='list'){
-		echo '<tfoot><tr>'.$column.'<td class="table_image"></td><td class="table_filename" style="text-align:right">Total:</td><td id="folder_size">'.$size_folder.'</td><td></td></tr></tfoot>';
+		if (!empty($size_folder)){echo '<tfoot><tr>'.$column.'<td class="table_image"></td><td class="table_filename" style="text-align:right">Total:</td><td id="folder_size">'.$size_folder.'</td><td></td></tr></tfoot>';}
 		echo '</table>';
 		echo $form_footer;
-	}else{echo '<div id="folder_size">'.e('Foldersize',false).': '.$size_folder.'</div>';}
+	}elseif (!empty($size_folder)){echo '<div id="folder_size">'.e('Foldersize',false).': '.$size_folder.'</div>';}
 	if ($save){store($ids);} // save in case of new files
 }else{echo '<div id="nofile">'.e('No file in your personal folder',false).'</div>';}
 
