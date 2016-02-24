@@ -1,8 +1,13 @@
-
-		<li class="#EXTENSION #CLASS" title="#TITLE">							
-			<a href="#selecttarget" onclick="put_file('#SLASHEDFICHIER')">
-				<img src="index.php?f=#ID&thumbs" style="background:transparent;"/>
-				<em>#NAME</em> <em>[ #SIZE ko ]</em>
-			</a>
-		</li>
-	
+		<tr class="#EXTENSION #CLASS" title="#TITLE">
+			<td class="table_image">
+				<a href="#selecttarget" onclick="put_file('#SLASHEDFICHIER')">
+					<img src="index.php?f=#ID&thumbs" style="background:transparent;"/>
+				</a>
+			</td>
+			<td class="table_filename">
+				<a href="#selecttarget" onclick="put_file('#SLASHEDFICHIER')">#NAME</a>
+			</td>
+			<td class="table_filesize">#SIZE</td>
+			<td class="table_buttons"></td>
+			</tr>
+		</tr>

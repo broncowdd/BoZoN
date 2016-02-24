@@ -1,14 +1,15 @@
 
-		<li class="#EXTENSION #CLASS" title="#TITLE">
-			<div class="buttons">
-				<a class="locked" title="#tooltip_lock" href="#locked" onclick="put_id('#ID')">&nbsp;</a>
-				<a class="burn" title="#tooltip_burn" href="index.php?p=admin&burn=#ID&token=#TOKEN">&nbsp;</a>
-				<a class="renew" title="#tooltip_renew" href="index.php?p=admin&renew=#ID&token=#TOKEN">&nbsp;</a>
-				<a class="qrcode" href="#qrcode" onclick="qrcode('#ID')">&nbsp;</a>
-			</div>
-			<a href="index.php?f=#ID" download="#NAME">
-				<img src="index.php?f=#ID&thumbs" style="background:transparent;"/>
-				<em>#NAME</em> <em>[ #SIZE ko ]</em>
-			</a>
-		</li>
-	
+		<tr class="#EXTENSION #CLASS" title="#TITLE">
+			<td class="table_image"><a href="index.php?f=#ID" download="#NAME" ><img src="index.php?f=#ID&thumbs" style="background:transparent;"/></a></td>
+			<td class="table_filename"><a href="index.php?f=#ID" download="#NAME" >#NAME</a></td>
+			<td class="table_filesize">#SIZE</td>
+			<td class="table_buttons">
+					<a class="locked" title="#tooltip_lock" href="#locked" onclick="put_id('#ID')">&nbsp;</a>
+					<a class="burn" title="#tooltip_burn" href="index.php?p=admin&burn=#ID&token=#TOKEN">&nbsp;</a>
+					<a class="renew" title="#tooltip_renew" href="index.php?p=admin&renew=#ID&token=#TOKEN">&nbsp;</a>
+					<a class="link" title="#tooltip_link" onclick="put_link('#ID');" href="#link_box">&nbsp;</a>
+					<a class="qrcode" href="#qrcode" onclick="qrcode('#ID')">&nbsp;</a>
+				
+			</td>
+			</tr>
+		</tr>	

@@ -5,7 +5,10 @@
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
 
+
 start_session();
+if (!empty($_SESSION['ERRORS'])){echo '<div class="error">'.strip_tags($_SESSION['ERRORS']).'</div>';unset($_SESSION['ERRORS']);}
+folder_usage_draw($_SESSION['login'],$mode=3);
 $layout=$_SESSION['aspect'];
 $shared_folders='';
 if (!function_exists('store')){
@@ -13,26 +16,24 @@ if (!function_exists('store')){
 	if (!function_exists('newToken')){require_once('core/auto_restrict.php');} # Admin only!
 }
 include("core/auto_thumb.php");
-$lb_token=returnToken();
-echo str_replace('#TOKEN',$lb_token,$templates['link_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['rename_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['delete_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['new_folder_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['download_url_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['qrcode_lightbox']);
-echo str_replace('#TOKEN',$lb_token,$templates['share_lightbox']);
+
+
 
 // Configuration
 $upload_path_size=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
 if (empty($_SESSION['mode'])){$mode='view';}else{$mode=$_SESSION['mode'];}
 if (empty($_SESSION['filter'])){$mask='*';}else{$mask='*'.$_SESSION['filter'].'*';}
 if (empty($_SESSION['current_path'])){
-	$liste=_glob($_SESSION['upload_root_path'].$_SESSION['upload_user_path'],$mask);
+	$path_list=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'];
+	
 }else{
-	$liste=_glob($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].addslash_if_needed($_SESSION['current_path']),$mask);
+	$path_list=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].addslash_if_needed($_SESSION['current_path']);
 }
+$liste=_glob($path_list,$mask);
+$size_folder=folder_size($path_list);
+
 if ($mode=='move'){
-	# Prépare folder tree 
+	# Prepare folder tree 
 	$select_folder='<select name="destination" class="folder_list button"><option value="">'.e('Choose a folder',false).'</option>';
 	$folders_list=tree($_SESSION['upload_root_path'].$_SESSION['upload_user_path'],false);
 	$folders_list[0].='/';
@@ -46,20 +47,20 @@ if ($mode=='move'){
 			'#LIST_FILES_SELECT'	=> $select_folder,
 			'#TOKEN'				=> returnToken(),
 		);
-	echo template('move_lightbox',$array);
+	echo template('dialog_move',$array);
 }
 if ($mode=='links'){
 	# Add lock dialogbox to the page
 	$array=array(
 		'#TOKEN'	=> returnToken()
 	);
-	echo template('password_lightbox',$array);
+	echo template('dialog_password',$array);
 }
 if ($mode=='view'){
 	# Add shares from others users 
 	$shared_with=load_folder_share();
 	if (!empty($shared_with[$_SESSION['login']])){
-		$shared_folders.= '<ul class="shared_folders">';
+		$shared_folders.= '<div class="shared_folders">';
 		foreach($shared_with[$_SESSION['login']] as $id=>$data){
 			$folder=basename($data['folder']);
 			$array=array(
@@ -71,9 +72,10 @@ if ($mode=='view'){
 				'#FROM'			=> $data['from'],
 			);
 			$shared_folders.= template($mode.'_shared_folder_'.$layout,$array);
+			
 		}
-		$shared_folders.= '</ul>';
-		echo $shared_folders;
+		$shared_folders.= '</div>';
+		
 	}
 }
 $save=false;
@@ -82,7 +84,6 @@ if (count($liste)>0){
 	$files=array_flip($ids);
 	$folderlist='';
 	$filelist='';
-
 
 
 	foreach ($liste as $fichier){
@@ -98,7 +99,7 @@ if (count($liste)>0){
 
 		}
 		if ($nom!='index.html'){
-			$taille=round(filesize($fichier)/1024,2);
+			$taille=sizeconvert(filesize($fichier));
 			if (!empty($files[$fichier])){$id=$files[$fichier];}
 			else{$id=$files[$nom_racine];}
 			$class='';$title='';
@@ -107,20 +108,28 @@ if (count($liste)>0){
 				# add class burn id after access 
 				$class='burn';
 				$title=e('The user can access this only one time', false);
-			}else
-			if (strlen($id)>strlen(uniqid(true))){
+			}elseif (strlen($id)>strlen(uniqid(true))){
 				# add class password protected 
 				$class='locked';
 				$title=e('The user can access this only with the password', false);
 			}
+
 			$extension=strtolower(pathinfo($fichier,PATHINFO_EXTENSION));
 			if (visualizeIcon($extension)){
-					$icone_visu='<a class="visu" href="index.php?f='.$id.'" target="_BLANK" title="'.e('View this file',false).'">&nbsp;</a>';
-				}else{$icone_visu='';}
+				if(@is_array(getimagesize($fichier))){$type='img';}else{$type='iframe';}
+				$icone_visu='<a class="visu" data-type="'.$type.'" data-group="lb" href="index.php?f='.$id.'" title="'.e('View this share',false).'">&nbsp;</a>';
+			}elseif($extension=='m3u'){
+				$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+				$icone_visu='<a class="visu" title="'.e('View this file',false).'" onclick="" href="#m3u">&nbsp;</a>';
+			}elseif($extension=='txt'||$extension=='nfo'||$extension=='md'){
+				$icone_visu='<a class="visu"  data-type="iframe" data-group="lb" href="index.php?f='.$id.'&amp;view" title="'.e('View this file',false).'">&nbsp;</a>';
+			}else{$icone_visu='';}
 			$fichier_short=substr($fichier,$upload_path_size);
+
 			if (is_dir($fichier)){
-				# Item is a folder				
-				$taille=count(_glob($fichier.'/'));
+				# Item is a folder
+				if (only_image($fichier) || only_sound($fichier)){$icone_visu='<a class="visu" href="index.php?f='.$id.'" title="'.e('View this share',false).'">&nbsp;</a>';}				
+				$taille=folder_size($fichier);
 				$array=array(
 					'#CLASS'			=> $class,
 					'#ID'				=> $id,
@@ -129,8 +138,9 @@ if (count($liste)>0){
 					'#SIZE'				=> $taille,
 					'#NAME'				=> $nom,
 					'#TITLE'			=> $title,
+					'#ICONE_VISU'		=> $icone_visu,
 					'#SLASHEDNAME'		=> addslashes($nom),
-					'#SLASHEDFICHIER'	=> addslashes($fichier),
+					'#SLASHEDFICHIER'	=> addslashes($fichier_short),
 				);
 				$folderlist.= template($mode.'_folder_'.$layout,$array);
 			}elseif ($extension=='gif'||$extension=='jpg'||$extension=='jpeg'||$extension=='png'){
@@ -187,51 +197,34 @@ if (count($liste)>0){
 		
 		}
 	}
-	echo $folderlist.$filelist;
+	if ($mode=='view'){
+		$column='<td class="table_check"></td>';
+		$form_header='<form id="multiselect" action="#" method="POST"><input type="hidden" name="token" value="'.returnToken().'"/>';
+		$form_footer='</form>';
+	}else{
+		$column=$form_header=$form_footer='';
+	}
+	if ($layout=='list'){
+		echo $form_header;
+		echo '
+		<table class="sortable">
+		<thead>
+			<tr>
+				<th class="table_check sorttable_nosort"><input type="checkbox" id="check_all" title="'.e('Check all',false).'"/></th>
+				<th class="table_image sorttable_nosort">&nbsp;</th>
+				<th class="table_filename">'.e('Filename',false).'</th>
+				<th class="table_filesize">'.e('Filesize',false).'</th>
+				<th class="table_buttons sorttable_nosort">&nbsp;</th>
+			</tr>
+		</thead>';
+	}
+	echo $shared_folders.$folderlist.$filelist;
+	if ($layout=='list'){
+		echo '<tfoot><tr>'.$column.'<td class="table_image"></td><td class="table_filename" style="text-align:right">Total:</td><td id="folder_size">'.$size_folder.'</td><td></td></tr></tfoot>';
+		echo '</table>';
+		echo $form_footer;
+	}else{echo '<div id="folder_size">'.e('Foldersize',false).': '.$size_folder.'</div>';}
 	if ($save){store($ids);} // save in case of new files
-}else{e('No file in your personal folder');}
+}else{echo '<div id="nofile">'.e('No file in your personal folder',false).'</div>';}
 
 ?>
-<script src="core/qr.js"></script>
-<script>
-	function get(url){	
-		request = new XMLHttpRequest();request.open('GET', url, false);
-		request.send();
-		return request.responseText;
-	}
-
-	function put_file(fichier){
-		document.getElementById('filename').value=fichier;
-		document.getElementById('filename_hidden').value=fichier;
-	}
-	function put_id(id){document.getElementById('ID_hidden').value=id;}
-	function put_link(id){document.getElementById('link').value="<?php echo $_SESSION['home'];?>?f="+id;}
-	function put_file_and_id(id,file){
-		document.getElementById('FILE_Rename').value=file;
-		document.getElementById('ID_Rename').value=id;
-	}
-	function share(id,file){
-		document.getElementById('ID_folder').innerHTML=file;
-		document.getElementById('ID_share').value=id;
-		document.getElementById('Users_list').innerHTML=get('index.php?users_share_list='+id+'&token=<?php newToken(true);?>');
-
-	}
-	function suppr(id){	document.getElementById('ID_Delete').value=id;}
-
-// function inspired by Timo http://lehollandaisvolant.net/tout/tools/qrcode/
-function qrcode(id) {
-	var data = "<?php echo $_SESSION['home'];?>?f="+id;
-	var options = {ecclevel:'M'};
-	var url = QRCode.generatePNG(data, options);
-	document.getElementById('qrcode_img').src = url;
-	return false;
-}
-
-
-function downloadImage() {
-	data = document.getElementById('outputimg').src;
-	document.getElementById('outputlink').href = data;
-}
-
-
-</script>

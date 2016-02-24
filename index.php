@@ -4,12 +4,15 @@
 	* joins all bozon parts and handles requests
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
-if (is_file('import.php')){header('location: import.php');}
 require('core/core.php');
 require('core/commands_GET_vars.php');# handle no html content requests
 
 
-if (is_admin_connected()){
+if (is_user_connected()){
+	# users list request
+	if (isset($_GET['users_list'])&&is_admin()){
+		$_GET['p']='users';unset($_GET['users_list']); # To avoid useless changes in auto_restrict
+	}
 	# if admin is connected, use auto_restrict
 	require_once('core/auto_restrict.php');
 	$token=returnToken();
@@ -28,6 +31,7 @@ if (is_admin_connected()){
 }else{$token='';}
 
 if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
+if (!empty($_GET['msg'])){$message=$_GET['msg'];}
 if (!empty($_GET['lang'])){$_SESSION['language']=$_GET['lang'];header('location:index.php?p='.$page.'&token='.$token);}
 if (!empty($_GET['aspect'])){$_SESSION['aspect']=$_GET['aspect'];header('location:index.php?p='.$page.'&token='.$token);}
 	
@@ -35,14 +39,9 @@ if (!empty($_GET['aspect'])){$_SESSION['aspect']=$_GET['aspect'];header('locatio
 
 	
 require(THEME_PATH.'/header.php');
-	# users list request
-	if (isset($_GET['users_list'])){
-		echo '<div class="w1000">';
-		generate_users_formlist(e('Users list',false),e('Check users to delete account and files',false));// auto_restrict function
-		echo '</div>';
-	}
+	if (!empty($message)){echo '<div class="info">'.$message.'</div>';}
 	# page request
-	elseif (!empty($page)&&is_file(THEME_PATH.$page.'.php')){
+	if (!empty($page)&&is_file(THEME_PATH.$page.'.php')){
 		# request for a specific page
 		include(THEME_PATH.$page.'.php');
 	}else{
@@ -51,4 +50,5 @@ require(THEME_PATH.'/header.php');
 	}
 	
 require(THEME_PATH.'/footer.php');
+$_SESSION['ERRORS']='';
 ?>

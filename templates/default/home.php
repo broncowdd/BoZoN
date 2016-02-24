@@ -1,34 +1,76 @@
-		<div class="w1000">
-		<h1><?php e('BoZoN is a simple filesharing app.');?></h1>
-		<h2><?php e('Easy to install, free and opensource');?></h2>
-		<p><?php e('Just copy BoZoN\'s files on your server. That\'s it.');?> </p>
-		<br/>
-		<p class="center">
-			<img src="<?php echo THEME_PATH;?>img/logo_agpl.png" alt="logo agpl"/>
-			<img src="<?php echo THEME_PATH;?>img/logo_php.png" alt="logo php"/>
-			<img src="<?php echo THEME_PATH;?>img/logo_js.png" alt="logo js"/>
-			<img src="<?php echo THEME_PATH;?>img/logo_css.png" alt="logo css"/>
-			<img src="<?php echo THEME_PATH;?>img/logo_html.png" alt="logo css"/>
-		</p>
-		
-		<p><?php e('You can freely fork BoZoN and use it as specified in the AGPL licence');?> (<a href="http://www.gnu.org/licenses/agpl-3.0.fr.html" alt="link to AGPL"><?php e('More info');?></a> - <a href="https://github.com/broncowdd/BoZoN" alt="github link">Github</a>) </p>
-		<h2><?php e('Easy to use !');?></h2>
-			<ul>
-				<div class="w50"><img class="big" src="<?php echo THEME_PATH;?>img/bozondd.png"/><p><?php e('Drag the file you want to share to upload it on the server');?></p></div>
-				<div class="w50"><img class="big" src="<?php echo THEME_PATH;?>img/bozoncc.png"/><p><?php e('Share the link with your friends');?></p></div>
-				<div style="clear:both"></div>
-			</ul>
-		<h2><?php e('BoZoN can do more !');?></h2>
-		<p>
-			<ul>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/locked_big.png" alt="lock icon"/><span><?php e('Lock the access to the file/folder with a password');?></span></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/burn_big.png" alt="burn icon"/><span><?php e('Share a file or a folder with a unique acces link with the «burn mode»:');?></span></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/renew_big.png" alt="renew icon"/><span><?php e('Renew a share link with a single clic');?></span></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/zipfolder_big.png" alt="upload zip folder icon"/><span><?php e('Download a folder content into a zip');?></span></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/smartphone_big.png" alt="smartphone icon"/><span><?php e('Acces to BoZoN on smartphone without any specific app: your browser is enougth');?></span></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/unzipfolder_big.png" alt="unzip folder icon"/><span><?php e('To upload a folder, just zip and upload it: with one clic it will be turned into a folder on the server.');?></span></li>
-			<li class="middle"><img class="medium" src="<?php echo THEME_PATH;?>img/design_big.png" alt="design icon"/><span><?php e('Modify the templates & style to make your own BoZoN');?></span></li>
-			</ul>
-		</p>	
-
-		</div>
+<div id="home">
+  <div id="center">
+  	<h1><?php e('BoZoN is a simple filesharing app.'); ?></h1>
+  	<p><?php e('Easy to install, free and opensource'); ?></p>
+  	<p><?php e('Just copy BoZoN\'s files on your server. That\'s it.'); ?> </p>
+  	<p id="logos">
+  		<img src="<?php echo THEME_PATH;?>img/home/logo_php.png" alt="logo php"/>
+  		<img src="<?php echo THEME_PATH;?>img/home/logo_js.png" alt="logo js"/>
+  		<img src="<?php echo THEME_PATH;?>img/home/logo_css.png" alt="logo css"/>
+  		<img src="<?php echo THEME_PATH;?>img/home/logo_html.png" alt="logo css"/>
+  	</p>
+  	
+    <div id="agpl">
+  	  <p><?php e('You can freely fork BoZoN and use it as specified in the AGPL licence'); ?> (<a title="AGPL 3" href="http://www.gnu.org/licenses/agpl-3.0.fr.html" target="_blank"><?php e('More info'); ?></a>)</p>
+  	  <p class="img"><img src="<?php echo THEME_PATH; ?>img/home/logo_agpl.png" alt="logo agpl" /></p>
+  	</div>
+  </div>
+  
+  <div id="easy">
+  	<h2><?php e('Easy to use!'); ?></h2>
+  	<div id="notes">
+  		<div>
+        <img class="big" src="<?php echo THEME_PATH;?>img/home/tosend.png" alt="" />
+        <p><?php e('Drag the file you want to share to upload it on the server'); ?></p>
+      </div>
+  		<div>
+        <img class="big" src="<?php echo THEME_PATH; ?>img/home/toshare.png" alt="" />
+        <p><?php e('Share the link with your friends'); ?></p></div>
+  	</div>
+  	
+  	<div id="more">
+  	<h2><?php e('BoZoN can do more!'); ?></h2>
+  	<ul>
+	  	<li>
+	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/nodb.png" alt="lock icon"/></span>
+	        <span class="text"><?php e('No database: easy to backup or move to a new server.'); ?></span>
+	    </li>
+	  	<li>
+	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/locked.png" alt="lock icon"/></span>
+	        <span class="text"><?php e('Lock the access to the file/folder with a password.'); ?></span>
+	    </li>
+	  	<li>
+	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/burn.png" alt="burn icon"/></span>
+	        <span class="text"><?php e('Share a file or a folder with a unique acces link with the «burn mode»:'); ?></span>
+	    </li>
+	  		<li>
+	        <span class="img"><img class="medium" src="<?php echo THEME_PATH; ?>img/home/renew.png" alt="renew icon"/></span>
+	        <span class="text"><?php e('Renew a share link with a single clic'); ?></span>
+	    </li>
+	  	<li>
+	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/zipfolder.png" alt="upload zip folder icon"/></span>
+	        <span class="text"><?php e('Download a folder content into a zip'); ?></span>
+	    </li>
+	    <li>
+	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/smartphone.png" alt="smartphone icon"/></span>
+	        <span class="text"><?php e('Acces to BoZoN on smartphone without any specific app: your browser is enougth'); ?></span>
+	    </li>
+	  		<li>
+	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/qrcode.png" alt="qrcode icon"/></span>
+	        <span class="text"><?php e('Use a qrcode to share your link with smartphone users.'); ?></span>
+	    </li>
+	    <li>
+	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/users.png" alt="users icon"/></span>
+	        <span class="text"><?php e('Add, remove users and manage their rights'); ?></span>
+	    </li>
+	  		<li>
+	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/unzipfolder.png" alt="unzip folder icon"/></span>
+	        <span class="text"><?php e('To upload a folder, just zip and upload it: with one clic it will be turned into a folder on the server.'); ?></span>
+	    </li>
+	  	<li>
+	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/design.png" alt="design icon"/></span>
+	        <span class="text"><?php e('Modify the templates & style to make your own BoZoN'); ?></span>
+	    </li>
+  	</ul>
+  </div>
+</div>

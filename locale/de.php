@@ -1,5 +1,5 @@
 <?php
-# GERMAN
+# GERMAN (thx to ankerfest  ankerfest)
 	$lang=array(
 		# Home text
 		'Easy to install, free and opensource'=>'Einfach zu installieren, gratis und Open Source',
@@ -74,7 +74,7 @@
 		'This share is protected, please type the correct password:'=>'Diese Freigabe ist passwortgesichert, bitte gib das richtige Passwort ein: ',
 		'Root'=>'Root',
 		'Share link'=>'Freigabe-Link',
-		'View this file'=>'Datei öffnen',
+		'View this share'=>'Datei öffnen',
 		'Delete this file'=>'Datei löschen',
 		'Get the share link'=>'Freigabe-Link generieren',
 		'Rename this file (share link will not change)'=>'Datei umbenennen (Freigabe-Link bleibt unverändert)',

@@ -203,6 +203,8 @@
 	} 
 	// ------------------------------------------------------------------
 
+
+
 	// ------------------------------------------------------------------
 	// if here, there was no security problem.
 	// Now, if there is an admin password post data,
@@ -234,7 +236,7 @@
 		}
 	}
 
-
+	
 
 
 
@@ -371,7 +373,9 @@
 			if ($user['login']===$login_donne && $user['pass']===hash('sha512', $user["salt"].$pass_donne)){
 				$_SESSION['id_user']=chiffre(id_user(),$user['encryption_key']);
 				$_SESSION['login']=$user['login'];	
-				$_SESSION['expire']=time()+(60*$auto_restrict['session_expiration_delay']);			
+				$_SESSION['expire']=time()+(60*$auto_restrict['session_expiration_delay']);	
+				$admin=first($auto_restrict['users']);
+				$_SESSION['admin']=$admin['login'];
 				return true;
 			}
 		}
@@ -572,14 +576,15 @@
 		if (!is_user_admin()){return false;}
 		echo '<h1>'.$text.'</h1><h2>'.$text2.'</h2><form action="" method="POST" class="auto_restrict_users_list"><ol>';
 		foreach ($auto_restrict['users'] as $key=>$user){
+			if ($user['login']==$_SESSION['admin']){$class=' class="admin" title="admin"';}else{$class='';}
 			echo '<li>';
-				echo '<label>';
+				echo '<label '.$class.'>';
 				echo '<input type="checkbox" name="user_key[]" value="'.$key.'"/>';
 				newToken();
 				echo $user['login'];
 			echo '</li>';
 		}
-		echo '</ol><input type="submit" value="Ok"/></form>';
+		echo '</ol><input type="submit" value="Ok" class="btn red"/></form>';
 	}
 
 	function safe_redirect($url=none){
@@ -601,7 +606,6 @@
 	}
 	// creates the secured link to new password form
 	function generate_new_password_link($text='Change password'){
-		if (!is_user_admin()){return false;}
 		echo '<a class="auto_restrict_new_password_link" href="index.php?p=login&change_password&token='.returnToken().'" alt="link to a new password" title="'.$text.'">&nbsp;</a>';
 	}
 	function first($array){

@@ -23,9 +23,10 @@ $replacement=array(
 	'#To'=>e('To',false),
 	'#Lock_access'=>e('Lock access',false),
 	'#Please_give_a_password'=>e('Please give a password to lock access to this file',false),
-	'#Rename_file'=>e('Rename this file ?',false),
-	'#Rename'=>e('Rename this file ?',false),
-	'#Delete_file'=>e('Delete this file ?',false),
+	'#Rename_file'=>e('Rename this file?',false),
+	'#Rename_item'=>e('Rename this item?',false),
+	'#Rename'=>e('Rename',false),
+	'#Delete_item'=>e('Delete this item?',false),
 	'#Delete'=>e('Delete',false),
 	'#Share_folder'=>e('Share folder',false),
 	'#Share_link'=>e('Share link',false),
@@ -36,9 +37,12 @@ $replacement=array(
 	'#Move_to'=>e('Move this file to another directory',false),
 	'#Create_new_folder'=>e('Create a subfolder',false),
 	'#Create_folder_title'=>e('Create a subfolder in this folder',false),
-	'#New_folder'=>e('New_folder',false),
+	'#New_folder'=>e('New folder',false),
 	'#paste_url'=>e('Paste a file\'s URL',false),
 	'#paste_url_title'=>e('Paste a file\'s URL to get it on this server',false),
+	'#Read_m3u_playlist'=>e('Read m3u playlist',false),
+	'#local_filename'=>e('Force local filename (leave empty=no change)',false),
+	'#filename'=>e('filename (optionnal)',false),
 
 );
 if (!empty($token)){

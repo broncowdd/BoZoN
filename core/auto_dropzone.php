@@ -1,7 +1,7 @@
 <?php
 if (session_id()==''){session_start();}
 if (!is_file('core.php')){$path_core='core/';}else{$path_core='';}
-/* Auto_dropzone.php v1.2 # Version Bozon !!!!!!!!!
+/* Auto_dropzone.php v1.3 # Version Bozon !!!!!!!!!
     author: Bronco
     email: bronco@warriordudimanche.net
     web: http://warriordudimanche.net
@@ -16,17 +16,6 @@ if (!is_file('core.php')){$path_core='core/';}else{$path_core='';}
     - handle form upload errors
     - handle minimal filesize (script config/php.ini value)
     - handle automatic refresh when no errors
-
-    todo:
-    ----------------------------------------------
-    * fallback for old browsers ?
-    * selective uploads paths (depending on mime): if destination_filepath is an array(mime=>path) ->  adapt behaviour.
-
-
-    How to use it ?
-    ----------------------------------------------
-    just include this file in your project: the script generates the dropzone and handles the upload.
-    If you need, you can configure it like explained below
 
     configuration / init
     ----------------------------------------------
@@ -88,8 +77,9 @@ if (strpos($ini_max_post,'G')!=false){$ini_max_post=intval($ini_max_post*1024);}
 else{$ini_max_post=intval($ini_max_post);}
 
 $max=min($auto_dropzone['max_length'],$ini_max_upload,$ini_max_post);
-
-
+$_SESSION['max_size']=$max;
+$file_length_error=e('Error, max filelength:',false).' '.$max.' Mo';
+$file_format_error=e(': Error, forbidden file format !',false);
 
 $auto_dropzone_error=false;
 
@@ -106,12 +96,12 @@ if ($_FILES){
     function error2msg($e){
         if ($e>0&&$e<7){
             $errors=array(
-                1=>'The file to big for the server\'s config',
-                2=>'The file to big for this page',
-                3=>'There was a problem during upload (file was truncated)',
-                4=>'No file upload',
-                5=>'No temp folder',
-                6=>'Write error on server',
+                1=>e('The file to big for the server\'s config',false),
+                2=>e('The file to big for this page',false),
+                3=>e('There was a problem during upload (file was truncated)',false),
+                4=>e('No file upload',false),
+                5=>e('No temp folder',false),
+                6=>e('Write error on server',false),
             );
             return $errors[$e];
         }else if ($e>7){return true;}
@@ -122,13 +112,29 @@ if ($_FILES){
     }
 
     
-    if (isset($_FILES['myfile']) && strtolower($_FILES['myfile']['name'])!="index.html") { 
+    if (isset($_FILES['myfile']) && strtolower($_FILES['myfile']['name'])!="index.html") {
         $sFileName = secure($_FILES['myfile']['name']);
         $sFileType = $_FILES['myfile']['type'];
         $sFileSize = intval(bytesToSize1024($_FILES['myfile']['size'], 1));
         $sFileError = error2msg($_FILES['myfile']['error']);
         $sFileExt  = pathinfo($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$sFileName,PATHINFO_EXTENSION);
         
+        #########################################################################
+        # ADDED FOR BOZON
+        #########################################################################        
+        if (!function_exists('folder_fit')){include($path_core.'core.php');}
+        if (!folder_fit(null,$_FILES['myfile']['size'],$_SESSION['login'])){
+            # uploaded file doesn't fit in user's folder
+            if (!isset($_SESSION['ERRORS'])){$_SESSION['ERRORS']='';}
+            $error='<li class="DD_file DD_error">   
+            <span class="DD_filename">'.$sFileName.'</span>
+            [<em class="DD_filetype">'.$sFileType.'</em>, 
+            <em class="DD_filesize">'.$sFileSize.'</em>] '.e('The file doesn\'t fit',false).'
+            </li>';
+            $_SESSION['ERRORS'].=$error;
+            exit($error);
+        }
+        #########################################################################
 
         $ok='<li class="DD_file DD_success '.$sFileExt.'">   
             <span class="DD_filename">'.$sFileName.'</span>
@@ -138,7 +144,7 @@ if ($_FILES){
         $notok='<li class="DD_file DD_error">   
             <span class="DD_filename">'.$sFileName.'</span>
             [<em class="DD_filetype">'.$sFileType.'</em>, 
-            <em class="DD_filesize">'.$sFileSize.'</em>] [UPLOAD ERROR !]
+            <em class="DD_filesize">'.$sFileSize.'</em>] '.e('Upload error',false).'
         </li>';
         if (
             is_array($auto_dropzone['destination_filepath'])
@@ -168,7 +174,7 @@ if ($_FILES){
             $file=$sFileName;
             $sFileName = $auto_dropzone['destination_filepath'].$sFileName;
             if (is_file($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$sFileName)){
-                $newfilename=rename_item($file);
+                $newfilename=rename_item($file,$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$auto_dropzone['destination_filepath']);
                 echo '<li class="DD_file DD_warning"><span class="DD_filename">'.$file.' => '.$newfilename.' </span></li>';
                 $sFileName=$auto_dropzone['destination_filepath'].$newfilename;
             }
@@ -221,24 +227,25 @@ if ($_FILES){
         ';
     }
 ?>
+        <div style="clear:both"></div>
+        <div id="upload" class="hidden">
+            <div class="<?php echo $auto_dropzone['dropzone_class']; ?> DD_dropzone" id="<?php echo $auto_dropzone['dropzone_id'];?>">
+                <header class="DD_text"><?php echo $auto_dropzone['dropzone_text'];?><br/><em>(max:<?php echo $max;?> Mo)</em></header>
 
-        <div class="<?php echo $auto_dropzone['dropzone_class']; ?> DD_dropzone" id="<?php echo $auto_dropzone['dropzone_id'];?>">
-            <header class="DD_text"><?php echo $auto_dropzone['dropzone_text'];?><br/><em>(max:<?php echo $max;?> Mo)</em></header>
-
-            <div class="DD_info">
-                <div id="result"></div>
-                <div id="DD_progressbar"></div>
+                <div class="DD_info">
+                    <div id="result"></div>
+                    <div id="DD_progressbar"></div>
+                </div>
             </div>
+            <form action="#" method="post" enctype="multipart/form-data" id="DD_fallback_form" >
+                <input type="file" name="myfile" id="fileToUpload" class="DD_hidden"/>
+                <input type="hidden" value="fallback" name="fallback"/>
+                <input type="submit" id="DD_submit" class="DD_hidden"/>
+            </form>
         </div>
-        <form action="#" method="post" enctype="multipart/form-data" id="DD_fallback_form" >
-            <input type="file" name="myfile" id="fileToUpload" class="DD_hidden"/>
-            <input type="hidden" value="fallback" name="fallback"/>
-            <input type="submit" id="DD_submit" class="DD_hidden"/>
-        </form>
 
     <script>
-        document.body.addEventListener("dragover",function(e){
-         
+        document.body.addEventListener("dragover",function(e){         
           e.preventDefault();
         },false);
         document.body.addEventListener("drop",function(e){
@@ -259,7 +266,7 @@ if ($_FILES){
            //reload list
             var request = new XMLHttpRequest();
             request.open('GET','index.php?refresh&token=<?php newToken(true);?>', true);
-            target=document.getElementById('liste');
+            target=document.getElementById('list_files');
             request.onload = function() {
               if (request.status >= 200 && request.status < 400) {
                 // Success!                        
@@ -400,16 +407,16 @@ if ($_FILES){
 
             // upload next file
             function uploadNext() {
-                reload_list();
+                //reload_list();
                 if (list.length) {
                     add_class(dropArea,'DD_uploading');
                     var nextFile = list.shift();
 
                     if (nextFile.size >= <?php echo $max*1048576; ?>) { 
-                        result.innerHTML += '<li class="DD_error">'+nextFile.name+': Error, max filelength: <?php echo $max;?> Mo </li>';
+                        result.innerHTML += '<li class="DD_error">'+nextFile.name+'<?php echo $file_length_error;?></li>';
                         handleComplete(nextFile.size);                        
                     } else if(is_allowed(nextFile.type)==false){                        
-                        result.innerHTML += '<li class="DD_error">'+nextFile.name+': Error, forbidden file format !</li>';
+                        result.innerHTML += '<li class="DD_error">'+nextFile.name+'<?php echo $file_format_error;?></li>';
                         handleComplete(nextFile.size);
                     } else {
                         uploadFile(nextFile, status);
@@ -419,7 +426,8 @@ if ($_FILES){
                     remove_class(dropArea,'DD_uploading');
 
                     bar.style.width='0';
-                    reload_list();
+                    //reload_list();// ICI ON REFRESH
+                    location.reload();
                     uploading=false;
                 }
             }
@@ -435,9 +443,9 @@ if ($_FILES){
             });
             document.getElementById('fileToUpload').addEventListener('change', function(){
                 if (this.files[0].size >= <?php echo $max*1048576; ?>) { 
-                    result.innerHTML += '<li class="DD_error">'+this.files[0].name+': Error, max filelength: <?php echo $max;?> Mo </li>';                                         
+                    result.innerHTML += '<li class="DD_error">'+this.files[0].name+'<?php echo $file_length_error;?></li>';                                         
                 }else if(is_allowed(this.files[0].type)==false){                        
-                    result.innerHTML += '<li class="DD_error">'+this.files[0].name+': Error, forbidden file format !</li>';                    
+                    result.innerHTML += '<li class="DD_error">'+this.files[0].name+'<?php echo $file_format_error;?></li>';                    
                 } else {
                     uploadFile(this.files[0],'');     
                 }           
