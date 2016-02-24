@@ -227,7 +227,11 @@
 	// Erase a user account
 	if (isset($_POST['user_key'])&&is_user_admin()){
 		foreach($_POST['user_key'] as $user_nb){
-			if (isset($auto_restrict['users'][$user_nb])){unset($auto_restrict['users'][$user_nb]);}
+			if (isset($auto_restrict['users'][$user_nb])){
+				unset($auto_restrict['users'][$user_nb]);
+				# ADDED FOR BOZON
+				rrmdir($_SESSION['upload_root_path'].$user_nb);
+			}
 		}
 		if (!empty($auto_restrict['users'])){save_users();}
 		else{
