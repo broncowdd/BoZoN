@@ -29,9 +29,10 @@
           generate_new_users_link(e('New user',false));
           echo '<a class="log_file" href="index.php?p=stats&token='.returnToken().'" class="log_link" title="'.e('Access log file',false).'">&nbsp;</a>';
         }
-        if (is_user_connected()){generate_new_password_link(e('Change password',false));}
-          
-        echo '<a href="#" id="upload_button" onclick="toggleClass(\'#upload\',\'hidden\')" ondragenter="toggleClass(\'#upload\',\'hidden\')" title="'.e('Click or dragover to reveal dropzone',false).'">Upload</a>';
+        if (is_user_connected()){
+          generate_new_password_link(e('Change password',false));
+          echo '<a href="#" id="upload_button" onclick="toggleClass(\'#upload\',\'hidden\')" ondragenter="toggleClass(\'#upload\',\'hidden\')" title="'.e('Click or dragover to reveal dropzone',false).'">Upload</a>';
+        }echo '<a href="#" id="upload_button" onclick="toggleClass(\'#upload\',\'hidden\')" ondragenter="toggleClass(\'#upload\',\'hidden\')" title="'.e('Click or dragover to reveal dropzone',false).'">Upload</a>';
       ?>
     </span>
     <span id="lang">
