@@ -32,7 +32,7 @@
         if (is_user_connected()){
           generate_new_password_link(e('Change password',false));
           echo '<a href="#" id="upload_button" onclick="toggleClass(\'#upload\',\'hidden\')" ondragenter="toggleClass(\'#upload\',\'hidden\')" title="'.e('Click or dragover to reveal dropzone',false).'">Upload</a>';
-        }echo '<a href="#" id="upload_button" onclick="toggleClass(\'#upload\',\'hidden\')" ondragenter="toggleClass(\'#upload\',\'hidden\')" title="'.e('Click or dragover to reveal dropzone',false).'">Upload</a>';
+        }
       ?>
     </span>
     <span id="lang">
