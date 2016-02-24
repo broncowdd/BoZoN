@@ -198,10 +198,11 @@ if (count($liste)>0){
 	}
 	if ($mode=='view'){
 		$column='<td class="table_check"></td>';
+		$column_header='<th class="table_check sorttable_nosort"><input type="checkbox" id="check_all" title="'.e('Check all',false).'"/></th>';
 		$form_header='<form id="multiselect" action="#" method="POST"><input type="hidden" name="token" value="'.returnToken().'"/>';
 		$form_footer='</form>';
 	}else{
-		$column=$form_header=$form_footer='';
+		$column=$form_header=$form_footer=$column_header='';
 	}
 	if ($layout=='list'){
 		echo $form_header;
@@ -209,7 +210,7 @@ if (count($liste)>0){
 		<table class="sortable">
 		<thead>
 			<tr>
-				<th class="table_check sorttable_nosort"><input type="checkbox" id="check_all" title="'.e('Check all',false).'"/></th>
+				'.$column_header.'
 				<th class="table_image sorttable_nosort">&nbsp;</th>
 				<th class="table_filename">'.e('Filename',false).'</th>
 				<th class="table_filesize">'.e('Filesize',false).'</th>
