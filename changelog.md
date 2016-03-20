@@ -1,7 +1,44 @@
 
 # Version history
+## New in 2.4
+- optimisation : reduce slow down when folder tree contains a huge amount of files (tested with more than 30,000 files ^^ thx to Cyrille)
+- optimisation : reduce regen base use to reduce useless files scans (even for zip to folder option)
+- Added : volume option for playlist
+- Enhancement : unzipping file on server creates a new folder
+- Added : zip and download selection of files and folders
+- Added : in public access to a folder can now fold/unfold the folders.
+- Added : a regen base button for the admins who use FTP access instead of the bozon's upload (adds the new IDs, removes the old one and rebuilds the tree)
+- Added : a temp cleaning procedure
+- Added : a $default_temp_folder variable in config.php
+- Added : a load more button in admin list files (for those who save thousands of files in the same directory ^^ wink to Cyrille (again)) 
+- Added : a config variable to choose between two click on file options.
+- Enhancement : change some js functions to use my own vanillajs lib
+- Enhancement : share button will no longer appear when there's only one user
+- Enhancement : Some little changes in the design
+- Bugfix : the locked folder now works again correctly
+- Added : language choice is now saved in the user profile
+- Added : three status for users (admin/user/guest). The first user created is now superadmin.
+- Enhancement : the drag and drop fallback now accepts multiselection
+- Added : a markdown editor to quickly create a new document and share it or edit a text file (still a beta feature but it works)
+- Enhancement : users page is now available only if there's more than one user
+- Enhancement : users page design
+- Enhancement : change png icons to webfont (thx fontello ^^) 56k -> 9k \o/
+- Enhancement : change users management page (tabs instead of dialog boxes) 
+- Added : Superadmin can now change the user's password
+- Added : brand new profiles rights managing; now, you can create new profiles and allow acces to specific parts of the app to those profiles.
+- Added : . and .. in file list 
+- Added : download a zip from a shared folder on visitor's access
+- Added : config variable to allow or not rss/json/download from user shared access
+- Added : warnings if required libs are not installed; however, bozon can work without those libs (some functions will be disabled) and if you want to disable those warnings, go to config.php and set $disable_non_installed_libs_warning to true
+- Bugfix : encoding accents problems
+- Bugfix : refresh needed when adding or deleting a user
+- Added : config variable to use lightbox or new tab to open images/txt etc
+- Enhancement : lightbox 
+- Bugfix : shared links works again
+- Enhancement/Bugfix : when you renew a shared folder id, the id will change in the shared file or  will be removed from it (see $remove_item_from_users_share_when_renew_id in config.php)
 
-## New in 2.3
+
+## New in 2.3b
 - Added : folder size limit for users (if there's no limit, the free space icon will not display)
 - Added : display free space in user's folder (this information will not display if admin or if allowed free space is set to 0)
 - Added : display folder size
@@ -26,7 +63,7 @@
 - Added : sorting filelist by name or size
 - Enhancement : A burn mode id stays in burn mode when accessed by the connected owner (id will be burned only if not connected or not owner)
 - Bugfix : security bug
-- Added : multiselection to delete filses/folders
+- Added : multiselection to delete files/folders
 
 ## New in 2.2beta
 - Added : double check for the password on profile creation

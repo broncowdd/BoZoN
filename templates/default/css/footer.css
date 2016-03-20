@@ -7,10 +7,11 @@ body footer {
 footer a#github {
   display: block;
   margin: 0 auto;
-  background: transparent url('../img/footer/github.png') center center no-repeat;
   width: 32px;
   height: 32px;
   opacity: 0.5;
+  font-size:32px;
+  color:rgba(0,0,0,0.8);
 }
 
 footer a#github:hover {

@@ -10,6 +10,16 @@ Aucun fichier:
   vertical-align: middle;
 }
 .free_space_text{padding:10px;}
+#admin #more_button{
+  display:block;
+  max-width:200px;
+  margin:20px auto;
+  text-align:center;
+transition: all 400ms;
+}
+#admin .loading{background-color:#0F3; color:#050;transition: all 400ms;}
+#async_loading{transition: all 400ms;}
+#nb_items{display:inline-block;}
 /* 
  * Vue en listes
  */
@@ -20,7 +30,7 @@ Aucun fichier:
 }
   #admin .list table thead th{
     padding-top:10px;
-    font-size: 1.3em;text-align: center;
+    font-size: 1.3em;text-align: left;
   }
   #admin .list table thead th.sorttable_sorted{
     font-weight:bold;
@@ -30,6 +40,7 @@ Aucun fichier:
   }
   #admin .list td.table_image {
    width:20px;
+   text-align: center;
   }
   #admin .list td.table_filename {
     
@@ -43,9 +54,9 @@ Aucun fichier:
   #admin .list td.table_buttons:empty {
     background-color:transparent;
   }
-#admin .list td{    padding: 3px;} {
-  
-}
+  #admin .list td{padding: 3px;} 
+  #admin .list td a.back,#admin .list td a.root{display:block;font-size:1.4em;width:100%;font-weight: bolder} 
+
 
 /* les listes */
 #admin .list tr, #admin #Users_list li{  
@@ -108,6 +119,10 @@ Aucun fichier:
 #admin .icon .folder {
   background: rgba(0,50,100,0.1);
 }
+#admin .list .folder .table_image{
+  font-size:18px;
+
+}
 
 #admin .list .folder .over,
 #admin .icon .folder .over {
@@ -151,20 +166,24 @@ Aucun fichier:
 }
 
 .shared_folder a{color:rgba(0,0,0,0.5)!important;}
+.shared_folder a:hover{color:rgba(0,0,0,0.8)!important;}
 .shared_folder .owner{color:rgba(0,50,100,0.5)!important;}
 .shared_folder,.shared_folder .table_buttons{
   background: rgba(0,50,100,0.2)!important;
+
 }
 
 
 
+#admin .list tr .table_buttons a:hover,#admin .icon li .buttons a:hover{color:rgba(255,255,255,1);}
 #admin .list tr .table_buttons a{
   display:inline-block;
   line-height: 100%;
   width: 20px;
   height: 20px;     
   border-radius: 3px;
-  font-size: 14px;
+  font-size: 18px;
+  color:rgba(255,255,255,0.6);
   }
 #admin .icon li .buttons a {
   display: none;
@@ -174,6 +193,7 @@ Aucun fichier:
   border-radius: 3px;
   font-size: 14px;
   margin: 1px;
+  color:rgba(255,255,255,0.6);
 }
 
 #admin .icon li:hover .buttons {
@@ -186,20 +206,37 @@ Aucun fichier:
 #admin .icon li:hover .buttons * {
   display: inline-block;
 }
+#admin .blue{color:rgba(0,100,255,0.7);}
+#admin .blue:hover{color:rgba(0,100,255,1);}
 
-/* images pour les actions sur les fichiers */
- a.movefolder                     {background: url('../img/list/move.png') center center no-repeat;}
- a.close                          {background: url('../img/list/trash.png') center center no-repeat;}
- a.visu                           {background: url('../img/list/eye.png') center center no-repeat;}
- a.link                           {background: url('../img/list/link.png') center center no-repeat;}
- a.locked                         {background: url('../img/list/locked.png') center center no-repeat;}
- a.burn                           {background: url('../img/list/burn.png') center center no-repeat;}
- a.renew                          {background: url('../img/list/renew.png') center center no-repeat;}
- a.rename                         {background: url('../img/list/rename.png') center center no-repeat;}
- a.tofolder                       {background: url('../img/list/folder.png') center center no-repeat;}
- a.zipfolder                      {background: url('../img/list/download_folder.png') center center no-repeat;}
- a.qrcode                         {background: url('../img/list/qrcode.png') center center no-repeat;}
- a.usershare                      {background: url('../img/list/users.png') center center no-repeat;}
+
+#admin .icon .folder span{display:block;font-size:64px;}
+#admin .icon .folder span.owner{font-size:1em;}
+
+#admin .icon .folder .buttons span{font-size:14px;}
+#admin .table_image{font-size:18px;}
+#admin .ext{overflow:hidden;}
+#admin .table_image .ext em{
+  font-size:7px;
+  color:white;
+  position:absolute;
+  margin-left: -16px;
+  margin-top: 10px;
+  width: 17px;
+  overflow: hidden;
+  height: 10px;
+}
+#admin .icon .ext em{
+  font-size:18px;
+  color:white;
+  position:absolute;
+  margin-left: 42px;
+  margin-top: -30px;
+  width: 45px;
+  overflow: hidden;
+  height: 23px;
+  text-align: left;
+}
 td.burn                           {background-image: url('../img/list/burn.png') !important;
                                      background-position: center center !important;
                                      background-repeat: no-repeat !important;
@@ -208,44 +245,26 @@ td.locked,li.locked               {background-image: url('../img/list/locked.png
                                      background-position: center center !important;
                                      background-repeat: no-repeat !important;
                                     }
-
- a.movefolder:hover               {background-color: #hover_color_neutral;}
- a.close:hover                    {background-color: #hover_color_neutral;;}
- a.rename:hover                   {background-color: #hover_color_neutral;;}
- a.link:hover                     {background-color: #hover_color_neutral;;}
- a.visu:hover                     {background-color: #hover_color_neutral;;}
- a.burn:hover                     {background-color: #hover_color_neutral;;}
- a.renew:hover                    {background-color: #hover_color_neutral;;}
- a.locked:hover                   {background-color: #hover_color_neutral;;}
- a.tofolder:hover                 {background-color: #hover_color_neutral;;}
- a.zipfolder:hover                {background-color: #hover_color_neutral;;}
- a.qrcode:hover                   {background-color: #hover_color_neutral;;}
- a.usershare:hover                {background-color: #hover_color_neutral;;}
-.burn:hover                       {background-color: #hover_color_neutral;;}
-.locked:hover                     {background-color: #hover_color_neutral;;}
-
+            
 /* extensions */
-#admin .list td a img,
-#admin .icon li a img {
-  background: url('../img/extensions/unknown.png') center center no-repeat;
-  background-size: contain;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
 
-img.zip,img.rar,img.gzip,img.tgz    {background-image: url('../img/extensions/zip.png') !important;}
-img.txt,img.ini,img.nfo, img.css    {background-image: url('../img/extensions/txt.png') !important;}
-img.doc,img.odt,img.xdoc            {background-image: url('../img/extensions/doc.png') !important;}
-img.pdf                             {background-image: url('../img/extensions/pdf.png') !important;}
-img.xls                             {background-image: url('../img/extensions/xls.png') !important;}
-img.css                             {background-image: url('../img/extensions/css.png') !important;}
-img.js                              {background-image: url('../img/extensions/js.png') !important;}
-img.swf                             {background-image: url('../img/extensions/swf.png') !important;}
-img.mp3,img.ogg                     {background-image: url('../img/extensions/mp3.png') !important;}
-img.mp4,img.flv, img.avi, img.mkv   {background-image: url('../img/extensions/mp4.png') !important;}
-img.php, img.secured_php            {background-image: url('../img/extensions/php.png') !important;}
-img.html,img.htm,img.shtml,img.shtm {background-image: url('../img/extensions/html.png') !important;}
-img.exe,img.bat,img.iso,img.bin     {background-image: url('../img/extensions/exe.png') !important;}
+.zip:before,.rar:before,.gz:before,.tgz:before    {color:rgba(255,180,0,0.9)!important;}
+.zip em,.rar em,.gz em,.tgz em {color:rgba(0,0,0,0.5)!important;}
+
+.txt:before,.ini:before,.nfo:before, .css:before, .md:before {color:rgba(100,100,100,0.9)!important;}
+
+.doc:before,.odt:before,.odg:before,.xdoc:before {color:rgba(0,0,255,0.8)!important;}
+.pdf:before{color:rgba(200,0,0,0.8)!important;}
+.xls:before{color:rgba(130,130,130,0.8)!important;}
+.css:before{color:rgba(0,200,0,0.7)!important;}
+.js:before {color:rgba(0,100,250,0.5)!important;}
+.swf:before{color:rgba(100,0,100,0.5)!important;}
+.mp3:before{color:rgba(0,100,200,0.9)!important;}
+.ogg:before{color:rgba(0,150,200,0.9)!important;}
+.mp4:before,.flv:before, .avi:before, .mkv:before {color:rgba(150,0,20,0.9)!important;}
+.php:before, .sphp:before {color:rgba(150,0,150,0.9)!important;}
+.html:before,.htm:before,.shtml:before,.shtm:before {color:rgba(0,200,100,0.9)!important;}
+.exe:before,.bat:before,.iso:before,.bin:before{color:rgba(50,50,100,0.6)!important;}
 
 /* 
  * Vue en icones

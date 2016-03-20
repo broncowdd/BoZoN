@@ -1,13 +1,17 @@
 <?php
 if (session_id()==''){session_start();}
 if (!is_file('core.php')){$path_core='core/';}else{$path_core='';}
-/* Auto_dropzone.php v1.3 # Version Bozon !!!!!!!!!
+/* Auto_dropzone.php v1.5 # Version Bozon !!!!!!!!!
     author: Bronco
     email: bronco@warriordudimanche.net
     web: http://warriordudimanche.net
     licence: free & free ^^ (feel free to use & modify for free)
 
     based on http://www.script-tutorials.com/html5-drag-and-drop-multiple-file-uploader/ 
+
+    New in 1.4:
+    ----------------------------------------------
+    - multiselection for fallback
 
     New in 1.3:
     ----------------------------------------------
@@ -46,6 +50,7 @@ if (!is_file('core.php')){$path_core='core/';}else{$path_core='';}
 $phpini=ini_get_all();
 $default_config=array(
     'forbidden_filetypes'=>'php',
+    'allow_unknown_filetypes'=>$allow_unknown_filetypes,
     'use_style'=>false,                         // false if you're using a external css file
     'auto_refresh_after_upload'=>true,          // auto refresh page after uploading files (except on errors)
     'max_length'=>2048,                          // Mo (see php.ini if changes doesn't work [post_max_size / upload_max_filesize])
@@ -84,7 +89,7 @@ $file_format_error=e(': Error, forbidden file format !',false);
 $auto_dropzone_error=false;
 
 // uploading files
-if ($_FILES){ 
+if (!empty($_FILES)){
 
     // HANDLE UPLOAD
     function bytesToSize1024($bytes, $precision = 2) {
@@ -108,10 +113,9 @@ if ($_FILES){
         else{return false;}
     }
     function secure($file){
-        return preg_replace('#(.+)\.php#i','$1.SECURED_PHP',$file);
+        return preg_replace('#(.+)\.php#i','$1.SPHP',$file);
     }
 
-    
     if (isset($_FILES['myfile']) && strtolower($_FILES['myfile']['name'])!="index.html") {
         $sFileName = secure($_FILES['myfile']['name']);
         $sFileType = $_FILES['myfile']['type'];
@@ -181,7 +185,8 @@ if ($_FILES){
             echo $ok;
             rename($_FILES['myfile']['tmp_name'], $_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$sFileName );
             chmod($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$sFileName,0644);
-            addID($sFileName);
+            $id=addID($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$sFileName);
+            $tree=add_branch($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$sFileName,$id,$_SESSION['login'],$tree);
         }    
     } else {
         echo $notok;
@@ -237,8 +242,8 @@ if ($_FILES){
                     <div id="DD_progressbar"></div>
                 </div>
             </div>
-            <form action="#" method="post" enctype="multipart/form-data" id="DD_fallback_form" >
-                <input type="file" name="myfile" id="fileToUpload" class="DD_hidden"/>
+            <form action="index.php" method="post" enctype="multipart/form-data" id="DD_fallback_form">
+                <input type="file" name="myfile[]" id="fileToUpload" class="DD_hidden" multiple="true"/>
                 <input type="hidden" value="fallback" name="fallback"/>
                 <input type="submit" id="DD_submit" class="DD_hidden"/>
             </form>
@@ -246,11 +251,14 @@ if ($_FILES){
 
     <script>
         document.body.addEventListener("dragover",function(e){         
-          e.preventDefault();
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
         },false);
         document.body.addEventListener("drop",function(e){
-
-          e.preventDefault();
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
         },false);
 
         // variables
@@ -290,8 +298,10 @@ if ($_FILES){
         }
         function is_allowed(filemime){
             var r='<?php echo $auto_dropzone['forbidden_filetypes']; ?>';
+            var allow=<?php echo $auto_dropzone['allow_unknown_filetypes']; ?>;
             m=filetype(filemime);
-            if (m==''){return false;}
+            if (m==''&&!allow){return false;}
+            if (m==''&&allow){return true;}
             if(r.indexOf(m)==-1){return true;}
             else{return false;}
         }
@@ -356,7 +366,7 @@ if ($_FILES){
                 totalSize = 0;
                 totalProgress = 0;
                 result.textContent = '';                
-                for (var i = 0; i < filelist.length; i++) {                    
+                for (var i = 0; i < filelist.length; i++) {                   
                     list.push(filelist[i]);
                     totalSize += filelist[i].size;                    
                 }
@@ -437,18 +447,20 @@ if ($_FILES){
             
 
             // click on dropzone: fallback file
-            document.getElementById('<?php echo $auto_dropzone['dropzone_id'];?>').addEventListener('click', function(){
-                document.getElementById('fileToUpload').click();
-               
+            document.getElementById('<?php echo $auto_dropzone['dropzone_id'];?>').addEventListener('click', function(){                
+                document.getElementById('fileToUpload').click();               
             });
             document.getElementById('fileToUpload').addEventListener('change', function(){
-                if (this.files[0].size >= <?php echo $max*1048576; ?>) { 
+                
+                processFiles(this.files);
+
+                /*if (this.files[0].size >= <?php echo $max*1048576; ?>) { 
                     result.innerHTML += '<li class="DD_error">'+this.files[0].name+'<?php echo $file_length_error;?></li>';                                         
                 }else if(is_allowed(this.files[0].type)==false){                        
                     result.innerHTML += '<li class="DD_error">'+this.files[0].name+'<?php echo $file_format_error;?></li>';                    
                 } else {
-                    uploadFile(this.files[0],'');     
-                }           
+                    uploadFile(this.files,'');     
+                }  */         
             });
     </script>
 <?php }

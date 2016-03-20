@@ -27,6 +27,7 @@ $replace=array(
   '#hover_color_light'=>'#DEF',
   '#hover_color_neutral'=>'#789',
   '#hover_color_dark'=>'#234',
+  '#hover_color_superdark'=>'#123',
   
 );
 
@@ -63,8 +64,8 @@ $buffer = "";
 foreach ($cssFiles as $cssFile) {
   $buffer .= file_get_contents($cssFile);
 }
-$buffer=str_replace(array_keys($replace),array_values($replace),$buffer);
 
+$buffer=str_replace(array_keys($replace),array_values($replace),$buffer);
 // Remove unnecessary characters
 $buffer = preg_replace("|/\*[^*]*\*+([^/][^*]*\*+)*/|", "", $buffer);
 $buffer = preg_replace("/[\s]*([\:\{\}\;\,])[\s]*/", "$1", $buffer);

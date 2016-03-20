@@ -23,14 +23,16 @@ I used a few libs I made
 - Array2feed.php : a function used to convert an array into a RSS feed without commiting suicide XD
 - "On-the-fly CSS Compression" (a personal modified version of https://gist.github.com/manastungare/2625128)
 
-
 and 
+
 - sorttables.js (http://www.kryogenix.org/code/browser/sorttable)
 - b-lazy (http://dinbror.dk/blazy)
 - qr-js (http://hg.mearie.org/qrjs)
 - m3uStreamPlayer.js (https://github.com/opi/m3uStreamPlayer)
 - audiojs (http://kolber.github.io/audiojs)
 - scrolltotop : (https://github.com/jerrywham-pluxml5-2/scrollToTop/)
+- marked.js : (https://github.com/chjj/marked)
+- vanillajs : (my own lib, very tiny)
 
 
 ## Licence

@@ -5,10 +5,18 @@ body>header {
   text-align: center;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(0,0,0,0.2);
+  margin-bottom:20px;
 }
-
+#title_page{
+  text-align:left;
+  font-size:1.7em;
+  color:rgba(255,255,255,0.9);
+  padding-left:10px;
+  display:block;
+  margin:0;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.5)
+}
 #top_bar {
-  height: 32px;
   background: rgba(0,0,0,0.4);
   margin-bottom: 5px;
   border-bottom: 1px solid rgba(0,0,0,0.2);
@@ -17,49 +25,32 @@ body>header {
 #top_bar a {line-height: 23px;}
 #top_bar a:hover {
   color: #hover_color_light;
-  background-color: #hover_color_dark;
+  background-color: #hover_color_superdark!important;
 }
 
 #top_bar #icons a {
-  min-width: 32px;
-  height: 32px;
+  min-width: 22px;
+  height: 22px;
   display: block;
   float: left;
 }
 
-#top_bar .home {
-  background: transparent url('../img/header/home.png') center center no-repeat;
-}
-
-#top_bar .auto_restrict_userslist_link {
-  background: transparent url('../img/header/users.png') center center no-repeat;
-}
-
-#top_bar .auto_restrict_new_user_link {
-  background: transparent url('../img/header/new_user.png') center center no-repeat;
-}
-
-#top_bar .auto_restrict_new_password_link {
-  background: transparent url('../img/header/new_pass.png') center center no-repeat;
-}
-
-#top_bar .log_file {
-  background: transparent url('../img/header/log_file.png') center center no-repeat;
-}
 
 #top_bar #icons {
   float: left;
 }
 
+#top_bar #icons a:hover {color:white;}
 #top_bar #icons a {
   display: inline-block;
   padding: 5px;
-  border-right: 1px solid rgba(0,0,0,0.2);
 }
 
 #top_bar #icons a,
 #top_bar #lang a {
   color: rgba(255,255,255,0.6);
+  border: 1px solid rgba(0,0,0,0.2);
+  border-left:none;
 }
 
 #top_bar #lang {
@@ -69,7 +60,7 @@ body>header {
 #top_bar #lang a {
   display: inline-block;
   padding: 5px;
-  min-width: 32px;height: 32px;
+  min-width: 22px;height: 22px;
   width: auto;
   border-left: 1px solid rgba(0,0,0,0.2);
 }
@@ -77,7 +68,7 @@ body>header {
 #top_bar #lang a.active {
   color: #fff;
 }
-
+#top_bar .profile_rights .icon-crown:before{vertical-align: sub;}
 #search {
   float: right;
   display: block;
@@ -86,9 +77,9 @@ body>header {
 
 #search input[type=text]{
   margin-top: 3px;
-  height: 30px;
-  width: 30px;
-  padding-left: 30px;
+  height: 28px;
+  width: 5px;
+  padding-left: 26px;
   background: #e9e9e9 url('../img/header/search.png') 8px center no-repeat;
   border: 1px solid #d9d9d9;
   border-radius: 3px;
@@ -107,21 +98,24 @@ body>header {
 }
 
 #connect #admin_button {
-  height: 32px;
+  height: 22px;
   line-height: 22px;
   vertical-align: middle;
-  min-width: 32px;
-  padding-left: 20px;
+  min-width: 22px;
+  padding-left:20px;margin-right:5px;
+  text-align: center;
   background: rgba(0,0,0,0.2) url('../img/header/user.png') 5px center no-repeat;
   color: rgba(255,255,255,0.7);
   float: right;
-  text-indent: 5px;
-}
+  }
+#connect #admin_button.superadmin{padding-left:5px;background-image:none;color:white;text-shadow:0 0 2px rgba(255,255,255,0.5);}
+#connect #admin_button.admin{padding-left:5px;background-image:none;}
+#connect #admin_button.user{padding-left:5px;background-image:none;}
 
 #connect #logout_button,
 #connect #login_button {
-  height: 32px;
-  width: 32px;
+  height: 22px;
+  width: 22px;line-height: 25px;
   float: right;
 }
 #connect a:hover{
@@ -130,11 +124,15 @@ body>header {
 }
 
 #connect #login_button{
-  background: rgba(0,0,0,0.2) url('../img/header/locked.png') center center no-repeat;
+  color:rgba(255,255,255,0.8);
+  font-size:18px;line-height: 16px;
 }
 
+#connect #logout_button:hover{color:white!important}
 #connect #logout_button {
-  background: rgba(0,0,0,0.2) url('../img/header/logout.png') center center no-repeat;
+  font-size: 20px;
+  line-height: 18px;
+  color:rgba(255,255,255,0.8);
 }
 
 body.login #connect #login_button {
@@ -144,7 +142,7 @@ body.login #connect #login_button {
 #logo {
   clear: both;
   width: 100%;
-  height: 150px;
+  /*height: 150px;*/
   padding-top: 118px;
   background: transparent url('../img/header/logo.png') center top no-repeat;
   color: #fff;
@@ -165,7 +163,7 @@ body.home .slogan {
 }
 
 /* Dropzone */
-#upload.hidden{
+#upload.hidden, .info.hidden{
   max-height:0;
   opacity:0;
   transition: all 300ms;
@@ -177,11 +175,7 @@ body.home .slogan {
   overflow:hidden;
   transition: all 300ms;
 }
-header #top_bar #upload_button{
-  display:inline-block;
-  padding-left:20px;
-  background:url(../img/header/miniupload.png) no-repeat 3px center;
-}
+
 .DD_dropzone {
   clear: both;
   font-size: 1em;

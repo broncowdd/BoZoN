@@ -4,51 +4,34 @@
 	* joins all bozon parts and handles requests
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
+#########################################################################################
+# Secure process by Timo ( http://lehollandaisvolant.net/?mode=links&id=20160319122329 )
+#########################################################################################
+if (basename($_SERVER['SCRIPT_NAME']) === 'index.php' and strpos(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 'index.php') === FALSE ) {
+	$var_request_URI = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH).'index.php';
+} else {
+	$var_request_URI = $_SERVER['REQUEST_URI'];
+}
+if (parse_url($var_request_URI, PHP_URL_PATH) !== $_SERVER['SCRIPT_NAME']) {
+	header('Location: '.$_SERVER['SCRIPT_NAME']);
+}
+#########################################################################################
+$root=dirname(realpath(__FILE__)).'/';
 require('core/core.php');
 require('core/commands_GET_vars.php');# handle no html content requests
-
-
-if (is_user_connected()){
-	# users list request
-	if (isset($_GET['users_list'])&&is_admin()){
-		$_GET['p']='users';unset($_GET['users_list']); # To avoid useless changes in auto_restrict
-	}
-	# if admin is connected, use auto_restrict
-	require_once('core/auto_restrict.php');
-	$token=returnToken();
-	
-	# refresh list files ajax request
-	if(isset($_GET['refresh'])){
-		include('core/listfiles.php');
-		exit;
-	}
-	if (empty($_GET['p'])&&!empty($_GET)||count($_GET)>2||!empty($_POST)){include('core/GET_POST_admin_data.php');}
-	if (!empty($_FILES)){
-		include('core/auto_dropzone.php');
-		exit();
-	}
-
-}else{$token='';}
-
-if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
-if (!empty($_GET['msg'])){$message=$_GET['msg'];}
-if (!empty($_GET['lang'])){$_SESSION['language']=$_GET['lang'];header('location:index.php?p='.$page.'&token='.$token);}
-if (!empty($_GET['aspect'])){$_SESSION['aspect']=$_GET['aspect'];header('location:index.php?p='.$page.'&token='.$token);}
-	
-
-
-	
+#########################################################################################
 require(THEME_PATH.'/header.php');
-	if (!empty($message)){echo '<div class="info">'.$message.'</div>';}
-	# page request
-	if (!empty($page)&&is_file(THEME_PATH.$page.'.php')){
-		# request for a specific page
-		include(THEME_PATH.$page.'.php');
-	}else{
-		# no page request -> home
-		include(THEME_PATH.'home.php');
-	}
-	
+#########################################################################################
+if (!empty($message)){echo '<div class="info" onclick="addClass(this,\'hidden\');" title="'.e('Click to remove',false).'">'.$message.'</div>';}
+# page request
+if (!empty($page)&&is_file(THEME_PATH.$page.'.php')){
+	# request for a specific page
+	include(THEME_PATH.$page.'.php');
+}else{
+	# no page request -> home
+	include(THEME_PATH.'home.php');
+}
+#########################################################################################
 require(THEME_PATH.'/footer.php');
 $_SESSION['ERRORS']='';
 ?>

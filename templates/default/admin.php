@@ -5,16 +5,16 @@
 	* @author: Bronco (bronco@warriordudimanche.net)
 	* 
 	**/
-	if (!function_exists('newToken')){require_once('core/auto_restrict.php');} # Admin only!
-
+  require_once('core/auto_restrict.php'); # Connected user only !
 ?>
 
 <?php 
-  if(isset($message) && !empty($message)){
-    echo '<p id="msg">'.$message.'</p>';
-  }
-
-  $lb_token=returnToken();
+  # Initialisation
+  $layout=$_SESSION['aspect'];
+  $shared_folders=$back_link='';
+  if (empty($_SESSION['mode'])){$mode='view';}else{$mode=$_SESSION['mode'];}
+  $upload_path_size=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
+  $lb_token=TOKEN;
   echo str_replace('#TOKEN',$lb_token,$templates['dialog_link']);
   echo str_replace('#TOKEN',$lb_token,$templates['dialog_rename']);
   echo str_replace('#TOKEN',$lb_token,$templates['dialog_delete']);
@@ -22,98 +22,195 @@
   echo str_replace('#TOKEN',$lb_token,$templates['dialog_download_url']);
   echo str_replace('#TOKEN',$lb_token,$templates['dialog_qrcode']);
   echo str_replace('#TOKEN',$lb_token,$templates['dialog_share']);
+if ($mode=='links'){
+  # Add lock dialogbox to the page
+  $array=array(
+    '#TOKEN'  => TOKEN
+  );
+  echo template('dialog_password',$array);
+}
+if ($mode=='view'){
+  # Add shares from others users 
+  $shared_with=load_folder_share();
+  if (!empty($shared_with[$_SESSION['login']])){
+    $shared_folders.= '<div class="shared_folders">';
+    $saveshare=false;
+    foreach($shared_with[$_SESSION['login']] as $id=>$data){
+      if (is_dir($data['folder'])&&!empty($ids[$id])){
+        $folder=_basename($data['folder']);
+        $array=array(
+          '#CLASS'      => 'shared_folder',
+          '#ID'         => $id,
+          '#FICHIER'    => $folder,
+          '#TOKEN'      => TOKEN,
+          '#NAME'       => $folder,
+          '#FROM'       => $data['from'],
+        );
+        $shared_folders.= template($mode.'_shared_folder_'.$layout,$array);
+      }else{
+        # remove obsolete shared IDs
+        unset($shared_with[$_SESSION['login']][$id]);
+        $saveshare=true;
+      }
+    }
+    $shared_folders.= '</div>';
+    save_folder_share($shared_with);
+  }
+
+  # Prepare folder tree for move dialog box
+  $select_folder='<select name="destination" class="folder_list button"><option value="">'.e('Choose a folder',false).'</option>';
+  $folders_list=user_folder_tree();
+  if (isset($folders_list[0])){$folders_list[0].='/';}
+
+  foreach($folders_list as $folder){
+    $folder=substr($folder,$upload_path_size);
+    $select_folder.='<option value="'.$folder.'">'.$folder.'</option>';
+  }
+
+  $select_folder.='</select>';
+  # Add move dialogbox to the page
+  $array=array(
+      '#LIST_FILES_SELECT'  => $select_folder,
+      '#TOKEN'        => TOKEN,
+    );
+
+  $dia=str_replace('#LIST_FILES_SELECT',$select_folder,$templates['dialog_move']);
+  $dia=str_replace('#TOKEN',TOKEN,$dia);
+  echo $dia;
+}
+
 ?>
 
 
 <div id="admin">
-  <h1>
-  	<?php 
-  		if ($_SESSION['mode']=='links'){e('Manage links');}						
-  		else{e('Manage files');}
-  	?>
-  </h1>
-  <div id="menu">
-  	<?php 
-  		if (empty($_GET['f'])){
-  			/* you can change the generated link using another pattern as argument (keep the # tags !): 
-  			'<a id="#MENU" href="index.php?p=#PAGE&aspect=#MENU&token=#TOKEN">&nbsp;</a>'*/
-  			make_menu_link(); 
-  		}
-  	?>
-  	<a id="new_folder" title="<?php e('Create a subfolder in this folder');?>" href="#New_folder_box">&nbsp;</a>
-  	<a id="download_url" title="<?php e('Paste a file\'s URL to get it on this server');?>" href="#download_box">&nbsp;</a>
-  	<?php make_mode_link(); ?>
-    <span id="delete_selection" title="<?php e('Delete selected items');?>"></span>
-   
     
-  </div>
 
   <div id="fil_ariane">
-  	<a class="ariane_home" href="index.php?p=admin&path=/&token=<?php echo returnToken(true);?>">&nbsp;</a>
+    <a class="ariane_home" href="index.php?p=admin&path=/&token=<?php echo TOKEN;?>" title="<?php echo e('Root:',false);?>"><span class="icon-home_folder" ></span></a>/
+  	
   	<?php
-  		echo '<span>'.e('Root:',false).' /</span>';
   		$ariane=explode('/',$_SESSION['current_path']);
-  		$chemin='';
+      $previous_path = $ariane;
+      $nb_folders=count($previous_path);
+      if ($nb_folders>1){unset($previous_path[$nb_folders-1]);$previous_path = implode('/',$previous_path);}
+      elseif($nb_folders=1&&!empty($previous_path[0])){$previous_path='/';}
+      else{$previous_path='';}
+      
+    
+      $chemin='';
   		foreach($ariane as $nb=>$folder){
   			if (!empty($folder)){
   				$chemin.=$folder;
-  				echo '<a class="ariane_item" href="index.php?p=admin&path='.$chemin.'&token='.returnToken(true).'">'.$folder.'</a>';
+  				echo '<a class="ariane_item" href="index.php?p=admin&path='.$chemin.'&token='.TOKEN.'">'.$folder.'</a>';
   				$chemin.='/';
   			}
   		}
-  	?>
+      
+      if (!empty($previous_path)&&$show_back_button){
+        $back_button='<a class="back" href="index.php?p=admin&path='.$previous_path.'&token='.TOKEN.'"><span class="icon-left-circle" ></span></a>';
+        $back_link='
+        <tr class="folder"><td class="table_check"></td><td></td><td class="table_filename"><a class="root" href="index.php?p=admin&path=/&token='.TOKEN.'">.</a></td><td></td><td></td></tr>
+        <tr class="folder"><td></td><td></td><td class="table_filename"><a class="back" href="index.php?p=admin&path='.$previous_path.'&token='.TOKEN.'">..</a></td><td></td></td><td></tr>
+        ';
+    	 echo $back_button;
+      }
+    ?>
   </div>
   
   <?php if (!empty($_SESSION['filter'])){
     echo '<p id="filter">'.e('Filter:',false).' '.$_SESSION['filter'].'</p>';
   }
   ?>
-  
+  <div id="menu">
+    <?php 
+      if (empty($_GET['f'])){
+        /* you can change the generated link using another pattern as argument (keep the # tags !): 
+        '<a id="#MENU" href="index.php?p=#PAGE&aspect=#MENU&token=#TOKEN">&nbsp;</a>'*/
+        make_menu_link(); 
+      }
+    ?>
+    <a id="new_folder" title="<?php e('Create a subfolder in this folder');?>" href="#New_folder_box"><span class="icon-folder-add" ></span></a>
+    <a id="download_url" title="<?php e('Paste a file\'s URL to get it on this server');?>" href="#download_box"><span class="icon-globe" ></span></a>
+    <?php make_mode_link(); ?>
+    <span id="delete_selection" title="<?php e('Delete selected items');?>"><span class="icon-trash" ></span></span>
+    <span id="zip_selection" title="<?php e('Zip and download selected items');?>"><span class="icon-download-cloud" ></span></span> 
+  </div>
+
   <div id="list_files" class="<?php echo $_SESSION['aspect'];?>">    
-      <?php include('core/listfiles.php');?>
+      <?php 
+        include('core/listfiles.php');
+      ?>
   </div>
   <script src="core/js/qr.js"></script>
   <script>
-  	function get(url){	
-  		request = new XMLHttpRequest();request.open('GET', url, false);
-  		request.send();
-  		return request.responseText;
-  	}
-  	
-  	function put_file(fichier){
-  		document.getElementById('filename').value=fichier;
-      document.getElementById('filename_hidden').value=fichier;
-  	}
-  	
-  	function put_id(id){document.getElementById('ID_hidden').value=id;}
-  	function put_link(id){document.getElementById('link').value="<?php echo $_SESSION['home'];?>?f="+id;}
-  	function put_file_and_id(id,file){
-  		document.getElementById('FILE_Rename').value=file;
-  		document.getElementById('ID_Rename').value=id;
-  	}
-  	
-  	function share(id,file){
-  		document.getElementById('ID_folder').innerHTML=file;
-  		document.getElementById('ID_share').value=id;
-  		document.getElementById('Users_list').innerHTML=get('index.php?users_share_list='+id+'&token=<?php newToken(true);?>');
-  
-  	}
-  	
-  	function suppr(id){	document.getElementById('ID_Delete').value=id;}
-  
-    // function inspired by Timo http://lehollandaisvolant.net/tout/tools/qrcode/
-    function qrcode(id) {
-    	var data = "<?php echo $_SESSION['home'];?>?f="+id;
-    	var options = {ecclevel:'M'};
-    	var url = QRCode.generatePNG(data, options);
-    	document.getElementById('qrcode_img').src = url;
-    	return false;
-    }
+
     
     function downloadImage() {
     	data = document.getElementById('outputimg').src;
     	document.getElementById('outputlink').href = data;
     }
+
+    function loadMore(button){
+      event.preventDefault;
+      list=document.getElementById('async_load');
+      link=attr(button,'data-url');
+      nb=parseInt(attr(button,'data-from'));
+      max=parseInt(attr(button,'data-max'));
+      text=button.innerHTML;
+      button.innerHTML='...';
+      addClass(button,'loading');
+      if (max>nb){attr(button,'data-from',nb+1);}
+      else{remove(button);}
+      appendAjax(link+'&from='+nb,'','get',list,function(){button.innerHTML=text;removeClass(button,'loading');});
+      
+      return false;
+    }
+
+    // Click on move button
+    on('click','#list_files a.movefolder',function(){
+      name=attr(this,"data-name");
+      document.getElementById('filename').value=name;
+      document.getElementById('filename_hidden').value=name;
+    });
+    // Click on delete button
+    on('click','#list_files a.close',function(){
+      fileid=attr(this,"data-id");
+      document.getElementById('ID_Delete').value=fileid;
+    });
+    // Click on rename button
+    on('click','#list_files a.rename',function(){
+      fileid=attr(this,"data-id");
+      name=attr(this,"data-name");
+      document.getElementById('FILE_Rename').value=name;
+      document.getElementById('ID_Rename').value=fileid;
+    });
+    // Click on link button
+    on('click','#list_files a.link',function(){
+      fileid=attr(this,"data-id");
+      document.getElementById('link').value="<?php echo $_SESSION['home'];?>?f="+fileid;
+    });
+    // Click on usershare button
+    on('click','#list_files a.usershare',function(){
+      fileid=attr(this,"data-id");
+      name=attr(this,"data-name");
+      document.getElementById('ID_folder').innerHTML=name;
+      document.getElementById('ID_share').value=fileid;
+      ajax('index.php?users_share_list='+fileid+'&token=<?php echo TOKEN;?>',null,'GET','#Users_list');  
+    });
+    // Click on locked button
+    on('click','#list_files a.locked',function(){
+      fileid=attr(this,"data-id");
+      document.getElementById('ID_hidden').value=fileid;
+    });
+    // Click on qrcode button
+    on('click','#list_files a.qrcode',function(){
+      fileid=attr(this,"data-id");     
+      var data = "<?php echo $_SESSION['home'];?>?f="+fileid;
+      var options = {ecclevel:'M'};
+      var url = QRCode.generatePNG(data, options);
+      document.getElementById('qrcode_img').src = url;
+      return false;
+    });
 
     // Check for multiselection
     on('click','.table_check input',function(){
@@ -125,16 +222,21 @@
       }
       if (first(".view .checked")){
         addClass("#delete_selection","show");
+        addClass("#zip_selection","show");
       }else{
         removeClass("#delete_selection","show");
+        removeClass("#zip_selection","show");
       }
-      if (first(".move .checked")){
-        addClass("#move_selection","show");
-      }else{
-        removeClass("#move_selection","show");
-      }
+      
     });
-    on('click','#delete_selection',function(){document.getElementById('multiselect').submit();});
+    on('click','#delete_selection',function(){
+      document.getElementById('multiselect_command').setAttribute("value","delete");
+      document.getElementById('multiselect').submit();
+    });
+    on('click','#zip_selection',function(){
+      document.getElementById('multiselect_command').setAttribute("value","zip");
+      document.getElementById('multiselect').submit();
+    });
     on('click','#check_all',function(){
         checked=this.checked;
         each(".table_check input:not(#check_all)",function(obj){
@@ -143,14 +245,22 @@
             if (checked==true){addClass(tr,"checked");}
             else{removeClass(tr,"checked");}
         });
-        if (checked==true){addClass("#delete_selection","show");}
-        else{removeClass("#delete_selection","show");}
+        if (checked==true){
+          addClass("#delete_selection","show");
+          addClass("#zip_selection","show");
+        }
+        else{
+          removeClass("#delete_selection","show");
+          removeClass("#zip_selection","show");
+        }
     });
+
+
     
   </script>
 
 
 
 </div>
-<script type="text/javascript" src="core/js/scrolltotop.js"></script>
 <script src="core/js/sorttable.js"></script>
+<script type="text/javascript" src="core/js/scrolltotop.js"></script>

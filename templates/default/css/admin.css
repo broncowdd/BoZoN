@@ -6,11 +6,13 @@
 }
 
 /* menu */
+#admin #menu{display:block;}
+#admin #menu a.active{box-shadow:inset 0 0 10px #basic_color_superdark!important;}
 #admin #menu a {
   display: block;
   padding: 5px;
-  width: 34px;
-  height: 34px;
+  width: 22px;
+  height: 22px;
   float: left;
   margin-bottom: 10px;
   border-top: 1px solid #888;
@@ -30,16 +32,21 @@
   border-bottom-right-radius: 3px;
 }
 
+#admin #menu #delete_selection
+{background:#e20;}
 #admin #menu #delete_selection.show
 {opacity:100;max-width:200px;transition:all 300ms;margin-left:2px;}
 #admin #menu #delete_selection:hover
 {background-color:#f30!important;transition:all 300ms;}
-#admin #menu #delete_selection
+#admin #menu #delete_selection,#admin #menu #zip_selection
 {
+  font-size:18px;
+  color:rgba(255,255,255,0.7);
+  text-align:center;
+  line-height:30px;
   cursor:pointer;transition:all 300ms;
   opacity:0;max-width:0;
   overflow:hidden;
-  background: #e20 url('../img/list/trash.png') center center no-repeat;
   display: inline-block;
   padding: 0;
   width: 34px;
@@ -47,13 +54,21 @@
   border-radius: 3px;
   margin-left:0;
 }
+#admin #menu #zip_selection.show
+{opacity:100;max-width:200px;transition:all 300ms;margin-left:2px;}
+#admin #menu #zip_selection:hover
+{background-color:#03F!important;transition:all 300ms;}
+#admin #menu #zip_selection{background: #02e;}
   
-#admin #menu #icon                  {background: #basic_color_neutral url('../img/admin/menu_icon.png') center center no-repeat;}
-#admin #menu #list                  {background: #basic_color_neutral url('../img/admin/menu_list.png') center center no-repeat;}
-#admin #menu #new_folder            {background: #basic_color_neutral url('../img/admin/menu_new_folder.png') center center no-repeat;}
-#admin #menu #download_url          {background: #basic_color_neutral url('../img/admin/menu_download_url.png') center center no-repeat;}
-#admin #menu #mode_view             {background: #basic_color_neutral url('../img/admin/menu_file.png') center center no-repeat;}
-#admin #menu #mode_links            {background: #basic_color_neutral url('../img/admin/menu_link.png') center center no-repeat;}
+#admin #menu a:hover{color:white;}
+#admin #menu a{
+  text-align:center;
+  vertical-align:middle;
+  color:rgba(255,255,255,0.8);
+  font-size:18px;
+  background: #basic_color_neutral 
+}
+          
 
 /* fil ariane */
 #admin #fil_ariane{
@@ -63,14 +78,23 @@
   line-height: 32px;
   vertical-align: middle;
   border-bottom: 1px solid #888;
-  font-size: 1em;
+  font-size: 1.2em;
+  margin-bottom:10px;
 }
 
 #admin #fil_ariane .ariane_home {
   display: inline-block;
-  background: transparent url('../img/admin/fil_ariane_home.png') center center no-repeat;
+  width: 25px;
+  height: inherit;
+  font-size:20px;
+  line-height:15px;
+}
+#admin #fil_ariane .back {
+  display: inline-block;
   width: 32px;
   height: inherit;	
+  font-size:20px;
+  line-height:15px;
 }
 #admin #fil_ariane a:hover{color:#hover_color_neutral;}
 #admin #fil_ariane a.ariane_item{margin-left:5px;}
@@ -112,4 +136,4 @@
   bottom:5px;right:5px;
 }
 
-.info{text-align: center;padding:10px;border-radius: 3px;background-color: rgba(0,150,255,0.5);margin:5px;color:white;text-shadow:0 1px 1px rgba(0,0,0,0.2);}
+.info{text-align: center;padding:10px;border-radius: 3px;background-color: rgba(100,100,100,0.5);margin:5px;color:white;text-shadow:0 1px 1px rgba(0,0,0,0.2);}

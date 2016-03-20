@@ -1,4 +1,5 @@
 <div id="home">
+   
   <div id="center">
   	<h1><?php e('BoZoN is a simple filesharing app.'); ?></h1>
   	<p><?php e('Easy to install, free and opensource'); ?></p>

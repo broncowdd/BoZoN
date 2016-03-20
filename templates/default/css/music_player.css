@@ -14,7 +14,7 @@
          font-family: monospace;
          font-size: 12px;
          margin-bottom:20px;
-             display: flex;
+             display: inline-flex;
     x-justify-content: space-around;
     x-align-items: stretch;
      }
@@ -162,7 +162,7 @@
      .error .error-message {
          display: block;
      }
-.music_player{padding:10px;}
+#share section.music_player{padding:10px;display:block;}
 .music_player a {
 	display:block;
 	padding:5px;
@@ -177,3 +177,29 @@
 
 .music_player a.playing{color:white;text-shadow:0 1px 1px rgba(0,0,0,0.3);background-color:rgba(0,0,0,0.4);border-radius:3px;padding:10px;}
 .music_player a.playing:hover{color:#cef;}
+
+.music_player table {border-collapse: collapse;}
+.music_player table td:first-of-type{width:100%;vertical-align: middle;}
+.music_player table td:last-of-type{width:40px;}
+.music_player #volume{
+    padding:3px;
+    
+    background:rgba(0,0,0,0.2);
+    display:inline-block;
+    text-align:center;
+    border-top:1px solid rgba(0,0,0,0.1);
+    border-bottom:1px solid rgba(0,0,0,0.1);
+}
+.music_player .volume:hover{background-image:url(../img/barw.png);}
+.music_player .volume{
+    border-radius: 1px 1px 0 0;
+    vertical-align:bottom;
+    display:inline-block;
+    width:3px;
+    height:30px;
+    background:url(../img/barb.png) no-repeat rgba(255,255,255,0.1);
+    cursor: pointer;
+
+}
+.music_player .volume.active{ background:url(../img/barw.png) no-repeat transparent;}
+.music_player a:hover{ color:rgba(0,0,0,0.5);}

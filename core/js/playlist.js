@@ -8,13 +8,14 @@ function play(song_link) {
 	event.stopPropagation();
 	return false;
 }
+
 // Setup the player to autoplay the next track (personal change in vanilla js)
 audiojs.events.ready(function() {
     var a = audiojs.createAll(
     	{
     		trackEnded: function() {
-	            var current = all("playing");
-	            next=next(current[0]);					            
+	            var current = document.querySelector(".playing");
+	            next=next(current);					            
 	            removeClass(current,"playing");
 	            addClass(next,"playing");
 	            audio.load(next.getAttribute("data-src"));
@@ -22,6 +23,14 @@ audiojs.events.ready(function() {
           	},
          css:false}
     );
+	audio=a[0];
+    on ("click","span[data-volume]",function(){
+    	audio.setVolume(this.getAttribute("data-volume"));
+    	removeClass("span[data-volume]","active");
+    	toggleClass(this,"active");
+    	event.preventDefault();
+        return false;
+    });
     // Load in the first track
 	var audio = a[0];		        	
     first_link=first(".sound");

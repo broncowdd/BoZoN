@@ -19,15 +19,15 @@ if (!function_exists('is_user_connected')){
   <?php 
     $f=file_exists('private/auto_restrict_users.php');
     $n=isset($_GET['newuser']);
-    if ($n&&!is_admin()){include(THEME_PATH.'footer.php');exit;}
+    if ($n&&!is_allowed('add user')){safe_redirect('index.php?p=admin&token='.TOKEN);}
     $p=isset($_GET['change_password']);
     $input_login='<input type="text" name="login" id="login" required="required" autofocus placeholder="'.e('Login',false).'"/>';
     if(!$f||$n){
-    	echo '<h1>'.e('Create an account',false).'</h1>';
+    	echo '<h1>'.e('New account',false).'</h1>';
     }else if($p&&is_user_connected()){
-    	echo '<h1>'.e('Change password',false).'</h1>';
+    	//echo '<h1>'.e('Change password',false).'</h1>';
     }else{
-    	echo '<h1>'.e('Please, login',false).'</h1>';
+    	//echo '<h1>'.e('Please, login',false).'</h1>';
     }
   ?>
   
@@ -61,7 +61,7 @@ if (!function_exists('is_user_connected')){
   					echo '<input type="hidden" name="creation" value="1"/>';
   					echo $input_login;
   				}else if($p&&is_user_connected()){
-  					echo '<p id="user">'.e('User:',false).'&nbsp;'.$_SESSION['login'].'</p>';	
+  					echo '<h1 id="user">'.e('User:',false).'&nbsp;'.$_SESSION['login'].'</h1>';	
   					adminPassword($label='',$placeholder=e('Old password',false));
   				}else{
   					echo $input_login;

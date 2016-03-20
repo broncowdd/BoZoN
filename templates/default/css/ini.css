@@ -1,7 +1,11 @@
 /* Initialisation */
-* {
+html {
   box-sizing: border-box;
 }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -80,7 +84,18 @@ body{
 }
 .checked a{  color:white}
 .checked a:hover{  color:white!important;}
-
+.error{padding:20px;background-color:rgba(255,0,0,0.6);color:white;border-radius: 3px;}
+.error a{color:pink;}
+.error a:hover{color:white;}
+.npt{    
+  width: 400px;
+  height: 35px;
+  text-indent: 7px;
+  margin-bottom: 7px;
+  color: #85888b;
+  border: 1px solid #d6ecfc;
+  border-radius: 5px;
+  }
 
 .btn {
   cursor: pointer;
@@ -97,7 +112,16 @@ body{
   background-color:  #hover_color_neutral;
   
 }
-
+.home .link_error{
+  text-align: center;
+  padding:10px;
+  border-radius: 3px;
+  background:url(../img/home/error_link.png) no-repeat top center;
+  margin:5px;
+  color:rgba(0,0,0,0.7);
+  font-size:1.5em;
+  padding-top:100px;
+}
 #submit {
   width: 200px;
   height: 35px;

@@ -7,8 +7,9 @@
 	*   - Eauland (philippe@eauland.com)
 	**/
 	$button_previous=$button_next=$paginate=$message=$log_list='';$from=0;
-	if (!function_exists('newToken')){require_once('core/auto_restrict.php');} # Admin only!
-	if (!is_admin()){include(THEME_PATH.'footer.php');exit;}
+	if (!function_exists('newToken')){require_once('core/auto_restrict.php');} # Connected user only !
+	if (!is_allowed('access logfile')){safe_redirect('index.php?p=admin&token='.TOKEN);}
+	
 	# search/filter
 	if (!empty($_GET['filter'])){
 		$_SESSION['filter']=$_GET['filter'];
@@ -64,7 +65,7 @@
 ?>
 
 <div id="stats">
-	<h1><?php e('Access log');?></h1>
+	
 	
 	<?php
   if(isset($message) && !empty($message)){
@@ -96,7 +97,7 @@
 		<?php echo $button_previous;?><?php echo $paginate;?><?php echo '[total: '.count($stats).']';?><?php echo $button_next;?>
 	</div>
 	
-	<p id="trash"><a title="<?php e('Delete all stat data'); ?>" href="index.php?p=stats&kill&token=<?php newToken(true);?>"><?php e('Delete all stat data'); ?></a></p>
+	<p id="trash"><a title="<?php e('Delete all stat data'); ?>" href="index.php?p=stats&kill&token=<?php newToken(true);?>"><span class="icon-trash" ></span> <?php e('Delete all stat data'); ?></a></p>
 	
 	<div id="feeds"><?php e('Export log:'); ?> <a href="<?php echo $_SESSION['home'];?>?key=<?php echo $_SESSION['api_rss_key'];?>&statrss">Rss</a> <a href="<?php echo $_SESSION['home'];?>?key=<?php echo $_SESSION['api_rss_key'];?>&statjson">Json</a></div>
 	<?php

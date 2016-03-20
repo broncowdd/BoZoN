@@ -12,19 +12,7 @@
     overflow:hidden;
     transition: all 300ms;
 }
-#lb_content{
-    height:100%;
-    width:100%;
-    -webkit-background-size: contain;
-    -moz-background-size: contain;
-    -o-background-size: contain;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
-    overflow:hidden;
-    transition: all 300ms;
-}
+
 #lb_overlay iframe{
     height: 100%;
     width: 100%;
@@ -39,6 +27,7 @@
     width:100%;
     height:0;
     opacity:0;
+    z-index: 1;
     
 }
 #lb_content-info {    
@@ -59,9 +48,10 @@
     z-index: 10000;
     float:right;
     cursor:pointer;
+    margin-top: 3px;
 }
 #lb_next,#lb_prev{
-    width:32px;height:32px;
+    width:32px;height:32px;    margin-top: 3px;
     z-index: 10000;
     float:left;
     cursor:pointer;
@@ -72,4 +62,24 @@
 }
 #lb_prev{
     background:url(../img/lightbox/prev.png) no-repeat center center;
+}
+#lb_content {
+    max-height: 100%; transition: all 300ms; height:100%;
+}
+
+#lb_content img {
+    transition: all 300ms;
+    /* Keeps image from going outside the screen */
+    max-height: 100%;
+    max-width: 100%;
+    /* Keeps image from beeing distorted */
+    height: auto;
+    width: auto;
+    /* centering horizontally AND vertically */
+    /* 50% of container */
+    position: relative;
+    top: 50%;
+    left: 50%;
+    /* 50% of image */
+    transform: translate(-50%,-50%);
 }

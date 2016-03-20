@@ -1,11 +1,11 @@
 
-	<tr class="#CLASS">
-		<td></td>
-		<td class="table_image"><a href="index.php?f=#ID" download="#NAME" ><img src="#theme/img/list/shared_folder.png" style="background:transparent;"/></a></td>
-		<td class="table_filename"><a href="index.php?f=#ID" download="#NAME" >#NAME</a></td>
-		<td class="table_filesize owner">#FROM</td>
-		<td class="table_buttons">
-				<a class="link" title="#tooltip_link" onclick="put_link('#ID');" href="#link_box">&nbsp;</a>
-				<a class="zipfolder" title="#tooltip_zipfolder" href="index.php?p=admin&zipfolder=#ID&token=#TOKEN">&nbsp;</a>			
-		</td>
-	</tr>
+<tr class="#CLASS">
+	<td></td>
+	<td class="table_image"><a href="index.php?f=#ID"><span class="icon-userfolder blue" ></span></a></td>
+	<td class="table_filename"><a href="index.php?f=#ID">#NAME</a></td>
+	<td class="table_filesize owner">#FROM</td>
+	<td class="table_buttons">
+		<a class="link" title="#tooltip_link" data-id="#ID" href="#link_box"><span class="icon-link" ></span></a>
+		<a class="zipfolder" title="#tooltip_zipfolder" href="index.php?p=admin&zipfolder=#ID&token=#TOKEN"><span class="icon-download-cloud" ></span></a>	
+	</td>
+</tr>

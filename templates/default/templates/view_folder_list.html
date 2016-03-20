@@ -1,17 +1,15 @@
 
-		<tr class="folder #CLASS" title="#TITLE">
-			<td class="table_check"><input type="checkbox" value="#ID" name="delete[]"/></td>
-			<td class="table_image"><a href="index.php?p=admin&path=#FICHIER&token=#TOKEN"><img src="#theme/img/folder.png" style="background:transparent;"/></a></td>
-			<td class="table_filename"><a href="index.php?p=admin&path=#FICHIER&token=#TOKEN">#NAME</a></td>
-			<td class="table_filesize">#SIZE</td>
-			<td class="table_buttons">
-				<a class="close" title="#tooltip_close" onclick="suppr('#ID');" href="#delete_box">&nbsp;</a>
-				<a class="rename" title="#tooltip_rename" onclick="put_file_and_id('#ID','#SLASHEDNAME');"  href="#rename_box">&nbsp;</a>
-				<a class="movefolder" href="#selecttarget" title="#Move_to" onclick="put_file('#SLASHEDFICHIER')">&nbsp;</a>
-				<a class="link" title="#tooltip_link" onclick="put_link('#ID');" href="#link_box">&nbsp;</a>
-
-				#ICONE_VISU
-				<a class="zipfolder" title="#tooltip_zipfolder" href="index.php?p=admin&zipfolder=#ID&token=#TOKEN">&nbsp;</a>				
-			</td>
-			</tr>
-		</tr>	
+<tr class="folder #CLASS" title="#TITLE">
+	<td class="table_check"><input type="checkbox" value="#ID" name="item[]"/></td>
+	<td class="table_image"><a href="index.php?p=admin&path=#FICHIER&token=#TOKEN"><span class="icon-folder-1" ></span></a></td>
+	<td class="table_filename"><a href="index.php?p=admin&path=#FICHIER&token=#TOKEN">#NAME</a></td>
+	<td class="table_filesize">#SIZE</td>
+	<td class="table_buttons">
+		<a class="close" title="#tooltip_close" data-id="#ID" href="#delete_box"><span class="icon-trash" ></span></a>
+		<a class="rename" title="#tooltip_rename" data-id="#ID" data-name="#SLASHEDNAME" href="#rename_box"><span class="icon-pencil" ></span></a>
+		<a class="movefolder" title="#Move_to" data-name="#SLASHEDFICHIER" href="#selecttarget"><span class="icon-shuffle" ></span></a>
+		<a class="link" title="#tooltip_link" data-id="#ID" href="#link_box"><span class="icon-link" ></span></a>
+		<a class="zipfolder" title="#tooltip_zipfolder" href="index.php?p=admin&zipfolder=#ID&token=#TOKEN"><span class="icon-download-cloud" ></span></a>
+		#ICONE_VISU	
+	</td>
+</tr>	

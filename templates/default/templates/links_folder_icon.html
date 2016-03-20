@@ -1,16 +1,16 @@
 
-		<li class="folder #CLASS" title="#TITLE">
-			<div class="buttons">
-				<a class="locked" title="#tooltip_lock" href="#locked" onclick="put_id('#ID')">&nbsp;</a>
-				<a class="burn" title="#tooltip_burn" href="index.php?p=admin&burn=#ID&token=#TOKEN">&nbsp;</a>
-				<a class="renew" title="#tooltip_renew" href="index.php?p=admin&renew=#ID&token=#TOKEN">&nbsp;</a>
-				<a class="qrcode" href="#qrcode" onclick="qrcode('#ID')">&nbsp;</a>
-				<a class="link" title="#tooltip_link" onclick="put_link('#ID');" href="#link_box">&nbsp;</a>
-				<a class="usershare" title="#tooltip_usershare" href="#usershare" onclick="share('#ID','#FICHIER')">&nbsp;</a>
-			</div>
-			<a href="index.php?p=admin&path=#FICHIER&token=#TOKEN" >
-				<img src="#theme/img/folder.png" style="background:transparent;"/>
-				<em class="over">#SIZE</em><em title="#NAME">#NAME</em>
-			</a>
-		</li>
+<li class="folder #CLASS" title="#TITLE">
+	<div class="buttons">
+		<a class="locked" title="#tooltip_lock" href="#locked" data-id="#ID"><span class="icon-lock" ></span></a>
+		<a class="burn" title="#tooltip_burn" href="index.php?p=admin&burn=#ID&token=#TOKEN"><span class="icon-fire" ></span></a>
+		<a class="renew" title="#tooltip_renew" href="index.php?p=admin&renew=#ID&token=#TOKEN"><span class="icon-renew" ></span></a>
+		<a class="link" title="#tooltip_link" data-id="#ID" href="#link_box"><span class="icon-link" ></span></a>
+		<a class="qrcode" title="#tooltip_qrcode" href="#qrcode"  data-id="#ID"><span class="icon-qrcode" ></span></a>
+		#USERSHAREBUTTON
+	</div>
+	<a href="index.php?p=admin&path=#FICHIER&token=#TOKEN" >
+		<span class="icon-folder-1" ></span>
+		<em class="over">#SIZE</em><em title="#NAME">#NAME</em>
+	</a>
+</li>
 	

@@ -28,7 +28,7 @@
   padding: 0;
   background: linear-gradient(#ddd,#eee);
   position: relative;
-  overflow: auto;
+  overflow: hidden;
   border: 1px #888 solid;
   border-top: 1px #basic_color_light solid;
   border-bottom: 1px #777 solid;
@@ -63,13 +63,13 @@
   right: 8px;
   top: 11px;
   z-index: 3;
-  color: rgba(0,0,0,0.8);
+  color: rgba(255,255,255,0.8);
   width: 20px;
   height: 20px;
   line-height: 18px;
   text-align: center;
   margin: 0;
-  text-shadow: 0 1px 1px rgba(255,255,255,0.6);
+  
   font-weight: bold;
   cursor: pointer;
 }
@@ -101,8 +101,8 @@
   border-bottom: 1px rgba(0,0,0,0.1) solid;
   font-size: 18px;
   color: #fff;
-  width: 100%;
-  text-shadow: 0 -1px 1px rgba(0,0,0,0.9);
+  
+  text-shadow: 0 0px 1px rgba(0,0,0,0.9);
   margin-bottom: 0;
 }
 
@@ -117,7 +117,8 @@
 }
 
 .dialog input[type=text],
-.dialog textarea {
+.dialog textarea,
+.dialog select {
   display: block;
   background: linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,0.2));
   border: 1px solid rgba(0,0,0,0.3);
@@ -125,8 +126,8 @@
   font-size: 14px;
   color: rgba(0,0,0,0.5);
   text-shadow: 0 1px 1px rgba(255,255,255,0.5);
-  margin:20px 10px 20px 10px;
-  width:350px;
+  margin:20px 0 20px 0;
+  width:340px;
   border-radius: 3px;
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
   padding: 6px;
@@ -143,9 +144,7 @@
 #link_box textarea {
   resize:none;
 }
-#link_box form {
-  padding:0;
-}
+
 
 #qrcode_img {
   display: block;

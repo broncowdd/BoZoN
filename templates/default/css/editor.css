@@ -1,0 +1,34 @@
+#editor{
+  width:100%;
+  min-height: 500px;
+  text-indent: 7px;
+  margin-bottom: 7px;
+  color: #85888b;
+  border: 1px solid #d6ecfc;
+  border-radius: 5px;
+  background-color:white;
+  padding:10px;
+}
+#editor_page textarea{padding:15px;min-height:500px;resize:vertical;}
+#editor_page {max-width:1200px;padding:20px;margin:auto}
+#editor_page .npt{width:100%;font-size:1.3em;}
+#editor_page .btn{width:200px;font-size:1.4em;display:block;margin:auto;}
+#editor_page .dialog figcaption{
+	padding:15px;
+	max-width:1200px;width:100%;
+}
+#editor_page .tab_space{
+	width:100%;
+	margin:5px auto;
+	max-width:1200px;
+}
+#editor_page #visu{
+	min-height: 500px;
+	margin:0;
+	max-width:100%;
+}
+#editor_page .tabs>li{
+	display: inline-block;
+}
+#editor_page .help_tab{padding:30px;font-size: 1.2em;font-family: monospace;}
+#editor_page .npt{margin:0;margin-bottom:15px;width:calc(100% - 30px);}

@@ -58,14 +58,13 @@
   overflow: hidden;
   word-wrap: break-word;
 }
-
+#stats .origin{padding:5px;}
 #stats #trash,
 #stats #feeds {
   text-align: center;
 }
 
 #stats #trash a {
-  background: transparent url('../img/stats/trash.png') left center no-repeat;
   height: 25px;
   line-height: 25px;
   vertical-align: middle;

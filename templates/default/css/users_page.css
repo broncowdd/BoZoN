@@ -1,26 +1,124 @@
 #users_page table{width:100%;border-collapse: collapse}
 #users_page td{vertical-align: top;width:50%;padding:10px;}
-#users_page .dialog{display:block;position:relative;width:100%;}
-#users_page .dialog td{width:auto;padding:0;vertical-align: middle;}
-#users_page .dialog tr{padding-bottom:5px;margin-bottom:5px;border-bottom:1px solid rgba(0,0,0,0.2);vertical-align: middle;}
-#users_page .dialog figcaption{width:100%;}
-#users_page .dialog figure{width:100%;display:block;}
-#users_page .dialog h2{padding:15px;}
-#users_page .dialog label{cursor:pointer;word-break: break-all;padding:0;}
+#editor_page .dialog, #users_page .dialog{display:block;position:relative;width:100%;}
+#users_page .dialog td{width:auto;vertical-align: middle;padding-left:0;font-size:1.4em;}
+#users_page .dialog tr{padding-bottom:5px;margin-bottom:5px;border-bottom:1px solid rgba(0,0,0,0.1);vertical-align: middle;}
+#users_page .dialog figcaption{width:100%;max-width:600px;}
+#editor_page .dialog figure,#users_page .dialog figure{width:100%;display:block;}
+#editor_page .dialog h2,#users_page .dialog h2{padding:15px;}
+#editor_page .dialog label,#users_page .dialog label{cursor:pointer;word-break: break-all;padding:0;}
 #users_page .dialog .folder_size_users_list li {vertical-align: middle}
-#users_page .dialog .admin{color:rgba(200,0,0,0.8);}
+#users_page .dialog .admin{color:rgba(100,0,0,0.8);}
+#users_page .dialog .user{color:rgba(0,0,0,0.6);}
+#users_page .dialog .guest{color:rgba(0,100,0,0.6);}
 #users_page label span{padding:3px;}
 #users_page label span em{color:rgba(0,0,0,0.5);}
-#users_page input[type=number]:hover{background-color:rgba(255,255,255,0.9);}
+#users_page select{font-size:1em;}
+#users_page input[type=number]:focus{background-color:rgba(255,255,255,0.9);color:rgba(0,0,0,0.9);}
 #users_page input[type=number]:focus{background-color:rgba(255,255,255,0.9);color:rgba(0,0,0,0.9);}
 #users_page input[type=number]{
-  height: 24px;
+  
   text-indent: 7px;
   width:100%;
   margin-bottom: 3px;
   margin-top: 3px;
   color: rgba(0,0,0,0.4);
+  font-size:1.2em;
   background:rgba(255,255,255,0.5);
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: 5px;
+}
+
+#editor_page .hidden, #users_page .hidden{
+  max-height:0;
+  opacity:0;
+  border:none;
+  overflow:hidden;
+  transition:all 300ms;
+}
+#editor_page .tab_space .dialog, #users_page .tab_space .dialog{
+  transition:all 300ms;
+  top: auto;
+}
+#editor_page .tabs .btn, #users_page .tabs .btn{
+  margin:0;border:0;
+  padding:10px;
+  border-radius:3px 3px 0 0;
+  box-shadow: inset 0 -1px 3px rgba(0,0,0,0.5);
+  border:1px solid rgba(0,0,0,0.1);
+  border-bottom:none;
+}
+#editor_page .btn.active, #users_page .btn.active{
+  background:rgba(0,0,0,0.1);
+  color:#basic_color_dark;
+  box-shadow:none;
+}
+#editor_page .tab_space .tabs, #users_page .tab_space .tabs{}
+#users_page .tab_space{
+  width:100%;
+  margin:5px auto;
+  max-width:600px;
+}
+#editor_page .tab_space .dialog h2, #users_page .tab_space .dialog h2{
+  color:rgba(0,0,0,0.5);
+}
+#editor_page .tab_space .tab_space .dialog h1, #users_page .tab_space .dialog h1{
+  background:transparent;
+  text-align: left;
+  font-size:16px;
+  color:#basic_color_dark;
+  font-weight: normal;
+  text-shadow: none;
+}
+#editor_page .tab_space .dialog figure figcaption, #users_page .tab_space .dialog figure figcaption{
+  background-image:none;
+  background:rgba(0,0,0,0.1);
+  box-shadow: none;
+  border:none;
+  border-radius:0 3px 3px 3px;
+  border-left:1px solid rgba(0,0,0,0.1);
+  border-right:1px solid rgba(0,0,0,0.1);
+  border-bottom:1px solid rgba(0,0,0,0.1);
+  border-top:none;
+  overflow: hidden;
+}
+
+
+/* Users List */
+#userslist p {
+  width: calc(100% - 8px);
+  text-align: center;
+}
+
+#userslist ul {
+  width: 312px;
+  margin: 15px auto 0 auto;
+}
+
+#userslist ul li {
+  display: block;
+}
+
+#userslist ul li input,
+#userslist ul li span {
+  display: block;
+  float: left;
+}
+
+#userslist ul li span {
+  width: calc(100% - 20px);
+  word-wrap: break-word;
+}
+
+#userslist .clear {
+  padding-top: 15px;
+}
+
+#userslist #submit {
+  display: block;
+  margin: 15px auto 0 auto;
+}
+
+#users_page .tab_space .users_pass_list .npt{
+	width:100%;margin:0;
 }

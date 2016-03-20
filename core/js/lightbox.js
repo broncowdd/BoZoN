@@ -16,6 +16,7 @@ var lb_hide=function(){
 var lb_show=function(obj){
 	var lb_overlay=document.getElementById("lb_overlay");	
 	var lb_content=document.getElementById("lb_content");	
+	var lb_img=document.getElementById("lb_img");	
 	var lb_info=document.getElementById("lb_content-info");	
 	var lb_nav=document.getElementById("lb_nav");	
 	var lb_prev=document.getElementById("lb_prev");
@@ -24,7 +25,6 @@ var lb_show=function(obj){
 	var path=obj.getAttribute("href");
 	var alt=obj.getAttribute("alt");
 	var group=obj.getAttribute("data-group");
-
 	if (group==null&&path!="prev"&&path!="next"){
 		lb_prev.style.display="none";
 		lb_next.style.display="none";
@@ -60,28 +60,13 @@ var lb_show=function(obj){
 	if (path=="prev"&&prev!=null){lb_show(prev);return false;}             
 	if (path=="next"&&next!=null){lb_show(next);return false;}
 
-	if (type=="img"){
-		lb_content.innerHTML='';
-		lb_content.setAttribute("style","background-image:url('"+path+"');");
-		lb_info.innerHTML=alt;
-	}else if (type="iframe"){
-		lb_content.setAttribute("style","background:transparent;");
-		lb_content.innerHTML='<iframe src="'+path+'"></iframe>';
-
-	}else{
-		lb_content.setAttribute("style","background:white;width:95%;height:100%;overflow-y:scroll");
-		request = new XMLHttpRequest();request.open('GET', path, true);request.send();
-		request.onreadystatechange=function(){
-			if (this.readyState==4){
-				lb_content.innerHTML=this.responseText;
-			}			
-		}
-	}
-
+	lb_img.setAttribute("src",path);
+	lb_info.innerHTML=alt;
 	lb_overlay.style.height="100%";
 	lb_overlay.style.opacity=100;
-	lb_nav.style.height="100%";
+	lb_nav.style.height="48px";
 	lb_nav.style.opacity=100;
 	event.preventDefault();
+	event.stopPropagation();
 	return false;
 }
