@@ -1,4 +1,4 @@
-en<?php
+<?php
 	/**
 	* BoZoN share page:
 	* handles a user share request
