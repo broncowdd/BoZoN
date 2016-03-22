@@ -7,9 +7,9 @@
 	<script>
 		// click on lightbox link
 		on('click','a[data-type]',function(event){
-			lb_show(this);
 			event.preventDefault();
 			event.stopPropagation();
+			lb_show(this);
 			return false;
 		})
 

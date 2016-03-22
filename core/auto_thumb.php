@@ -1,8 +1,12 @@
 <?php
-const EXIF_ORIENTATION_TOP=1;
-const EXIF_ORIENTATION_BOTTOM=3;
-const EXIF_ORIENTATION_RIGHT=6;
-const EXIF_ORIENTATION_LEFT=8;
+
+
+
+
+define('EXIF_ORIENTATION_TOP',1);
+define('EXIF_ORIENTATION_BOTTOM',3);
+define('EXIF_ORIENTATION_RIGHT',6);
+define('EXIF_ORIENTATION_LEFT',8);
 
 function get_rotation_angle($exif_orientation){
 	if (EXIF_ORIENTATION_BOTTOM == $exif_orientation){return 180;}

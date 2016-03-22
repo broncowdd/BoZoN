@@ -15,6 +15,7 @@
 	$default_path='uploads/'; 												# upload folder
 	$default_private='private/'; 											# private folder
 	$default_id_file=$default_private.'/id.php';							# IDs file name
+	$default_config_file=$default_private.'/config.php';						# IDs file name
 	$default_temp_folder=$default_private.'/temp/';							# temp folder path 
 	$default_users_rights_file=$default_private.'/users_rights_file.php';	# IDs file name 
 	$default_profiles_rights_file=$default_private.'/profiles_rights.php';	# profiles rights file name 

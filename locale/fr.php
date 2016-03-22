@@ -127,7 +127,6 @@ $lang=array(
     "Create a subfolder in this folder" => "Créer un sous-dossier dans ce dossier",
     "New folder" => "Nouveau dossier",
     "Paste a file\'s URL" => "Coller l'URL d'un fichier",
-    "Paste a file\'s URL to get it on this server" => "Coller l'URL d'un fichier pour le récupérer sur ce serveur",
 #     "Read m3u playlist" => "",
     "Force local filename (leave empty=no change)" => "Changer le nom du fichier (vide = nom original)",
     "filename (optionnal)" => "Nom de fichier (facultatif)",
@@ -143,7 +142,7 @@ $lang=array(
     "Choose a folder" => "Choisissez un dossier",
     "Root:" => "Racine :",
     "Filter:" => "Filtre :",
-    "Paste a file\'s URL to get it on this server" => "Coller l'url d'un fichier pour le récupérer sur ce serveur",
+    "Paste a file's URL to get it on this server" => "Coller l'url d'un fichier pour le récupérer sur ce serveur",
     "Delete selected items" => "Supprimer les items sélectionnés",
     "Zip and download selected items" => "Zipper et télécharger les items sélectionnés",
 

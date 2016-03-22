@@ -127,7 +127,7 @@ $lang=array(
     "Create a subfolder in this folder" => "Crear una subcarpeta nueva en esta carpeta",
     "New folder" => "Nueva carpeta",
     "Paste a file\'s URL" => "Pegar una dirección",
-    "Paste a file\'s URL to get it on this server" => "Pega la dirección de un archivo para duplicarlo",
+    "Paste a file's URL to get it on this server" => "Pega la dirección de un archivo para duplicarlo",
 #     "Read m3u playlist" => "",
     "Force local filename (leave empty=no change)" => "Cambiar el nombre del archivo (vacío = nombre original)",
     "filename (optionnal)" => "Nombre del archivo (facultativo)",

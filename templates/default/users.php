@@ -57,7 +57,7 @@
 								echo '<td>';
 								echo '<span '.$class.'>'.$user.'</span></td>';
 								echo '<input type="hidden" name="user_name[]" value="'.$user.'"/>';
-								echo '<td><input type="text" name="user_pass[]" class="npt generate_pswd" value="" title="'.e('Double-clic to generate a password',false).'" autocomplete="off"/></td>';
+								echo '<td><input type="text" name="user_pass[]" ondblclick="this.value=generer_password()" class="npt generate_pswd" value="" title="'.e('Double-clic to generate a password',false).'" autocomplete="off"/></td>';
 								newToken();
 								echo '</tr>';
 							}
@@ -96,9 +96,9 @@
 			addClass(this,"active");
 		});
 
-		on("dblclick",".generate_pswd",function(){
+		/*on("dblclick",".generate_pswd",function(){
 			attr(this,"value",generer_password());
-		});
+		});*/
 
 	</script>		
 	

@@ -1,0 +1,17 @@
+#config_page{
+  width:auto;
+  min-height: 500px;
+  text-indent: 7px;
+  margin:auto;
+  margin-bottom: 7px;
+  color: #85888b;
+  border: 1px solid #d6ecfc;
+  border-radius: 5px;
+  padding:10px;
+}
+#config_page table input[type=checkbox] {display:block;width:100%;height:16px;}
+#config_page table{margin:auto;}
+#config_page td{padding-bottom:15px;}
+#config_page label{display:block;color:rgba(0,0,0,0.8);font-size:1.2em;}
+#config_page p{display:block;color:rgba(0,0,0,0.6);font-size:0.6em;font-style:italic;}
+#config_page table tr td .btn{display:block;width:100%;color:rgba(0,0,0,0.8);}

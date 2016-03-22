@@ -82,10 +82,10 @@ if (!function_exists('is_user_connected')){
 </div>
 
 <script>
-  p=document.getElementById('pass');
-  c=document.getElementById('confirm');
-  function check(){
-    if (p.value!=c.value){c.style.backgroundColor='#edbcba';}
-		else{c.style.backgroundColor='#bcedbc';p.style.backgroundColor='#bcedbc'}
-  }
-</script>
+    p=document.getElementById('pass');
+    c=document.getElementById('confirm');
+    function check(){
+      if (p.value!=c.value){c.style.backgroundColor='#edbcba';}
+      else{c.style.backgroundColor='#bcedbc';p.style.backgroundColor='#bcedbc'}
+    }
+    </script>

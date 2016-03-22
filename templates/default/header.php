@@ -40,6 +40,7 @@
             $connected=is_user_connected();
             if ($connected){echo '<a class="home" href="index.php?p=admin&token='.TOKEN.'" title="'.e('Home',false).'"><span class="icon-home" ></span></a>';}
             if (is_allowed('change status rights')){echo '<a class="profiles_rights" href="index.php?p=edit_profiles&token='.TOKEN.'" class="edit_profile_link" title="'.e('Edit profiles rights',false).'"><span class="icon-block" ></span></a>';}
+           // if (is_allowed('config page')){echo '<a class="config_page" href="index.php?p=config&token='.TOKEN.'" class="config_page_link" title="'.e('Configure Bozon',false).'"><span class="icon-cog-alt" ></span></a>';}
             if (is_allowed('users page')){generate_users_list_link(e('Users list',false));}
             if (is_allowed('add user')){generate_new_users_link(e('New user',false));}
             if (is_allowed('acces logfile')){echo '<a class="log_file" href="index.php?p=stats&token='.TOKEN.'" class="log_link" title="'.e('Access log file',false).'"><span class="icon-info-circled" ></span></a>';}
@@ -95,15 +96,19 @@
 
     <div id="title_page">
       <?php 
-        if (!empty($_GET['p'])&&$_GET['p']=='editor'){e('Markdown editor'); }
-        elseif (!empty($_GET['p'])&&$_GET['p']=='stats'){e('Access log'); }
-        elseif (!empty($_GET['p'])&&$_GET['p']=='login'&&isset($_GET['change_password'])){e('Change password'); }
-        elseif (!empty($_GET['p'])&&$_GET['p']=='login'&&isset($_GET['newuser'])){e('Create an account'); }
-        elseif (!empty($_GET['p'])&&$_GET['p']=='login'){e('Please, login'); }
-        elseif (!empty($_GET['p'])&&$_GET['p']=='users'){e('Users profiles'); }
-        elseif (!empty($_GET['p'])&&$_GET['p']=='edit_profiles'){e('Configure profiles rights'); }
+      if (!empty($_GET['p'])){
+        if ($_GET['p']=='editor'){e('Markdown editor'); }
+        elseif ($_GET['p']=='stats'){e('Access log'); }
+        elseif ($_GET['p']=='login'&&isset($_GET['change_password'])){e('Change password'); }
+        elseif ($_GET['p']=='login'&&isset($_GET['newuser'])){e('Create an account'); }
+        elseif ($_GET['p']=='login'){e('Please, login'); }
+        elseif ($_GET['p']=='users'){e('Users profiles'); }
+        elseif ($_GET['p']=='edit_profiles'){e('Configure profiles rights'); }
+        elseif ($_GET['p']=='config'){e('Configure Bozon'); }
         elseif ($_SESSION['mode']=='links'){e('Manage links');}           
         else{e('Manage files');}
+      }
+       
       ?>
     </div> 
 

@@ -204,6 +204,7 @@
 		$file=$_POST['file'];$me=_basename($file);
 		if($destination=='/'){	$destination=''; }
 		if($file=='/'){	$file=''; }
+		if ($file[0] == '/') { $file = substr($file,1);}
 		$file_with_path=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$file;
 		$destination=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$destination;
 
@@ -277,10 +278,10 @@
 	}
 
 	# Lock folder with password
-	if (!empty($_POST['password'])&&!empty($_POST['id'])&&is_owner($_POST['id'])){
+	if (!empty($_POST['pass'])&&!empty($_POST['id'])&&!empty($_POST['confirm'])&&is_owner($_POST['id'])&&$_POST['confirm']==$_POST['pass']){
 		$id=$_POST['id'];
 		$file=id2file($id);
-		$password=blur_password($_POST['password']);
+		$password=blur_password($_POST['pass']);
 		# turn normal share id into password hashed id
 		$ids=unstore();
 		unset($ids[$id]);
@@ -292,12 +293,12 @@
 	}
 
 	# Handle folder share with users
-	if (!empty($_GET['users'])&&!empty($_GET['share'])&&is_owner($_GET['share'])){
-		$folder_id=$_GET['share'];
+	if (!empty($_POST['share'])&&is_owner($_POST['share'])){
+		$folder_id=$_POST['share'];
 		$users=$auto_restrict['users'];
 		unset($users[$_SESSION['login']]);
 		$shared_with=load_folder_share();
-		$sent=array_flip($_GET['users']);
+		$sent=array_flip($_POST['users']);
 		foreach ($users as $login=>$data){
 			if (isset($sent[$login])){
 				# User checked: add share
@@ -362,6 +363,13 @@
 		header('location:index.php?p=admin&token='.TOKEN.'&msg='.$_POST['editor_filename'].' '.e('Changes saved',false));
 		exit;
 	}
+
+	# Config change
+	if (isset($_POST['config'])&&is_allowed('config page')){
+
+
+	}
+
 
 	if ($_FILES&&is_allowed('upload')){include('core/auto_dropzone.php');exit();}
 ?>

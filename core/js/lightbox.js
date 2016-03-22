@@ -11,9 +11,11 @@ var lb_hide=function(){
 	lb_nav.style.opacity=0;
 	event.preventDefault();
 	event.stopPropagation();
+	return false;
 }
 
 var lb_show=function(obj){
+
 	var lb_overlay=document.getElementById("lb_overlay");	
 	var lb_content=document.getElementById("lb_content");	
 	var lb_img=document.getElementById("lb_img");	
@@ -59,14 +61,12 @@ var lb_show=function(obj){
 	}
 	if (path=="prev"&&prev!=null){lb_show(prev);return false;}             
 	if (path=="next"&&next!=null){lb_show(next);return false;}
-
 	lb_img.setAttribute("src",path);
 	lb_info.innerHTML=alt;
 	lb_overlay.style.height="100%";
 	lb_overlay.style.opacity=100;
 	lb_nav.style.height="48px";
 	lb_nav.style.opacity=100;
-	event.preventDefault();
-	event.stopPropagation();
+
 	return false;
 }

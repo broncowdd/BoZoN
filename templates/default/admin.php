@@ -142,8 +142,14 @@ if ($mode=='view'){
       ?>
   </div>
   <script src="core/js/qr.js"></script>
+ 
   <script>
-
+    p=document.getElementById('password');
+    c=document.getElementById('confirm');
+    function check(){
+      if (p.value!=c.value){c.style.backgroundColor='#edbcba';}
+      else{c.style.backgroundColor='#bcedbc';p.style.backgroundColor='#bcedbc'}
+    }
     
     function downloadImage() {
     	data = document.getElementById('outputimg').src;

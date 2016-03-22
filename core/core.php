@@ -6,15 +6,25 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4beta');
-	include('config.php');
+	define('VERSION','2.4 (build 2)');
+	
 	start_session();
 	$message='';
-	
-
-	# secure get / post data (normally done in auto_restrict)
+	#################################################
+	# Prepare or load config   
+	#################################################	
+	include('config.php');
+	if (empty($_SESSION['config_file'])){$_SESSION['config_file']=$default_config_file;}
+	if (!is_file($_SESSION['config_file'])){$_SESSION['config']=extract_config_vars();save_config($_SESSION['config']);}
+	elseif (empty($_SESSION['config'])){$_SESSION['config']=load_config();}
+	#################################################
+	//aff($_SESSION['config']);
+	#################################################
+	# secure get / post data 
+	#################################################
 	if (!empty($_GET)){$_GET=array_map('deep_strip_tags',$_GET);}
 	if (!empty($_POST)){$_POST=array_map('deep_strip_tags',$_POST);}
+	#################################################
 
 	# locale
 	if (empty($_SESSION['language'])){$_SESSION['language']=$default_language;}
@@ -80,16 +90,16 @@
 	if (!is_readable($_SESSION['private_folder'])){echo '<p class="error">'.e('Private folder is not readable',false).'</p>';}
 	if (!is_writable($_SESSION['temp_folder'])){echo '<p class="error">'.e('Temp folder is not writable',false).'</p>';}
 	if (!is_readable($_SESSION['temp_folder'])){echo '<p class="error">'.e('Temp folder is not readable',false).'</p>';}
-	if (!is_readable($_SESSION['private_folder'].'trees')){$message.='<div class="error">'.e('Problem accessing tree folder: not readable',false).'</div>';}
-	if (!is_writable($_SESSION['private_folder'].'trees')){$message.='<div class="error">'.e('Problem accessing tree/folder file: not writable',false).'</div>';}
-	if (!empty($_SESSION['upload_user_path'])&&!is_readable($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing ',false).$_SESSION['current_path'].e(': folder not readable',false).'</div>';}
-	if (!empty($_SESSION['upload_user_path'])&&!is_writable($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing ',false).$_SESSION['current_path'].e(': folder not writable',false).'</div>';}
+	if (!is_readable($_SESSION['private_folder'].'trees')){$message.='<div class="error">'.e('Problem accessing tree folder: not readable',false).'</label>';}
+	if (!is_writable($_SESSION['private_folder'].'trees')){$message.='<div class="error">'.e('Problem accessing tree/folder file: not writable',false).'</label>';}
+	if (!empty($_SESSION['upload_user_path'])&&!is_readable($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing ',false).$_SESSION['current_path'].e(': folder not readable',false).'</label>';}
+	if (!empty($_SESSION['upload_user_path'])&&!is_writable($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'])){$message.='<div class="error">'.e('Problem accessing ',false).$_SESSION['current_path'].e(': folder not writable',false).'</label>';}
 
 	# Check necessary libs
 	if(!$disable_non_installed_libs_warning){
-		if (!$_SESSION['zip']){$message.='<div class="error">ZipArchive '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.$_SESSION['language'].'/zip.setup.php">'.e('More info',false).'</a></div>';}
-		if (!$_SESSION['GD']){$message.='<div class="error">GD '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.$_SESSION['language'].'/image.installation.php">'.e('More info',false).'</a></div>';}
-		if (!$_SESSION['curl']){$message.='<div class="error">Curl '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.$_SESSION['language'].'/curl.setup.php">'.e('More info',false).'</a></div>';}
+		if (!$_SESSION['zip']){$message.='<div class="error">ZipArchive '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.$_SESSION['language'].'/zip.setup.php">'.e('More info',false).'</a></label>';}
+		if (!$_SESSION['GD']){$message.='<div class="error">GD '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.$_SESSION['language'].'/image.installation.php">'.e('More info',false).'</a></label>';}
+		if (!$_SESSION['curl']){$message.='<div class="error">Curl '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.$_SESSION['language'].'/curl.setup.php">'.e('More info',false).'</a></label>';}
 		}
 	# Check files
 	if (!is_file('thumbs/'.$_SESSION['upload_root_path'].'.htaccess')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].'.htaccess', 'deny from all');}
@@ -110,20 +120,17 @@
 	if (!is_file($_SESSION['upload_root_path'].'.htaccess')){file_put_contents($_SESSION['upload_root_path'].'.htaccess', 'deny from all');}
 	if (!is_file($_SESSION['users_rights_file'])){save_users_rights(array());}
 	else{$users_rights=load_users_rights();}
-	if (!is_file($_SESSION['profiles_rights_file'])){
-		save($_SESSION['profiles_rights_file'],array());
-	}
-
-	if (is_file($_SESSION['id_file'])&&!is_readable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not readable',false).'</div>';}
-	if (is_file($_SESSION['id_file'])&&!is_writable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not writable',false).'</div>';}
-	if (is_file($_SESSION['stats_file'])&&!is_readable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not readable',false).'</div>';}
-	if (is_file($_SESSION['stats_file'])&&!is_writable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not writable',false).'</div>';}
+	if (!is_file($_SESSION['profiles_rights_file'])){save($_SESSION['profiles_rights_file'],array());	}
+	if (is_file($_SESSION['id_file'])&&!is_readable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not readable',false).'</label>';}
+	if (is_file($_SESSION['id_file'])&&!is_writable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not writable',false).'</label>';}
+	if (is_file($_SESSION['stats_file'])&&!is_readable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not readable',false).'</label>';}
+	if (is_file($_SESSION['stats_file'])&&!is_writable($_SESSION['stats_file'])){$message.='<div class="error">'.e('Problem accessing stats file: not writable',false).'</label>';}
 
 	# Libs configuration
 	# Files to echo in browser (secured) 
 	$behaviour['FILES_TO_ECHO']=array('nfo','m3u','txt','js','html','php','SPHP','htm','shtml','shtm','css');
 	# Files to send to browser directly 
-	$behaviour['FILES_TO_RETURN']=array('md','jpg','jpeg','gif','png','mp3','mp4','svg');
+	$behaviour['FILES_TO_RETURN']=array('md','pdf','jpg','jpeg','gif','png','mp3','mp4','svg');
  	$auto_dropzone['destination_filepath']=$_SESSION['current_path'].'/';
 	$auto_thumb['default_width']='64';
 	$auto_thumb['default_height']='64';
@@ -131,13 +138,14 @@
 
 	# CONSTANTS & GLOBALS
 	define('THEME_PATH','templates/'.$_SESSION['theme'].'/');
-	$ACTIONS=array('users page','add user','delete user','change user status','change folder size','change status rights','change passes','markdown editor','regen ID base','acces logfile','upload');
+	$ACTIONS=array('users page','add user','delete user','change user status','change folder size','change status rights','change passes','markdown editor','regen ID base','acces logfile','config page','upload');
 	$RIGHTS=load($_SESSION['profiles_rights_file']);
 		
 	if (empty($RIGHTS)){ #default profiles if not configured
-		$PROFILES=array('admin','user');
+		$PROFILES=array('admin','user','guest');
 		$RIGHTS['admin']=array('add user'=>1,'delete user'=>1,'change folder size'=>1,'markdown editor'=>1,'regen ID base'=>1,'access logfile'=>1,'upload'=>1);
 		$RIGHTS['user']=array('markdown editor'=>1,'upload'=>1);
+		$RIGHTS['guest']=array('upload'=>1);
 		save($_SESSION['profiles_rights_file'],$RIGHTS);
 	}else{$PROFILES=array_filter(array_keys($RIGHTS));}
 
@@ -162,7 +170,6 @@
 
 
 
-
 	#################################################
 	# Functions 
 	#################################################
@@ -176,6 +183,8 @@
 	function load_folder_share(){return load($_SESSION['folder_share_file']);}
 	function save_users_rights($array=null){return save($_SESSION['users_rights_file'],$array);}
 	function load_users_rights(){return load($_SESSION['users_rights_file']);}
+	function save_config($array=null){return save($_SESSION['config_file'],$array);}
+	function load_config(){return load($_SESSION['config_file']);}
 	# Delete a file or a folder and apply changes in ids file
 	function delete_file_or_folder($id=null,$ids=null,$tree=array()){
 		global $ids,$tree;
@@ -1134,9 +1143,9 @@
 		$freepc=round($free*100/$user_size,1);
 		if (empty($free)){$free=0;}
 		
-		if ($mode==1){echo '<div class="free_space_bar" ><span class="used" style="width:'.$usedpc.'%" title="'.$used.' M">'.$usedpc.'%</span><span class="free" style="width:'.$freepc.'%;" title="'.$free.' M">'.$freepc.'%</div>';}
-		if ($mode==2){echo '<div class="free_space_icon btn" title="'.$freepc.'% '.e('free',false).' ('.$free.' MB)"><span class="free" style="height:'.(($freepc*32)/100).'px"></span><span class="used" style="height:'.(($usedpc*32)/100).'px"></span></div>';}
-		if ($mode==3){echo '<div class="free_space_text">'.$freepc.'% '.e('free',false).' ('.sizeconvert($free).')</div>';}
+		if ($mode==1){echo '<div class="free_space_bar" ><span class="used" style="width:'.$usedpc.'%" title="'.$used.' M">'.$usedpc.'%</span><span class="free" style="width:'.$freepc.'%;" title="'.$free.' M">'.$freepc.'%</label>';}
+		if ($mode==2){echo '<div class="free_space_icon btn" title="'.$freepc.'% '.e('free',false).' ('.$free.' MB)"><span class="free" style="height:'.(($freepc*32)/100).'px"></span><span class="used" style="height:'.(($usedpc*32)/100).'px"></span></label>';}
+		if ($mode==3){echo '<div class="free_space_text">'.$freepc.'% '.e('free',false).' ('.sizeconvert($free).')</label>';}
 	}
 
 	function draw_lb_link($file,$alt=null,$text_link='&nbsp;',$group='',$type='iframe'){
@@ -1148,15 +1157,42 @@
 	function start_session(){if (!session_id()){session_start();}}
 
 	function extract_config_vars(){
-		preg_match_all("#\$([^';=]*?)=#", file_get_contents('config.php'), $vars);aff($vars);
+		preg_match_all('#\$([^\';=]*?)=#', file_get_contents('./config.php'), $vars);
 		$conf=array();
-		foreach($vars[1] as $index=>$varname){echo $varname;
+		foreach($vars[1] as $index=>$varname){
 			if (!isset($$varname)){global $$varname;}
-			$conf[$$varname]=$$varname;
+			$conf[$varname]=$$varname;
 		}
 		return $conf;
 	}
-
+	# Generate configuration form from config vars
+	function generate_config_form($vars=null){
+		if (empty($vars)){$vars=extract_config_vars();}
+		include ('core/config_form_help.php');
+		echo '<form action="#" method="POST"><input type="hidden" name="config" value="1"/><table>';
+		foreach ($vars as $varname=>$value){
+			if (isset($config_form['help'][$varname])){
+				echo '<tr>';
+				if (is_bool($value)){
+					if ($value){$checked=' checked="true" ';}else{$checked='';}
+					echo '<td><label>'.str_replace('_',' ',$varname).'</label><p>'.$config_form['help'][$varname].'</p></td><td><input class="npt" type="checkbox" '.$checked.'name="'.$varname.'"/></td>';
+				}elseif(!empty($config_form['options'][$varname])&&is_array($config_form['options'][$varname])){
+					echo '<td><label>'.str_replace('_',' ',$varname).'</label><p>'.$config_form['help'][$varname].'</p></td><td><select class="npt" name="'.$varname.'">'."\n";
+					foreach ($config_form['options'][$varname] as $option){
+						if ($option==$value){$selected=' selected="true" ';}else{$selected='';}
+						echo '<option value="'.$value.'" '.$selected.'>'.e($option,false).'</option>'."\n";
+					}
+					echo '</select></td>'."\n";
+				}else{
+					echo '<td><label>'.str_replace('_',' ',$varname).'</label><p>'.$config_form['help'][$varname].'</p></td><td><input class="npt" name="'.$varname.'" value="'.$value.'"/></td>';
+				}
+				echo '</tr>';
+			}
+			//echo "'$varname' => e('text',false),\n";
+		}
+		newToken();
+		echo '<tr><td></td><td><input type="submit" class="btn" value="Ok"/><td><tr></table></form>';
+	}
 
 
 
@@ -1165,7 +1201,7 @@
 	#################################################
 	function aff($var,$stop=true){
 		$dat=debug_backtrace();$origin='<table>';
-		echo '<div style="background-color:rgba(0,0,0,0.8);color:red;padding:5px">Arret ligne <em><strong style="color:white;font-weight:bold">'.$dat[0]['line'].'</strong></em> dans le fichier <em style="color:white;font-weight:bold">'.$dat[0]['file'].'</em></div>';
+		echo '<div style="background-color:rgba(0,0,0,0.8);color:red;padding:5px">Arret ligne <em><strong style="color:white;font-weight:bold">'.$dat[0]['line'].'</strong></em> dans le fichier <em style="color:white;font-weight:bold">'.$dat[0]['file'].'</em></label>';
 		echo '<pre style="background-color:rgba(0,0,0,0.8);color:#fff;padding:10px"><code>';var_dump($var);echo '</code></pre>';
 		foreach (array_reverse($dat) as $data){
 			$dir=dirname($data['file']).'/';
@@ -1173,7 +1209,7 @@
 			$origin.='<tr><td style="width:50%"><em style="color:#888">'.$dir.'</em></td><td style="max-width:10%"><em style="color:white;font-weight:bold">'.$fil.'</em></td><td style="max-width:10%"><em style="color:yellow;font-weight:bold">'.$data['function'].'()</em></td><td style="max-width:10%"> <em style="color:lightblue;font-weight:bold">'.$data['line'].'</em> </td></tr>';
 		}
 		$origin.='</table>';
-		echo '<div style="background-color:rgba(0,0,0,0.8);color:#aaa;padding:10px">'.$origin.'</div>';
+		echo '<div style="background-color:rgba(0,0,0,0.8);color:#aaa;padding:10px">'.$origin.'</label>';
 		if ($stop){exit();}
 	}
 	function li($string){echo '<li>'.$string.'</li>';}

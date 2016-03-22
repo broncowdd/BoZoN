@@ -1,5 +1,14 @@
 
 # Version history
+## New in 2.4 (build 2)
+- bugfix on lightbox with firefox #108
+- missing traduction fr/es #103
+- bugfix on share files change #102
+- bugfix for password generation 
+- enhancement: lock folder with password now with a paswword input and confirm.
+
+Upcoming: more bugfixes and a *REAL* *USER FRIENDLY* config page 
+
 ## New in 2.4
 - optimisation : reduce slow down when folder tree contains a huge amount of files (tested with more than 30,000 files ^^ thx to Cyrille)
 - optimisation : reduce regen base use to reduce useless files scans (even for zip to folder option)
