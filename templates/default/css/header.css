@@ -115,8 +115,9 @@ body>header {
 #connect #logout_button,
 #connect #login_button {
   height: 22px;
-  width: 22px;line-height: 25px;
+  line-height: 25px;
   float: right;
+
 }
 #connect a:hover{
  background-color: #hover_color_dark!important;
@@ -125,9 +126,11 @@ body>header {
 
 #connect #login_button{
   color:rgba(255,255,255,0.8);
-  font-size:18px;line-height: 16px;
+  font-size:14px;line-height: 16px;margin-right:5px;
 }
-
+#connect #login_button span{
+  font-size:18px;
+}
 #connect #logout_button:hover{color:white!important}
 #connect #logout_button {
   font-size: 20px;

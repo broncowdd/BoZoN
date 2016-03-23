@@ -57,7 +57,7 @@ $default_config=array(
     'dropzone_text'=>e('Drop your files here or click to select a local file',false),
     'dropzone_id'=>'dropArea',
     'dropzone_class'=>'dropArea',
-    'destination_filepath'=>$_SESSION['current_path'].'/',     // this can be an array like 'jpg'=>'upload/jpeg/' or a string 'destination/'
+    'destination_filepath'=>$_SESSION['current_path'],     // this can be an array like 'jpg'=>'upload/jpeg/' or a string 'destination/'
     'my_filepath'=>'index.php'//$_SERVER['SCRIPT_NAME'],
 );
 

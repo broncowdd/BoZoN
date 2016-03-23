@@ -14,13 +14,13 @@
 	#############################################################
 	$default_path='uploads/'; 												# upload folder
 	$default_private='private/'; 											# private folder
-	$default_id_file=$default_private.'/id.php';							# IDs file name
-	$default_config_file=$default_private.'/config.php';						# IDs file name
-	$default_temp_folder=$default_private.'/temp/';							# temp folder path 
-	$default_users_rights_file=$default_private.'/users_rights_file.php';	# IDs file name 
-	$default_profiles_rights_file=$default_private.'/profiles_rights.php';	# profiles rights file name 
-	$default_folder_share_file=$default_private.'/folder_share.php';		# IDs file name 
-	$default_stat_file=$default_private.'/stats_log.php';					# stats file name 
+	$default_id_file=$default_private.'id.php';							# IDs file name
+	$default_config_file=$default_private.'/onfig.php';						# IDs file name
+	$default_temp_folder=$default_private.'temp/';							# temp folder path 
+	$default_users_rights_file=$default_private.'users_rights_file.php';	# IDs file name 
+	$default_profiles_rights_file=$default_private.'profiles_rights.php';	# profiles rights file name 
+	$default_folder_share_file=$default_private.'folder_share.php';		# IDs file name 
+	$default_stat_file=$default_private.'stats_log.php';					# stats file name 
 	
 	#############################################################
 	# Aspect config

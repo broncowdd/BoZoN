@@ -62,18 +62,17 @@ if (count($liste)>0){
 			$extension=strtolower(pathinfo($fichier,PATHINFO_EXTENSION));
 
 			# adding view icon if needed
-			if ($extension=='jpg'||$extension=='jpeg'||$extension=='gif'||$extension=='png'||$extension=='svg'){
-				if ($use_lightbox){
-					$icone_visu='<a class="visu" data-type="lightbox" data-group="lb" href="index.php?f='.$id.'" title="'.e('View this share',false).'" alt="'.$nom.'"><span class="icon-eye" ></span></a>';
+			if (is_in($extension,'FILES_TO_RETURN')!==false){
+				if ($extension=='jpg'||$extension=='jpeg'||$extension=='gif'||$extension=='png'||$extension=='svg'){
+					if ($use_lightbox){
+						$icone_visu='<a class="visu" data-type="lightbox" data-group="lb" href="index.php?f='.$id.'" title="'.e('View this share',false).'" alt="'.$nom.'"><span class="icon-eye" ></span></a>';
+					}else{
+						$icone_visu='<a class="visu" target="_BLANK" href="index.php?f='.$id.'" title="'.e('View this share',false).'"><span class="icon-eye" ></span></a>';
+					}
+					if (!$click_on_link_to_download){$target='target="_BLANK"';}else{$target=null;}
 				}else{
-					$icone_visu='<a class="visu" target="_BLANK" href="index.php?f='.$id.'" title="'.e('View this share',false).'"><span class="icon-eye" ></span></a>';
+					$icone_visu='<a class="visu" target="_BLANK" href="index.php?f='.$id.'&amp;view" title="'.e('View this file',false).'"><span class="icon-eye" ></span></a>';
 				}
-				if (!$click_on_link_to_download){$target='target="_BLANK"';}else{$target=null;}
-			}elseif($extension=='m3u'){
-				$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-				$icone_visu='<a class="visu" title="'.e('View this file',false).'" onclick="" href="#m3u"><span class="icon-eye" ></span></a>';
-			}elseif($extension=='txt'||$extension=='nfo'||$extension=='md'){
-				$icone_visu='<a class="visu" target="_BLANK" href="index.php?f='.$id.'&amp;view" title="'.e('View this file',false).'"><span class="icon-eye" ></span></a>';
 			}else{$icone_visu='';}
 
 			#adding edit icon if needed

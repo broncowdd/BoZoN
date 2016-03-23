@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 2)');
+	define('VERSION','2.4 (build 3)');
 	
 	start_session();
 	$message='';
@@ -111,10 +111,10 @@
 	if (!empty($_SESSION['upload_user_path'])&&!is_file('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'.htaccess')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'.htaccess', 'deny from all');}
 	if (!empty($_SESSION['upload_user_path'])&&!is_file('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'index.html')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'index.html',' ');}
 
-	if (!is_file($_SESSION['private_folder'].'.htaccess')){file_put_contents($_SESSION['private_folder'].'/.htaccess', 'deny from all');}
+	if (!is_file($_SESSION['private_folder'].'.htaccess')){file_put_contents($_SESSION['private_folder'].'.htaccess', 'deny from all');}
 	if (!is_file($_SESSION['folder_share_file'])){save_folder_share(array());}
-	if (!is_file($_SESSION['private_folder'].'/salt.php')){ file_put_contents($_SESSION['private_folder'].'/salt.php','<?php define("BOZON_SALT",'.var_export(generate_bozon_salt(),true).'); ?>'); }
-	else{include($_SESSION['private_folder'].'/salt.php');}
+	if (!is_file($_SESSION['private_folder'].'salt.php')){ file_put_contents($_SESSION['private_folder'].'salt.php','<?php define("BOZON_SALT",'.var_export(generate_bozon_salt(),true).'); ?>'); }
+	else{include($_SESSION['private_folder'].'salt.php');}
 	if (!is_file($_SESSION['id_file'])){$ids=array();store($ids);}
 	if (!is_file($_SESSION['stats_file'])){save($_SESSION['stats_file'], array());}
 	if (!is_file($_SESSION['upload_root_path'].'.htaccess')){file_put_contents($_SESSION['upload_root_path'].'.htaccess', 'deny from all');}
@@ -130,8 +130,8 @@
 	# Files to echo in browser (secured) 
 	$behaviour['FILES_TO_ECHO']=array('nfo','m3u','txt','js','html','php','SPHP','htm','shtml','shtm','css');
 	# Files to send to browser directly 
-	$behaviour['FILES_TO_RETURN']=array('md','pdf','jpg','jpeg','gif','png','mp3','mp4','svg');
- 	$auto_dropzone['destination_filepath']=$_SESSION['current_path'].'/';
+	$behaviour['FILES_TO_RETURN']=array('md','jpg','jpeg','gif','png','mp3','mp4','svg','pdf');
+ 	$auto_dropzone['destination_filepath']=addslash_if_needed($_SESSION['current_path']);
 	$auto_thumb['default_width']='64';
 	$auto_thumb['default_height']='64';
 	$auto_thumb['dont_try_to_resize_thumbs_files']=true;
@@ -473,6 +473,7 @@
 	# remove unused ids, add new ids for current user
 	function updateIDs($ids=null,$folder_id=null){
 		if (!$ids){$ids=unstore();}
+		$ids=array_map(function($id){return str_replace('//','/',$id);},$ids);
 		$sdi=array_flip($ids);$saveid=$savetree=false;
 		$ids=array_flip($sdi); # here, all the redundant ids have gone ^^
 		# scann all uploads folder (can be long but it's important)
@@ -482,6 +483,7 @@
 		}else{
 			$tree=recursive_glob($_SESSION['upload_root_path'],true);
 		}
+
 		unset($tree[0]);
 		# add missing ids
 		foreach($tree as $index=>$file){
@@ -932,7 +934,7 @@
 			echo '<a id="logout_button" class="btn" href="index.php?deconnexion" title="'.e('Logout',false).'"><span class="icon-logout" ></span></a>';
 
 		}
-		else{echo '<a id="login_button" class="btn" href="index.php?p=login" title="'.e('Connection',false).'"><span class="icon-lock" ></span></a>';}
+		else{echo '<a id="login_button" class="btn" href="index.php?p=login" title="'.e('Connection',false).'"><span class="icon-lock" ></span> '.$label_login.'</a>';}
 	}
 
 	# create the menu link (to change view)

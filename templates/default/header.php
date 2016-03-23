@@ -23,13 +23,15 @@
     if (!$_SESSION['zip']){$hide.='#zip_selection, .zipfolder{display:none!important}'; }
     if (!$_SESSION['curl']){$hide.='#download_url{display:none!important}'; }
     if (!empty($hide)){echo "\n<style>\n$hide\n</style>";}
+
+    $connected=is_user_connected();
   ?>
 </head>
 
 <body class="<?php body_classes();?>">
-<?php /* generate the lightbox */ echo $templates['lightbox']; ?>
-<header>
-  <div id="top_bar">
+<?php /* add the lightbox */ echo $templates['lightbox']; ?>
+<header <?php if ($connected){echo 'ondragenter="removeClass(\'#upload\',\'hidden\')"';}?>>
+  <div id="top_bar" >
     <span id="icons">
       <?php 
         if (!isset($_GET['f'])){ 
@@ -37,10 +39,10 @@
         }
  
         if (empty($_GET['f'])){
-            $connected=is_user_connected();
+
             if ($connected){echo '<a class="home" href="index.php?p=admin&token='.TOKEN.'" title="'.e('Home',false).'"><span class="icon-home" ></span></a>';}
             if (is_allowed('change status rights')){echo '<a class="profiles_rights" href="index.php?p=edit_profiles&token='.TOKEN.'" class="edit_profile_link" title="'.e('Edit profiles rights',false).'"><span class="icon-block" ></span></a>';}
-           // if (is_allowed('config page')){echo '<a class="config_page" href="index.php?p=config&token='.TOKEN.'" class="config_page_link" title="'.e('Configure Bozon',false).'"><span class="icon-cog-alt" ></span></a>';}
+            if (is_allowed('config page')){echo '<a class="config_page" href="index.php?p=config&token='.TOKEN.'" class="config_page_link" title="'.e('Configure Bozon',false).'"><span class="icon-cog-alt" ></span></a>';}
             if (is_allowed('users page')){generate_users_list_link(e('Users list',false));}
             if (is_allowed('add user')){generate_new_users_link(e('New user',false));}
             if (is_allowed('acces logfile')){echo '<a class="log_file" href="index.php?p=stats&token='.TOKEN.'" class="log_link" title="'.e('Access log file',false).'"><span class="icon-info-circled" ></span></a>';}
@@ -65,7 +67,7 @@
   <?php
     if (empty($_GET['f'])){
       /* you can add labels if you want like make_connect_link('Admin','Logout','Connection') */
-      make_connect_link();
+      make_connect_link('&nbsp;','&nbsp;',e('Connect',false));
     }
   ?>
   </div>

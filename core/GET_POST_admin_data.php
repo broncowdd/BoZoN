@@ -21,7 +21,7 @@
 		}
 	}
 
-	# regen tree
+	# regen ids base
 	if (isset($_GET['regen'])){
 		$ids=updateIDs($ids,$_GET['regen']);		
 		header('location:index.php?p=admin&token='.TOKEN);
@@ -94,7 +94,7 @@
 			$path='';
 		}
 		if(check_path($path)){
-			$_SESSION['current_path']=$path;
+			$_SESSION['current_path']=addslash_if_needed($path);
 		}
 		header('location:index.php?p=admin&token='.TOKEN);
 		exit;
@@ -134,7 +134,7 @@
 				$basename=no_special_char($_GET['filename']);
 			}
 
-			$folder_path=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'].'/';
+			$folder_path=addslash_if_needed($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path']);
 			$filename=$folder_path.$basename;			
 			if(is_file($filename)){
 				$filename=$folder_path.rename_item($filename,$folder_path);

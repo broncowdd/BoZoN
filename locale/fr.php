@@ -231,6 +231,7 @@ $lang=array(
     "Markdown editor" => "Editeur markdown",
     "Access log" => "Journal des accès",
     "Create an account" => "Créer un compte",
+    "Connect" => "Se connecter",
     "Please, login" => "Se connecter",
     "Users profiles" => "Profils utilisateurs",
     "Configure profiles rights" => "Configurer les droits d'accès",

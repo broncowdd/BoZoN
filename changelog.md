@@ -1,5 +1,10 @@
 
 # Version history
+## New in 2.4 (build 3)
+- bugfix : files no longer appears twice
+- pdf now displays correctly in the browser
+- better upload zone behaviour when drag over
+
 ## New in 2.4 (build 2)
 - bugfix on lightbox with firefox #108
 - missing traduction fr/es #103
