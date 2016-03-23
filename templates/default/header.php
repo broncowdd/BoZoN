@@ -42,7 +42,7 @@
 
             if ($connected){echo '<a class="home" href="index.php?p=admin&token='.TOKEN.'" title="'.e('Home',false).'"><span class="icon-home" ></span></a>';}
             if (is_allowed('change status rights')){echo '<a class="profiles_rights" href="index.php?p=edit_profiles&token='.TOKEN.'" class="edit_profile_link" title="'.e('Edit profiles rights',false).'"><span class="icon-block" ></span></a>';}
-            if (is_allowed('config page')){echo '<a class="config_page" href="index.php?p=config&token='.TOKEN.'" class="config_page_link" title="'.e('Configure Bozon',false).'"><span class="icon-cog-alt" ></span></a>';}
+            //if (is_allowed('config page')){echo '<a class="config_page" href="index.php?p=config&token='.TOKEN.'" class="config_page_link" title="'.e('Configure Bozon',false).'"><span class="icon-cog-alt" ></span></a>';}
             if (is_allowed('users page')){generate_users_list_link(e('Users list',false));}
             if (is_allowed('add user')){generate_new_users_link(e('New user',false));}
             if (is_allowed('acces logfile')){echo '<a class="log_file" href="index.php?p=stats&token='.TOKEN.'" class="log_link" title="'.e('Access log file',false).'"><span class="icon-info-circled" ></span></a>';}
