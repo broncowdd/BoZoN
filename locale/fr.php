@@ -235,6 +235,7 @@ $lang=array(
     "Please, login" => "Se connecter",
     "Users profiles" => "Profils utilisateurs",
     "Configure profiles rights" => "Configurer les droits d'accès",
+	"Configure Bozon" => "Configurer Bozon",
 
 ##################################################
 # ./templates/default/header_markdown.php
