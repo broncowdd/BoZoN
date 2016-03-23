@@ -1,10 +1,10 @@
 # BoZoN
-Official website 	: http://bozon.pw
-Roadmap page 		: http://roadmap.bozon.pw
+### Official website 	: http://bozon.pw
+### Roadmap page 		: http://roadmap.bozon.pw
 
 
 ## Minimalist Drag & drop file sharing app
-( http://bozon.warriordudimanche.net/ )
+( http://demo.bozon.pw/ )
 - Install: just unzip on your server; no database/ php 5.2. Then go to index.php?p=admin page and create your login/pass. 
 - Config: just change config.php file. 
 - Upload a file: go to index.php?p=admin page, connect and then drop files in the dashed area... that's it !
