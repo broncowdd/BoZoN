@@ -916,11 +916,16 @@
 		$langs=available_languages();
 		if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
 		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
+		# current language in first position
+		echo '<ul><li>'.str_replace(array('#CLASS','#LANG','#TOKEN','#PAGE'),array('class="active"',$_SESSION['language'],$token,$page),$pattern).'<ul>';
+		# other languages 
+		$class='';
 		foreach($langs as $lang){
-			if ($_SESSION['language']==$lang){$class=' class="active'.$lang.'" ';}else{$class='class="'.$lang.'" ';}
-			echo str_replace(array('#CLASS','#LANG','#TOKEN','#PAGE'),array($class,$lang,$token,$page),$pattern);
+			if ($lang!=$_SESSION['language']){
+				echo '<li>'.str_replace(array('#CLASS','#LANG','#TOKEN','#PAGE'),array($class,$lang,$token,$page),$pattern).'</li>';
+			}
 		}
-		
+		echo '</ul></li></ul>';
 	}
 
 	# create the connection/admin button

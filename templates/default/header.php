@@ -53,28 +53,21 @@
         }
       ?>
     </span>
-    <span id="lang">
-    <?php  
-      /* you can change the generated link using another pattern as argument (keep the # tags !): 
-      '<a #CLASS href="index.php?p=#PAGE&lang=#LANG&token=#TOKEN">#LANG</a>'*/
-      make_lang_link();
+
+	<div id="lang">
+		<?php make_lang_link(); ?>
+	</div>	
+	
+	<div id="connect">
+    <?php
+      if (empty($_GET['f'])){
+        /* you can add labels if you want like make_connect_link('Admin','Logout','Connection') */
+        make_connect_link('&nbsp;','&nbsp;',e('Connect',false));
+      }
     ?>
-    </span>
-    <div style="clear:both"></div>
-  </div>
-
-  <div id="connect">
-  <?php
-    if (empty($_GET['f'])){
-      /* you can add labels if you want like make_connect_link('Admin','Logout','Connection') */
-      make_connect_link('&nbsp;','&nbsp;',e('Connect',false));
-    }
-  ?>
-  </div>
-
-  <?php
-    if (is_user_connected()&&!empty($page)&&empty($_GET['f'])){
-  ?>
+    </div>	
+	
+    <?php if (is_user_connected()&&!empty($page)&&empty($_GET['f'])){  ?>
     <div id="search" >
       <form action="index.php" method="get" class="searchform">
         <input type="text" class="npt" name="filter" value="<?php if (!empty($_SESSION['filter'])){echo $_SESSION['filter'];} ?>" title="<?php e('Search in the uploaded files'); ?>" placeholder="<?php e('Filter'); ?>"/>
@@ -82,10 +75,13 @@
         <?php newToken();?>
       </form>
     </div>
+	<?php } ?>	
+
+    <div style="clear:both"></div>
+
+  </div>
 
   <?php
-    }
-    
     if (!is_user_connected()||!empty($_GET['f'])){ ?>
       <p id="logo" href="index.php">BoZoN</p>
       <h2 class="slogan"><?php e('Drag, drop, share.');?></h2>
@@ -94,7 +90,6 @@
       if (is_allowed('upload')){include('core/auto_dropzone.php');}
     }
   ?>
-
 
     <div id="title_page">
       <?php 
