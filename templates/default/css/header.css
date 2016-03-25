@@ -35,9 +35,9 @@ body>header {
   float: left;
 }
 
-
 #top_bar #icons {
   float: left;
+  margin-top: 4px;
 }
 
 #top_bar #icons a:hover {color:white;}
@@ -53,26 +53,12 @@ body>header {
   border-left:none;
 }
 
-#top_bar #lang {
-  float: right;
-}
-
-#top_bar #lang a {
-  display: inline-block;
-  padding: 5px;
-  min-width: 22px;height: 22px;
-  width: auto;
-  border-left: 1px solid rgba(0,0,0,0.2);
-}
-
-#top_bar #lang a.active {
-  color: #fff;
-}
 #top_bar .profile_rights .icon-crown:before{vertical-align: sub;}
 #search {
   float: right;
   display: block;
   margin-right: 2px;
+  margin-top: 4px;
 }
 
 #search input[type=text]{
@@ -92,9 +78,9 @@ body>header {
 }
 
 #connect {
-  clear: both;
+  margin-top: 4px;
   display: block;
-  vertical-align: middle;
+  float:right;
 }
 
 #connect #admin_button {
@@ -102,7 +88,7 @@ body>header {
   line-height: 22px;
   vertical-align: middle;
   min-width: 22px;
-  padding-left:20px;margin-right:5px;
+  padding-left:20px;margin-right:5px;margin-top:4px;
   text-align: center;
   background: rgba(0,0,0,0.2) url('../img/header/user.png') 5px center no-repeat;
   color: rgba(255,255,255,0.7);
@@ -117,7 +103,6 @@ body>header {
   height: 22px;
   line-height: 25px;
   float: right;
-
 }
 #connect a:hover{
  background-color: #hover_color_dark!important;
@@ -182,7 +167,7 @@ body.home .slogan {
 .DD_dropzone {
   clear: both;
   font-size: 1em;
-  cursor: pointer;	
+  cursor: pointer;
   text-align: center;
   margin: auto;
   width: 100%;
@@ -235,7 +220,7 @@ body.home .slogan {
 }
 
  li.DD_success {
-  background-color: rgba(0,255,0,0.8);	
+  background-color: rgba(0,255,0,0.8);
 }
 
 li.DD_error {
@@ -283,3 +268,16 @@ li.DD_warning {
   top: -10000px;
   left: -10000px;
 }
+
+.home   #top_bar #lang,
+.login #top_bar #lang {margin-top: 2px;}
+#top_bar #lang {float:right;margin-right:20px;margin-top:4px;}
+#top_bar #lang ul {list-style:none;padding:0px;margin:0px;}
+#top_bar #lang ul li {display:block;position:relative;float:left;}
+#top_bar #lang li ul {display:none;}
+#top_bar #lang ul li a {display:block;padding:5px 10px 5px 10px;text-decoration:none;white-space:nowrap;min-width:30px;}
+#top_bar #lang li:hover ul {display:block;position:absolute;}
+#top_bar #lang li:hover li {float:none;}
+#top_bar #lang li:hover a {background:rgba(0,0,0,1);}
+#top_bar #lang a:hover {color: #fff;}
+#top_bar #lang a.active::after {content:"\25be";color:gray;font-size:22px;margin-left:2px;}
