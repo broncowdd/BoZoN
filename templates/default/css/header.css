@@ -275,7 +275,7 @@ li.DD_warning {
 #top_bar #lang ul {list-style:none;padding:0px;margin:0px;}
 #top_bar #lang ul li {display:block;position:relative;float:left;}
 #top_bar #lang li ul {display:none;}
-#top_bar #lang ul li a {display:block;padding:5px 10px 5px 10px;text-decoration:none;white-space:nowrap;}
+#top_bar #lang ul li a {display:block;padding:5px 10px 5px 10px;text-decoration:none;white-space:nowrap;min-width:30px}
 #top_bar #lang li:hover ul {display:block;position:absolute;}
 #top_bar #lang li:hover li {float:none;}
 #top_bar #lang li:hover a {background:rgba(0,0,0,1);}
