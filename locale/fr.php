@@ -65,7 +65,7 @@ $lang=array(
 ##################################################
     "is not writable" => "est verrouillé en écriture",
     "created" => "créé",
-    "Problem accessing remote file." => "Problème d'acces au fichier distant",
+    "Problem accessing remote file." => "Problème d'accès au fichier distant",
     "moved to" => "déplacé vers",
     "Changes saved" => "Changements sauvegardés",
 
@@ -223,18 +223,19 @@ $lang=array(
     "Access log file" => "Voir le fichier d'accès",
     "Change password" => "Changer le mot de passe",
     "Rebuild base" => "Régénérer la base",
-    "Text editor" => "Editeur de texte",
+    "Text editor" => "Éditeur de texte",
     "Click or dragover to reveal dropzone" => "Cliquez ou glisser un fichier pour révéler la zone d'upload",
     "Upload" => "Envoyer",
     "Search in the uploaded files" => "Rechercher dans les fichiers envoyés",
     "Filter" => "Mot-clé",
-    "Markdown editor" => "Editeur markdown",
+    "Markdown editor" => "Éditeur markdown",
     "Access log" => "Journal des accès",
     "Create an account" => "Créer un compte",
     "Connect" => "Se connecter",
     "Please, login" => "Se connecter",
     "Users profiles" => "Profils utilisateurs",
     "Configure profiles rights" => "Configurer les droits d'accès",
+	"Configure Bozon" => "Configurer Bozon",
 
 ##################################################
 # ./templates/default/header_markdown.php
