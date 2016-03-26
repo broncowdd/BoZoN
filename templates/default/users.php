@@ -7,6 +7,7 @@
 	require_once('core/auto_restrict.php'); # Connected user only !
 	
 	if (!is_allowed('users page')){safe_redirect('index.php?p=admin&token='.TOKEN);}
+	$_SESSION['users_rights']=complete_users_rights();
 ?>
 
 

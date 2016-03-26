@@ -16,11 +16,11 @@ require_once('core/auto_restrict.php'); # Connected user only !
 include("core/auto_thumb.php");
 
 # Initialisation
-if (empty($layout)){$layout=$_SESSION['aspect'];}
+if (empty($layout)){$layout=conf('aspect');}
 if (!isset($shared_folders)){$shared_folders='';}
 if (!isset($back_link)){$back_link='';}
 $upload_path_size=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
-if (empty($_SESSION['mode'])){$mode='view';}else{$mode=$_SESSION['mode'];}
+if (empty(conf('mode'))){$mode='view';}else{$mode=conf('mode');}
 if (empty($_SESSION['current_path'])){
 	$path_list=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'];
 }else{
@@ -31,10 +31,10 @@ if (empty($_SESSION['current_path'])){
 if (empty($_SESSION['filter'])){$liste=tree($path_list,null,false,false,$tree);}
 else{$liste=tree($path_list,null,false,false,$tree);}
 $total_files=count($liste);$from=0;
-$max_pages=ceil($total_files/$_SESSION['max_files_per_page']);
+$max_pages=ceil($total_files/conf('max_files_per_page'));
 if (!empty($_GET['from'])){$from=$_GET['from'];}
-$liste=array_slice($liste, $from*$_SESSION['max_files_per_page'],$_SESSION['max_files_per_page']);
-$remain=$total_files-(($from+1)*$_SESSION['max_files_per_page']);
+$liste=array_slice($liste, $from*conf('max_files_per_page'),conf('max_files_per_page'));
+$remain=$total_files-(($from+1)*conf('max_files_per_page'));
 
 
 if ($allow_folder_size_stat){$size_folder=folder_size($path_list);}
@@ -60,16 +60,15 @@ if (count($liste)>0){
 			}
 
 			$extension=strtolower(pathinfo($fichier,PATHINFO_EXTENSION));
-
+			if (!conf('click_on_link_to_download')){$target='target="_BLANK"';}else{$target=null;}
 			# adding view icon if needed
 			if (is_in($extension,'FILES_TO_RETURN')!==false){
 				if ($extension=='jpg'||$extension=='jpeg'||$extension=='gif'||$extension=='png'||$extension=='svg'){
-					if ($use_lightbox){
+					if (conf('use_lightbox')){
 						$icone_visu='<a class="visu" data-type="lightbox" data-group="lb" href="index.php?f='.$id.'" title="'.e('View this share',false).'" alt="'.$nom.'"><span class="icon-eye" ></span></a>';
 					}else{
 						$icone_visu='<a class="visu" target="_BLANK" href="index.php?f='.$id.'" title="'.e('View this share',false).'"><span class="icon-eye" ></span></a>';
 					}
-					if (!$click_on_link_to_download){$target='target="_BLANK"';}else{$target=null;}
 				}else{
 					$icone_visu='<a class="visu" target="_BLANK" href="index.php?f='.$id.'&amp;view" title="'.e('View this file',false).'"><span class="icon-eye" ></span></a>';
 				}
@@ -88,7 +87,7 @@ if (count($liste)>0){
 				if (only_type($current_tree,'.jpg .jpeg .gif .png') || only_type($current_tree,'.mp3 .ogg')||only_type($fichier,'.jpg .jpeg .gif .png') || only_type($fichier,'.mp3 .ogg')){
 					$icone_visu='<a class="visu" href="index.php?f='.$id.'" title="'.e('View this share',false).'"><span class="icon-eye"></span></a>';
 				}			
-				if ($allow_folder_size_stat){$taille=folder_size($fichier);}else{$taille='';}
+				if (conf('allow_folder_size_stat')){$taille=folder_size($fichier);}else{$taille='';}
 				# no share folder button if there's only one user
 				if ($mode=='links'&&count($auto_restrict['users'])>1){
 					$icone_share='<a class="usershare" title="'.e('Share this folder with another user',false).'" href="#usershare" data-id="'.$id.'" data-name="'.$fichier_short.'"><span class="icon-users"></span></a>';
@@ -194,6 +193,7 @@ if (count($liste)>0){
 					<th class="table_image sorttable_nosort">&nbsp;</th>
 					<th class="table_filename">'.e('Filename',false).'</th>
 					<th class="table_filesize">'.e('Filesize',false).'</th>
+					<th class="table_fileext">'.e('Filetype',false).'</th>
 					<th class="table_buttons sorttable_nosort">&nbsp;</th>
 				</tr>
 			</thead>
@@ -201,7 +201,7 @@ if (count($liste)>0){
 
 			echo $shared_folders.$back_link.$folderlist.$filelist;
 
-			if (!empty($size_folder)){echo '</tbody><tfoot><tr>'.$column.'<td class="table_image"></td><td class="table_filename" style="text-align:right">Total:</td><td id="folder_size">'.$size_folder.'</td><td></td></tr></tfoot>';}
+			if (!empty($size_folder)){echo '</tbody><tfoot><tr>'.$column.'<td class="table_image"></td><td class="table_filename" style="text-align:right">Total:</td><td id="folder_size">'.$size_folder.'</td><td></td><td></td></tr></tfoot>';}
 			echo '</table>';
 			echo $form_footer;
 		
@@ -218,7 +218,7 @@ if (count($liste)>0){
 	
     # «Load more» button
     if ($remain>0&&!isset($_GET['async'])){
-      if ($remain>$_SESSION['max_files_per_page']){$remain=$_SESSION['max_files_per_page'];}
+      if ($remain>conf('max_files_per_page')){$remain=conf('max_files_per_page');}
       $from++;
       echo '<a id="more_button" class="btn" href="index.php?p=admin&from='.$from.'&token='.TOKEN.'" onclick="loadMore(this);return false;" data-from="'.$from.'" data-url="index.php?async&token='.TOKEN.'" data-max="'.$max_pages.'">'.e('Load',false).' '.$remain.' '.e('more',false).'</a>';
     }

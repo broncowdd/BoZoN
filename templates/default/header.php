@@ -42,7 +42,7 @@
 
             if ($connected){echo '<a class="home" href="index.php?p=admin&token='.TOKEN.'" title="'.e('Home',false).'"><span class="icon-home" ></span></a>';}
             if (is_allowed('change status rights')){echo '<a class="profiles_rights" href="index.php?p=edit_profiles&token='.TOKEN.'" class="edit_profile_link" title="'.e('Edit profiles rights',false).'"><span class="icon-block" ></span></a>';}
-            //if (is_allowed('config page')){echo '<a class="config_page" href="index.php?p=config&token='.TOKEN.'" class="config_page_link" title="'.e('Configure Bozon',false).'"><span class="icon-cog-alt" ></span></a>';}
+            if (is_allowed('config page')){echo '<a class="config_page" href="index.php?p=config&token='.TOKEN.'" class="config_page_link" title="'.e('Configure Bozon',false).'"><span class="icon-cog-alt" ></span></a>';}
             if (is_allowed('users page')){generate_users_list_link(e('Users list',false));}
             if (is_allowed('add user')){generate_new_users_link(e('New user',false));}
             if (is_allowed('acces logfile')){echo '<a class="log_file" href="index.php?p=stats&token='.TOKEN.'" class="log_link" title="'.e('Access log file',false).'"><span class="icon-info-circled" ></span></a>';}
@@ -53,39 +53,36 @@
         }
       ?>
     </span>
-    <span id="lang">
-    <?php  
-      /* you can change the generated link using another pattern as argument (keep the # tags !): 
-      '<a #CLASS href="index.php?p=#PAGE&lang=#LANG&token=#TOKEN">#LANG</a>'*/
-      make_lang_link();
-    ?>
-    </span>
-    <div style="clear:both"></div>
-  </div>
+    <div class="right">
+      <div id="lang">
+        <?php make_lang_link(); ?>
+      </div>  
+   
+     <div id="connect">
+        <?php
+          if (empty($_GET['f'])){
+            /* you can add labels if you want like make_connect_link('Admin','Logout','Connection') */
+            make_connect_link('&nbsp;','&nbsp;',e('Connect',false));
+          }
+        ?>
+        </div> 
+     
+        <?php if (is_user_connected()&&!empty($page)&&empty($_GET['f'])){  ?>
 
-  <div id="connect">
-  <?php
-    if (empty($_GET['f'])){
-      /* you can add labels if you want like make_connect_link('Admin','Logout','Connection') */
-      make_connect_link('&nbsp;','&nbsp;',e('Connect',false));
-    }
-  ?>
-  </div>
 
+          <div id="search" >
+            <form action="index.php" method="get" class="searchform">
+              <input type="text" class="npt" name="filter" value="<?php if (!empty($_SESSION['filter'])){echo $_SESSION['filter'];} ?>" title="<?php e('Search in the uploaded files'); ?>" placeholder="<?php e('Filter'); ?>"/>
+              <input type="hidden" value="admin" name="p"/>
+              <?php newToken();?>
+            </form>
+          </div>
+        <?php } ?> 
+      </div> 
+  <div style="clear:both"></div>
+</div>
   <?php
-    if (is_user_connected()&&!empty($page)&&empty($_GET['f'])){
-  ?>
-    <div id="search" >
-      <form action="index.php" method="get" class="searchform">
-        <input type="text" class="npt" name="filter" value="<?php if (!empty($_SESSION['filter'])){echo $_SESSION['filter'];} ?>" title="<?php e('Search in the uploaded files'); ?>" placeholder="<?php e('Filter'); ?>"/>
-        <input type="hidden" value="admin" name="p"/>
-        <?php newToken();?>
-      </form>
-    </div>
 
-  <?php
-    }
-    
     if (!is_user_connected()||!empty($_GET['f'])){ ?>
       <p id="logo" href="index.php">BoZoN</p>
       <h2 class="slogan"><?php e('Drag, drop, share.');?></h2>
@@ -107,7 +104,7 @@
         elseif ($_GET['p']=='users'){e('Users profiles'); }
         elseif ($_GET['p']=='edit_profiles'){e('Configure profiles rights'); }
         elseif ($_GET['p']=='config'){e('Configure Bozon'); }
-        elseif ($_SESSION['mode']=='links'){e('Manage links');}           
+        elseif (conf('mode')=='links'){e('Manage links');}           
         else{e('Manage files');}
       }
        

@@ -4,7 +4,6 @@
 	* handles a user share request
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
-		
 		$id=strip_tags($_GET['f']);
 		$f=id2file($id); # complete filepath including profile folder
 
@@ -37,6 +36,7 @@
 
 		';
 		if(!empty($f)){
+			if (!is_user_connected()){$_SESSION['config']=load_config();}
 			set_time_limit (0);
 			store_access_stat($f,$id);
 			$call_qrcode='<img id="qrcode" data-src="'.$id.'" src=""/><script>qrcode();</script>';
@@ -62,7 +62,7 @@
 			}else if(empty($_POST['password'])||!empty($_POST['password']) && $blured.$sub_id==$id){	
 				# normal mode or access granted
 				if ($f && is_file($f)){
-
+	
 					# file request => return file according to $behaviour var (see core.php)
 					$type=_mime_content_type($f);
 					$ext=strtolower(pathinfo($f,PATHINFO_EXTENSION));
@@ -99,7 +99,7 @@
 						# lance le téléchargement des fichiers non affichables
 						header('Content-Disposition: attachment; filename="'._basename($f).'"');
 						readfile($f);
-					}		
+					}	
 					# burn access ?
 					burned($id);	
 					exit();	
@@ -115,23 +115,25 @@
 						echo '</div>';
 						echo '
 						<div class="feeds">'.$call_qrcode;
-						if ($allow_shared_folder_RSS_feed||$allow_shared_folder_JSON_feed){
+						if (conf('allow_shared_folder_RSS_feed')||conf('allow_shared_folder_JSON_feed')){
 							echo '<br/>'.e('This page in',false);
 						}
-						if ($allow_shared_folder_RSS_feed){
+						if (conf('allow_shared_folder_RSS_feed')){
 							echo ' <a href="'.$_SESSION['home'].'?f='.$id.'&rss" class="rss btn">RSS</a>';
 						}
-						if ($allow_shared_folder_JSON_feed){
+						if (conf('allow_shared_folder_JSON_feed')){
 							echo '<a href="'.$_SESSION['home'].'?f='.$id.'&json" class="json btn blue">Json</a>';
 						}
-						if ($allow_shared_folder_download){
+						if (conf('allow_shared_folder_download')){
 							echo '<br/>
 							<a class="zipfolder" href="index.php?zipfolder='.$id.'" title ="zip"><span class="icon-download-cloud"></span> '.e('Download a zip from this folder',false).'</a>';
 						}
 						echo '</div>';
 						require(THEME_PATH.'/footer.php');
 					}
-					
+					# burn access ?
+					burned($id);
+					exit();	
 				}else{ 
 					require(THEME_PATH.'/header.php');
 					echo '<div class="error">

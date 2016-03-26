@@ -6,19 +6,21 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 3)');
+	define('VERSION','2.4 (build 4)');
 	
 	start_session();
 	$message='';
+
 	#################################################
 	# Prepare or load config   
 	#################################################	
 	include('config.php');
-	if (empty($_SESSION['config_file'])){$_SESSION['config_file']=$default_config_file;}
+	if (!$root){$root=getRacine();}	
+	define('ROOT',$root);
+	if (empty($_SESSION['config_file'])){	$_SESSION['config_file']=$default_config_file;}
 	if (!is_file($_SESSION['config_file'])){$_SESSION['config']=extract_config_vars();save_config($_SESSION['config']);}
-	elseif (empty($_SESSION['config'])){$_SESSION['config']=load_config();}
-	#################################################
-	//aff($_SESSION['config']);
+	elseif (empty($_SESSION['config'])){	$_SESSION['config']=load_config();}
+
 	#################################################
 	# secure get / post data 
 	#################################################
@@ -27,32 +29,29 @@
 	#################################################
 
 	# locale
-	if (empty($_SESSION['language'])){$_SESSION['language']=$default_language;}
-	if (is_file('locale/'.$_SESSION['language'].'.php')){include('locale/'.$_SESSION['language'].'.php');}else{$lang=array();}
-	# file list layout
-	if (empty($_SESSION['aspect'])){$_SESSION['aspect']=$default_aspect;}
-	# Current session changing theme
-	if (!empty($_GET['theme'])){$_SESSION['theme']=$_GET['theme'];header('location:index.php?p='.$page.'&token='.returnToken());}
-	if (empty($_SESSION['theme'])){$_SESSION['theme']=$default_theme;}
-	if (empty($_SESSION['mode'])){$_SESSION['mode']=$default_mode;}
+	if (empty(conf('language'))){conf('language',$default_language);}
+	if (is_file('locale/'.conf('language').'.php')){include('locale/'.conf('language').'.php');}else{$lang=array();}
+	# Aspect config
+	if (empty(conf('aspect'))){conf('aspect',$default_aspect);}
+	if (empty(conf('theme'))){conf('theme',$default_theme);}
+	if (empty(conf('mode'))){conf('mode',$default_mode);}
 
 	# SESSION VARS
 	# System vars
 	if (empty($_SESSION['api_rss_key'])&&!empty($_SESSION['login'])){$_SESSION['api_rss_key']=hash_user($_SESSION['login']);}
-	if (empty($_SESSION['stats_max_entries'])){$_SESSION['stats_max_entries']=$default_limit_stat_file_entries;}
-	if (empty($_SESSION['stats_max_lines'])){$_SESSION['stats_max_lines']=$default_max_lines_per_page_on_stats_page;}
+	if (empty(conf('stats_max_entries'))){conf('stats_max_entries',$default_limit_stat_file_entries);}
+	if (empty(conf('stats_max_lines'))){conf('stats_max_lines',$default_max_lines_per_page_on_stats_page);}
 	if (empty($_SESSION['private_folder'])){$_SESSION['private_folder']=$default_private;}
 	if (empty($_SESSION['zip'])){$_SESSION['zip']=class_exists('ZipArchive');}
 	if (empty($_SESSION['curl'])){$_SESSION['curl']=function_exists('curl_init');}
 	if (empty($_SESSION['GD'])){$_SESSION['GD']=function_exists('imagecreatetruecolor');}
 	if (empty($_SESSION['home'])){$_SESSION['home'] =getUrl();}	
 	if (empty($_SESSION['temp_folder'])){$_SESSION['temp_folder'] = $default_temp_folder;}	
-	if (empty($_SESSION['root'])){$_SESSION['root'] =$root;}
+	if (empty($_SESSION['root'])){$_SESSION['root']=ROOT;}
 	if (empty($_SESSION['id_file'])){$_SESSION['id_file']=$default_id_file;}
 	if (empty($_SESSION['folder_share_file'])){$_SESSION['folder_share_file']=$default_folder_share_file;}
 	if (empty($_SESSION['stats_file'])){$_SESSION['stats_file']=$default_stat_file;}
-	if (empty($_SESSION['theme'])){$_SESSION['theme']=$default_theme;}
-	if (empty($_SESSION['max_files_per_page'])){$_SESSION['max_files_per_page']=$default_max_files_per_page;}
+	if (empty(conf('max_files_per_page'))){conf('max_files_per_page',$default_max_files_per_page);}
 	if (!isset($_SESSION['current_path'])){$_SESSION['current_path']="";}
 	if (!isset($_SESSION['users_rights_file'])){$_SESSION['users_rights_file']=$default_users_rights_file;}
 	if (empty($_SESSION['upload_root_path'])){$_SESSION['upload_root_path']=addslash_if_needed($default_path);}
@@ -69,18 +68,18 @@
 	if (!is_dir($_SESSION['private_folder'])){mkdir($_SESSION['private_folder'],0744);}
 	if (!is_dir($_SESSION['private_folder'].'trees')){mkdir($_SESSION['private_folder'].'trees',0744);}
 	if (!isset($_SESSION['profile_folder_max_size'])&&isset($_SESSION['status'])&&$_SESSION['status']!='superadmin'){
-		if (isset($_SESSION['login'])&&isset($users_rights[$_SESSION['login']])){
-			$_SESSION['profile_folder_max_size']=$users_rights[$_SESSION['login']];
+		if (isset($_SESSION['login'])&&isset($_SESSION['users_rights'][$_SESSION['login']])){
+			$_SESSION['profile_folder_max_size']=$_SESSION['users_rights'][$_SESSION['login']];
 		}elseif (isset($_SESSION['login'])){
 			complete_users_rights();
 			$_SESSION['profile_folder_max_size']=$default_profile_folder_max_size;
 		}
 	}else{$_SESSION['profile_folder_max_size']=$default_profile_folder_max_size;}
-	if (isset($_SESSION['temp_cleaned'])&&time()>$_SESSION['temp_cleaned']+1800){
+	if (!isset($_SESSION['temp_cleaned'])||time()>$_SESSION['temp_cleaned']+1800){
 		# clean temp once in a session
-		$zips=_glob($_SESSION['temp_folder'],'.zip');
-		foreach($zips as $zipfile){
-			if (time()>filectime($zipfile)+1800){unlink($zipfile);}
+		$files=_glob($_SESSION['temp_folder'],'');
+		foreach($files as $file){
+			if (time()>filectime($file)+1800){unlink($file);}
 		}
 		$_SESSION['temp_cleaned']=time();
 	}
@@ -97,9 +96,9 @@
 
 	# Check necessary libs
 	if(!$disable_non_installed_libs_warning){
-		if (!$_SESSION['zip']){$message.='<div class="error">ZipArchive '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.$_SESSION['language'].'/zip.setup.php">'.e('More info',false).'</a></label>';}
-		if (!$_SESSION['GD']){$message.='<div class="error">GD '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.$_SESSION['language'].'/image.installation.php">'.e('More info',false).'</a></label>';}
-		if (!$_SESSION['curl']){$message.='<div class="error">Curl '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.$_SESSION['language'].'/curl.setup.php">'.e('More info',false).'</a></label>';}
+		if (!$_SESSION['zip']){$message.='<div class="error">ZipArchive '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.conf('language').'/zip.setup.php">'.e('More info',false).'</a></label>';}
+		if (!$_SESSION['GD']){$message.='<div class="error">GD '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.conf('language').'/image.installation.php">'.e('More info',false).'</a></label>';}
+		if (!$_SESSION['curl']){$message.='<div class="error">Curl '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.conf('language').'/curl.setup.php">'.e('More info',false).'</a></label>';}
 		}
 	# Check files
 	if (!is_file('thumbs/'.$_SESSION['upload_root_path'].'.htaccess')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].'.htaccess', 'deny from all');}
@@ -111,15 +110,15 @@
 	if (!empty($_SESSION['upload_user_path'])&&!is_file('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'.htaccess')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'.htaccess', 'deny from all');}
 	if (!empty($_SESSION['upload_user_path'])&&!is_file('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'index.html')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'index.html',' ');}
 
-	if (!is_file($_SESSION['private_folder'].'.htaccess')){file_put_contents($_SESSION['private_folder'].'.htaccess', 'deny from all');}
+	#if (!is_file($_SESSION['private_folder'].'.htaccess')){file_put_contents($_SESSION['private_folder'].'.htaccess', 'deny from all');}
 	if (!is_file($_SESSION['folder_share_file'])){save_folder_share(array());}
 	if (!is_file($_SESSION['private_folder'].'salt.php')){ file_put_contents($_SESSION['private_folder'].'salt.php','<?php define("BOZON_SALT",'.var_export(generate_bozon_salt(),true).'); ?>'); }
 	else{include($_SESSION['private_folder'].'salt.php');}
 	if (!is_file($_SESSION['id_file'])){$ids=array();store($ids);}
 	if (!is_file($_SESSION['stats_file'])){save($_SESSION['stats_file'], array());}
 	if (!is_file($_SESSION['upload_root_path'].'.htaccess')){file_put_contents($_SESSION['upload_root_path'].'.htaccess', 'deny from all');}
-	if (!is_file($_SESSION['users_rights_file'])){save_users_rights(array());}
-	else{$users_rights=load_users_rights();}
+	if (!is_file($_SESSION['users_rights_file'])){save_users_rights(array());$_SESSION['users_rights']=array();}
+	else{$_SESSION['users_rights']=load_users_rights();}
 	if (!is_file($_SESSION['profiles_rights_file'])){save($_SESSION['profiles_rights_file'],array());	}
 	if (is_file($_SESSION['id_file'])&&!is_readable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not readable',false).'</label>';}
 	if (is_file($_SESSION['id_file'])&&!is_writable($_SESSION['id_file'])){$message.='<div class="error">'.e('Problem accessing ID file: not writable',false).'</label>';}
@@ -128,16 +127,16 @@
 
 	# Libs configuration
 	# Files to echo in browser (secured) 
-	$behaviour['FILES_TO_ECHO']=array('nfo','m3u','txt','js','html','php','SPHP','htm','shtml','shtm','css');
+	$behaviour['FILES_TO_ECHO']=explode(',',conf('files_to_echo'));
 	# Files to send to browser directly 
-	$behaviour['FILES_TO_RETURN']=array('md','jpg','jpeg','gif','png','mp3','mp4','svg','pdf');
+	$behaviour['FILES_TO_RETURN']=explode(',',conf('files_to_return'));
  	$auto_dropzone['destination_filepath']=addslash_if_needed($_SESSION['current_path']);
 	$auto_thumb['default_width']='64';
 	$auto_thumb['default_height']='64';
 	$auto_thumb['dont_try_to_resize_thumbs_files']=true;
 
 	# CONSTANTS & GLOBALS
-	define('THEME_PATH','templates/'.$_SESSION['theme'].'/');
+	define('THEME_PATH','templates/'.conf('theme').'/');
 	$ACTIONS=array('users page','add user','delete user','change user status','change folder size','change status rights','change passes','markdown editor','regen ID base','acces logfile','config page','upload');
 	$RIGHTS=load($_SESSION['profiles_rights_file']);
 		
@@ -168,8 +167,6 @@
 	#################################################
 
 
-
-
 	#################################################
 	# Functions 
 	#################################################
@@ -183,7 +180,7 @@
 	function load_folder_share(){return load($_SESSION['folder_share_file']);}
 	function save_users_rights($array=null){return save($_SESSION['users_rights_file'],$array);}
 	function load_users_rights(){return load($_SESSION['users_rights_file']);}
-	function save_config($array=null){return save($_SESSION['config_file'],$array);}
+	function save_config($array=null){if (!$array){$array=$_SESSION['config'];}return save($_SESSION['config_file'],$array);}
 	function load_config(){return load($_SESSION['config_file']);}
 	# Delete a file or a folder and apply changes in ids file
 	function delete_file_or_folder($id=null,$ids=null,$tree=array()){
@@ -264,7 +261,7 @@
 		//FIXME not very good when multi-call
 		$stats=load($_SESSION['stats_file']);
 		if (!is_array($stats)){$stats=array();}
-		if (count($stats)>$_SESSION['stats_max_entries']){
+		if (count($stats)>conf('stats_max_entries')){
 			$stats=array_values($stats);
 			unset($stats[0]);
 		}
@@ -424,11 +421,10 @@
 	}
 
 	function get_thumbs_name_gallery($file){
-		global $gallery_thumbs_width;
 		if($file[0]=='/'){
 			$file=substr($file,1);
 		}
-		return 'thumbs/'.preg_replace('#\.(jpe?g|png|gif)#i','_THUMBGALLERY_'.$gallery_thumbs_width.'x'.$gallery_thumbs_width.'.$1',$file);
+		return 'thumbs/'.preg_replace('#\.(jpe?g|png|gif)#i','_THUMBGALLERY_'.$_SESSION['config']['gallery_thumbs_width'].'x'.$_SESSION['config']['gallery_thumbs_width'].'.$1',$file);
 	}
 
 	function recursive_glob($dir='.',$files=true){		
@@ -443,6 +439,37 @@
         return $dossiers;
     }
 
+	# from Cyril MAGUIRE / Jerrywham
+	function protocolIsHTTPS() {
+	    return (!empty($_SERVER['HTTPS']) AND $_SERVER['HTTPS'] == 'on') ? true : false;
+	}
+	function getRacine($truncate=false) {
+
+	    $protocol = protocolIsHTTPS() ? 'https://' : "http://";
+	    $servername = $_SERVER['HTTP_HOST'];
+	    $serverport = (preg_match('/:[0-9]+/', $servername) OR $_SERVER['SERVER_PORT'])=='80' ? '' : ':'.$_SERVER['SERVER_PORT'];
+	    $dirname = preg_replace('/\/(core|plugins)\/(.*)/', '', dirname($_SERVER['SCRIPT_NAME']));
+	    $racine = rtrim($protocol.$servername.$serverport.$dirname, '/').'/';
+	    $racine = str_replace(array('webroot/','install/'), '', $racine);
+	    if(!checkSite($racine, false))
+	        die('Error: wrong or invalid url');
+	    if ($truncate){ 
+	        $root = substr($racine,strpos($racine, '://')+3,strpos($racine,basename($racine))+4);
+	        $racine = substr($root,strpos($root,'/'));
+	    }
+	    return $racine;
+	}
+	function checkSite(&$site, $reset=true) {
+	    $site = preg_replace('#([\'"].*)#', '', $site);
+	    # Méthode Jeffrey Friedl - http://mathiasbynens.be/demo/url-regex
+	    # modifiée par Amaury Graillat pour prendre en compte la valeur localhost dans l'url
+	    if(preg_match('@\b((ftp|https?)://([-\w]+(\.\w[-\w]*)+|localhost)|(?:[a-z0-9](?:[-a-z0-9]*[a-z0-9])?\.)+(?: com\b|edu\b|biz\b|gov\b|in(?:t|fo)\b|mil\b|net\b|org\b|[a-z][a-z]\b))(\:\d+)?(/[^.!,?;"\'<>()\[\]{}\s\x7F-\xFF]*(?:[.!,?]+[^.!,?;"\'<>()\[\]{}\s\x7F-\xFF]+)*)?@iS', $site))
+	            return true;
+	    else {
+	        if($reset) $site='';
+	        return false;
+	    }
+	}
     ############################################
 	# IDS functions 
 	############################################
@@ -799,6 +826,7 @@
 
 			echo '</ul>';
 			echo '</section>';
+			return;
 		}elseif($image_only){
 			# image gallery
 			if (!function_exists('auto_thumb')){include('core/auto_thumb.php');}
@@ -816,7 +844,7 @@
 					if ($ext!='mp4'){					
 						$size = getimagesize($image);
 						$size=$size[0].'x'.$size[1];
-						auto_thumb($image,$width=$gallery_thumbs_width,$height=$gallery_thumbs_width,$add_to_thumb_filename='_THUMBGALLERY_',$crop_image=true);
+						auto_thumb($image,$width=conf('gallery_thumbs_width'),$height=conf('gallery_thumbs_width'),$add_to_thumb_filename='_THUMBGALLERY_',$crop_image=true);
 						echo '<a class="image" data-type="img" data-group="gallery" href="'.$link.'" ><img class="b-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="'.$link.'&gthumbs" alt="'.$file.'"/><span class="info"><em>'.$file.'</em> '.$size.' '.$filesize.'</span></a>';
 
 					}else{
@@ -834,47 +862,42 @@
 		            var bLazy = new Blazy();
 		        })();
 		    </script>';
+		    return;
 			
 		}elseif($sound_only){
-				# music player
-				$title=explode('/',$tree[$first]);$title=$title[count($title)-1];unset($tree[$first]);
-				
-				echo '<section class="music_player"><h1>'.$title.'</h1>';
-				echo '<table><tr>';
-				echo '<td><audio preload autoplay></audio></td>';
-				echo '<td id="volume">';
-				$mult=3;
-				for ($vol=1;$vol<11;$vol++){
-					if ($vol<10){echo '<span class="volume" data-volume="0.'.$vol.'" style="background-position:center '.(30-($vol*$mult)).'px">&nbsp;</span>';}
-					else{echo '<span class="volume active"data-volume="1"  style="background-position:center '.(30-($vol*$mult)).'px">&nbsp;</span>';}
-				
-				}
-
-				echo '</td></tr></table>';
-
-				foreach($tree as $id=>$sound){
-					if (is_file($image)){
-						$link='index.php?f='.$id;
-						$file=_basename($sound);
-						$ext=strtolower(pathinfo($sound,PATHINFO_EXTENSION));							
-						$size = sizeconvert(filesize($sound));
-						echo '<a class="sound" onclick="play(this);" href="#" data-src="'.$link.'" ><em>'.$file.'</em> '.$size.'</a>';
-					}
-				}	
-				echo '</section>';
-				echo '
-				<script src="core/js/audio.js"></script>
-				<script src="core/js/playlist.js"></script>';
+			# music player
+			$title=explode('/',$tree[$first]);$title=$title[count($title)-1];unset($tree[$first]);
+			
+			echo '<section class="music_player"><h1>'.$title.'</h1>';
+			echo '<table><tr>';
+			echo '<td><audio preload autoplay></audio></td>';
+			echo '<td id="volume">';
+			$mult=3;
+			for ($vol=1;$vol<11;$vol++){
+				if ($vol<10){echo '<span class="volume" data-volume="0.'.$vol.'" style="background-position:center '.(30-($vol*$mult)).'px">&nbsp;</span>';}
+				else{echo '<span class="volume active" data-volume="1"  style="background-position:center '.(30-($vol*$mult)).'px">&nbsp;</span>';}
+			
 			}
+
+			echo '</td></tr></table>';
+
+			foreach($tree as $id=>$sound){
+				if (is_file($sound)){
+					$link='index.php?f='.$id;
+					$file=_basename($sound);
+					$ext=strtolower(pathinfo($sound,PATHINFO_EXTENSION));							
+					$size = sizeconvert(filesize($sound));
+					echo '<a class="sound" onclick="play(this);return false;" href="'.$link.'" data-src="'.$link.'" ><em>'.$file.'</em> '.$size.'</a>';
+				}
+			}	
+			echo '</section>';
+			echo '
+			<script src="core/js/audio.js"></script>
+			<script src="core/js/playlist.js"></script>';
+			return;
+		}
 	}
-	
-	/*function template($key,$array){		
-		global $templates;
-		if (isset($templates[$key])){			
-			$tpl= str_replace(array_keys($array),array_values($array),$templates[$key]);			
-			return $tpl;
-		}else{return false;}
-	}*/
+
 	function template($key,$array){		
 		global $templates;
 		
@@ -910,17 +933,29 @@
 
 		return $l;
 	}
+	function available_themes(){
+		$l=_glob('templates/','');
+		foreach($l as $key=>$lang){
+			$l[$key]=_basename($lang);
+		}
+
+		return $l;
+	}
 	# Links functions
 	# create language links
 	function make_lang_link($pattern='<a #CLASS href="index.php?p=#PAGE&lang=#LANG&token=#TOKEN">#LANG</a>'){
 		$langs=available_languages();
 		if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
 		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
+		# current language in first position
+		echo '<ul><li>'.str_replace(array('#CLASS','#LANG','#TOKEN','#PAGE'),array('class="active"',$_SESSION['config']['language'],$token,$page),$pattern).'<ul>';
+		# other languages 
+		$class='';
 		foreach($langs as $lang){
-			if ($_SESSION['language']==$lang){$class=' class="active'.$lang.'" ';}else{$class='class="'.$lang.'" ';}
-			echo str_replace(array('#CLASS','#LANG','#TOKEN','#PAGE'),array($class,$lang,$token,$page),$pattern);
+			if (conf('language')==$lang){$class=' class="active'.$lang.'" ';}else{$class='class="'.$lang.'" ';}
+			echo '<li>'.str_replace(array('#CLASS','#LANG','#TOKEN','#PAGE'),array($class,$lang,$token,$page),$pattern).'</li>';
 		}
-		
+		echo '</ul></li></ul>';
 	}
 
 	# create the connection/admin button
@@ -941,18 +976,18 @@
 	function make_menu_link($pattern='<a id="#MENU" title="#TITLE" class="#CLASS" href="index.php?p=#PAGE&aspect=#MENU&token=#TOKEN"><span class="icon-#MENU" ></span></a>'){
 		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
 		if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
-		if ($_SESSION['aspect']=='icon'){$class=' active';}else{$class='';}
+		if (conf('aspect')=='icon'){$class=' active';}else{$class='';}
 		echo str_replace(array('#MENU','#THEME','#TOKEN','#PAGE','#CLASS','#TITLE'),array('icon',THEME_PATH,$token,$page,$class,e('See as icon',false)),$pattern);
-		if ($_SESSION['aspect']=='list'){$class=' active';}else{$class='';}
+		if (conf('aspect')=='list'){$class=' active';}else{$class='';}
 		echo str_replace(array('#MENU','#THEME','#TOKEN','#PAGE','#CLASS','#TITLE'),array('list',THEME_PATH,$token,$page,$class,e('See as file list',false)),$pattern);
 	}
 
 	# create the mode links (to change access mode)
 	function make_mode_link($pattern='<a id="mode_#MODE" class="#CLASS" title="#TITLE" href="index.php?p=admin&mode=#MODE&token=#TOKEN"><span class="icon-#MODE" ></span></a>'){
 		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
-		if ($_SESSION['mode']=='view'){$class='active';}else{$class='';}
+		if (conf('mode')=='view'){$class='active';}else{$class='';}
 		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('view',e('Manage files',false),$token,$class),$pattern);
-		if ($_SESSION['mode']=='links'){$class='active';}else{$class='';}
+		if (conf('mode')=='links'){$class='active';}else{$class='';}
 		echo str_replace(array('#MODE','#TITLE','#TOKEN','#CLASS'),array('links',e('Manage links',false),$token,$class),$pattern);		
 	}
 
@@ -968,9 +1003,9 @@
 	function body_classes(){
 		if (isset($_GET['users_list'])){echo 'users_list ';}
 		if (!empty($_GET['p'])){echo $_GET['p'].' ';}else{echo 'home ';}
-		if (!empty($_SESSION['language'])){echo 'body_'.$_SESSION['language'].' ';}
-		if (!empty($_SESSION['mode'])){echo $_SESSION['mode'].' ';}
-		if (!empty($_SESSION['aspect'])&&empty($_GET['f'])){echo $_SESSION['aspect'].' ';}
+		if (!empty(conf('language'))){echo 'body_'.conf('language').' ';}
+		if (!empty(conf('mode'))){echo conf('mode').' ';}
+		if (!empty(conf('aspect'))&&empty($_GET['f'])){echo conf('aspect').' ';}
 	}
 
 
@@ -1020,19 +1055,7 @@
 		if ($profile=='superadmin'){return true;}
 		if (isset($RIGHTS[$profile][$action])){return true;}else{return false;}
 	}
-	/*
-	function is_admin(){
-		global $auto_restrict;
-		if (empty($_SESSION['login'])){return false;}
-		if (!empty($_SESSION['status'])){
-			if ($_SESSION['status']=='admin'||$_SESSION['status']=='superadmin'){return true;}
-		}else{
-			$first=first($auto_restrict['users']);
-			if ($_SESSION['login']==$first['login']){return true;}
-			if (isset($auto_restrict['users'][$_SESSION['login']]['status'])&&$auto_restrict['users'][$_SESSION['login']]['status']=='admin'){return true;}
-		}
-		return false;
-	}*/
+
 	function is_superadmin(){if (!empty($_SESSION['status'])&&$_SESSION['status']=='superadmin'){return true;}return false;}
 	function load_users_list(){
 		global $auto_restrict;
@@ -1045,40 +1068,40 @@
 	}
 
 	# Complete users rights
-	function complete_users_rights($users_rights=null){
-		global $auto_restrict,$default_profile_folder_max_size;
+	function complete_users_rights(){
+		global $auto_restrict;
 		$save=false;
 		$users=$auto_restrict["users"];
 		if (empty($users)){return false;}		
-		if (!$users_rights){$users_rights=load_users_rights();}
+		if (!isset($_SESSION['users_rights'])){$_SESSION['users_rights']=load_users_rights();}
 		foreach ($users as $key=>$user){ # add missing
-			if (!isset($users_rights[$user['login']])){
-				$users_rights[$user['login']]=$default_profile_folder_max_size;
+			if (!isset($_SESSION['users_rights'][$user['login']])){
+				$_SESSION['users_rights'][$user['login']]=conf('profile_folder_max_size');
 				$save=true;
 			}
 		}
-		foreach ($users_rights as $user=>$size){ # remove deleted profiles
+		foreach ($_SESSION['users_rights'] as $user=>$size){ # remove deleted profiles
 			if (!isset($users[$user])){
-				unset($users_rights[$user]);
+				unset($_SESSION['users_rights'][$user]);
 				$save=true;
 			}
 		}
-		if ($save){save_users_rights($users_rights);}
-		return $users_rights;
+		if ($save){save_users_rights($_SESSION['users_rights']);}
+		return $_SESSION['users_rights'];
 	}
 
 	# creates a form with the users list
 	function generate_users_folder_space_formlist($text='Check users to delete account and files'){
-		global $auto_restrict,$default_profile_folder_max_size;
-		$users_rights=complete_users_rights();
+		global $auto_restrict;
+		
 		echo '<h1>'.$text.'</h1><form action="" method="POST" class="folder_size_users_list"><table>';
 		
-		foreach ($users_rights as $user=>$size){
+		foreach ($_SESSION['users_rights'] as $user=>$size){
 			if ($auto_restrict['users'][$user]['status']!='superadmin'){
 				$class=' class="'.$auto_restrict['users'][$user]['status'].'" title="'.e($auto_restrict['users'][$user]['status'],false).'"';
 				echo '<tr>';
 				echo '<td>';
-				echo '<span '.$class.'>'.$user.' <em>('.folder_size($_SESSION['upload_root_path'].$user).' '.e('used',false).')</em></span></td>';
+				echo '<span '.$class.'>'.$user.' <em>('.folder_free($_SESSION['upload_root_path'].$user).' '.e('free',false).')</em></span></td>';
 				echo '<input type="hidden" name="user_name[]" value="'.$user.'"/>';
 				echo '<td><input type="number" name="user_right[]" class="npt" value="'.$size.'" title="MB" min="0"/></td>';
 				newToken();
@@ -1163,30 +1186,62 @@
 		$conf=array();
 		foreach($vars[1] as $index=>$varname){
 			if (!isset($$varname)){global $$varname;}
-			$conf[$varname]=$$varname;
+			$conf[str_replace('default_','',$varname)]=$$varname;
 		}
 		return $conf;
 	}
+
+	function conf($key=null,$value=null){
+		if (!$key && $value===null && empty($_SESSION['config'])){return false;}
+		if (!$key && $value===null ){return $_SESSION['config'];}
+		if (!isset($_SESSION['config'][$key]) && $value===null ){return false;}
+		if ($value===null){return $_SESSION['config'][$key];}
+		elseif ($key && is_string($value)||is_integer($value)){
+			$bool=toBool($value);
+			if (is_bool($bool)){$value=$bool;}
+			$_SESSION['config'][$key]=$value;
+		}
+		elseif (is_array($value)){
+			foreach ($value as $k=>$v){
+				$bool=toBool($v);
+				if (is_bool($bool)){$v=$bool;}
+				$_SESSION['config'][$k]=$v;
+			}
+		}
+		return false;
+	}
+	function toBool($str){//http://stackoverflow.com/questions/7336861/how-to-convert-string-to-boolean-php
+	    if($str === 'true' || $str === 'TRUE' || $str === 'True'){
+	        return true;
+	    }elseif($str === 'false' || $str === 'FALSE' || $str === 'False'){
+	        return false;
+	    }
+	}
 	# Generate configuration form from config vars
 	function generate_config_form($vars=null){
-		if (empty($vars)){$vars=extract_config_vars();}
+		if (empty($vars)&&empty($_SESSION['config'])){$vars=extract_config_vars();}
+		if (empty($vars)){$vars=$_SESSION['config'];}
 		include ('core/config_form_help.php');
-		echo '<form action="#" method="POST"><input type="hidden" name="config" value="1"/><table>';
+		echo '<form action="#" method="POST"><input type="hidden" name="config" value="true"/><table>';
 		foreach ($vars as $varname=>$value){
 			if (isset($config_form['help'][$varname])){
 				echo '<tr>';
 				if (is_bool($value)){
-					if ($value){$checked=' checked="true" ';}else{$checked='';}
-					echo '<td><label>'.str_replace('_',' ',$varname).'</label><p>'.$config_form['help'][$varname].'</p></td><td><input class="npt" type="checkbox" '.$checked.'name="'.$varname.'"/></td>';
+					echo '<td><label>'.e(str_replace('_',' ',$varname),false).'</label><p>'.$config_form['help'][$varname].'</p></td><td><select class="npt" name="'.$varname.'">'."\n";
+						if ($value===true){$selected=' selected="true" ';}else{$selected='';}
+						echo '<option value="true" '.$selected.'>'.e('Yes',false).'</option>'."\n";
+						if ($value===false){$selected=' selected="true" ';}else{$selected='';}
+						echo '<option value="false" '.$selected.'>'.e('No',false).'</option>'."\n";
+					echo '</select></td>'."\n";
 				}elseif(!empty($config_form['options'][$varname])&&is_array($config_form['options'][$varname])){
-					echo '<td><label>'.str_replace('_',' ',$varname).'</label><p>'.$config_form['help'][$varname].'</p></td><td><select class="npt" name="'.$varname.'">'."\n";
+					echo '<td><label>'.e(str_replace('_',' ',$varname),false).'</label><p>'.$config_form['help'][$varname].'</p></td><td><select class="npt" name="'.$varname.'">'."\n";
 					foreach ($config_form['options'][$varname] as $option){
 						if ($option==$value){$selected=' selected="true" ';}else{$selected='';}
 						echo '<option value="'.$value.'" '.$selected.'>'.e($option,false).'</option>'."\n";
 					}
 					echo '</select></td>'."\n";
 				}else{
-					echo '<td><label>'.str_replace('_',' ',$varname).'</label><p>'.$config_form['help'][$varname].'</p></td><td><input class="npt" name="'.$varname.'" value="'.$value.'"/></td>';
+					echo '<td><label>'.e(str_replace('_',' ',$varname),false).'</label><p>'.$config_form['help'][$varname].'</p></td><td><input class="npt" name="'.$varname.'" value="'.$value.'"/></td>';
 				}
 				echo '</tr>';
 			}

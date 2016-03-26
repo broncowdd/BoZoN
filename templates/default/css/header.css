@@ -21,6 +21,8 @@ body>header {
   margin-bottom: 5px;
   border-bottom: 1px solid rgba(0,0,0,0.2);
 }
+#top_bar *{vertical-align: middle!important}
+
 
 #top_bar a {line-height: 23px;}
 #top_bar a:hover {
@@ -37,7 +39,7 @@ body>header {
 
 
 #top_bar #icons {
-  float: left;
+  float: left; margin-top: 4px;
 }
 
 #top_bar #icons a:hover {color:white;}
@@ -48,29 +50,13 @@ body>header {
 
 #top_bar #icons a,
 #top_bar #lang a {
-  color: rgba(255,255,255,0.6);
-  border: 1px solid rgba(0,0,0,0.2);
-  border-left:none;
+  color: rgba(255,255,255,0.6);  
+  border:none;
 }
 
-#top_bar #lang {
-  float: right;
-}
-
-#top_bar #lang a {
-  display: inline-block;
-  padding: 5px;
-  min-width: 22px;height: 22px;
-  width: auto;
-  border-left: 1px solid rgba(0,0,0,0.2);
-}
-
-#top_bar #lang a.active {
-  color: #fff;
-}
 #top_bar .profile_rights .icon-crown:before{vertical-align: sub;}
 #search {
-  float: right;
+  float: right;margin-top: 4px;
   display: block;
   margin-right: 2px;
 }
@@ -85,22 +71,21 @@ body>header {
   border-radius: 3px;
 }
 
-#search input[type=text]:hover,
+
 #search input[type=text]:focus {
   width: 200px;
   background-color: #eee;
 }
 
 #connect {
-  clear: both;
   display: block;
-  vertical-align: middle;
+  float:right;
+  margin-top: 4px;
 }
 
 #connect #admin_button {
   height: 22px;
   line-height: 22px;
-  vertical-align: middle;
   min-width: 22px;
   padding-left:20px;margin-right:5px;
   text-align: center;
@@ -152,6 +137,18 @@ body.login #connect #login_button {
   display: block;
 }
 
+.home   #top_bar #lang,
+.login #top_bar #lang {margin-top: 2px;}
+#top_bar #lang {float:right;margin-right:5px;margin-top:4px;}
+#top_bar #lang ul {list-style:none;padding:0px;margin:0px;}
+#top_bar #lang ul li {display:block;position:relative;float:left;}
+#top_bar #lang li ul {display:none;}
+#top_bar #lang ul li a {display:block;padding:5px 10px 5px 10px;text-decoration:none;white-space:nowrap;min-width:30px;}
+#top_bar #lang li:hover ul {display:block;position:absolute;}
+#top_bar #lang li:hover li {float:none;}
+#top_bar #lang li:hover a {background:rgba(0,0,0,1);}
+#top_bar #lang a:hover {color: #fff;}
+#top_bar #lang a.active::after {content:"\25be";color:gray;font-size:14px;margin-left:2px;} 
 
 /* Slogan seulement sur l'accueil */
 .slogan {

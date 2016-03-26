@@ -45,13 +45,12 @@
 		$rss['infos']=array(
 			'title'=>'BoZoN - stats',
 			'description'=>e('Rss feed of stats',false),
-			//'guid'=>$_SESSION['home'].'?f='.$id,
 			'link'=>htmlentities($_SESSION['home']),
 		);
 
 		include('core/Array2feed.php');
 		$stats=load($_SESSION['stats_file']);
-		for ($index=0;$index<$_SESSION['stats_max_lines'];$index++){
+		for ($index=0;$index<conf('stats_max_lines');$index++){
 			if (!empty($stats[$index])){
 				$rss['items'][]=
 				array(
@@ -126,7 +125,7 @@
 	}else{$token='';}
 	if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
 	if (!empty($_GET['msg'])){$message=$_GET['msg'];}
-	if (!empty($_GET['lang'])){$_SESSION['language']=$_GET['lang'];header('location:index.php?p='.$page.'&token='.$token);}
-	if (!empty($_GET['aspect'])){$_SESSION['aspect']=$_GET['aspect'];header('location:index.php?p='.$page.'&token='.$token);}
+	if (!empty($_GET['lang'])){conf('language',$_GET['lang']);header('location:index.php?p='.$page.'&token='.$token);}
+	if (!empty($_GET['aspect'])){conf('aspect',$_GET['aspect']);header('location:index.php?p='.$page.'&token='.$token);}
 	
 ?>

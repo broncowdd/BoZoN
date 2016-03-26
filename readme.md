@@ -1,6 +1,6 @@
 # BoZoN
-### Official website 	: http://bozon.pw
-### Roadmap page 		: http://roadmap.bozon.pw
+Official website 	: http://bozon.pw
+Roadmap page 		: http://roadmap.bozon.pw
 
 
 ## Minimalist Drag & drop file sharing app
@@ -56,6 +56,6 @@ All Bozon code and all the personal libs used in it are distributed under AGPL: 
 
 ## Special thanks
 To Cyrille Borne [ https://github.com/cborne & http://www.cyrille-borne.com ]: without your comments, issues reporting and enhancement ideas this app would never have been so complete ;-)
-To Eauland for his great job on my poor css/html code (a pain in the ass it seems ! ^^)
+
 
 

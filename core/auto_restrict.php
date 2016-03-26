@@ -119,7 +119,6 @@
 		exit;
 	}
 
-	
 	# ------------------------------------------------------------------
 	# Sets a global token to use it later
 	# ------------------------------------------------------------------
@@ -137,16 +136,17 @@
 		$auto_restrict['users'][$index]['login'] = $login;
 		$auto_restrict['users'][$index]['encryption_key'] = md5(uniqid('', true));
 		$auto_restrict['users'][$index]['salt'] = generate_salt(512);
-		$auto_restrict['users'][$index]['lang'] = $_SESSION['language'];
+		$auto_restrict['users'][$index]['lang'] = conf('language');
 		$auto_restrict['users'][$index]['status'] = '';
 		$auto_restrict['users'][$index]['pass'] = hash('sha512', $auto_restrict['users'][$index]['salt'].$_POST['pass']);
-		
+
 		if (!save_users()){exit('<div class="error">auto_restrict: problem saving users</div>');}
 		safe_redirect('index.php?p=admin&msg='.e('Account created:',false).$login.'&token='.returnToken());
 		exit;
 	}
 
 
+	
 	# ------------------------------------------------------------------
 	# Change password request
 	# ------------------------------------------------------------------
@@ -224,6 +224,7 @@
 
 
 
+	
 	# ------------------------------------------------------------------
 	# if here, there was no security problem.
 	# Now, if there is an admin password post data,
@@ -241,15 +242,17 @@
 	} 
 	
 	# ------------------------------------------------------------------
-	# users list form requests
+	# users list form requests => BOZON
 	# ------------------------------------------------------------------	
 	# Erase a user account
-	if (isset($_POST['user_key'])&&is_user_admin()){
+/*	if (isset($_POST['user_key'])&&is_user_admin()){
 		foreach($_POST['user_key'] as $user_nb){
 			if (isset($auto_restrict['users'][$user_nb])){
 				unset($auto_restrict['users'][$user_nb]);
 				# ADDED FOR BOZON
 				rrmdir($_SESSION['upload_root_path'].$user_nb);
+				rrmdir('thumbs/'.$_SESSION['upload_root_path'].$user_nb);
+				if (isset($_SESSION['users_right'][$user_nb])){unset($_SESSION['users_right'][$user_nb]);}
 			}
 		}
 		if (!empty($auto_restrict['users'])){
@@ -278,12 +281,12 @@
 		# ADDED FOR BOZON
 		safe_redirect('index.php?p=users&token='.TOKEN.'&msg='.e('Changes saved',false));
 	}
-
+*/
 	# ------------------------------------------------------------------
 	# save user language if change BOZON CHANGE
 	# ------------------------------------------------------------------	
-	if (empty($auto_restrict['users'][$_SESSION['login']]['lang'])||$_SESSION['language']!=$auto_restrict['users'][$_SESSION['login']]['lang']){
-		$auto_restrict['users'][$_SESSION['login']]['lang']=$_SESSION['language'];
+	if (empty($auto_restrict['users'][$_SESSION['login']]['lang'])||conf('language')!=$auto_restrict['users'][$_SESSION['login']]['lang']){
+		$auto_restrict['users'][$_SESSION['login']]['lang']=conf('language');
 		save_users();
 	}
 
@@ -353,8 +356,7 @@
 		
 		$data.=$ret.'?>';
 		$r=file_put_contents($auto_restrict['path_to_files'].'/auto_restrict_users.php', $data);
-		sleep(0.5);
-		return $r;
+		if (!$r){return false;}else{return $auto_restrict['users'];}
 	}
 
 	function complete_if_needed(){
@@ -413,7 +415,7 @@
 		$expired=false;
 		if (!isset($_SESSION['id_user'])){return false;}
 		# fatal problem
-		if (!checkReferer()){return death('<div class="error">You are definitely NOT from here !</div>');}
+		if (!checkReferer()){exit_redirect();}//return death('<div class="error">You are definitely NOT from here !</div>');}
 		if (!checkIP()){return death('<div class="error">Hey... you were banished, fuck off !</div>');}
 		if (!checkToken()){return death('<div class="error">Invalid token</div>');}
 
@@ -451,7 +453,6 @@
 		$save=false;
 		global $auto_restrict,$default_language;
 		if (empty($default_language)){$default_language='en';}
-		session_destroy();session_start();
 		foreach ($auto_restrict['users'] as $key=>$user){
 			if ($user['login']===$login_donne && $user['pass']===hash('sha512', $user["salt"].$pass_donne)){				
 				$_SESSION['id_user']=chiffre(id_user(),$user['encryption_key']);
@@ -459,7 +460,7 @@
 				$_SESSION['expire']=time()+(60*$auto_restrict['session_expiration_delay']);	
 				$admin=first($auto_restrict['users']);
 				$_SESSION['status']=$user['status'];
-				$_SESSION['language']=$user['lang'];
+				conf('language',$user['lang']);
 				if ($save){save_users();}
 				return true;
 			}
@@ -660,7 +661,6 @@
 		foreach ($auto_restrict['users'] as $key=>$user){
 			if ($user['status']=='superadmin'){continue;}
 			$class=' class="'.$user['status'].'" title="'.e($user['status'],false).'"';
-			//if ($user['status']=='admin'){$class=' class="admin" title="admin"';}else{$class='';}
 			echo '<tr>';
 				echo '<td><label '.$class.'><input type="checkbox" name="user_key[]" value="'.$key.'"/> '.$user['login'].'</label>';
 				newToken();
@@ -694,7 +694,7 @@
 		echo '</table><input type="submit" value="Ok" class="btn red"/></form>';
 	}
 
-	function safe_redirect($url=none){
+	function safe_redirect($url=null){
 		if (!$url){return false;}
 		if (!headers_sent()){header('location: '.$url);}
 		else{echo '<script>document.location.href="'.$url.'";</script>';}

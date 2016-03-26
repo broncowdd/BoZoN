@@ -29,7 +29,7 @@
     $message=e('No stats',false);
   }
 	else{
-		for ($index=$from;$index<$from+$_SESSION['stats_max_lines'];$index++){//($stats as $client){
+		for ($index=$from;$index<$from+conf('stats_max_lines');$index++){//($stats as $client){
 			if (!empty($stats[$index])){
 			$log_list.='
 				<tr>
@@ -44,17 +44,17 @@
 		}
 	}
 	$t=returnToken();
-	if (!empty($stats[$from+$_SESSION['stats_max_lines']])){
-		$start=$from+$_SESSION['stats_max_lines'];
+	if (!empty($stats[$from+conf('stats_max_lines')])){
+		$start=$from+conf('stats_max_lines');
 		$button_next='<a class="button" href="index.php?p=stats&start='.$start.'&token='.$t.'">&#8680;</a>';
 	}
 	if ($from>0){
-		$start=$from-$_SESSION['stats_max_lines'];
+		$start=$from-conf('stats_max_lines');
 		if ($start<0){$start=0;}
 		$button_previous='<a class="button" href="index.php?p=stats&start='.$start.'&token='.$t.'">&#8678;</a>';
 	}
 	$nb=count($stats);$c=0;
-	for($index=0;$index<$nb;$index+=$_SESSION['stats_max_lines']){	
+	for($index=0;$index<$nb;$index+=conf('stats_max_lines')){	
 		$c++;	
 		if ($index!=$from){
 			$paginate.='<a class="button" href="index.php?p=stats&start='.$index.'&token='.$t.'">'.$c.'</a> ';

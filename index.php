@@ -16,7 +16,7 @@ if (parse_url($var_request_URI, PHP_URL_PATH) !== $_SERVER['SCRIPT_NAME']) {
 	header('Location: '.$_SERVER['SCRIPT_NAME']);
 }
 #########################################################################################
-$root=dirname(realpath(__FILE__)).'/';
+
 require('core/core.php');
 require('core/commands_GET_vars.php');# handle no html content requests
 #########################################################################################

@@ -9,7 +9,7 @@ Description: Github README style. Includes theme for Pygmentized code blocks.
 */
 html, .markdown {
   color: black; }
-.markdown {padding:20px;margin:20px auto;max-width:1024px;border:1px solid #ddd;background:url(img/noise.png);}
+.markdown {padding:20px;margin:20px auto;max-width:1024px;border:1px solid #ddd;}
 .markdown *:not('#mkdbuttons') {
   margin: 0;
   padding: 0; }

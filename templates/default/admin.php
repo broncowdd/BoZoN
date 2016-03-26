@@ -5,14 +5,17 @@
 	* @author: Bronco (bronco@warriordudimanche.net)
 	* 
 	**/
+
   require_once('core/auto_restrict.php'); # Connected user only !
+
+  #################################################
 ?>
 
 <?php 
   # Initialisation
-  $layout=$_SESSION['aspect'];
+  $layout=conf('aspect');
   $shared_folders=$back_link='';
-  if (empty($_SESSION['mode'])){$mode='view';}else{$mode=$_SESSION['mode'];}
+  if (empty(conf('mode'))){$mode='view';}else{$mode=conf('mode');}
   $upload_path_size=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
   $lb_token=TOKEN;
   echo str_replace('#TOKEN',$lb_token,$templates['dialog_link']);
@@ -89,7 +92,7 @@ if ($mode=='view'){
     <a class="ariane_home" href="index.php?p=admin&path=/&token=<?php echo TOKEN;?>" title="<?php echo e('Root:',false);?>"><span class="icon-home_folder" ></span></a>/
   	
   	<?php
-  		$ariane=explode('/',$_SESSION['current_path']);
+  		$ariane=array_filter(explode('/',$_SESSION['current_path']));
       $previous_path = $ariane;
       $nb_folders=count($previous_path);
       if ($nb_folders>1){unset($previous_path[$nb_folders-1]);$previous_path = implode('/',$previous_path);}
@@ -106,10 +109,10 @@ if ($mode=='view'){
   			}
   		}
       
-      if (!empty($previous_path)&&$show_back_button){
+      if (!empty($previous_path)&&conf('show_back_button')){
         $back_button='<a class="back" href="index.php?p=admin&path='.$previous_path.'&token='.TOKEN.'"><span class="icon-left-circle" ></span></a>';
         $back_link='
-        <tr class="folder"><td class="table_check"></td><td></td><td class="table_filename"><a class="root" href="index.php?p=admin&path=/&token='.TOKEN.'">.</a></td><td></td><td></td></tr>
+        <tr class="folder"><td></td><td></td><td class="table_filename"><a class="root" href="index.php?p=admin&path=/&token='.TOKEN.'">.</a></td><td></td><td></td></tr>
         <tr class="folder"><td></td><td></td><td class="table_filename"><a class="back" href="index.php?p=admin&path='.$previous_path.'&token='.TOKEN.'">..</a></td><td></td></td><td></tr>
         ';
     	 echo $back_button;
@@ -136,7 +139,7 @@ if ($mode=='view'){
     <span id="zip_selection" title="<?php e('Zip and download selected items');?>"><span class="icon-download-cloud" ></span></span> 
   </div>
 
-  <div id="list_files" class="<?php echo $_SESSION['aspect'];?>">    
+  <div id="list_files" class="<?php echo conf('aspect');?>">    
       <?php 
         include('core/listfiles.php');
       ?>

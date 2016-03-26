@@ -109,9 +109,9 @@
 
 	# file mode
 	if (!empty($_GET['mode'])){
-		$_SESSION['mode']=$_GET['mode'];
+		conf('mode',$_GET['mode']);
 	}elseif (empty($_SESSION['mode'])){
-		$_SESSION['mode']='view';
+		conf('mode','view');
 	}
 
 	# create a new subfolder
@@ -316,9 +316,9 @@
 	# Handle users rights
 	if (isset($_POST['user_right'])&&is_allowed('change status rights')){
 		foreach($_POST['user_right'] as $key=>$user_nb){
-			$users_rights[$_POST['user_name'][$key]]=$user_nb;
+			$_SESSION['users_rights'][$_POST['user_name'][$key]]=$user_nb;
 		}
-		save_users_rights($users_rights);
+		save_users_rights($_SESSION['users_rights']);
 		header('location:index.php?p=users&token='.TOKEN.'&msg='.e('Changes saved',false));
 		exit;
 	}
@@ -366,8 +366,42 @@
 
 	# Config change
 	if (isset($_POST['config'])&&is_allowed('config page')){
+		unset($_POST['config']);
+		conf(null,$_POST);
+		save_config();
+	}
 
+	# Erase a user account
+	if (isset($_POST['user_key'])&&is_user_admin()){
+		foreach($_POST['user_key'] as $user_nb){
+			if (isset($auto_restrict['users'][$user_nb])){
+				unset($auto_restrict['users'][$user_nb]);
+				# ADDED FOR BOZON
+				rrmdir($_SESSION['upload_root_path'].$user_nb);
+				rrmdir('thumbs/'.$_SESSION['upload_root_path'].$user_nb);
+				if (isset($_SESSION['users_right'][$user_nb])){unset($_SESSION['users_right'][$user_nb]);}
+			}
+		}
+		if (!empty($auto_restrict['users'])){
+			save_users();
+			
+		}
+		else{
+			unlink($auto_restrict['path_to_files'].'/auto_restrict_users.php');
+			exit_redirect();
+		}
+	}
 
+	# Change user status
+	if (isset($_POST['users_status'])&&is_user_admin()){
+		unset($_POST['users_status']);
+		unset($_POST['token']);
+		foreach($_POST as $user=>$status){
+			if (!empty($user)){$auto_restrict['users'][$user]['status']=$status;}
+		}
+		save_users();
+		$msg=e('Changes saved',false);
+		//header('location: index.php?p=users&token='.TOKEN.'&msg='.e('Changes saved',false));
 	}
 
 

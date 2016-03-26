@@ -96,7 +96,7 @@ body{
   border: 1px solid #d6ecfc;
   border-radius: 5px;
   }
-
+.right{float:right;}
 .btn {
   cursor: pointer;
   border-radius: 3px;

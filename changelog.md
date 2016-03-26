@@ -1,5 +1,17 @@
 
 # Version history
+## New in 2.4 (build 4)
+- bugfix : burn mode is no longer a problem \o/
+- bugfix : refresh bug on users page
+- better upload zone behaviour when drag over
+- Added : a config page
+- Added : file type column (idea from jerrywham )
+- Added : new header from #122 & #121 (Pluxopolis) Manually added because of changes. Thx ^^
+- close #118
+- close #115
+- close #109
+- close #108
+
 ## New in 2.4 (build 3)
 - bugfix : files no longer appears twice
 - pdf now displays correctly in the browser

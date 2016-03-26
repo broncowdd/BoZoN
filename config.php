@@ -14,14 +14,15 @@
 	#############################################################
 	$default_path='uploads/'; 												# upload folder
 	$default_private='private/'; 											# private folder
-	$default_id_file=$default_private.'id.php';							# IDs file name
+	$default_id_file=$default_private.'id.php';								# IDs file name
 	$default_config_file=$default_private.'config.php';						# config file name
 	$default_temp_folder=$default_private.'temp/';							# temp folder path 
 	$default_users_rights_file=$default_private.'users_rights_file.php';	# IDs file name 
 	$default_profiles_rights_file=$default_private.'profiles_rights.php';	# profiles rights file name 
-	$default_folder_share_file=$default_private.'folder_share.php';		# IDs file name 
+	$default_folder_share_file=$default_private.'folder_share.php';			# IDs file name 
 	$default_stat_file=$default_private.'stats_log.php';					# stats file name 
-	
+	$root=false;															# to force root url (in case of problem) change this to $root="URL";
+
 	#############################################################
 	# Aspect config
 	#############################################################
@@ -34,6 +35,8 @@
 	#############################################################
 	# Behaviour config
 	#############################################################
+	$default_files_to_echo='nfo,m3u,txt,js,html,php,SPHP,htm,shtml,shtm,css';
+	$default_files_to_return='md,jpg,jpeg,gif,png,mp3,mp4,svg,pdf';
 	$default_max_lines_per_page_on_stats_page=100;
 	$default_limit_stat_file_entries=10000;
 	$default_max_files_per_page=100;	
