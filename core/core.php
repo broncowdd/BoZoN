@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 4)');
+	define('VERSION','2.4 (build 5)');
 	
 	start_session();
 	$message='';
@@ -29,18 +29,18 @@
 	#################################################
 
 	# locale
-	if (empty(conf('language'))){conf('language',$default_language);}
+	if (!conf('language')){conf('language',$default_language);}
 	if (is_file('locale/'.conf('language').'.php')){include('locale/'.conf('language').'.php');}else{$lang=array();}
 	# Aspect config
-	if (empty(conf('aspect'))){conf('aspect',$default_aspect);}
-	if (empty(conf('theme'))){conf('theme',$default_theme);}
-	if (empty(conf('mode'))){conf('mode',$default_mode);}
+	if (!conf('aspect')){conf('aspect',$default_aspect);}
+	if (!conf('theme')){conf('theme',$default_theme);}
+	if (!conf('mode')){conf('mode',$default_mode);}
 
 	# SESSION VARS
 	# System vars
 	if (empty($_SESSION['api_rss_key'])&&!empty($_SESSION['login'])){$_SESSION['api_rss_key']=hash_user($_SESSION['login']);}
-	if (empty(conf('stats_max_entries'))){conf('stats_max_entries',$default_limit_stat_file_entries);}
-	if (empty(conf('stats_max_lines'))){conf('stats_max_lines',$default_max_lines_per_page_on_stats_page);}
+	if (!conf('stats_max_entries')){conf('stats_max_entries',$default_limit_stat_file_entries);}
+	if (!conf('stats_max_lines')){conf('stats_max_lines',$default_max_lines_per_page_on_stats_page);}
 	if (empty($_SESSION['private_folder'])){$_SESSION['private_folder']=$default_private;}
 	if (empty($_SESSION['zip'])){$_SESSION['zip']=class_exists('ZipArchive');}
 	if (empty($_SESSION['curl'])){$_SESSION['curl']=function_exists('curl_init');}
@@ -51,7 +51,7 @@
 	if (empty($_SESSION['id_file'])){$_SESSION['id_file']=$default_id_file;}
 	if (empty($_SESSION['folder_share_file'])){$_SESSION['folder_share_file']=$default_folder_share_file;}
 	if (empty($_SESSION['stats_file'])){$_SESSION['stats_file']=$default_stat_file;}
-	if (empty(conf('max_files_per_page'))){conf('max_files_per_page',$default_max_files_per_page);}
+	if (!conf('max_files_per_page')){conf('max_files_per_page',$default_max_files_per_page);}
 	if (!isset($_SESSION['current_path'])){$_SESSION['current_path']="";}
 	if (!isset($_SESSION['users_rights_file'])){$_SESSION['users_rights_file']=$default_users_rights_file;}
 	if (empty($_SESSION['upload_root_path'])){$_SESSION['upload_root_path']=addslash_if_needed($default_path);}
@@ -1003,9 +1003,9 @@
 	function body_classes(){
 		if (isset($_GET['users_list'])){echo 'users_list ';}
 		if (!empty($_GET['p'])){echo $_GET['p'].' ';}else{echo 'home ';}
-		if (!empty(conf('language'))){echo 'body_'.conf('language').' ';}
-		if (!empty(conf('mode'))){echo conf('mode').' ';}
-		if (!empty(conf('aspect'))&&empty($_GET['f'])){echo conf('aspect').' ';}
+		if (conf('language')){echo 'body_'.conf('language').' ';}
+		if (conf('mode')){echo conf('mode').' ';}
+		if (conf('aspect')&&empty($_GET['f'])){echo conf('aspect').' ';}
 	}
 
 

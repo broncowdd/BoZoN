@@ -20,6 +20,7 @@
 # replacement rules: "String to replace" => "Replacement"
 # You can change the colors here !
 session_start();
+if (!empty($_SESSION['config']['gallery_thumbs_width'])){$size=$_SESSION['config']['gallery_thumbs_width'];}else{$size='256';}
 $replace=array(
   '#basic_color_neutral'=>'#456',
   '#basic_color_dark'=>'#345',
@@ -29,8 +30,8 @@ $replace=array(
   '#hover_color_neutral'=>'#789',
   '#hover_color_dark'=>'#234',
   '#hover_color_superdark'=>'#123',
-  '#THUMBS_SIZE'=>$_SESSION['config']['gallery_thumbs_width'],
-  '#THUMBS_HIDING_HEIGHT'=>$_SESSION['config']['gallery_thumbs_width']+4,
+  '#THUMBS_SIZE'=>$size,
+  '#THUMBS_HIDING_HEIGHT'=>$size+4,
 );
 
 

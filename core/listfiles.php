@@ -20,7 +20,7 @@ if (empty($layout)){$layout=conf('aspect');}
 if (!isset($shared_folders)){$shared_folders='';}
 if (!isset($back_link)){$back_link='';}
 $upload_path_size=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
-if (empty(conf('mode'))){$mode='view';}else{$mode=conf('mode');}
+if (!conf('mode')){$mode='view';}else{$mode=conf('mode');}
 if (empty($_SESSION['current_path'])){
 	$path_list=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'];
 }else{

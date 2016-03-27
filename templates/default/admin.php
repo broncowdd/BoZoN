@@ -15,7 +15,7 @@
   # Initialisation
   $layout=conf('aspect');
   $shared_folders=$back_link='';
-  if (empty(conf('mode'))){$mode='view';}else{$mode=conf('mode');}
+  if (!conf('mode')){$mode='view';}else{$mode=conf('mode');}
   $upload_path_size=strlen($_SESSION['upload_root_path'].$_SESSION['upload_user_path']);
   $lb_token=TOKEN;
   echo str_replace('#TOKEN',$lb_token,$templates['dialog_link']);
