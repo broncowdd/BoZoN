@@ -3,7 +3,7 @@
   <div id="center">
   	<h1><?php e('BoZoN is a simple filesharing app.'); ?></h1>
   	<p><?php e('Easy to install, free and opensource'); ?></p>
-  	<p><?php e('Just copy BoZoN\'s files on your server. That\'s it.'); ?> </p>
+  	<p><?php e('Just copy BoZoN\'s files onto your server. That\'s it.'); ?> </p>
   	<p id="logos">
   		<img src="<?php echo THEME_PATH;?>img/home/logo_php.png" alt="logo php"/>
   		<img src="<?php echo THEME_PATH;?>img/home/logo_js.png" alt="logo js"/>
@@ -22,7 +22,7 @@
   	<div id="notes">
   		<div>
         <img class="big" src="<?php echo THEME_PATH;?>img/home/tosend.png" alt="" />
-        <p><?php e('Drag the file you want to share to upload it on the server'); ?></p>
+        <p><?php e('Drag the file you want to share to upload it to the server'); ?></p>
       </div>
   		<div>
         <img class="big" src="<?php echo THEME_PATH; ?>img/home/toshare.png" alt="" />
@@ -34,7 +34,7 @@
   	<ul>
 	  	<li>
 	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/nodb.png" alt="lock icon"/></span>
-	        <span class="text"><?php e('No database: easy to backup or move to a new server.'); ?></span>
+	        <span class="text"><?php e('No database required: easy to backup or move to a new server.'); ?></span>
 	    </li>
 	  	<li>
 	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/locked.png" alt="lock icon"/></span>
