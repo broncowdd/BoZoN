@@ -42,15 +42,15 @@
 	    </li>
 	  	<li>
 	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/burn.png" alt="burn icon"/></span>
-	        <span class="text"><?php e('Share a file or a folder with a unique acces link with the «burn mode»:'); ?></span>
+	        <span class="text"><?php e('Share a file or a folder with a unique access link with the «burn mode»:'); ?></span>
 	    </li>
 	  		<li>
 	        <span class="img"><img class="medium" src="<?php echo THEME_PATH; ?>img/home/renew.png" alt="renew icon"/></span>
-	        <span class="text"><?php e('Renew a share link with a single clic'); ?></span>
+	        <span class="text"><?php e('Renew a share link with a single click'); ?></span>
 	    </li>
 	  	<li>
 	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/zipfolder.png" alt="upload zip folder icon"/></span>
-	        <span class="text"><?php e('Download a folder content into a zip'); ?></span>
+	        <span class="text"><?php e('Download a folder\'s contents into a zip'); ?></span>
 	    </li>
 	    <li>
 	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/smartphone.png" alt="smartphone icon"/></span>
