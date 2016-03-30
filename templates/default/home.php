@@ -54,7 +54,7 @@
 	    </li>
 	    <li>
 	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/smartphone.png" alt="smartphone icon"/></span>
-	        <span class="text"><?php e('Acces to BoZoN on smartphone without any specific app: your browser is enougth'); ?></span>
+	        <span class="text"><?php e('Access BoZoN on a smartphone without an app: your browser is enough'); ?></span>
 	    </li>
 	  		<li>
 	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/qrcode.png" alt="qrcode icon"/></span>
@@ -62,11 +62,11 @@
 	    </li>
 	    <li>
 	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/users.png" alt="users icon"/></span>
-	        <span class="text"><?php e('Add, remove users and manage their rights'); ?></span>
+	        <span class="text"><?php e('Add and remove users as well as manage their rights.'); ?></span>
 	    </li>
 	  		<li>
 	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/unzipfolder.png" alt="unzip folder icon"/></span>
-	        <span class="text"><?php e('To upload a folder, just zip and upload it: with one clic it will be turned into a folder on the server.'); ?></span>
+	        <span class="text"><?php e('To upload a folder, just zip and upload it: with one click it will be turned into a folder on the server.'); ?></span>
 	    </li>
 	  	<li>
 	        <span class="img"><img src="<?php echo THEME_PATH; ?>img/home/design.png" alt="design icon"/></span>
