@@ -117,7 +117,7 @@ if (!empty($_FILES)){
     }
 
     if (isset($_FILES['myfile']) && strtolower($_FILES['myfile']['name'])!="index.html") {
-        $sFileName = secure($_FILES['myfile']['name']);
+        $sFileName = no_special_char(secure($_FILES['myfile']['name']));
         $sFileType = $_FILES['myfile']['type'];
         $sFileSize = intval(bytesToSize1024($_FILES['myfile']['size'], 1));
         $sFileError = error2msg($_FILES['myfile']['error']);
@@ -150,7 +150,8 @@ if (!empty($_FILES)){
             [<em class="DD_filetype">'.$sFileType.'</em>, 
             <em class="DD_filesize">'.$sFileSize.'</em>] '.e('Upload error',false).'
         </li>';
-        if (
+        if (empty($sFileName)){exit();}
+        elseif (
             is_array($auto_dropzone['destination_filepath'])
             &&!empty($auto_dropzone['destination_filepath'][$sFileExt])
             &&is_dir($_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$auto_dropzone['destination_filepath'][$sFileExt])            
