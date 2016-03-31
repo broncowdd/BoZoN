@@ -33,7 +33,7 @@
   border-radius: 5px;
 }
 
-#login #form #cookie {
+#login #form #kouki {
   width: 20px !important; /* force, mauvaise interprétation de firefox avec :not(#submit) ci-dessus */
   float: left;
 }
@@ -50,4 +50,5 @@
 
 #login #form #submit {
   float: right;
+  width:150px;
 }

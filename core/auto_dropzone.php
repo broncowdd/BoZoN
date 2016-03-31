@@ -127,7 +127,7 @@ if (!empty($_FILES)){
         # ADDED FOR BOZON
         #########################################################################        
         if (!function_exists('folder_fit')){include($path_core.'core.php');}
-        if (!folder_fit(null,$_FILES['myfile']['size'],$_SESSION['login'])){
+        if (!empty($_FILES['myfile']['size'])&&!folder_fit(null,$_FILES['myfile']['size'],$_SESSION['login'])){
             # uploaded file doesn't fit in user's folder
             if (!isset($_SESSION['ERRORS'])){$_SESSION['ERRORS']='';}
             $error='<li class="DD_file DD_error">   

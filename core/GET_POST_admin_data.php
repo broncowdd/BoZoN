@@ -155,13 +155,13 @@
 	}
 
 	# rename file/folder
-	if (!empty($_GET['id'])&&!empty($_GET['newname'])&&is_owner($_GET['id'])){
+	if (!empty($_GET['id'])&&!empty($_GET['newname'])&&$_GET['newname']!='.'&&is_owner($_GET['id'])){
 		$oldfile=id2file($_GET['id']);
 		$path=dirname($oldfile).'/';
 		$newfile=$path.no_special_char($_GET['newname']);
 		if ($newfile!=$oldfile && check_path($newfile)){		
 			# if newname exists, change newname
-			if(is_file($newfile) || is_dir($newfile)){aff($newfile.' '.$oldfile);
+			if(is_file($newfile) || is_dir($newfile)){
 				$newfile=$path.rename_item(_basename($newfile),$path);
 			}
 			if (is_dir($oldfile)){

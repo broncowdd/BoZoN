@@ -74,7 +74,7 @@ if (!function_exists('is_user_connected')){
     	<?php } ?>
     	<?php if (is_user_connected()){newToken();}?>
     	<div>
-    		<?php if($f&&!$n&&!is_user_connected()){echo '<input id="cookie" type="checkbox" value="cookie" name="cookie" /><label for="cookie">'.e('Stay connected',false).'</label>';} ?>
+    		<?php if($f&&!$n&&!is_user_connected()){echo '<input id="kouki" type="checkbox" value="cookie" name="cookie" /><label for="kouki">'.e('Stay connected',false).'</label>';} ?>
     		<input id="submit" type="submit" class="btn" value="Ok" />	
     	</div>
     </form>

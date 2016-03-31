@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 define('EXIF_ORIENTATION_TOP',1);
 define('EXIF_ORIENTATION_BOTTOM',3);
 define('EXIF_ORIENTATION_RIGHT',6);
@@ -17,6 +14,7 @@ function get_rotation_angle($exif_orientation){
 function auto_thumb($img,$width=null,$height=null,$add_to_thumb_filename='_THUMB_',$crop_image=true){
 	### VERSION MODIFIEE POUR BOZON ###
 	// initialisation
+	if (!getimagesize($img)){return false;}
 	$DONT_RESIZE_THUMBS=true;
 	global $auto_thumb;
 	if (!$width){$width=$auto_thumb['default_width'];}

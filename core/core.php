@@ -22,10 +22,12 @@
 	elseif (empty($_SESSION['config'])){	$_SESSION['config']=load_config();}
 
 	#################################################
-	# secure get / post data 
+	# secure get data / post data / $_SESSION data / $_FILES
 	#################################################
 	if (!empty($_GET)){$_GET=array_map('deep_strip_tags',$_GET);}
 	if (!empty($_POST)){$_POST=array_map('deep_strip_tags',$_POST);}
+	if (!empty($_SESSION)){$_SESSION=array_map('deep_strip_tags',$_SESSION);}
+	if (!empty($_FILES)){$_FILES=array_map('deep_strip_tags',$_FILES);}
 	#################################################
 
 	# locale
@@ -46,6 +48,7 @@
 	if (empty($_SESSION['curl'])){$_SESSION['curl']=function_exists('curl_init');}
 	if (empty($_SESSION['GD'])){$_SESSION['GD']=function_exists('imagecreatetruecolor');}
 	if (empty($_SESSION['home'])){$_SESSION['home'] =getUrl();}	
+	if (empty($_SESSION['clean_temp_folder_time'])){$_SESSION['clean_temp_folder_time'] =$clean_temp_folder_time;}	
 	if (empty($_SESSION['temp_folder'])){$_SESSION['temp_folder'] = $default_temp_folder;}	
 	if (empty($_SESSION['root'])){$_SESSION['root']=ROOT;}
 	if (empty($_SESSION['id_file'])){$_SESSION['id_file']=$default_id_file;}
@@ -75,11 +78,11 @@
 			$_SESSION['profile_folder_max_size']=$default_profile_folder_max_size;
 		}
 	}else{$_SESSION['profile_folder_max_size']=$default_profile_folder_max_size;}
-	if (!isset($_SESSION['temp_cleaned'])||time()>$_SESSION['temp_cleaned']+1800){
+	if (!isset($_SESSION['temp_cleaned'])||time()>$_SESSION['temp_cleaned']+$_SESSION['clean_temp_folder_time']){
 		# clean temp once in a session
 		$files=_glob($_SESSION['temp_folder'],'');
 		foreach($files as $file){
-			if (time()>filectime($file)+1800){unlink($file);}
+			if (time()>filectime($file)+$_SESSION['clean_temp_folder_time']){unlink($file);}
 		}
 		$_SESSION['temp_cleaned']=time();
 	}
@@ -409,7 +412,7 @@
 	}
 	
 	function check_path($path){
-		return (strpos($path, '//')===false && strpos($path, '..')===false && ( empty($path[0]) || (!empty($path[0]) && $path[0]!='/') ) );
+		return (strpos($path, '//')===false && strpos($path, '..')===false && ( empty($path[0]) || (!empty($path[0]) && $path[0]!='/') || (!empty($path[0]) && $path[0]!='.') ) );
 	}
 
 	function get_thumbs_name($file){
@@ -1180,7 +1183,7 @@
 	}
 
 	function start_session(){if (!session_id()){session_start();}}
-
+	
 	function extract_config_vars(){
 		preg_match_all('#\$([^\';=]*?)=#', file_get_contents('./config.php'), $vars);
 		$conf=array();
@@ -1237,7 +1240,7 @@
 					echo '<td><label>'.e(str_replace('_',' ',$varname),false).'</label><p>'.$config_form['help'][$varname].'</p></td><td><select class="npt" name="'.$varname.'">'."\n";
 					foreach ($config_form['options'][$varname] as $option){
 						if ($option==$value){$selected=' selected="true" ';}else{$selected='';}
-						echo '<option value="'.$value.'" '.$selected.'>'.e($option,false).'</option>'."\n";
+						echo '<option value="'.$option.'" '.$selected.'>'.e($option,false).'</option>'."\n";
 					}
 					echo '</select></td>'."\n";
 				}else{
