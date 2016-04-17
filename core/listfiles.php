@@ -29,7 +29,7 @@ if (empty($_SESSION['current_path'])){
 
 # Building current tree and prepare pagination
 if (empty($_SESSION['filter'])){$liste=tree($path_list,null,false,false,$tree);}
-else{$liste=tree($path_list,null,false,false,$tree);}
+else{$liste=tree($path_list,null,false,false,$tree,$_SESSION['filter']);}
 $total_files=count($liste);$from=0;
 $max_pages=ceil($total_files/conf('max_files_per_page'));
 if (!empty($_GET['from'])){$from=$_GET['from'];}
@@ -223,5 +223,5 @@ if (count($liste)>0){
       echo '<a id="more_button" class="btn" href="index.php?p=admin&from='.$from.'&token='.TOKEN.'" onclick="loadMore(this);return false;" data-from="'.$from.'" data-url="index.php?async&token='.TOKEN.'" data-max="'.$max_pages.'">'.e('Load',false).' '.$remain.' '.e('more',false).'</a>';
     }
 }else{echo '<table>'.$shared_folders.'</table><div id="nofile">'.e('No file or folder',false).'</div>';}
-chrono('etape2 listfiles.php ');
+if (!empty($_SESSION['filter'])){unset ($_SESSION['filter']); }
 ?>

@@ -249,7 +249,7 @@
 			
 		}
 
-		header('location:index.php?p=admin&msg='.$me.' '.e('moved to',false).' '.$to.'&token='.TOKEN);
+		header('location:index.php?p=admin&msg='.urlencode($me).' '.e('moved to',false).' '.urlencode($to).'&token='.TOKEN);
 		exit;
 	}
 
@@ -360,7 +360,7 @@
 			$id=addID($path.$file);
 			$tree=add_branch($path.$file,$id,$_SESSION['login'],$tree);
 		}
-		header('location:index.php?p=admin&token='.TOKEN.'&msg='.$_POST['editor_filename'].' '.e('Changes saved',false));
+		header('location:index.php?p=admin&token='.TOKEN.'&msg='.urlencode($_POST['editor_filename']).' '.e('Changes saved',false));
 		exit;
 	}
 

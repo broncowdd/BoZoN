@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 7)');
+	define('VERSION','2.4 (build 8)');
 	
 	start_session();
 	$message='';
@@ -17,7 +17,9 @@
 	include('config.php');
 	if (!$root){$root=getRacine();}	
 	define('ROOT',$root);
+	if (empty($_SESSION['private_folder'])){$_SESSION['private_folder']=$default_private;}
 	if (empty($_SESSION['config_file'])){	$_SESSION['config_file']=$default_config_file;}
+	if (!is_dir($_SESSION['private_folder'])){mkdir($_SESSION['private_folder'],0744);}
 	if (!is_file($_SESSION['config_file'])){$_SESSION['config']=extract_config_vars();save_config($_SESSION['config']);}
 	elseif (empty($_SESSION['config'])){	$_SESSION['config']=load_config();}
 
@@ -68,7 +70,6 @@
 	if (!empty($_SESSION['upload_user_path'])&&!is_dir($_SESSION['upload_root_path'].$_SESSION['upload_user_path'])){ mkdir($_SESSION['upload_root_path'].$_SESSION['upload_user_path'],0744, true); }
 	if (!empty($_SESSION['upload_user_path'])&&!is_dir('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'])){ mkdir('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'],0744, true); }
 	if (!is_dir('thumbs/'.$_SESSION['upload_root_path'])){mkdir('thumbs/'.$_SESSION['upload_root_path']);}
-	if (!is_dir($_SESSION['private_folder'])){mkdir($_SESSION['private_folder'],0744);}
 	if (!is_dir($_SESSION['private_folder'].'trees')){mkdir($_SESSION['private_folder'].'trees',0744);}
 	if (!isset($_SESSION['profile_folder_max_size'])&&isset($_SESSION['status'])&&$_SESSION['status']!='superadmin'){
 		if (isset($_SESSION['login'])&&isset($_SESSION['users_rights'][$_SESSION['login']])){
@@ -663,7 +664,7 @@ Deny from all
 	}
 
 	# build folder content from the user's tree file to avoid excessive _glob access 
-	function tree($folder=null,$user=false,$folders_only=false,$recursive=false,$tree=null){
+	function tree($folder=null,$user=false,$folders_only=false,$recursive=false,$tree=null,$filter=null){
 		global $current_tree,$ids;
 		if (!empty($current_tree)&&!$folders_only&&!$recursive){return $current_tree;}
 		$dir=array();
@@ -682,15 +683,15 @@ Deny from all
 				}else{
 					$match=(addslash_if_needed(dirname($path))===addslash_if_needed($folder));
 				} 
-				if (!empty($_SESSION['filter'])){
-					$match=$match&&(strpos(_basename($path),$_SESSION['filter'])!==false);
+				if (isset($filter)){
+					$match=$match&&(strpos(_basename($path),$filter)!==false);
 				}
 				if ($match===true){
 					$dir[$id]=$path;
 				}
 			}
 		}else{$dir=array();}
-		unset($_SESSION['filter']);
+		
 		return $dir;
 
 	}
