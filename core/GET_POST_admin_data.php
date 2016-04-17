@@ -201,7 +201,7 @@
 	if (!empty($_POST['file'])&&!empty($_POST['destination'])){
 		# init
 		$destination=$to=$_POST['destination'];
-		$file=$_POST['file'];$me=_basename($file);
+		$file=stripslashes($_POST['file']);$me=_basename($file);
 		if($destination=='/'){	$destination=''; }
 		if($file=='/'){	$file=''; }
 		if ($file[0] == '/') { $file = substr($file,1);}
