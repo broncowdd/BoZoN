@@ -83,6 +83,7 @@ $lang=array(
     "Filename" => "Nom de fichier",
     "Filesize" => "Taille de fichier",
     "Foldersize" => "Taille du dossier",
+    "Filetype" => "Type de fichier",
     "Load" => "Charger",
     "more" => "de plus",
     "No file or folder" => "Aucun fichier ou dossier",

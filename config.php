@@ -40,6 +40,7 @@
 	$default_max_lines_per_page_on_stats_page=100;
 	$default_limit_stat_file_entries=10000;
 	$default_max_files_per_page=100;	
+	$clean_temp_folder_time=1800;								# time (in seconds) between two temp folder cleaning process
 	$disable_non_installed_libs_warning=false;											
 	$allow_folder_size_stat=true;								# show folder size (put false if you have a big slowdown with huge amount of files) 
 	$allow_shared_folder_RSS_feed=true;							# Visitor can access to the rss feed of a shared folder 

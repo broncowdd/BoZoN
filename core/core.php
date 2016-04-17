@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 6)');
+	define('VERSION','2.4 (build 7)');
 	
 	start_session();
 	$message='';
@@ -106,7 +106,15 @@
 	# Check files
 	if (!is_file('thumbs/'.$_SESSION['upload_root_path'].'.htaccess')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].'.htaccess', 'deny from all');}
 	if (!is_file('thumbs/'.$_SESSION['upload_root_path'].'index.html')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].'index.html',' ');}
-	if (!is_file($_SESSION['temp_folder'].'.htaccess')){file_put_contents($_SESSION['temp_folder'].'htaccess', 'deny from all');}
+	if (!is_file($_SESSION['temp_folder'].'.htaccess')){
+		file_put_contents($_SESSION['temp_folder'].'.htaccess', '
+Order allow,deny
+Deny from all
+<FilesMatch \.zip>
+    Allow from all
+</FilesMatch>
+		');
+	}
 	if (!is_file($_SESSION['upload_root_path'].'index.html')){ file_put_contents($_SESSION['upload_root_path'].'index.html',' '); }
 	if (!is_file('thumbs/.htaccess')){file_put_contents('thumbs/.htaccess', 'deny from all');}
 	if (!is_file('thumbs/index.html')){file_put_contents('thumbs/index.html',' ');}
