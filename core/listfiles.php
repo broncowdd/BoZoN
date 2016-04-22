@@ -41,8 +41,10 @@ if ($allow_folder_size_stat){$size_folder=folder_size($path_list);}
 
 if (count($liste)>0){
 	$files=array_flip($ids);	
-	$folderlist='';
-	$filelist='';
+	$folderlist=$filelist=$icondelete=$iconmove=$iconrename='';
+	if (is_allowed('delete files')){$icondelete=$templates['icon_close'];}
+	if (is_allowed('rename files')){$iconrename=$templates['icon_rename'];}
+	if (is_allowed('move files')){$iconmove=$templates['icon_move'];}
 
 	foreach ($liste as $fichier){
 		$nom=_basename($fichier);		
@@ -61,6 +63,8 @@ if (count($liste)>0){
 
 			$extension=strtolower(pathinfo($fichier,PATHINFO_EXTENSION));
 			if (!conf('click_on_link_to_download')){$target='target="_BLANK"';}else{$target=null;}
+			# create item for file or folder
+			$fichier_short=substr($fichier,$upload_path_size);
 			# adding view icon if needed
 			if (is_in($extension,'FILES_TO_RETURN')!==false){
 				if ($extension=='jpg'||$extension=='jpeg'||$extension=='gif'||$extension=='png'||$extension=='svg'){
@@ -74,25 +78,29 @@ if (count($liste)>0){
 				}
 			}else{$icone_visu='';}
 
-			#adding edit icon if needed
+			# adding edit icon if needed
 			if (is_file($fichier)&&_mime_content_type($fichier)=='text/plain'&&$extension!='js'&&$extension!='php'&&$extension!='sphp'){				
 				$icone_edit='<a class="edit" href="index.php?p=editor&overwrite=true&file='.$id.'&token='.TOKEN.'" title="'.e('Edit this file',false).'"><span class="icon-edit" ></span></a>';
 			}else{$icone_edit='';}
 
-			# create item for file or folder
-			$fichier_short=substr($fichier,$upload_path_size);
+			# adding share button if needed
+			if ($mode=='links'&&count($auto_restrict['users'])>1){
+				$icone_share='<a class="usershare" title="'.e('Share this item with another user',false).'" href="#usershare" data-id="'.$id.'" data-name="'.$fichier_short.'"><span class="icon-users"></span></a>';
+			}else{$icone_share='';}
+
+			
 			if (is_dir($fichier)){		
 				# Item is a folder
 				$current_tree=tree($fichier,null,false,false,$tree);
-				if (only_type($current_tree,'.jpg .jpeg .gif .png') || only_type($current_tree,'.mp3 .ogg')||only_type($fichier,'.jpg .jpeg .gif .png') || only_type($fichier,'.mp3 .ogg')){
+				if (only_type($current_tree,'.jpg .jpeg .gif .png') || only_type($current_tree,'.mp3 .ogg .wav')||only_type($fichier,'.jpg .jpeg .gif .png') || only_type($fichier,'.mp3 .ogg .wav')){
 					$icone_visu='<a class="visu" href="index.php?f='.$id.'" title="'.e('View this share',false).'"><span class="icon-eye"></span></a>';
 				}			
 				if (conf('allow_folder_size_stat')){$taille=folder_size($fichier);}else{$taille='';}
-				# no share folder button if there's only one user
-				if ($mode=='links'&&count($auto_restrict['users'])>1){
-					$icone_share='<a class="usershare" title="'.e('Share this folder with another user',false).'" href="#usershare" data-id="'.$id.'" data-name="'.$fichier_short.'"><span class="icon-users"></span></a>';
-				}else{$icone_share='';}
+				
 				$array=array(
+					'#ICONCLOSE'		=> $icondelete,
+					'#ICONRENAME'		=> $iconrename,
+					'#ICONMOVE'			=> $iconmove,
 					'#CLASS'			=> $class,
 					'#ID'				=> $id,
 					'#FICHIER'			=> $fichier_short,
@@ -112,6 +120,9 @@ if (count($liste)>0){
 				auto_thumb($fichier,64,64);
 				if (empty($target)){$target='download="'.$nom.'"';}
 				$array=array(
+					'#ICONCLOSE'		=> $icondelete,
+					'#ICONRENAME'		=> $iconrename,
+					'#ICONMOVE'			=> $iconmove,
 					'#CLASS'			=> $class,
 					'#ID'				=> $id,
 					'#FICHIER'			=> $fichier_short,
@@ -124,6 +135,7 @@ if (count($liste)>0){
 					'#ICONE_VISU'		=> $icone_visu,
 					'#SLASHEDNAME'		=> addslashes($nom),
 					'#SLASHEDFICHIER'	=> addslashes($fichier_short),
+					'#USERSHAREBUTTON'	=> $icone_share,
 				);
 				$filelist.= template($mode.'_image_'.$layout,$array);
 			}elseif (is_file($fichier) && $extension=='zip' && $_SESSION['zip']){
@@ -131,6 +143,9 @@ if (count($liste)>0){
 				# Item is a zip file=> add change to folder
 				$icone_visu='<a class="tofolder" href="index.php?p=admin&unzip='.$id.'&token='.TOKEN.'" title="'.e('Convert this zip file to folder',false).'"><span class="icon-folder-1"></span></a>';
 				$array=array(
+					'#ICONCLOSE'		=> $icondelete,
+					'#ICONRENAME'		=> $iconrename,
+					'#ICONMOVE'			=> $iconmove,
 					'#CLASS'			=> $class,
 					'#ID'				=> $id,
 					'#FICHIER'			=> $fichier_short,
@@ -143,6 +158,7 @@ if (count($liste)>0){
 					'#ICONE_VISU'		=> $icone_visu,
 					'#ICONE_EDIT'		=> $icone_edit,
 					'#SLASHEDNAME'		=> addslashes($nom),
+					'#USERSHAREBUTTON'	=> $icone_share,
 					'#SLASHEDFICHIER'	=> addslashes($fichier_short),
 				);
 				$filelist.= template($mode.'_file_'.$layout,$array);
@@ -151,6 +167,9 @@ if (count($liste)>0){
 				# all other types
 				if (empty($target)){$target='download="'.$nom.'"';}
 				$array=array(
+					'#ICONCLOSE'		=> $icondelete,
+					'#ICONRENAME'		=> $iconrename,
+					'#ICONMOVE'			=> $iconmove,
 					'#CLASS'			=> $class,
 					'#ID'				=> $id,
 					'#FICHIER'			=> $fichier_short,
@@ -163,6 +182,7 @@ if (count($liste)>0){
 					'#ICONE_VISU'		=> $icone_visu,
 					'#ICONE_EDIT'		=> $icone_edit,
 					'#SLASHEDNAME'		=> addslashes($nom),
+					'#USERSHAREBUTTON'	=> $icone_share,
 					'#SLASHEDFICHIER'	=> addslashes($fichier_short),
 				);
 				$filelist.= template($mode.'_file_'.$layout,$array);

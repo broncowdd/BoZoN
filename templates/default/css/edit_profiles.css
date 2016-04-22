@@ -1,11 +1,11 @@
 #edit_profiles {text-align: center;}
-#edit_profiles input[type=checkbox]:checked+.btn{background-color:#0a0;color:white;}
+#edit_profiles input[type=checkbox]:checked+.btn{opacity:1;}
 #edit_profiles input[type=checkbox]{display:none;}
 #edit_profiles input[type=submit]{display:block;width:200px;margin:auto;}
-#edit_profiles .btn{font-size:0.9em;background-color:#a00;color:rgba(255,255,255,0.5);}
+#edit_profiles .btn{opacity:0.4;font-size:0.9em;background-color:#basic_color_neutral;color:white;width:200px;}
 #edit_profiles .npt{width:100%;max-width:200px;}
 #edit_profiles table{  text-align: left; border-collapse: collapse;display:inline-block;}
-#edit_profiles td:first-of-type{}
+#edit_profiles td:first-of-type{width:10%;min-width:100px;}
 #edit_profiles td{vertical-align: middle;padding:10px;}
 #edit_profiles tr{}
 #edit_profiles .add .btn{background:#basic_color_light;}

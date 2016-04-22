@@ -1,4 +1,5 @@
 #share {text-align: center;}
+#share .markdown{background-color: white}
 #share section.tree{margin-bottom:50px;}
 #share section{
 	font-size:1.3em;
@@ -8,11 +9,14 @@
 }
 #share section ul{margin-left:20px;}
 #share section li{
-	cursor:pointer;list-style-type: none;
+	cursor:pointer;
 	padding-left:30px;
 	background-size: contain;
 	background-position: 2px center;
 	background-repeat: no-repeat;
+}
+#share section ul li{
+	list-style-type: none;
 }
 #share section li a:hover{color:#hover_color_dark;}
 

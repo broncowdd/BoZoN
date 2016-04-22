@@ -4,6 +4,7 @@
 	* handles a user share request
 	* @author: Bronco (bronco@warriordudimanche.net)
 	**/
+		require_once('core/markdown.php');
 		$id=strip_tags($_GET['f']);
 		$f=id2file($id); # complete filepath including profile folder
 
@@ -22,17 +23,7 @@
     	</script>
 		';
 		$m3u='
-			<script type="text/javascript" src="core/js/m3uStreamPlayer.js"></script>
-			<script type="text/javascript">m3uStreamPlayer.init({selector: "#video", debug: true});</script>
-			<script type="text/javascript">
-			  /**
-			  * Buttons
-			  */
-			  var buttonNextSource = document.querySelector("#video-next-source");
-			  var buttonRandomizeSource = document.querySelector("#video-randomize-source");
-			  buttonNextSource.addEventListener("click", function(){ m3uStreamPlayer.nextSource(document.querySelector("#video")); })
-			  buttonRandomizeSource.addEventListener("click", function(){ v.randomizeSource(document.querySelector("#video")); })
-			</script>
+
 
 		';
 		if(!empty($f)){

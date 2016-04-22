@@ -36,7 +36,7 @@ if ($mode=='view'){
   # Add shares from others users 
   $shared_with=load_folder_share();
   if (!empty($shared_with[$_SESSION['login']])){
-    $shared_folders.= '<div class="shared_folders">';
+    //$shared_folders.= '<div class="shared_folders">';
     $saveshare=false;
     foreach($shared_with[$_SESSION['login']] as $id=>$data){
       if (is_dir($data['folder'])&&!empty($ids[$id])){
@@ -50,13 +50,26 @@ if ($mode=='view'){
           '#FROM'       => $data['from'],
         );
         $shared_folders.= template($mode.'_shared_folder_'.$layout,$array);
+      }elseif (is_file($data['folder'])&&!empty($ids[$id])){
+        $file=_basename($data['folder']);
+        $extension=strtolower(pathinfo($file,PATHINFO_EXTENSION));
+        $array=array(
+          '#CLASS'      => 'shared_folder',
+          '#ID'         => $id,
+          '#FICHIER'    => $file,
+          '#TOKEN'      => TOKEN,
+          '#NAME'       => $file,
+          '#FROM'       => $data['from'],
+          '#EXTENSION'  => $extension,
+        );
+        $shared_folders.= template($mode.'_shared_file_'.$layout,$array);
       }else{
         # remove obsolete shared IDs
         unset($shared_with[$_SESSION['login']][$id]);
         $saveshare=true;
       }
     }
-    $shared_folders.= '</div>';
+    //$shared_folders.= '</div>';
     save_folder_share($shared_with);
   }
 
@@ -131,11 +144,18 @@ if ($mode=='view'){
         '<a id="#MENU" href="index.php?p=#PAGE&aspect=#MENU&token=#TOKEN">&nbsp;</a>'*/
         make_menu_link(); 
       }
+    if (is_allowed('create folder')){
     ?>
     <a id="new_folder" title="<?php e('Create a subfolder in this folder');?>" href="#New_folder_box"><span class="icon-folder-add" ></span></a>
+    <?php }?>
+
     <a id="download_url" title="<?php e('Paste a file\'s URL to get it on this server');?>" href="#download_box"><span class="icon-globe" ></span></a>
-    <?php make_mode_link(); ?>
-    <span id="delete_selection" title="<?php e('Delete selected items');?>"><span class="icon-trash" ></span></span>
+    <?php make_mode_link(); 
+    if (is_allowed('delete files')){
+    ?>
+      <span id="delete_selection" title="<?php e('Delete selected items');?>"><span class="icon-trash" ></span></span>
+    <?php } ?>
+
     <span id="zip_selection" title="<?php e('Zip and download selected items');?>"><span class="icon-download-cloud" ></span></span> 
   </div>
 

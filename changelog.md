@@ -1,5 +1,16 @@
 
 # Version history
+
+## New in 2.4 (build 10)
+- Added : new profiles rights: move files, rename files, delete files, create subfolder
+- Added : shared files with others unsers (like folder share)
+
+## New in 2.4 (build 9)
+- Added : you can add a readme.md file in gallery or playlist folders to add some informations; the readme.md content will be displayed in the public share page.
+
+## New in 2.4 (build 5 - 8)
+- Bugfixes
+
 ## New in 2.4 (build 4)
 - bugfix : burn mode is no longer a problem \o/
 - bugfix : refresh bug on users page

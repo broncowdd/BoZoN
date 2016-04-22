@@ -26,6 +26,12 @@ html, .markdown {
 
 .markdown p {
   margin: 1em 0; }
+.markdown em {
+  font-style: italic; }
+.markdown em {
+  font-weight: bold; }
+.markdown p {
+  margin: 1em 0; }
 
 .markdown a {
   color: #4183c4;

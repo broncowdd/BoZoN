@@ -115,7 +115,7 @@
 	}
 
 	# create a new subfolder
-	if (!empty($_GET['newfolder'])){
+	if (!empty($_GET['newfolder'])&&is_allowed('create folder')){
 		$folder=$_GET['newfolder'];
 		if(check_path($folder)){
 			$tree=add_branch($folder,new_folder($folder)); # $path,$id
@@ -148,14 +148,14 @@
 	}
 
 	# delete SINGLE file/folder
-	if (!empty($_GET['del'])&&$_GET['del']!=''&&is_owner($_GET['del'])){
+	if (!empty($_GET['del'])&&$_GET['del']!=''&&is_owner($_GET['del'])&&is_allowed('delete files')){
 		$tree=delete_file_or_folder($_GET['del'],$ids,$tree);
 		header('location:index.php?p=admin&token='.TOKEN);
 		exit;
 	}
 
 	# rename file/folder
-	if (!empty($_GET['id'])&&!empty($_GET['newname'])&&$_GET['newname']!='.'&&is_owner($_GET['id'])){
+	if (!empty($_GET['id'])&&!empty($_GET['newname'])&&$_GET['newname']!='.'&&is_owner($_GET['id'])&&is_allowed('rename files')){
 		$oldfile=id2file($_GET['id']);
 		$path=dirname($oldfile).'/';
 		$newfile=$path.no_special_char($_GET['newname']);
@@ -198,7 +198,7 @@
 	# $_POST DATA
 	######################################################################
 	# Move file folder
-	if (!empty($_POST['file'])&&!empty($_POST['destination'])){
+	if (!empty($_POST['file'])&&!empty($_POST['destination'])&&is_allowed('move files')){
 		# init
 		$destination=$to=$_POST['destination'];
 		$file=stripslashes($_POST['file']);$me=_basename($file);
@@ -254,7 +254,7 @@
 	}
 
 	# Delete multiselection
-	if (!empty($_POST['item']) && !empty($_POST['multiselect_command']) && $_POST['multiselect_command']=='delete'){
+	if (!empty($_POST['item']) && !empty($_POST['multiselect_command']) && $_POST['multiselect_command']=='delete'&&is_allowed('delete filesr')){
 		foreach ($_POST['item'] as $key => $item) {
 			if (is_owner($item)){
 				$tree=delete_file_or_folder($item,$ids);
@@ -309,7 +309,7 @@
 			}
 		}
 		save_folder_share($shared_with);
-		header('location:index.php?p=admin&token='.TOKEN);
+		header('location:index.php?p=admin&mode=links&token='.TOKEN);
 		exit;
 	}
 

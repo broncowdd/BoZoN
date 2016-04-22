@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 8)');
+	define('VERSION','2.4 (build 11)');
 	
 	start_session();
 	$message='';
@@ -149,14 +149,14 @@ Deny from all
 
 	# CONSTANTS & GLOBALS
 	define('THEME_PATH','templates/'.conf('theme').'/');
-	$ACTIONS=array('users page','add user','delete user','change user status','change folder size','change status rights','change passes','markdown editor','regen ID base','acces logfile','config page','upload');
+	$ACTIONS=array('users page','add user','delete user','change user status','change folder size','change status rights','change passes','markdown editor','regen ID base','acces logfile','config page','upload','delete files','create folder','rename files','move files');
 	$RIGHTS=load($_SESSION['profiles_rights_file']);
 		
 	if (empty($RIGHTS)){ #default profiles if not configured
 		$PROFILES=array('admin','user','guest');
-		$RIGHTS['admin']=array('add user'=>1,'delete user'=>1,'change folder size'=>1,'markdown editor'=>1,'regen ID base'=>1,'access logfile'=>1,'upload'=>1);
-		$RIGHTS['user']=array('markdown editor'=>1,'upload'=>1);
-		$RIGHTS['guest']=array('upload'=>1);
+		$RIGHTS['admin']=array('add user'=>1,'delete user'=>1,'change folder size'=>1,'markdown editor'=>1,'regen ID base'=>1,'access logfile'=>1,'upload'=>1,'delete files'=>1,'create folder'=>1,'rename files'=>1,'move files'=>1);
+		$RIGHTS['user']=array('markdown editor'=>1,'upload'=>1,'delete files'=>1,'create folder'=>1,'rename files'=>1,'move files'=>1);
+		$RIGHTS['guest']=array('upload'=>1,'create folder'=>1,'rename files'=>1,'move files'=>1);
 		save($_SESSION['profiles_rights_file'],$RIGHTS);
 	}else{$PROFILES=array_filter(array_keys($RIGHTS));}
 
@@ -367,13 +367,14 @@ Deny from all
 			if (empty($tree)){return false;}	
 		    foreach($tree as $file){
 		    	if (is_file($file)||is_dir($file)){
-					$extension=pathinfo($file,PATHINFO_EXTENSION);
-					if (stripos($ext, $extension)===false||empty($extension)){return false;}
+		    		if (strtolower(_basename($file))!='readme.md'){
+						$extension=pathinfo($file,PATHINFO_EXTENSION);
+						if (stripos($ext, $extension)===false||empty($extension)){return false;}
+					}
 				}
 			}
 			return true;
 		}
-
 	}
 	function unset_first_element($array=null){
 		if (!$array){return false;}
@@ -800,12 +801,14 @@ Deny from all
 	function draw_tree($tree=null){
 		if (!$tree){return false;}
 		$first=array_keys($tree);
-		$second=$first[1];$first=$first[0];
+		$second=$first[1];
+		$first=$first[0];
 		$image_only=only_type($tree,'.jpg .jpeg .gif .png');
-		$sound_only=only_type($tree,'.mp3 .ogg');
-
+		$sound_only=only_type($tree,'.mp3 .ogg .wav');
+		$readme=array_search(dirname($tree[$second]).'/readme.md', array_map('strtolower',$tree));
+		if ($readme&&!empty($tree[$readme])&&is_file($tree[$readme])){$readme=file_get_contents($tree[$readme]);}
 		if (!$image_only&&!$sound_only){
-			# file list tree
+			# file list tree		
 			echo '<section class="tree">';
 			$tree=array_map(function($i){return $i.'/';}, $tree);
 			natcasesort($tree);
@@ -846,6 +849,7 @@ Deny from all
 			$title=explode('/',$tree[$first]);$title=$title[count($title)-1];unset($tree[$first]);
 			echo '<link rel="stylesheet" type="text/css" href="'.THEME_PATH.'/css/gallery.css">';			
 			echo '<section><ul class="gallery"><h1>'.$title.'</h1>';
+			if (!empty($readme)){echo parse($readme);}
 			
 			foreach($tree as $id=>$image){
 				if (is_file($image)){
@@ -878,33 +882,28 @@ Deny from all
 			
 		}elseif($sound_only){
 			# music player
-			$title=explode('/',$tree[$first]);$title=$title[count($title)-1];unset($tree[$first]);
-			
+			$title=explode('/',$tree[$first]);
+			$title=$title[count($title)-1];unset($tree[$first]);
 			echo '<section class="music_player"><h1>'.$title.'</h1>';
-			echo '<table><tr>';
-			echo '<td><audio preload autoplay></audio></td>';
-			echo '<td id="volume">';
-			$mult=3;
-			for ($vol=1;$vol<11;$vol++){
-				if ($vol<10){echo '<span class="volume" data-volume="0.'.$vol.'" style="background-position:center '.(30-($vol*$mult)).'px">&nbsp;</span>';}
-				else{echo '<span class="volume active" data-volume="1"  style="background-position:center '.(30-($vol*$mult)).'px">&nbsp;</span>';}
-			
+			if (!empty($readme)){echo '<div class="markdown">'.parse($readme).'</div>';}			
+			echo '<audio controls  src="index.php?f='.$second.'"></audio>';
+			$i=1;
+			if (!empty($readme)){$nb=count($tree)-1;}else{$nb=count($tree);}
+			if ($nb>1){
+				foreach($tree as $id=>$sound){
+					if (is_file($sound)&&strtolower(basename($sound))!='readme.md'){
+						$link='index.php?f='.$id;
+						$file=_basename($sound);
+						$ext=strtolower(pathinfo($sound,PATHINFO_EXTENSION));							
+						$filename=pathinfo($sound,PATHINFO_FILENAME);
+						$size = sizeconvert(filesize($sound));
+						echo '<li class="sound" data-href="'.$link.'" data-index="'.$i.'"><em>'.$filename.'</em> '.$size.'</li>';
+						$i++;
+					}
+				}	
 			}
-
-			echo '</td></tr></table>';
-
-			foreach($tree as $id=>$sound){
-				if (is_file($sound)){
-					$link='index.php?f='.$id;
-					$file=_basename($sound);
-					$ext=strtolower(pathinfo($sound,PATHINFO_EXTENSION));							
-					$size = sizeconvert(filesize($sound));
-					echo '<a class="sound" onclick="play(this);return false;" href="'.$link.'" data-src="'.$link.'" ><em>'.$file.'</em> '.$size.'</a>';
-				}
-			}	
 			echo '</section>';
-			echo '
-			<script src="core/js/audio.js"></script>
+			echo '			
 			<script src="core/js/playlist.js"></script>';
 			return;
 		}

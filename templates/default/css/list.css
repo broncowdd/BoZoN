@@ -237,6 +237,7 @@ transition: all 400ms;
   height: 23px;
   text-align: left;
 }
+
 td.burn                           {background-image: url('../img/list/burn.png') !important;
                                      background-position: center center !important;
                                      background-repeat: no-repeat !important;
@@ -320,3 +321,6 @@ td.locked,li.locked               {background-image: url('../img/list/locked.png
   margin: auto;
   border-radius: 2px;
 }
+
+#admin .shared_folder .ext:before{color:rgba(0,100,255,0.7)!important;}
+#admin .shared_folder .ext:before{color:rgba(0,100,255,0.7)!important;}
