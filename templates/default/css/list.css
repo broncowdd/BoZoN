@@ -3,6 +3,7 @@
 Aucun fichier:
 .icon et .list ayant un min-height à 200px, on fixe ici la hauteur pour center le message verticalement
 */
+#list_files{display:block;width:100%;}
 #nofile {
   height: 200px;
   line-height: 200px;
