@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 11)');
+	define('VERSION','2.4 (build 12)');
 	
 	start_session();
 	$message='';

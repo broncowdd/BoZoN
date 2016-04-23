@@ -1,7 +1,10 @@
 
 # Version history
 
-## New in 2.4 (build 10)
+## New in 2.4 (build 12)
+- bugfix : close #144
+
+## New in 2.4 (build 10-11)
 - Added : new profiles rights: move files, rename files, delete files, create subfolder
 - Added : shared files with others unsers (like folder share)
 
