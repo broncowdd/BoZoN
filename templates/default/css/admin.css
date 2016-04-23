@@ -6,7 +6,7 @@
 }
 
 /* menu */
-#admin #menu{display:block;}
+#admin #menu{display:block;width:100%;}
 #admin #menu a.active{box-shadow:inset 0 0 10px #basic_color_superdark!important;}
 #admin #menu a {
   display: block;
