@@ -6,7 +6,7 @@
 	**/
 
 
-start_session();
+session_start();
 
 if (!empty($_SESSION['ERRORS'])){echo '<div class="error">'.strip_tags($_SESSION['ERRORS']).'</div>';unset($_SESSION['ERRORS']);}
 
