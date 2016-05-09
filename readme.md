@@ -35,9 +35,12 @@ and
 - marked.js : (https://github.com/chjj/marked)
 - vanillajs : (my own lib, very tiny)
 
+## Support & donate
+You can support us using paypal or bitcoin with this page: [Donate](http://bozon.pw/static1/donate) [Contribuir](http://bozon.pw/static5/contribuir) [Faire un don](http://bozon.pw/static8/faire-un-don)
 
 ## Licence
 All Bozon code and all the personal libs used in it are distributed under AGPL: feel free to fork, adapt, distribute, comment etc but please, keep your fork free too ;-)
+
 
 ## FAQ
 - _I want to add a user_ : There's a [New user] link in the admin's page top menu, click on it and put a login/pass
