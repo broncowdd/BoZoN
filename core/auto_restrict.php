@@ -55,7 +55,7 @@
 	if (!isset($auto_restrict['cookie_name'])){						$auto_restrict['cookie_name']='BoZoN';}# nom du cookie
 	if (!isset($auto_restrict['session_expiration_delay'])){		$auto_restrict['session_expiration_delay']=90;}#minutes
 	if (!isset($auto_restrict['cookie_expiration_delay'])){			$auto_restrict['cookie_expiration_delay']=365;}#days
-	if (!isset($auto_restrict['IP_banned_expiration_delay'])){		$auto_restrict['IP_banned_expiration_delay']=90;}#seconds
+	if (!isset($auto_restrict['IP_banned_expiration_delay'])){		$auto_restrict['IP_banned_expiration_delay']=30;}#seconds
 	if (!isset($auto_restrict['max_security_issues_before_ban'])){	$auto_restrict['max_security_issues_before_ban']=5;}
 	if (!isset($auto_restrict['just_die_on_errors'])){				$auto_restrict['just_die_on_errors']=true;}# end script immediately instead of include loginform in case of user not logged;
 	if (!isset($auto_restrict['just_die_if_not_logged'])){			$auto_restrict['just_die_if_not_logged']=false;}# end script immediately instead of include loginform in case of banished ip or referer problem;
@@ -97,7 +97,15 @@
 	}else{
 		$auto_restrict['system_salt']=generate_salt(512);
 		$ret="\n";
-		file_put_contents($auto_restrict['path_to_files'].'/auto_restrict_data.php', '<?php '.$ret.'$auto_restrict["system_salt"]='.var_export($auto_restrict['system_salt'],true).';'.$ret.'$auto_restrict["tokens_filename"] = "tokens_'.var_export(hash('sha512', $auto_restrict['system_salt'].uniqid('', true)),true).'.php";'.$ret.'$auto_restrict["banned_ip_filename"] = "banned_ip_'.var_export(hash('sha512', $auto_restrict['system_salt'].uniqid('', true)),true).'.php"; '.$ret.'?>');
+		file_put_contents(
+			$auto_restrict['path_to_files'].'/auto_restrict_data.php', 
+			'<?php '.$ret.'$auto_restrict["system_salt"]='.var_export($auto_restrict['system_salt'],true).';'
+			.$ret.
+			'$auto_restrict["tokens_filename"] = "tokens_'.var_export(hash('sha512', $auto_restrict['system_salt'].uniqid('', true)),true).'.php";'
+			.$ret.
+			'$auto_restrict["banned_ip_filename"] = "banned_ip_'.var_export(hash('sha512', $auto_restrict['system_salt'].uniqid('', true)),true).'.php"; '
+			.$ret.
+			'?>');
 	}
 
 	# ------------------------------------------------------------------
@@ -175,7 +183,11 @@
 	# ------------------------------------------------------------------	
 	if (isset($_POST['login'])&&isset($_POST['pass'])&&empty($_POST['confirm'])&&empty($_POST['creation'])){
 		$ok=log_user($_POST['login'],$_POST['pass']);
-		if (!$ok){safe_redirect('index.php?p=login&error=2');}
+		if (!$ok){
+			
+			if (!checkIP()){death('Too mutch errors logging in ! You are bannished !');}
+			else{add_banned_ip();safe_redirect('index.php?p=login&error=2');}
+		}
 		elseif (isset($_POST['cookie'])){
 			set_cookie();
 		}
@@ -235,7 +247,6 @@
 	if (isset($_POST['admin_password'])){
 		$pass=hash('sha512', $auto_restrict["salt"].$_POST['admin_password']);
 		if ($auto_restrict['pass']!=$pass){
-			add_banned_ip();
 			death('The admin password is wrong... too bad !');
 		}
 		
@@ -465,9 +476,8 @@
 				return true;
 			}
 		}
-		if ($login_donne!='dis'&&$pass_donne!='connect'){
-			add_banned_ip();
-		}else{exit_redirect();} 
+		if ($login_donne=='dis'&&$pass_donne=='connect'){
+		exit_redirect();} 
 		return false;
 	}
 
@@ -627,6 +637,7 @@
 		
 		$auto_restrict["banned_ip"][$ip]['date']=@date('U')+$auto_restrict['IP_banned_expiration_delay'];
 		file_put_contents($auto_restrict['path_to_files'].'/'.$auto_restrict["banned_ip_filename"],'<?php /*Banned IP*/ $auto_restrict["banned_ip"]='.var_export($auto_restrict["banned_ip"],true).' ?>');
+
 	}
 
 	function remove_banned_ip($ip=null){
