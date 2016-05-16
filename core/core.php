@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 12)');
+	define('VERSION','2.4 (build 13)');
 	
 	start_session();
 	$message='';
@@ -353,7 +353,6 @@ Deny from all
 	    }
 		natcasesort($liste);
 	    return $liste;
-	   
 	}
 	function _basename($file){$array=explode('/',$file);if (is_array($array)){return end($array);}else{return $file;}} 
 	function only_type($tree=null, $ext=null){
@@ -655,7 +654,7 @@ Deny from all
 		if (!$user&&!empty($_SESSION['login'])){$user=$_SESSION['login'];}
 		if (isset($_SESSION['regenfolder'])||!is_file($_SESSION['private_folder'].$user.'.php')){
 			# regen folder tree
-			$tree=tree($_SESSION['upload_root_path'].$_SESSION['upload_user_path'],$user,true,true);
+			$tree=tree($_SESSION['upload_root_path'].$user,$user,true,true);
 			savetree($user,$tree);
 			unset($_SESSION['regenfolder']);
 			return $tree;
@@ -692,7 +691,6 @@ Deny from all
 				}
 			}
 		}else{$dir=array();}
-		
 		return $dir;
 
 	}
@@ -949,7 +947,6 @@ Deny from all
 		foreach($l as $key=>$lang){
 			$l[$key]=_basename($lang);
 		}
-
 		return $l;
 	}
 	# Links functions
@@ -1112,7 +1109,7 @@ Deny from all
 				$class=' class="'.$auto_restrict['users'][$user]['status'].'" title="'.e($auto_restrict['users'][$user]['status'],false).'"';
 				echo '<tr>';
 				echo '<td>';
-				echo '<span '.$class.'>'.$user.' <em>('.folder_free($_SESSION['upload_root_path'].$user).' '.e('free',false).')</em></span></td>';
+				echo '<span '.$class.'>'.$user.' <em>('.folder_free($_SESSION['upload_root_path'].$user,$user).' '.e('free',false).')</em></span></td>';
 				echo '<input type="hidden" name="user_name[]" value="'.$user.'"/>';
 				echo '<td><input type="number" name="user_right[]" class="npt" value="'.$size.'" title="MB" min="0"/></td>';
 				newToken();
@@ -1131,18 +1128,17 @@ Deny from all
 	    for( $i = 0; $bytes >= 1024 && $i < ( count( $label ) -1 ); $bytes /= 1024, $i++ );
 	    return( round( $bytes, 2 ) . " " . $label[$i] );
 	}
-	function folder_size($folder,$convert=true){
-		$tree=tree($folder,null,false,true);$size=0;
+	function folder_size($folder,$convert=true,$user=null){
+		$tree=tree($folder,$user,false,true);$size=0;
 		foreach($tree as $branch){
 			if (is_file(($branch))){$size+=filesize($branch);}
 		}
-		if ($convert){return sizeconvert($size);}		
+		if ($convert){return sizeconvert($size);}	
 		return $size;
 	}
-	function folder_free($folder,$mode=false){
-		if (empty($_SESSION['profile_folder_max_size'])){return false;}
-		$max=($_SESSION['profile_folder_max_size']*1048576);
-		$size=round($max-strval(folder_size($folder,false)),2);
+	function folder_free($folder,$user='',$mode=false){
+		$max=(user_folder_max_size($user)*1048576);
+		$size=round($max-strval(folder_size($folder,false,$user)),2);
 		if ($size<=0){return false;}
 		if (!$mode){ # converted size
 			return sizeconvert($size);
@@ -1152,12 +1148,12 @@ Deny from all
 			return round((100*$size)/$max,1);
 		}
 	}
-	function folder_fit($file=null,$size=null,$profile=null){
+	function folder_fit($file=null,$size=null,$profile=null){ 
 		if (!$file&&!$size||!$profile){return false;}
 		$is_admin=is_superadmin();
 		if (empty($_SESSION['profile_folder_max_size'])&&!$is_admin){return false;}
 		$folder=$_SESSION['upload_root_path'].$profile;
-		$max=$_SESSION['profile_folder_max_size']*1048576;
+		$max=user_folder_max_size($profile)*1048576;
 		if (!empty($file)){
 			if (!is_file($file)){return false;}
 			$size=filesize($file);
@@ -1167,12 +1163,11 @@ Deny from all
 	}
 
 	function folder_usage_draw($profile,$mode=1){
-
 		$folder=$_SESSION['upload_root_path'].$profile;
 		if (!is_dir($folder)){return false;}
 		if (empty($_SESSION['profile_folder_max_size'])){return false;}
 		if (is_admin()){return false;}
-		$free=folder_free($folder,1);
+		$free=folder_free($folder,$profile,1);
 		$user_size=$_SESSION['profile_folder_max_size']*1048576;
 		$used=round($user_size-$free,1);
 		$usedpc=round($used*100/$user_size,1);
@@ -1184,6 +1179,12 @@ Deny from all
 		if ($mode==3){echo '<div class="free_space_text">'.$freepc.'% '.e('free',false).' ('.sizeconvert($free).')</label>';}
 	}
 
+	function user_folder_max_size($user=''){
+		if (empty($user)&&empty($_SESSION['profile_folder_max_size'])){return false;}
+		if (empty($user)){return $_SESSION['profile_folder_max_size'];}
+		if (!empty($_SESSION['users_rights'][$user])){return $_SESSION['users_rights'][$user];}
+		return false;
+	}
 	function draw_lb_link($file,$alt=null,$text_link='&nbsp;',$group='',$type='iframe'){
 		if(@is_array(getimagesize($file))){$type='img';}
 		if (!empty($group)){$group='data-group="'.$group.'"';}
