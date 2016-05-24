@@ -79,7 +79,12 @@
 		if (!is_dir($_SESSION['temp_folder'])){mkdir($_SESSION['temp_folder']);}
 		$zipfile=$_SESSION['temp_folder'].return_owner($_GET['zipfolder']).'-'._basename($folder).'.zip';
 		zip($folder,$zipfile);
-		header('location: '.$zipfile);
+		header('Content-type: application/zip');
+		header('Content-Transfer-Encoding: binary');
+		header('Content-Length: '.filesize($zipfile));
+		# lance le téléchargement des fichiers non affichables
+		header('Content-Disposition: attachment; filename="'._basename($zipfile).'"');
+		readfile($zipfile);
 		exit;
 	}
 
