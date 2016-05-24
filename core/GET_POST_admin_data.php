@@ -190,9 +190,15 @@
 		if (!is_dir($_SESSION['temp_folder'])){mkdir($_SESSION['temp_folder']);}
 		$zipfile=$_SESSION['temp_folder'].return_owner($_GET['zipfolder']).'-'._basename($folder).'.zip';
 		zip($folder,$zipfile);
-		header('location: '.$zipfile);
+		header('Content-type: application/zip');
+		header('Content-Transfer-Encoding: binary');
+		header('Content-Length: '.filesize($zipfile));
+		# lance le téléchargement des fichiers non affichables
+		header('Content-Disposition: attachment; filename="'._basename($zipfile).'"');
+		readfile($zipfile);
 		exit;
 	}
+
 
 	######################################################################
 	# $_POST DATA
@@ -254,7 +260,7 @@
 	}
 
 	# Delete multiselection
-	if (!empty($_POST['item']) && !empty($_POST['multiselect_command']) && $_POST['multiselect_command']=='delete'&&is_allowed('delete filesr')){
+	if (!empty($_POST['item']) && !empty($_POST['multiselect_command']) && $_POST['multiselect_command']=='delete'&&is_allowed('delete files')){
 		foreach ($_POST['item'] as $key => $item) {
 			if (is_owner($item)){
 				$tree=delete_file_or_folder($item,$ids);
@@ -273,8 +279,12 @@
 		}
 		if (!is_dir($_SESSION['temp_folder'])){mkdir($_SESSION['temp_folder']);}
 		zip($file_list,$zipfile);
-		header('location: '.$zipfile);
-		exit;
+		header('Content-type: application/zip');
+		header('Content-Transfer-Encoding: binary');
+		header('Content-Length: '.filesize($zipfile));
+		# lance le téléchargement des fichiers non affichables
+		header('Content-Disposition: attachment; filename="'._basename($zipfile).'"');
+		readfile($zipfile);
 	}
 
 	# Lock folder with password
