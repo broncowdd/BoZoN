@@ -60,6 +60,66 @@ if (!function_exists('_glob')){
 }
 $cssFiles = _glob('./','css');
 
+//----------------------------------------------------------
+/**
+* returns a colour x% darker
+* 
+* @param string [$color] a hex rgb color :#FFF or #FFFFFF 
+* @param integer [$percent] amount to substract
+*/ 
+function darken($color, $percent){
+    // change the color to a x% darker
+    $rgb=separatRGB($color);
+    
+    $percent=100-$percent;    
+    $rgb['r']=round(($percent*$rgb['r'])/100);
+    $rgb['g']=round(($percent*$rgb['g'])/100);
+    $rgb['b']=round(($percent*$rgb['b'])/100);    
+     
+    return dec2hexRGB($rgb);
+}
+//----------------------------------------------------------
+/**
+* returns a colour x% lighter
+* 
+* @param string [$color] a hex rgb color :#FFF or #FFFFFF 
+* @param integer [$percent] amount to add
+*/ 
+function lighten($color, $percent){
+    $rgb=separatRGB($color);
+    
+    $r2=round(($percent*255)/100);
+    $g2=round(($percent*255)/100);
+    $b2=round(($percent*255)/100);
+    $rgb['r']+=$r2;
+    $rgb['g']+=$g2;
+    $rgb['b']+=$b2; 
+    if ($rgb['r']>255){$rgb['r']=255;}
+    if ($rgb['g']>255){$rgb['g']=255;}
+    if ($rgb['b']>255){$rgb['b']=255;}   
+    return dec2hexRGB($rgb);
+}
+//----------------------------------------------------------
+/**
+* reverse the lighter and the darker color
+* 
+* @param string [$color] a hex rgb color :#FFF or #FFFFFF 
+* 
+*/ 
+function reverse($color){
+   $rgb=separatRGB($color);
+   $max=array_search(max($rgb),$rgb);
+   $min=array_search(min($rgb),$rgb);
+   
+   $temp=$rgb[$max];
+   $rgb[$max]=$rgb[$min];
+   $rgb[$min]=$temp;
+   
+   return dec2hexRGB($rgb);
+   
+}
+
+
 /**
  * Ideally, you wouldn't need to change any code beyond this point.
  */

@@ -26,11 +26,36 @@ $lang=array(
 #     "Account created:" => "",
 #     "New password saved for " => "",
 #     "Error saving new password for " => "",
+#     "Changes saved" => "",
 
 ##################################################
 # ./core/commands_GET_vars.php
 ##################################################
 #     "Rss feed of stats" => "",
+
+##################################################
+# ./core/config_form_help.php
+##################################################
+#     "The language used by default" => "",
+#     " " => "",
+#     "The way Bozon displays the files by default" => "",
+#     "The mode by default: links or view" => "",
+#     "in pixels" => "",
+#     "Displays the back button and the . and .. options" => "",
+#     "The maximum entries in the stat page" => "",
+#     "The maximum entries in stat file" => "",
+#     "How much files bozon displays before the «load more» button" => "",
+#     "Allow Bozon to calculate the folders\'size (disable in case of slow down with a lot of files)" => "",
+#     "Visitor can access to RSS feed" => "",
+#     "Visitor can access to JSON feed" => "",
+#     "Visitor can access to download" => "",
+#     "When the user clicks on the file, download it instead of open" => "",
+#     "Updates and checks the ID base on every refresh. Disable if you see a slowdown" => "",
+#     "Allow the upload of unknown files types" => "",
+#     "Use lightbox or open pictures in a new tab" => "",
+#     "When you click on renew id for a shared file, this file is no longer shared." => "",
+#     "List of files to open directly in your browser (separate with commas)" => "",
+#     "List of files to display as a text file (separate with commas)" => "",
 
 ##################################################
 # ./core/core.php
@@ -57,8 +82,10 @@ $lang=array(
 #     "Manage files" => "",
 #     "Manage links" => "",
 #     "Deleted" => "",
-#     "used" => "",
 #     "free" => "",
+#     "Yes" => "",
+#     "No" => "",
+#     "text" => "",
 
 ##################################################
 # ./core/GET_POST_admin_data.php
@@ -77,11 +104,12 @@ $lang=array(
 #     "View this share" => "",
 #     "View this file" => "",
 #     "Edit this file" => "",
-#     "Share this folder with another user" => "",
+#     "Share this item with another user" => "",
 #     "Convert this zip file to folder" => "",
 #     "Check all" => "",
 #     "Filename" => "",
 #     "Filesize" => "",
+#     "Filetype" => "",
 #     "Foldersize" => "",
 #     "Load" => "",
 #     "more" => "",
@@ -118,7 +146,7 @@ $lang=array(
 #     "Rename" => "",
 #     "Delete this item?" => "",
 #     "Delete" => "",
-#     "Share folder" => "",
+#     "Share item" => "",
 #     "Share link" => "",
 #     "Select the users you want to share with" => "",
 #     "Copy this share link" => "",
@@ -257,6 +285,7 @@ $lang=array(
 #     "Drag, drop, share." => "",
 #     "Home" => "",
 #     "Edit profiles rights" => "",
+#     "Configure Bozon" => "",
 #     "Users list" => "",
 #     "New user" => "",
 #     "Access log file" => "",
@@ -265,6 +294,7 @@ $lang=array(
 #     "Text editor" => "",
 #     "Click or dragover to reveal dropzone" => "",
 #     "Upload" => "",
+#     "Connect" => "",
 #     "Search in the uploaded files" => "",
 #     "Filter" => "",
 #     "Markdown editor" => "",
@@ -286,22 +316,22 @@ $lang=array(
 ##################################################
 #     "BoZoN is a simple filesharing app." => "",
 #     "Easy to install, free and opensource" => "",
-#     "Just copy BoZoN\'s files on your server. That\'s it." => "",
+#     "Just copy BoZoN\'s files onto your server. That\'s it." => "",
 #     "You can freely fork BoZoN and use it as specified in the AGPL licence" => "",
 #     "More info" => "",
 #     "Easy to use!" => "",
-#     "Drag the file you want to share to upload it on the server" => "",
+#     "Drag the file you want to share to upload it to the server" => "",
 #     "Share the link with your friends" => "",
 #     "BoZoN can do more!" => "",
-#     "No database: easy to backup or move to a new server." => "",
+#     "No database required: easy to backup or move to a new server." => "",
 #     "Lock the access to the file/folder with a password." => "",
-#     "Share a file or a folder with a unique acces link with the «burn mode»:" => "",
-#     "Renew a share link with a single clic" => "",
-#     "Download a folder content into a zip" => "",
-#     "Acces to BoZoN on smartphone without any specific app: your browser is enougth" => "",
+#     "Share a file or a folder with a unique access link with the «burn mode»:" => "",
+#     "Renew a share link with a single click" => "",
+#     "Download a folder\'s contents into a zip" => "",
+#     "Access BoZoN on a smartphone without an app: your browser is enough" => "",
 #     "Use a qrcode to share your link with smartphone users." => "",
-#     "Add, remove users and manage their rights" => "",
-#     "To upload a folder, just zip and upload it: with one clic it will be turned into a folder on the server." => "",
+#     "Add and remove users as well as manage their rights." => "",
+#     "To upload a folder, just zip and upload it: with one click it will be turned into a folder on the server." => "",
 #     "Modify the templates & style to make your own BoZoN" => "",
 
 ##################################################
@@ -313,7 +343,6 @@ $lang=array(
 #     "Please, login" => "",
 #     "This login is not available, please try another one" => "",
 #     "Wrong combination login/pass" => "",
-#     "The passwords doesn\'t match." => "",
 #     "Problem with admin password." => "",
 #     "Account created:" => "",
 #     "Password changed" => "",

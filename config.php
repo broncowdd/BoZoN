@@ -56,5 +56,10 @@
 	# Profiles config
 	#############################################################
 	$default_profile_folder_max_size=50; 						# false = infinite or specify in MB
+	
+	#############################################################
+	# Misc
+	#############################################################
+	$cron_security_string='aQw1zSx2eDc3rFv4';					# basic security access: change it. cron url is: www.myserver.com/?cron_update=aQw1zSx2eDc3rFv4
 
 ?>

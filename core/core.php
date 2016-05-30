@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 13)');
+	define('VERSION','2.4 (build 14)');
 	
 	start_session();
 	$message='';
@@ -548,7 +548,14 @@ Deny from all
 		}
 		if ($saveid){
 			store($ids);
-			regen_tree($_SESSION['login'],$ids);
+			if (!empty($_SESSION['login'])){
+				regen_tree($_SESSION['login'],$ids);
+			}else{
+				include($_SESSION['private_folder'].'/auto_restrict_users.php');
+				foreach($auto_restrict["users"] as $user=>$data){
+					regen_tree($user,$ids);
+				}
+			}
 		}
 		return $ids;
 	}

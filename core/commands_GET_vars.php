@@ -27,6 +27,12 @@
 		exit;
 	}
 
+	# Cron update request
+	if (!empty($_GET['cron_update'])&&$_GET['cron_update']==$cron_security_string){
+		$ids=updateIDs($ids);
+		exit('Ok');
+	}
+
 	# public share request
 	if (!empty($_GET['f'])){
 		require('core/share.php');	

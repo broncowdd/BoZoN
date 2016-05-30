@@ -165,7 +165,7 @@
 		if (!data){data='';}			
 		// Envoi de la requête
 		request = new XMLHttpRequest;
-		request.onprogress=onProgress;
+		request.onprogress=onProgress();
 		request.onload=onload;
 		request.onerror=function(){return 'Error loading !';}
 		request.open(method, url, true);

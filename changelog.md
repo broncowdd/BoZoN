@@ -1,6 +1,10 @@
 
 # Version history
 
+## New in build 13-14
+- bugfixes
+- Added cron job update for IDs (#158): use www.myserver.com/?cron_update=$cron_security_string (see config.php)
+
 ## New in 2.4 (build 12)
 - bugfix : close #144
 

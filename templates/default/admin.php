@@ -123,10 +123,11 @@ if ($mode=='view'){
   		}
       
       if (!empty($previous_path)&&conf('show_back_button')){
+        if ($mode=='links'){$columns='<td></td></td><td><td></td>';}else{$columns='<td></td><td></td></td><td><td></td>';}
         $back_button='<a class="back" href="index.php?p=admin&path='.$previous_path.'&token='.TOKEN.'"><span class="icon-left-circle" ></span></a>';
         $back_link='
-        <tr class="folder"><td></td><td></td><td class="table_filename"><a class="root" href="index.php?p=admin&path=/&token='.TOKEN.'">.</a></td><td></td><td></td></tr>
-        <tr class="folder"><td></td><td></td><td class="table_filename"><a class="back" href="index.php?p=admin&path='.$previous_path.'&token='.TOKEN.'">..</a></td><td></td></td><td></tr>
+        <tr class="folder"><td></td><td class="table_filename"><a class="root" href="index.php?p=admin&path=/&token='.TOKEN.'">.</a></td>'.$columns.'</tr>
+        <tr class="folder"><td></td><td class="table_filename"><a class="back" href="index.php?p=admin&path='.$previous_path.'&token='.TOKEN.'">..</a></td>'.$columns.'</tr>
         ';
     	 echo $back_button;
       }

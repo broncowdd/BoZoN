@@ -58,6 +58,7 @@
 					$type=_mime_content_type($f);
 					$ext=strtolower(pathinfo($f,PATHINFO_EXTENSION));
 					if ($ext=='md'){
+						//include('core/markdown.php');
 						require(THEME_PATH.'/header_markdown.php');	
 						echo $qrcode;
 						echo  parse(url2link(file_get_contents($f)));
