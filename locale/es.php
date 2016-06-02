@@ -306,6 +306,7 @@ $lang=array(
     "No stats" => "Ninguna estadística",
     "Date" => "Fecha",
     "File" => "archivo",
+    "Access" => "Acceso",
     "Owner" => "Propietario",
 #     "IP" => "",
     "Origin" => "Página de origen",

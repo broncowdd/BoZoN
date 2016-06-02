@@ -312,6 +312,7 @@ $lang=array(
     "No stats" => "Aucune statistique",
     "Date" => "Date",
     "File" => "Fichier",
+    "Access" => "Accès",
     "Owner" => "Propriétaire",
 #     "IP" => "",
     "Origin" => "Page d'origine",

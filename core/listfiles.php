@@ -74,7 +74,7 @@ if (count($liste)>0){
 						$icone_visu='<a class="visu" target="_BLANK" href="index.php?f='.$id.'" title="'.e('View this share',false).'"><span class="icon-eye" ></span></a>';
 					}
 				}else{
-					$icone_visu='<a class="visu" target="_BLANK" href="index.php?f='.$id.'&amp;view" title="'.e('View this file',false).'"><span class="icon-eye" ></span></a>';
+					$icone_visu='<a class="visu" target="_BLANK" href="index.php?f='.$id.'" title="'.e('View this file',false).'"><span class="icon-eye" ></span></a>';
 				}
 			}else{$icone_visu='';}
 

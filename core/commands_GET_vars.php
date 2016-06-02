@@ -51,6 +51,7 @@
 		}else{
 			$tree=array($_GET['f']=>$ids[$_GET['f']]);
 		}
+		store_access_stat($ids[$_GET['f']],$_GET['f']);
 		exit(json_encode($tree));
 	}
 

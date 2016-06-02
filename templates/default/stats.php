@@ -31,12 +31,14 @@
 	else{
 		for ($index=$from;$index<$from+conf('stats_max_lines');$index++){//($stats as $client){
 			if (!empty($stats[$index])){
-			$log_list.='
+				if (empty($stats[$index]['access'])){$stats[$index]['access']='-';}
+				$log_list.='
 				<tr>
-					<td class="date">'.date("d/m/Y", strtotime($stats[$index]['date'])).'</td>
+					<td class="date">'.date("d/m/Y, H:i:s", strtotime($stats[$index]['date'])).'</td>
 					<td class="file">'.$stats[$index]['file'].' ('.$stats[$index]['id'].')</td>
 					<td class="owner">'.return_owner($stats[$index]['id']).'</td>
 					<td class="ip">'.$stats[$index]['ip'].'</td>
+					<td class="ip">'.$stats[$index]['access'].'</td>
 					<td class="origin">'.$stats[$index]['referrer'].'</td>
 					<td class="host">'.$stats[$index]['host'].'</td>
 				</tr>';
@@ -84,6 +86,7 @@
 			<th class="file"><?php e('File');?></th>
 			<th class="owner"><?php e('Owner');?></th>
 			<th class="ip"><?php e('IP');?></th>
+			<th class="ip"><?php e('Access');?></th>
 			<th class="origin"><?php e('Origin');?></th>
 			<th class="host"><?php e('Host');?></th>
 		</tr>

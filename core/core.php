@@ -262,6 +262,11 @@ Deny from all
 		$host=$ref='&#8709;';
 		if (isset($_SERVER['REMOTE_HOST'])){$host=$_SERVER['REMOTE_HOST'];}
 		if (isset($_SERVER['HTTP_REFERER'])){$ref=$_SERVER['HTTP_REFERER'];}
+		if (isset($_GET['rss'])){$access='RSS';}
+		elseif (isset($_GET['json'])){$access='Json';}
+		elseif (isset($_GET['export'])){$access='Export';}
+		else{$access='Website';}
+
 		$data=array(
 			'ip'=>$_SERVER['REMOTE_ADDR'],
 			'host'=>$host,
@@ -269,8 +274,9 @@ Deny from all
 			'date'=>date('D d M, H:i:s'),
 			'file'=>$file,
 			'id'=>$id,
+			'access'=>$access
 		);
-		//FIXME not very good when multi-call
+		
 		$stats=load($_SESSION['stats_file']);
 		if (!is_array($stats)){$stats=array();}
 		if (count($stats)>conf('stats_max_entries')){
