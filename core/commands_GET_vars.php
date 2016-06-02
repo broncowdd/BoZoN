@@ -32,6 +32,27 @@
 		$ids=updateIDs($ids);
 		exit('Ok');
 	}
+	
+	# export shared file(s) data in json format
+	if (isset($_GET['export'])&!empty($_GET['f'])){
+		$tree=array();
+		if (!empty($ids[$_GET['f']])&&is_dir($ids[$_GET['f']])){
+			$content=folder_content($ids[$_GET['f']]);
+			foreach($content as $id=>$path){
+				# add item type to create folders when import
+				$tree[$id]['path']=$path;
+				$tree[$id]['url']=ROOT.'index.php?f='.$id;
+				if (is_dir($path)){
+					$tree[$id]['type']='folder';
+				}else{
+					$tree[$id]['type']='file';
+				}
+			}
+		}else{
+			$tree=array($_GET['f']=>$ids[$_GET['f']]);
+		}
+		exit(json_encode($tree));
+	}
 
 	# public share request
 	if (!empty($_GET['f'])){

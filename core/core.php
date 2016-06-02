@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 14)');
+	define('VERSION','2.4 (build 15)');
 	
 	start_session();
 	$message='';
@@ -149,13 +149,13 @@ Deny from all
 
 	# CONSTANTS & GLOBALS
 	define('THEME_PATH','templates/'.conf('theme').'/');
-	$ACTIONS=array('users page','add user','delete user','change user status','change folder size','change status rights','change passes','markdown editor','regen ID base','acces logfile','config page','upload','delete files','create folder','rename files','move files');
+	$ACTIONS=array('users page','add user','delete user','change user status','change folder size','change status rights','change passes','markdown editor','regen ID base','acces logfile','config page','upload','delete files','create folder','rename files','move files','import');
 	$RIGHTS=load($_SESSION['profiles_rights_file']);
 		
 	if (empty($RIGHTS)){ #default profiles if not configured
 		$PROFILES=array('admin','user','guest');
-		$RIGHTS['admin']=array('add user'=>1,'delete user'=>1,'change folder size'=>1,'markdown editor'=>1,'regen ID base'=>1,'access logfile'=>1,'upload'=>1,'delete files'=>1,'create folder'=>1,'rename files'=>1,'move files'=>1);
-		$RIGHTS['user']=array('markdown editor'=>1,'upload'=>1,'delete files'=>1,'create folder'=>1,'rename files'=>1,'move files'=>1);
+		$RIGHTS['admin']=array('add user'=>1,'delete user'=>1,'change folder size'=>1,'markdown editor'=>1,'regen ID base'=>1,'access logfile'=>1,'upload'=>1,'delete files'=>1,'create folder'=>1,'rename files'=>1,'move files'=>1,'import'=>1);
+		$RIGHTS['user']=array('markdown editor'=>1,'upload'=>1,'delete files'=>1,'create folder'=>1,'rename files'=>1,'move files'=>1,'import'=>1);
 		$RIGHTS['guest']=array('upload'=>1,'create folder'=>1,'rename files'=>1,'move files'=>1);
 		save($_SESSION['profiles_rights_file'],$RIGHTS);
 	}else{$PROFILES=array_filter(array_keys($RIGHTS));}
@@ -991,10 +991,11 @@ Deny from all
 	function make_menu_link($pattern='<a id="#MENU" title="#TITLE" class="#CLASS" href="index.php?p=#PAGE&aspect=#MENU&token=#TOKEN"><span class="icon-#MENU" ></span></a>'){
 		if(function_exists('returntoken')){$token=returnToken();}else{$token='';}
 		if (!empty($_GET['p'])){$page=$_GET['p'];}else{$page='';}
-		if (conf('aspect')=='icon'){$class=' active';}else{$class='';}
-		echo str_replace(array('#MENU','#THEME','#TOKEN','#PAGE','#CLASS','#TITLE'),array('icon',THEME_PATH,$token,$page,$class,e('See as icon',false)),$pattern);
-		if (conf('aspect')=='list'){$class=' active';}else{$class='';}
-		echo str_replace(array('#MENU','#THEME','#TOKEN','#PAGE','#CLASS','#TITLE'),array('list',THEME_PATH,$token,$page,$class,e('See as file list',false)),$pattern);
+		if (conf('aspect')=='list'){
+		echo str_replace(array('#MENU','#THEME','#TOKEN','#PAGE','#TITLE'),array('icon',THEME_PATH,$token,$page,e('See as icon',false)),$pattern);
+	}elseif (conf('aspect')=='icon'){
+		echo str_replace(array('#MENU','#THEME','#TOKEN','#PAGE','#TITLE'),array('list',THEME_PATH,$token,$page,e('See as file list',false)),$pattern);
+	}
 	}
 
 	# create the mode links (to change access mode)
@@ -1142,6 +1143,17 @@ Deny from all
 		}
 		if ($convert){return sizeconvert($size);}	
 		return $size;
+	}
+	function folder_content($folder){
+		global $ids;
+		$content=array();
+		foreach($ids as $id=>$path){
+			$folder=addslash_if_needed($folder);
+			if (strpos(addslash_if_needed($path),$folder)!==false){
+				$content[$id]=$path;
+			}
+		}
+		return $content;
 	}
 	function folder_free($folder,$user='',$mode=false){
 		$max=(user_folder_max_size($user)*1048576);

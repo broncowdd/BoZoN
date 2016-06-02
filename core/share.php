@@ -57,7 +57,7 @@
 					# file request => return file according to $behaviour var (see core.php)
 					$type=_mime_content_type($f);
 					$ext=strtolower(pathinfo($f,PATHINFO_EXTENSION));
-					if ($ext=='md'){
+					if ($ext=='md'&&!isset($_GET['view'])){
 						//include('core/markdown.php');
 						require(THEME_PATH.'/header_markdown.php');	
 						echo $qrcode;
@@ -72,7 +72,7 @@
 						echo $call_qrcode;
 						require(THEME_PATH.'/footer.php');
 						
-					}else if (is_in($ext,'FILES_TO_ECHO')!==false){		
+					}else if (is_in($ext,'FILES_TO_ECHO')!==false&&!isset($_GET['view'])){		
 						require(THEME_PATH.'/header.php');
 						echo $qrcode;		
 						echo '<pre>'.htmlspecialchars(file_get_contents($f)).'</pre>';
@@ -121,6 +121,45 @@
 						}
 						echo '</div>';
 						require(THEME_PATH.'/footer.php');
+					}else{
+						# json format of a shared folder (but not for a locked one)
+						if (isset($_GET['json']) && !empty($tree)  && strlen($id)<=23){
+							$upload_path_size=strlen($_SESSION['upload_root_path']);
+							foreach ($tree as $branch){
+								$id_tree[file2id($branch)]=$branch;
+							}
+							# burn access ?
+							burned($id);
+							exit(json_encode($id_tree)); 
+						}
+
+						# RSS format of a shared folder (but not for a locked one)
+						if (isset($_GET['rss']) && !empty($tree)  && strlen($id)<=23){
+							$rss=array('infos'=>'','items'=>'');
+							$rss['infos']=array(
+								'title'=>_basename($f),
+								'description'=>e('Rss feed of ',false)._basename($f),
+								//'guid'=>$_SESSION['home'].'?f='.$id,
+								'link'=>htmlentities($_SESSION['home'].'?f='.$id.'&rss'),
+							);
+
+							include('core/Array2feed.php');
+							$upload_path_size=strlen($_SESSION['upload_root_path']);
+							foreach ($tree as $branch){
+								$id_branch=file2id($branch);
+								$rss['items'][]=array(
+									'title'=>_basename($branch),
+									'description'=>'',
+									'pubDate'=>makeRSSdate(date("d-m-Y H:i:s.",filemtime($branch))),
+									'link'=>$_SESSION['home'].'?f='.$id_branch,
+									'guid'=>$_SESSION['home'].'?f='.$id_branch,
+								);
+							}
+							array2feed($rss);
+							# burn access ?
+							burned($id);
+							exit();
+						}
 					}
 					# burn access ?
 					burned($id);
@@ -135,44 +174,7 @@
 					require(THEME_PATH.'/footer.php');
 				}
 
-				# json format of a shared folder (but not for a locked one)
-				if (isset($_GET['json']) && !empty($tree)  && strlen($id)<=23){
-					$upload_path_size=strlen($_SESSION['upload_root_path']);
-					foreach ($tree as $branch){
-						$id_tree[file2id($branch)]=$branch;
-					}
-					# burn access ?
-					burned($id);
-					exit(json_encode($id_tree)); 
-				}
-
-				# RSS format of a shared folder (but not for a locked one)
-				if (isset($_GET['rss']) && !empty($tree)  && strlen($id)<=23){
-					$rss=array('infos'=>'','items'=>'');
-					$rss['infos']=array(
-						'title'=>_basename($f),
-						'description'=>e('Rss feed of ',false)._basename($f),
-						//'guid'=>$_SESSION['home'].'?f='.$id,
-						'link'=>htmlentities($_SESSION['home'].'?f='.$id.'&rss'),
-					);
-
-					include('core/Array2feed.php');
-					$upload_path_size=strlen($_SESSION['upload_root_path']);
-					foreach ($tree as $branch){
-						$id_branch=file2id($branch);
-						$rss['items'][]=array(
-							'title'=>_basename($branch),
-							'description'=>'',
-							'pubDate'=>makeRSSdate(date("d-m-Y H:i:s.",filemtime($branch))),
-							'link'=>$_SESSION['home'].'?f='.$id_branch,
-							'guid'=>$_SESSION['home'].'?f='.$id_branch,
-						);
-					}
-					array2feed($rss);
-					# burn access ?
-					burned($id);
-					exit();
-				}
+				
 			}
 
 		}else{ 

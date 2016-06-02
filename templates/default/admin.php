@@ -25,6 +25,7 @@
   echo str_replace('#TOKEN',$lb_token,$templates['dialog_download_url']);
   echo str_replace('#TOKEN',$lb_token,$templates['dialog_qrcode']);
   echo str_replace('#TOKEN',$lb_token,$templates['dialog_share']);
+  echo str_replace('#TOKEN',$lb_token,$templates['dialog_import']);
 if ($mode=='links'){
   # Add lock dialogbox to the page
   $array=array(
@@ -148,6 +149,7 @@ if ($mode=='view'){
     if (is_allowed('create folder')){
     ?>
     <a id="new_folder" title="<?php e('Create a subfolder in this folder');?>" href="#New_folder_box"><span class="icon-folder-add" ></span></a>
+    <a id="Import_from_bozon" title="<?php e('Import from another bozon');?>" href="#import_box"><span class="icon-download-cloud" ></span></a>
     <?php }?>
 
     <a id="download_url" title="<?php e('Paste a file\'s URL to get it on this server');?>" href="#download_box"><span class="icon-globe" ></span></a>

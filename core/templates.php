@@ -10,6 +10,8 @@ if (function_exists('returnToken')){$token=returnToken();}
 
 $replacement=array(
 	'#tooltip_close'=>e('Delete this file',false),
+	'#tooltip_url'=>e("Paste file's url",false),
+	'#paste_bozon_url'=>e('Paste a BoZoN share url',false),
 	'#tooltip_link'=>e('Get the share link',false),
 	'#tooltip_qrcode'=>e('Get the qrcode of this link',false),
 	'#tooltip_rename'=>e('Rename this file (share link will not change)',false),

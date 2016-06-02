@@ -12,6 +12,37 @@
 	# $_GET DATA
 	######################################################################
 
+	# import from another instance of bozon
+	if (!empty($_GET['import'])&!empty($_GET['p'])&&$_GET['p']=='admin'&&is_allowed('import')){
+		$url=$_GET['import'];
+		if (strpos($url,'&export')===false){$url.='&export';}
+		$files=json_decode(file_curl_contents($url),true);
+		if (!$files){
+			safe_redirect('index.php?p=admin&token='.TOKEN.'&msg='.e('Problem importing data',false));exit;
+		}
+		if (is_array($files)){
+			foreach ($files as $id=>$data){
+				$local_path=array_filter(explode('/',$data['path']));
+				unset($local_path[0],$local_path[1]);
+				$local_path=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'].implode('/',$local_path);
+
+				if ($data['type']=='file'){
+					$content=file_curl_contents($data['url'].'&view');
+					if ($content){
+						file_put_contents($local_path, $content);
+					}
+				}elseif ($data['type']=='folder'){
+					@mkdir($local_path);
+				}
+				$tree=add_branch($local_path,addID($local_path));
+			}
+		}
+		safe_redirect('index.php?p=admin&token='.TOKEN.'&msg='.e('Data imported',false));
+		exit;
+		
+	}
+
+
 	# edit file (for editor page)
 	if (!empty($_GET['file'])&!empty($_GET['p'])&&$_GET['p']=='editor'&&is_allowed('markdown editor')){
 		$file=id2file($_GET['file']);
