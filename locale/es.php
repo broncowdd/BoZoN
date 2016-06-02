@@ -171,6 +171,10 @@ $lang=array(
     "Filter:" => "Filtro :",
     "Delete selected items" => "Borrar los archivos seleccionados",
     "Zip and download selected items" => "Crea un archivo Zip con la selección",
+    "Paste a file's URL" => "Ingresar una URL",
+    "Paste a BoZoN share url" => "Ingresar una URL BoZoN",
+    "Import from another bozon" => "Importar desde otro bozon",
+    "Paste a file's URL to get it on this server" => "Ingresar la dirección de un archivo distante",
 
 ##################################################
 # ./templates/default/editor.php
