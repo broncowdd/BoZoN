@@ -48,7 +48,10 @@ if (count($liste)>0){
 
 	foreach ($liste as $fichier){
 		$nom=_basename($fichier);		
-		if ($nom!='index.html'&&!empty($files[$fichier])){			
+		if ($nom!='index.html'&&!empty($files[$fichier])){	
+
+			//if (is_link($fichier)){aff(glob(readlink($fichier).'/*'));}
+
 			$id=$files[$fichier];
 			$class='';$title='';
 			if (substr($id, 0,1)=='*'){
