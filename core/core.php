@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 15)');
+	define('VERSION','2.4 (build 16)');
 	
 	start_session();
 	$message='';
@@ -307,6 +307,16 @@ Deny from all
 		return $file2;
 	}
 	function no_special_char($string){return preg_replace('/[\"*\/\:<>\?|]/','',$string);}
+	function myFread($myFile=null){
+		if (!$myFile){return false;}
+		$myInputStream = fopen($myFile, 'rb');
+		$myOutputStream = fopen('php://output', 'wb');
+
+		stream_copy_to_stream($myInputStream, $myOutputStream);
+
+		fclose($myOutputStream);
+		fclose($myInputStream);
+	}
 	function file_curl_contents($url,$pretend=true){
 		# distant version of file_get_contents
 		$ch = curl_init();
@@ -528,7 +538,6 @@ Deny from all
 		}else{
 			$tree=recursive_glob($_SESSION['upload_root_path'],true);
 		}
-
 		unset($tree[0]);
 		# add missing ids
 		foreach($tree as $index=>$file){
