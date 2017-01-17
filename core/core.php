@@ -1033,7 +1033,7 @@ Deny from all
 	# echo some classes depending on filemode, pages etc
 	function body_classes(){
 		if (isset($_GET['users_list'])){echo 'users_list ';}
-		if (!empty($_GET['p'])){echo $_GET['p'].' ';}else{echo 'home ';}
+		if (!empty($_GET['p'])){echo preg_replace('#[^a-zA-Z0-9_]#','',$_GET['p']).' ';}else{echo 'home ';}
 		if (conf('language')){echo 'body_'.conf('language').' ';}
 		if (conf('mode')){echo conf('mode').' ';}
 		if (conf('aspect')&&empty($_GET['f'])){echo conf('aspect').' ';}
