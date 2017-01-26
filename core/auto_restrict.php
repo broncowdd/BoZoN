@@ -503,10 +503,12 @@
 				safe_redirect($auto_restrict['redirect_error']);
 		}else{exit($auto_restrict['error_msg']);}
 	}
-	function generate_salt($length=256){
+		function generate_salt($length=256){
 		$salt='';
+		$chars='0123456789aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ!%&#-*_><?|+@';
+		$count=strlen($chars)-1;
 		for($i=1;$i<=$length;$i++){
-			$salt.=chr(mt_rand(35,126));
+			$salt.=$chars[mt_rand(0,$count)];
 		}
 		return $salt;
 	}
