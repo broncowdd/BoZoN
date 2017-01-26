@@ -49,7 +49,7 @@
 	if (empty($_SESSION['zip'])){$_SESSION['zip']=class_exists('ZipArchive');}
 	if (empty($_SESSION['curl'])){$_SESSION['curl']=function_exists('curl_init');}
 	if (empty($_SESSION['GD'])){$_SESSION['GD']=function_exists('imagecreatetruecolor');}
-	if (empty($_SESSION['home'])){$_SESSION['home'] =getUrl();}	
+	if (empty($_SESSION['home'])){$_SESSION['home'] =getRacine();}	
 	if (empty($_SESSION['clean_temp_folder_time'])){$_SESSION['clean_temp_folder_time'] =$clean_temp_folder_time;}	
 	if (empty($_SESSION['temp_folder'])){$_SESSION['temp_folder'] = $default_temp_folder;}	
 	if (empty($_SESSION['root'])){$_SESSION['root']=ROOT;}
@@ -100,9 +100,9 @@
 
 	# Check necessary libs
 	if(!$disable_non_installed_libs_warning){
-		if (!$_SESSION['zip']){$message.='<div class="error">ZipArchive '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.conf('language').'/zip.setup.php">'.e('More info',false).'</a></label>';}
-		if (!$_SESSION['GD']){$message.='<div class="error">GD '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.conf('language').'/image.installation.php">'.e('More info',false).'</a></label>';}
-		if (!$_SESSION['curl']){$message.='<div class="error">Curl '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.conf('language').'/curl.setup.php">'.e('More info',false).'</a></label>';}
+		if (!$_SESSION['zip']){$message.='<div class="error">ZipArchive '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.conf('language').'/zip.setup.php">'.e('More info',false).'</a></div>';}
+		if (!$_SESSION['GD']){$message.='<div class="error">GD '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.conf('language').'/image.installation.php">'.e('More info',false).'</a></div>';}
+		if (!$_SESSION['curl']){$message.='<div class="error">Curl '.e('is not installed on this server',false).' <a   href="http://php.net/manual/'.conf('language').'/curl.setup.php">'.e('More info',false).'</a></div>';}
 		}
 	# Check files
 	if (!is_file('thumbs/'.$_SESSION['upload_root_path'].'.htaccess')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].'.htaccess', 'deny from all');}
@@ -122,7 +122,9 @@ Deny from all
 	if (!empty($_SESSION['upload_user_path'])&&!is_file('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'.htaccess')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'.htaccess', 'deny from all');}
 	if (!empty($_SESSION['upload_user_path'])&&!is_file('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'index.html')){file_put_contents('thumbs/'.$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].'index.html',' ');}
 
-	#if (!is_file($_SESSION['private_folder'].'.htaccess')){file_put_contents($_SESSION['private_folder'].'.htaccess', 'deny from all');}
+	if (!is_file($_SESSION['private_folder'].'.htaccess')){file_put_contents($_SESSION['private_folder'].'.htaccess', 'deny from all');}
+	if (!is_file($_SESSION['private_folder'].'index.html')){file_put_contents($_SESSION['private_folder'].'index.html',' ');}
+	
 	if (!is_file($_SESSION['folder_share_file'])){save_folder_share(array());}
 	if (!is_file($_SESSION['private_folder'].'salt.php')){ file_put_contents($_SESSION['private_folder'].'salt.php','<?php define("BOZON_SALT",'.var_export(generate_bozon_salt(),true).'); ?>'); }
 	else{include($_SESSION['private_folder'].'salt.php');}
@@ -307,16 +309,6 @@ Deny from all
 		return $file2;
 	}
 	function no_special_char($string){return preg_replace('/[\"*\/\:<>\?|]/','',$string);}
-	function myFread($myFile=null){
-		if (!$myFile){return false;}
-		$myInputStream = fopen($myFile, 'rb');
-		$myOutputStream = fopen('php://output', 'wb');
-
-		stream_copy_to_stream($myInputStream, $myOutputStream);
-
-		fclose($myOutputStream);
-		fclose($myInputStream);
-	}
 	function file_curl_contents($url,$pretend=true){
 		# distant version of file_get_contents
 		$ch = curl_init();
@@ -538,6 +530,7 @@ Deny from all
 		}else{
 			$tree=recursive_glob($_SESSION['upload_root_path'],true);
 		}
+
 		unset($tree[0]);
 		# add missing ids
 		foreach($tree as $index=>$file){
