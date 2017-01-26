@@ -7,7 +7,7 @@
 	 * auto_restrict
 	 * @author bronco@warriordudimanche.com / www.warriordudimanche.net
 	 * @copyright open source and free to adapt (keep me aware !)
-	 * @version 4.2 - multi user
+	 * @version 4.3 - multi user
 	 *   
 	 * This script locks a page's access  
 	 * Just include it in the page you want to lock  
@@ -77,8 +77,12 @@
 	# ------------------------------------------------------------------
 	# secure $_POST & $_GET data 
 	# ------------------------------------------------------------------
-	if ($auto_restrict['POST_striptags']){$_POST=array_map('strip_tags',$_POST);}
-	if ($auto_restrict['GET_striptags']){$_GET=array_map('strip_tags',$_GET);}
+	if ($auto_restrict['POST_striptags']){
+		$_POST=array_map('unHack',$_POST);
+	}
+	if ($auto_restrict['GET_striptags']){
+		$_GET=array_map('unHack',$_GET);
+	}
 
 	# ------------------------------------------------------------------
 	# create cookie token folder
@@ -445,7 +449,16 @@
 			return true;
 		}
 	}
-	
+	function unHack($data){
+		if (is_string($data)){
+			$data=strip_tags($data);
+			$data=str_replace(array('/','\\','[',']','{','}',',',';',':','$','='),'',htmlentities(strip_tags($data), ENT_QUOTES));
+			return $data;
+		}
+		if (is_array($data)){
+			return array_map('unHack',$data);
+		}
+	}
 	function death($msg="Don't try to be so clever !"){global $auto_restrict;if ($auto_restrict['just_die_on_errors']){die('<p class="error">'.$msg.'</p>');}else{return false;}}
 	function is_user_admin(){
 		global $auto_restrict;
@@ -535,6 +548,7 @@
 		if ($auto_restrict['domain']!=$auto_restrict['referer']&&!empty($auto_restrict['referer'])){
 			# log IP to ban it
 			if (isset($_SERVER['REMOTE_ADDR'])){add_banned_ip();}
+			exit('referer error!');
 			return false;
 		}else{return true;}
 	}	
@@ -560,11 +574,13 @@
 		if (!empty($_POST)){
 			if (!isset($_POST['token'])){# no token given ? get out !
 				if ($auto_restrict['use_ban_IP_on_token_errors']){add_banned_ip();}
+				exit('no POST token !');
 				return false;
 			}
 			$token=$_POST['token'];
 			if (!isset($_SESSION[$token])){# Problem with session token ? get out !
 				if ($auto_restrict['use_ban_IP_on_token_errors']){add_banned_ip();}
+				exit('session POST token error!');
 				return false;
 			}
 		}
@@ -572,12 +588,15 @@
 		# secure $_GET with token
 		if (!empty($_GET)&&$auto_restrict['use_GET_tokens_too']){
 			if (!isset($_GET['token'])){# no token given ? get out !
-				if ($auto_restrict['use_ban_IP_on_token_errors']){add_banned_ip();} 
+				if ($auto_restrict['use_ban_IP_on_token_errors']){add_banned_ip();}
+				exit('no get token !');
 				return false;
 			}
 			$token=$_GET['token'];
 			if (!isset($_SESSION[$token])){ # Problem with session token ? get out !				
 				if ($auto_restrict['use_ban_IP_on_token_errors']){add_banned_ip();}
+exit('session GET token error!');
+				
 				return false;
 			}
 			
@@ -585,7 +604,8 @@
 
 		
 		# SESSION token too old ? out ! (but no ip_ban)
-		if ($_SESSION[$token]<@date('U')){ return false;}
+		if ($_SESSION[$token]<@date('U')){ exit('token too old!');
+				return false;}
 		# when all is fine, return true after erasing the token (one use only)
 		if ($auto_restrict['kill_tokens_after_use']){unset($_SESSION[$token]);}
 		return true;
