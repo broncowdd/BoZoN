@@ -80,6 +80,7 @@
 						require(THEME_PATH.'/footer.php');						
 					}else if (is_in($ext,'FILES_TO_RETURN')!==false||$type=='text/plain'&&empty($ext)){
 						header('Content-type: '.$type.'; charset=utf-8');
+						header('Content-Disposition: attachment; filename="'._basename($f).'"');
 						header('Content-Transfer-Encoding: binary');
 						header('Content-Length: '.filesize($f));
 						readfile($f);
