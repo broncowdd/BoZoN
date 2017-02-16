@@ -188,7 +188,8 @@
 	if (isset($_POST['login'])&&isset($_POST['pass'])&&empty($_POST['confirm'])&&empty($_POST['creation'])){
 		$ok=log_user($_POST['login'],$_POST['pass']);
 		if (!$ok){
-			
+			// log login failure in web server log to allow fail2ban usage
+			error_log('BoZon: user '.$_POST['login'].' authentication failure');
 			if (!checkIP()){death('Too mutch errors logging in ! You are bannished !');}
 			else{add_banned_ip();safe_redirect('index.php?p=login&error=2');}
 		}
