@@ -132,7 +132,7 @@
 	}
 
 	# search/filter
-	if (!empty($_GET['filter'])){
+	if (isset($_GET['filter'])){
 		$_SESSION['filter']=$_GET['filter'];
 	}else{
 		$_SESSION['filter']='';
