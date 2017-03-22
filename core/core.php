@@ -6,7 +6,7 @@
 	**/
 	
 	# INIT SESSIONS VARS AND ENVIRONMENT
-	define('VERSION','2.4 (build 17)');
+	define('VERSION','2.4 (build 18)');
 	
 	start_session();
 	$message='';
@@ -691,23 +691,27 @@ Deny from all
 		if (empty($folder)){$folder=$_SESSION['upload_root_path'].$_SESSION['upload_user_path'].$_SESSION['current_path'];}
 		if (!empty($tree)){
 			foreach ($tree as $id=>$path){
-				if ($recursive){
+				if (isset($filter)){
 					$p=addslash_if_needed($path);
 					$f=addslash_if_needed($folder);
-					$match=(strpos($p, $f)===0);				
+					if (strpos($p, $f)!==false&&stripos(_basename($path),$filter)!==false){
+						$dir[$id]=$path;
+					}
 				}else{
-					$match=(addslash_if_needed(dirname($path))===addslash_if_needed($folder));
-				} 
-				if (isset($filter)){
-					$match=$match&&(strpos(_basename($path),$filter)!==false);
-				}
-				if ($match===true){
-					$dir[$id]=$path;
-				}
+					if ($recursive){
+						$p=addslash_if_needed($path);
+						$f=addslash_if_needed($folder);
+						$match=(strpos($p, $f)!==false);				
+					}else{
+						$match=(addslash_if_needed(dirname($path))===addslash_if_needed($folder));
+					} 
+					if ($match===true){
+						$dir[$id]=$path;
+					}
+				}	
 			}
 		}else{$dir=array();}
 		return $dir;
-
 	}
 	function deep_strip_tags($var){if (is_string($var)){return strip_tags($var);}if (is_array($var)){return array_map('deep_strip_tags',$var);}return $var; }
 	function visualizeIcon($extension){
