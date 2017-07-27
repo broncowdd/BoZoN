@@ -51,6 +51,7 @@
 	$allow_unknown_filetypes=true;								# true= allow exotic filetypes (when filetype mime is not recognised)
 	$use_lightbox=true;											# false= view in a new tab
 	$remove_item_from_users_share_when_renew_id=false;			# false= id will be updated in share file, true= id will be removed from share file
+	$max_length=2048;							// Mo (see php.ini if changes doesn't work [post_max_size / upload_max_filesize])
 
 	#############################################################
 	# Profiles config
